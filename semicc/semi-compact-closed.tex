@@ -1,0 +1,691 @@
+%!TEX TS-program = pdflatex
+\documentclass{robinthesisdraft}
+\usepackage{robincs,thesisdefs}
+
+\title{Compact Closed Categories without Units}
+\begin{document}
+\maketitle
+In recent work \citep{LL-U} we have defined a notion of \emph{semi
+star-autonomous category}. It is, of course, a routine matter to specialise
+this definition to the compact closed case. This note
+gives an elementary axiomatisation of semi compact closure, and shows its
+equivalence to the `abstract' notion. The present definition is completely algebraic,
+and is perhaps easier to understand and use. The definition itself is not
+really new: \citet[][\S3.5]{HinesSS} has a similar-looking definition, which
+seems to be strictly weaker than the present one, and \citet{ProofNetCats}
+give a more general version,\footnote{
+	The Do{\v s}en-Petri{\'c} axioms are intended to define a
+	semi star-autonomous category, therefore assume two tensors $\tn$ and $\parr$,
+	related by a linear distributivity. If one takes the two tensors to be equal, and the
+	linear distributivity to be the ordinary associativity, then one recovers the present
+	definition with some redundancy.}
+though it appears to include redundant axioms.
+
+\begin{definition}
+A \emph{category with tensor} $\C$ is a category equipped with a tensor product
+\[
+	\tn: \C\times\C\to\C,
+\]
+together with natural isomorphisms having components
+\[\begin{array}{l}
+	\alpha_{A,B,C}: A\tn(B\tn C) \to (A\tn B)\tn C,\\
+	\sigma_{A,B}: A\tn B \to B\tn A
+\end{array}\]
+such that $\sigma_{B,A}^{-1} = \sigma_{A,B}$, and subject to the pentagon and hexagon conditions
+found in the usual definition of symmetric monoidal category.
+\end{definition}
+%
+Although the development is stated in terms of a symmetric tensor, it is perfectly
+possible -- with only a little more work -- to carry it through when the tensor is
+merely braided. The string diagrams, in particular, should make it clear which
+direction of braiding is required in any particular definition. Note that an additional
+axiom is needed in the braided case, specifically the braid dual of the second
+cancellation condition, and braid-dual versions of the lemmas need to be proved.
+We also introduce an abbreviation that will be useful in the next definition:
+let $\theta$ denote the unique canonical natural isomorphism with components
+\[
+	\theta_{A,B,C}: A\tn(B\tn C) \to (C\tn A)\tn B.
+\]
+(This may be defined as either
+$\alpha_{C,A,B}.\sigma_{A\tn B,C}.\alpha_{A,B,C}$
+or
+$(\sigma_{A,C}\tn B)\alpha_{A,C,B}(A\tn\sigma_{B,C})$;
+the hexagon condition says precisely that these must be equal.)
+\begin{definition}
+A \emph{semi compact closed category} is a category $\C$ with tensor, equipped
+with:
+for every object $A\in\C$, a \emph{dual object} $A^*$, and
+natural transformations $\eta^A$ and $\e^A$ with components
+\[\begin{array}l
+	\eta^A_X: X \to X\tn(A^*\tn A)\\
+	\e^A_X: (A\tn A^*)\tn X \to A
+\end{array}\]
+These natural transformations are called the \emph{unit} and \emph{counit}
+of $A$, and are required to satisfy the four axioms shown in Fig.~\ref{fig-ax}.
+\end{definition}
+\begin{figure}
+	\[\begin{array}{cc}
+	\hskip-3em
+	\begin{diagram}
+		X\tn Y &\rTo^{X\tn \eta^A_Y} & X\tn(Y\tn(A^*\tn A))\\
+		&\rdTo_{\eta^A_{X\tn Y}}&\dTo>{\alpha_{X,Y,A^*\tn A}}\\
+		&&(X\tn Y)\tn(A^*\tn A)
+	\end{diagram}
+	&
+	\hskip 2em
+	\begin{diagram}
+		(A\tn A^*)\tn(X\tn Y)\\
+		\dTo<{\alpha_{A^*\tn A,X,Y}}&\rdTo^{\e^A_{X\tn Y}}\\
+		((A^*\tn A)\tn X)\tn Y &\rTo_{\e^A_X\tn Y}&X\tn Y
+	\end{diagram}
+	\\[5em]
+	\hskip-3em
+	\begin{diagram}
+		A &\rTo^1& A\\
+		\dTo<{\eta^A_A}&&\uTo>{\e^A_A}\\
+		A\tn(A^*\tn A) &\rTo_{\alpha_{A,A^*,A}}&(A\tn A^*)\tn A
+	\end{diagram}
+	&
+	\hskip 2em
+	\begin{diagram}
+		A^* &\rTo^1& A^*\\
+		\dTo<{\eta^A_{A^*}}&&\uTo>{\e^A_{A^*}}\\
+		A^*\tn(A^*\tn A) & \rTo_{\theta_{A^*,A^*,A}}&(A\tn A^*)\tn A^*
+	\end{diagram}
+	\end{array}\]
+	\caption{Coherence conditions for a semi compact closed category}
+	\label{fig-ax}
+\end{figure}%
+The plan for the rest of this paper is as follows. In \S\ref{s-direct} we develop the
+theory of semi compact closed categories directly from the axioms, since it is instructive
+to see how readily this may be done, and how similar it is to the ordinary theory of
+compact closure. (But see later for an alternative, indirect, approach.) \S\ref{s-hhs}
+then shows that every semi compact closed category is (degenerately) semi star-%
+autonomous in the sense of \citet{LL-U}.
+
+\S\ref{s-embed} is independent of the previous sections, and shows
+how an arbitrary semi compact closed category may be fully and faithfully embedded in an
+ordinary compact closed category (which has one additional object playing the role of
+the unit). This embedding preserves the tensor and duality on the nose, which makes it
+possible to transfer most of our knowledge about compact closed categories to the
+unitless situation, and in particular to deduce the main results of \S\ref{s-direct}.
+
+\section{Direct development}\label{s-direct}
+We shall use string diagrams \citep{GTC}, to make the calculations easier
+to follow. Our diagrams are to be read from left to right, and we notate $\eta$
+and $\e$ as in Fig.~\ref{fig-diagdef}.
+\begin{figure}
+	\hbox to\columnwidth\bgroup\hss
+		\begin{tabular}{c@{\hskip 3em}c}
+		\diag{d-eta} & \diag{d-eps}
+		\end{tabular}
+	\hss\egroup
+	\caption{Diagrammatic notation for $\eta$ and $\e$}\label{fig-diagdef}
+\end{figure}
+Diagrammatic forms of the axioms are shown in Figs.~\ref{fig-diagnat}--\ref{fig-diagcanc}.
+	\begin{figure}
+	\hbox to\columnwidth\bgroup\hss
+		\begin{tabular}{c}
+		\diag{d-eta-nat}
+		\\[1em]
+		\diag{d-eps-nat}
+		\end{tabular}
+	\hss\egroup
+	\caption{Diagrammatic form of the naturality conditions}\label{fig-diagnat}
+\end{figure}
+\begin{figure}
+	\hbox to\columnwidth\bgroup\hss
+		\begin{tabular}{c}
+		\diag{d-eta-alph}
+		\\[1em]
+		\diag{d-eps-alph}
+		\end{tabular}
+	\hss\egroup
+	\caption{Diagrammatic form of the associativity conditions}\label{fig-diagass}
+\end{figure}
+\begin{figure}
+	\hbox to\columnwidth\bgroup\hss
+		\begin{tabular}{c}
+		\diag{d-ax1}
+		\\[1em]
+		\diag{d-ax2}
+		\end{tabular}
+	\hss\egroup
+	\caption{Diagrammatic form of the cancellation conditions}\label{fig-diagcanc}
+\end{figure}
+The first task is to show how the duality operation can be extended to a contravariant
+functor, in such a way that $\eta$ and $\e$ are both dinatural in $A$. Given an arrow
+$f: A\to B$, we define $f^*: B^*\to A^*$ as shown in Fig.~\ref{fig-fstar}.
+\begin{figure}
+	\hbox to\columnwidth{\hss\diag{d-fstar}\hss}
+	\caption{Given $f: A\to B$, we define $f^*: B^*\to A^*$ using this diagram}\label{fig-fstar}
+\end{figure}
+Note that, directly from the second cancellation axiom, we have $1_A^* = 1_{A^*}$
+for all $A\in\C$, thus our putative functor preserves identities (which is a good start).
+It is surprisingly complicated to prove directly that it also preserves composition, but
+it will be easy once we have the right lemmas.
+%$\eta$ and $\e$ are dinatural.
+%In fact we shall show that $\e$ is dinatural: the case
+%of $\eta$ is symmetrical.
+\begin{lemma}\label{lemma}
+	For all $X$, $A$ and $Y\in\C$, the following diagrams commute.
+	\begin{diagram}
+		(X\tn(A\tn A^*))\tn Y &\rTo^{\alpha_{X,A\tn A^*, Y}^{-1}}& X\tn((A\tn A^*)\tn Y)\\
+		\dTo<{\sigma_{A\tn A^*,X}\tn Y}&&\dTo>{X\tn\e^A_Y}\\
+		((A\tn A^*)\tn X)\tn Y &\rTo_{\e^A_X\tn Y}&X\tn Y
+	\end{diagram}
+	\begin{diagram}
+		X\tn Y &\rTo^{X\tn\eta^A_Y}&X\tn(Y\tn(A^*\tn A))\\
+		\dTo<{\eta^A_X\tn Y}&&\dTo>{X\tn\sigma_{A^*\tn A, Y}}\\
+		(X\tn(A^*\tn A))\tn Y &\rTo_{\alpha_{X,A^*\tn A,Y}^{-1}}&X\tn((A^*\tn A)\tn Y)
+	\end{diagram}
+\end{lemma}
+\begin{proof}
+	The proof of the first diagram, by string diagram manipulation, is shown in Fig.~\ref{fig-lemma}.
+	(Perhaps the least obvious step is the penultimate one, which uses the
+	naturality of $\sigma$.) The second is proved by a symmetrical argument:
+	Fig.~\ref{fig-lemma'} shows the diagrammatic form of its statement.
+\end{proof}
+\begin{figure}
+\[\begin{array}{rlcl}
+	& \cdiag{d-l1} &=&  \cdiag{d-l2}\\[4em]
+	=& \cdiag{d-l3} &=&  \cdiag{d-l4}\\[4em]
+	=& \cdiag{d-l5} &=&  \cdiag{d-l6}\\[4em]
+	=& \cdiag{d-l7}
+\end{array}\]
+\caption{A diagrammatic proof of Lemma~\ref{lemma}}\label{fig-lemma}
+\end{figure}
+\begin{figure}
+	\hbox to\columnwidth\bgroup\hss
+		\cdiag{d-l-eta-lhs} = \cdiag{d-l-eta-rhs}
+	\hss\egroup
+	\caption{The second part of Lemma~\ref{lemma}}\label{fig-lemma'}
+\end{figure}
+\begin{lemma}\label{sec}
+For any objects $X$,$A$,$B$,$Y$, and arrow $f:A\to B$, the following diagram
+commutes. (The associativities have been suppressed to make it more comprehensible.)
+\begin{diagram}
+	X\tn B^*\tn Y & \rTo^{X\tn f^*\tn Y} & X\tn A^*\tn Y\\
+	\dTo<{\eta^A_X\tn B^*\tn Y} && \uTo>{X\tn A^*\tn\e^B_Y}\\
+	X\tn A^*\tn A \tn B^*\tn Y &\rTo_{X\tn A^*\tn f \tn B^*\tn Y}& X\tn A^*\tn B\tn B^*\tn Y
+\end{diagram}
+In string diagram terms, this says
+\[
+	\cdiag{d-sec-rhs} = \cdiag{d-sec-lhs}
+\]
+\end{lemma}
+\begin{proof}
+	The proof is again by string diagram manipulation, shown in Fig.~\ref{fig-sec}.
+	Both parts of Lemma~\ref{lemma} are used.
+\end{proof}
+\begin{figure}
+\hbox to \columnwidth{\hss$\begin{array}{rlcl}
+	& \cdiag{d-sec-rhs} &=&  \cdiag{d-sec1}\\[4em]
+	=& \cdiag{d-sec2} &=&  \cdiag{d-sec3}\\[4em]
+	=& \cdiag{d-sec4} &=&  \cdiag{d-sec5}\\[4em]
+	=& \cdiag{d-sec-lhs}
+\end{array}$\hss}
+\caption{A diagrammatic proof of Lemma~\ref{sec}}\label{fig-sec}
+\end{figure}%
+The final lemma is not needed immediately, but this seems the right place
+to prove it.
+\begin{lemma}\label{third}
+	For all $X$, $A$, $Y\in\C$, the following diagram commutes.
+%	X\tn A\tn Y    X\tn A^*\tn A \tn A\tn Y    X\tn A\tn A\tn A^*\tn Y    X \tn A\tn Y 
+	\begin{diagram}
+	X\tn A\tn Y & \rTo^{1} & X\tn A\tn Y\\
+	\dTo<{\eta^A_X\tn A\tn Y} && \uTo>{X\tn A\tn\e^A_Y}\\
+	X\tn A^*\tn A \tn A\tn Y & \rTo_{X\tn\sigma_{A^*,A\tn A, Y}} & X\tn A\tn A\tn A^*\tn Y 
+	\end{diagram}
+	(The associativities have again been suppressed.)
+\end{lemma}
+\begin{proof}
+	See Fig.~\ref{fig-third}. The first step uses both parts of Lemma~\ref{lemma}.%
+	\footnote{In the braided case, it uses the braid-dual analogue of that lemma.}
+\end{proof}
+\begin{figure}
+\hbox to \columnwidth{\hss$\begin{array}{rlcl}
+	& \cdiag{d-third1} &=&  \cdiag{d-third2}\\[4em]
+	=& \cdiag{d-third3} &=&  \cdiag{d-third4}\\[4em]
+\end{array}$\hss}
+\caption{Proof of Lemma~\ref{third}}\label{fig-third}
+\end{figure}%
+All the hard work was in the lemmas: everything else is comparatively straightforward.
+\begin{propn}\label{prop-comp}
+	The duality preserves composition, i.e.\ given $f:A\to B$ and $g: B\to C$,
+	we have $(gf)^* = f^*g^*$.
+\end{propn}
+\begin{proof}
+	See Fig.~\ref{fig-comp}.
+\end{proof}
+\begin{figure}
+\hbox to \columnwidth{\hss$\begin{array}{rlcl}
+	& \cdiag{d-comp1} &=&  \cdiag{d-comp2}\\[4em]
+	=& \cdiag{d-comp3} &=&  \cdiag{d-comp4}\\[4em]
+	=& \cdiag{d-comp5}
+\end{array}$\hss}
+\caption{Proof of Prop.~\ref{prop-comp}}\label{fig-comp}
+\end{figure}%
+\begin{propn}\label{prop-dinat}
+	The natural transformations $\eta$ and $\e$ are also dinatural in
+	the superscript variable.
+\end{propn}
+\begin{proof}
+	See Fig.~\ref{fig-dinat} for a proof that $\e$ is dinatural.
+	The proof for $\eta$ may be obtained by turning the string diagrams upside down. 
+\end{proof}
+\begin{figure}
+\hbox to \columnwidth{\hss$\begin{array}{rlcl}
+	& \cdiag{d-dinat-rhs} &=&  \cdiag{d-dinat1}\\[4em]
+	=& \cdiag{d-dinat2} &=&  \cdiag{d-dinat3}\\[4em]
+	=& \cdiag{d-dinat-lhs}
+\end{array}$\hss}
+\caption{Proof that $\e$ is dinatural (Prop.~\ref{prop-dinat})}\label{fig-dinat}
+\end{figure}%
+\begin{propn}\label{prop-starstar}
+	There is a natural isomorphism $A\cong A^{**}$.
+\end{propn}
+\begin{proof}
+Fig.~\ref{fig-starstar} shows how to construct a natural isomorphism $A\cong A^{**}$.
+\begin{figure}
+	\hbox to \columnwidth\bgroup\hss
+	\begin{tabular}{c@{\qquad}c}
+	\diag{d-starstar1} & \diag{d-starstar2}
+	\end{tabular}
+	\hss\egroup
+	\caption{How to construct a natural isomorphism $A\cong A^{**}$}\label{fig-starstar}
+\end{figure}%
+Naturality is immediate from the naturality and dinaturality of $\eta$ and $\e$,
+and the naturality of $\sigma$. Figs.~\ref{fig-starstar-inva} and~\ref{fig-starstar-invb}
+show that these maps are indeed mutually inverse, hence determine an isomorphism.
+Notice that the second step in Fig.~\ref{fig-starstar-inva} uses Lemma~\ref{third}.
+\begin{figure}
+	\hbox to \columnwidth{\hss$\begin{array}{rlcl}
+		& \cdiag{d-starinv-a1} &=&  \cdiag{d-starinv-a2}\\[4em]
+		=& \cdiag{d-starinv-a3} &=&  \cdiag{d-starinv-a4}
+	\end{array}$\hss}
+	\caption{The maps from Fig.~\ref{fig-starstar} compose to give the identity on $A$}
+	\label{fig-starstar-inva}
+\end{figure}%
+\begin{figure}
+	\hbox to \columnwidth{\hss$\begin{array}{rlcl}
+		& \cdiag{d-starinv-b1} &=&  \cdiag{d-starinv-b2}\\[4em]
+		=& \cdiag{d-starinv-b3} &=&  \cdiag{d-starinv-b4}\\[4em]
+		=& \cdiag{d-starinv-b5} &=&  \cdiag{d-starinv-b6}
+	\end{array}$\hss}
+	\caption{The maps from Fig.~\ref{fig-starstar} compose to give the identity on $A^{**}$}
+	\label{fig-starstar-invb}
+\end{figure}
+\end{proof}
+\begin{propn}\label{prop-adj}
+	For each object $A$, there is an adjunction $A\tn- \dashv A^*\tn-$, which
+	determines a natural isomorphism
+	\[
+		\C(B\tn A, C)\cong\C(A, B^*\tn C)
+	\]
+\end{propn}
+\begin{proof}
+There are obvious natural transformations
+\[\begin{array}l
+	\gamma_{A,B,C}: \C(A\tn B^*, C) \to \C(A, C\tn B),\\
+	\delta_{A,B,C}: \C(A, B^*\tn C) \to \C(B\tn A, C)
+\end{array}\]
+illustrated in Figs.~\ref{fig-gamma}--\ref{fig-delta}.
+\begin{figure}
+\[
+	\cdiag{d-f} \To \cdiag{d-gamma-f}
+\]
+\caption{The natural transformation $\gamma$}\label{fig-gamma}
+\end{figure}%
+\begin{figure}
+\[
+	\cdiag{d-g} \To \cdiag{d-delta-g}
+\]
+\caption{The natural transformation $\delta$}\label{fig-delta}
+\end{figure}%
+We need to show that one of these natural transformations is invertible, which
+we shall do by showing that they are in some sense mutually inverse. We begin
+by showing that the composite
+\vskip\abovedisplayskip\hbox to \columnwidth{\hss$
+	\C(A\tn B^*, C) \rTo^\gamma \C(A, C\tn B) \rTo^\cong \C(A, C\tn B^{**}) \rTo^\cong \C(A, B^{**}\tn C)
+		\rTo^\delta \C(B^*\tn A, C) \rTo^\cong \C(A\tn B^*, C)
+$\hss}\vskip\belowdisplayskip\noindent
+is the identity (where the unlabelled isomorphisms are symmetry or involution maps).
+Consider some $f: A\tn B^*\to C$: the result of applying this composite to $f$ is
+shown in Fig.~\ref{fig-dg}.
+\begin{figure}
+\hbox to \columnwidth{\hss\diag{d-delta-gamma-f}\hss}
+\caption{The result of applying $\gamma$ and then $\delta$ to some $f: A\tn B^*\to C$}
+\label{fig-dg}
+\end{figure}%
+Fig.~\ref{fig-dg-proof} shows that this is equal to $f$. (The first step combines
+several uses of naturality and associativity conditions.)
+\begin{figure}
+	\hbox to \columnwidth{\hss$\begin{array}{rlcl}
+		& \multicolumn 3l{\cdiag{d-delta-gamma-f}}\\[4em]
+		=& \cdiag{d-dg-1} &=&  \cdiag{d-dg-2}\\[4em]
+		=& \cdiag{d-dg-3} &=&  \cdiag{d-dg-4}\\[4em]
+		=&\cdiag{d-f}
+	\end{array}$\hss}
+	\caption{The map shown in Fig.~\ref{fig-dg} is equal to $f$}
+	\label{fig-dg-proof}
+\end{figure}%
+Therefore $\gamma$ has a post-inverse and $\delta$ a pre-inverse.
+
+Similarly one may take a map $g: A\to B^*\tn C$, and apply to it the composite
+\vskip\abovedisplayskip\hbox to \columnwidth{\hss$
+	\C(A, B^*\tn C) \rTo^\delta \C(B\tn A, C) \rTo^\cong \C(B^{**}\tn A, C) \rTo^\cong \C(A\tn B^{**}, C)
+		\rTo^\gamma \C(A, C\tn B^*) \rTo^\cong \C(A, B^*\tn C)
+$\hss}\vskip\belowdisplayskip\noindent
+as shown in Fig.~\ref{fig-gd}.
+\begin{figure}
+	\hbox to \columnwidth{\hss\diag{d-gamma-delta-g}\hss}
+	\caption{The result of applying $\delta$ and then $\gamma$ to some $g: A\to B^*\tn C$,}
+	\label{fig-gd}
+\end{figure}%
+This is equal to $g$ -- the proof is obtained by turning all the diagrams in Fig.~\ref{fig-dg-proof}
+upside down -- hence $\gamma$ also has a pre-inverse and $\delta$ a post-inverse.
+Therefore both are invertible, as claimed.
+\end{proof}
+
+\section{The promonoidal structure}\label{s-hhs}
+This section shows that a semi compact closed category is semi star-autonomous
+in the sense of \citet{LL-U}. The proof relies on the characterisation of semi monoidal
+categories stated in \S2.2 of \emph{op. cit.} and proved by \citet{UPC}, which we
+briefly recall here.\footnote{
+	The perceptive reader will note that the definitions below are not
+	precisely identical to those of \citet{LL-U}, but they are clearly equivalent.
+}
+%%
+\begin{definition}\label{def-le}
+        Let $\C$ be a category with tensor.
+        A \defn{linear element} $a$ of the object $A\in\C$ is a natural transformation
+        with components
+        \[
+                a_X: X \to X\tn A
+        \]
+        such that
+        \begin{diagram}%\dlabel{triangle}
+          X\tensor Y & \rTo^{X\tn a_Y} & X\tn(Y\tn A)\\
+          &\rdTo[snake=-1ex]_{a_{X\tn Y}} & \dTo>{\alpha_{X,Y,A}}\\
+          && (X\tn Y)\tn A
+        \end{diagram}
+        commutes for all $X$,$Y\in\C$.
+\end{definition}
+%
+\begin{definition}\label{def-Lin}
+        Given a category $\C$ with tensor, define a functor
+        \[
+                \Lin: \C\to\Set
+        \]
+        as follows. For $A\in\C$, let $\Lin(A)$ be the set of linear
+        elements of $A$. For $f:A\to B$ and $a\in\Lin(A)$, let
+        $\Lin(f)(a)$ be the linear element of $B$ with components
+        \[
+                X \rTo^{a_X} X\tn A \rTo^{X\tn f}X\tn B.
+        \]
+\end{definition}
+\begin{definition}\label{def-l}
+        Suppose we have a category $\C$ with tensor, equipped with a functor
+        \(
+                \lolli: \C\op\times\C\to\C
+        \)
+        and a natural isomorphism
+        \[
+                \curry_{A,B,C}: \C(B\tn A,C) \to \C(A, B\lolli C)
+        \]
+        with counit $e^A_B:A\tn (A\lolli B)\to B$.
+        
+        Define the natural transformation $l_{A,B}: \Lin(A\lolli B) \to \C(A,B)$
+        as follows: for each $x\in\Lin(A\lolli B)$, let $l_{A,B}(x)$ be the
+        composite
+        \[
+                A \rTo^{x_{A}} A\tn(A\lolli B)  \rTo^{e^A_B} B.
+        \]
+\end{definition}
+\begin{propn}[\citealp{LL-U}, Prop. 2.6]
+        To give a symmetric semi-monoidal closed category is to give:
+        \begin{itemize}
+        \item A category $\C$ with symmetric tensor,
+        \item A functor $\lolli:\C\op\times\C\to\C$ with a natural isomorphism
+                \[
+                        \curry_{A,B,C}:\C(B\tn A,C) \to \C(A, B\lolli C)
+                \]
+        \end{itemize}
+        such that the natural transformation
+        $l$ of Def.~\ref{def-l}
+        %$l_{A,B}:\Lin(A\lolli B)\to\C(A,B)$
+        is invertible.
+\end{propn}
+%%
+\noindent With this machinery available it is easy to prove the main result of this section:
+\begin{propn}\label{prop-ssa}
+	A semi compact closed category is semi star-autonomous.
+\end{propn} 
+\begin{proof}
+	Let $\C$ be a semi compact closed category. By assumption it
+	is equipped with a symmetric tensor, and if we define
+	\[
+		A\lolli B := A^*\tn B
+	\]
+	then Prop.\ref{prop-adj} shows that we have a natural isomorphism
+	\[
+		\delta_{A,B,C}:\C(B\tn A,C) \lTo^\cong \C(A, B\lolli C).
+	\]
+	It remains only to construct an inverse to the function
+	$l_{A,B}: \Lin(A^*\tn B) \to \C(A,B)$.
+	
+	If we represent a linear element $x\in\Lin(A^*\tn B)$ as shown in Fig.~\ref{fig-x},
+	\begin{figure}
+		\hbox to \columnwidth{\hss\cdiag{d-lin4}\hss}
+		\caption{The diagrammatic representation of a linear element $x\in\Lin(A^*\tn B)$}
+		\label{fig-x}
+	\end{figure}%
+	note that, by the definition of $\delta$, the arrow $l_{A,B}(x)$ is as shown
+	in Fig.~\ref{fig-lx}.
+	\begin{figure}
+		\hbox to \columnwidth{\hss\cdiag{d-lx}\hss}
+		\caption{The diagrammatic representation of a $l_{A,B}(x)$}
+		\label{fig-lx}
+	\end{figure}%
+		
+	Given a map $f: A\to B$,
+	define $l_{A,B}^{-1}(f)$ to be the natural transformation whose
+	component at $X$ is
+	\[
+		X \rTo^{\eta^A_X} X\tn(A^*\tn A) \rTo^{X\tn(A^*\tn f)} X\tn(A^*\tn B).
+	\]
+	For any $f:A\to B$, the arrow $l_{A,B}(l_{A,B}^{-1}(f))$ is the composite
+	\[
+		A \rTo^{\eta^A_A} A\tn(A^*\tn A) \rTo^{A\tn(A^*\tn f)} A\tn(A^*\tn B)
+			\rTo^{\alpha_{A,A^*,B}} (A\tn A^*)\tn B \rTo^{\e^A_B} B
+	\]
+	By the naturality of $\alpha$ and $\epsilon$, and the first cancellation
+	condition, this is indeed equal to $f$. Conversely suppose we have a
+	linear element $x\in\Lin(A^*\tn B)$. Since it will be convenient to use
+	a string diagram calculation here, we introduce a diagrammatic notation
+	for this linear element, shown in Fig.~\ref{fig-x}.
+	Now Fig.~\ref{fig-lin} shows a proof that $l_{A,B}^{-1}(l_{A,B}(x))$ is equal to~$x$.
+%	\[\hskip -5em
+%		X \rTo^{\eta^A_X} X\tn(A^*\tn A)
+%		\rTo^{X\tn(A^*\tn x_A)} X\tn(A^*\tn (A\tn(A^*\tn B))
+%		\rTo^{X\tn(A^*\tn \alpha_{A,A^*,B})} X\tn(A^*\tn ((A\tn A^*)\tn B))
+%		\rTo^{X\tn(A^*\tn \e^A_B)} X\tn(A^*\tn B)
+%	\]
+	\begin{figure}
+	\hbox to \columnwidth{\hss$\begin{array}{rlcl}
+		& \cdiag{d-lin1} &=&  \cdiag{d-lin2}\\[4em]
+		=& \cdiag{d-lin3} &=&  \cdiag{d-lin4}
+	\end{array}$\hss}
+		\caption{Proof that $l_{A,B}^{-1}(l_{A,B}(x)) = x$. (See Prop.~\ref{prop-ssa})}
+		\label{fig-lin}
+	\end{figure}%
+\end{proof}
+
+\section{Embedding theorem}\label{s-embed}
+If we wanted to add a unit object $I$ to a semi star-autonomous category $\C$, we would
+also have to add an infinite family of other objects such as $I^*$, $I^*\tn A$ for $A\in\C$,
+and so on. In the compact closed case, there is no such obstacle, since $I^*$ is always
+isomorphic to $I$, and we may take $I^* = I$ without essential loss of generality. This
+raises the hope that it may always be possible to fully embed any semi compact closed
+category $\C$ into a compact closed category $\C'$, in such a way the objects of $\C'$
+are essentially just the objects of $\C$ plus a unit object.
+%
+It turns out that such an embedding is possible, as this section shows.
+
+Recall the `$\mathbf e$' construction of \cite{BTC}: given a monoidal category $\C$,
+the category $\mathbf{e}(\C)$ is defined as follows. An object of $\mathbf{e}(\C)$ is
+a pair $(F, \gamma^F)$ of a functor $F:\C\to\C$ and a natural isomorphism with
+components $\gamma^F_{A,B}: F(A\tn B) \to F(A)\tn B$. A morphism $\delta: (F, \gamma^F)
+\to(G,\gamma^G)$ is a natural transformation $F\To G$ such that the diagram
+\begin{diagram}
+	F(A\tn B) & \rTo^{\gamma^F_{A,B}} & F(A)\tn B
+	\\
+	\dTo<{\delta_{A\tn B}} && \dTo>{\delta_A\tn B}
+	\\
+	G(A\tn B) & \rTo^{\gamma^G_{A,B}} & G(A)\tn B
+\end{diagram}
+commutes for all $A$ and $B\in \C$.
+
+The tensor product $(F, \gamma^F)\tn (G, \gamma^G)$ is defined to be $(FG, \gamma^{FG})$,
+where $\gamma^{FG}_{A,B}$ is the composite
+\[
+	FG(A\tn B) \rTo^{F\gamma^G_{A,B}} F(GA \tn B) \rTo^{\gamma^F_{GA,B}} FGA\tn B.
+\]
+The tensor product of two arrows is their horizontal composite as natural transformations.
+The tensor unit $I$ is simply the identity functor, with the identity natural transformation.
+
+There is an functor $L: \C\to\mathbf{e}(\C)$, where $L(A) := (A\tn-, \alpha_{A,-,-})$
+for objects $A\in \C$, and $L(f) := f\tn-$ for arrows $f$.
+
+\begin{propn}\label{prop-L-ff}
+	$L$ is full and faithful.
+\end{propn}
+\begin{proof}
+	\citeauthor{BTC}'s proof of this claim uses the tensor unit in an essential way, so we
+	need to find a new proof that uses semi compact closure instead. The functor $L$ induces,
+	for every $X$ and $Y\in\C$, a function $\C(X,Y) \to \mathbf{e}(\C)(LX, LY)$. We'll
+	describe an inverse to this function, showing that it is invertible and hence that $L$ is
+	full and faithful.
+	
+	Let $\delta$ be a natural transformation $LX\To LY$.
+	Thus $\delta$ consists of components $\delta_A: X\tn A \to Y\tn A$, natural in $A$
+	and such that the diagram
+	\begin{diagram}
+		X\tn (A\tn B) & \rTo^{\alpha_{X,A,B}} & (X\tn A)\tn B\\
+		\dTo<{\delta_{A\tn B}} && \dTo>{\delta_A\tn B}\\
+		Y\tn (A\tn B) & \rTo^{\alpha_{Y,A,B}} & (Y\tn A)\tn B
+	\end{diagram}
+	commutes for all $A$, $B\in\C$.
+	
+	It will be convenient to use string diagrams in the proof: we'll picture
+	$\delta_A$ as
+	\[
+		\cdiag{d-L-delta}.
+	\]
+	In string diagram terms, the commutative square above is a rewiring condition
+	of the sort we have seen above:
+	\[\begin{array}[c]{lcr}
+		\cdiag{d-L-delta-rewiring-lhs} &=& \cdiag{d-L-delta-rewiring-rhs}.
+	\end{array}\]
+	The naturality of $\delta$ means that functions can pass through the loop:
+	\[\begin{array}[c]{lcr}
+		\cdiag{d-L-delta-nat-lhs} &=& \cdiag{d-L-delta-nat-rhs}.
+	\end{array}\]
+	%
+	Now we can define our inverse to the action of L, to take $\delta$ to
+	the following arrow $f: X\to Y$:
+	\[
+		\cdiag{d-L-f}
+	\]
+	We must show that $f\tn A = \delta_A$, for any $A\in \C$. The proof is
+	a routine string diagram manipulation, shown in Fig.~\ref{fig-ftnA}.
+	\begin{figure}
+		\[\begin{array}[c]{rcl}
+			\cdiag{d-ftnA-1}	
+			&=&\cdiag{d-ftnA-2}	\\ \strut\\
+			&=&\cdiag{d-ftnA-3}	\\ \strut\\
+			&=&\cdiag{d-ftnA-4}	\\ \strut\\
+			&=&\cdiag{d-ftnA-5}	\\ \strut\\
+			&=&\cdiag{d-ftnA-6}	\\ \strut\\
+			&=&\cdiag{d-ftnA-7}	\\ \strut\\
+			&=&\cdiag{d-ftnA-8}	\\ \strut\\
+			&=&\cdiag{d-ftnA-9}	\\ \strut\\
+			&=&\cdiag{d-ftnA-10}
+		\end{array}\]
+		\caption{Proof that $f\tn A = \delta_A$, used in Prop.~\ref{prop-L-ff}.}
+		\label{fig-ftnA}
+	\end{figure}
+	This shows that the passage  $\mathbf{e}(\C)(LX, LY)\to \C(X,Y)\to\mathbf{e}(\C)(LX, LY)$
+	is the identity. For the other direction, we need to show that
+	\[\begin{array}[c]{c}
+		\cdiag{d-L-other-lhs} = \cdiag{d-L-other-rhs}
+	\end{array}\]
+	which is immediate.
+\end{proof}
+%
+Now define $\E$ to be the full subcategory of $\mathbf{e}(\C)$ determined by the
+objects that have adjoints. This is clearly a compact closed category.
+\begin{propn}
+	The image of $L$ is contained in $\E$. Specifically, for every $X\in\C$, the object
+	$L(X)$ is adjoint to $L(X^*)$ in $\mathbf{e}(\C)$.
+\end{propn}
+\begin{proof}
+	Define $\eta^{LX}: I \to L(X^*)L(X)$ to have components
+	\[
+		\cdiag{d-eta-LX}
+	\]
+	and $\e^{LX}: L(X)L(X^*)\to I$ to have components
+	\[
+		\cdiag{d-eps-LX}
+	\]
+	These are clearly natural in $A$, and it's easy to verify that they satisfy the
+	condition making them maps of $\mathbf{e}(\C)$.
+	To show that they really do define an adjunction between $L(X)$ and $L(X^*)$,
+	we need to show that
+	\[
+		\cdiag{d-Ladj-X}
+		\qquad \mbox{and} \qquad
+		\cdiag{d-Ladj-Xstar}
+	\]
+	are both equal to the identity. This is an easy exercise in manipulations of the
+	sort that are by now routine.
+\end{proof}
+%
+Finally, let $\C'$ be the full subcategory of $\E$ determined by those objects that are
+either isomorphic to $L(X)$ for some $X$, or isomorphic to $I$. This subcategory is
+closed under the tensor and adjoint operations, so it's compact closed. The image
+of the (full and faithful) functor $L$ is contained in $\C'$ by definition. Thus $\C$ is
+embedded, in a structure-preserving fashion, in a compact closed category that
+has essentially only one extra object, the unit object. (If in fact $\C$ had a unit object
+all along, this functor will be an equivalence.)
+
+
+%***************************************************************************************************
+
+%Given a semi star-autonomous category, it is certainly not possible to turn it into a
+%star-autonomous category proper simply by adding a unit object $I$. 
+
+%It is well-known that every monoidal category $\C$ is monoidally equivalent to a strict
+%monoidal category $\mathbf{e}(\C)$.
+%The construction was first given by \citet{BTC}, and it was subsequently observed
+%by Gordon and Power that this construction can be regarded as an application of the
+%bicategorical Yoneda lemma to the suspension of the monoidal category in question.
+%(The suspension of a monoidal category $\C$ is the one-object bicategory whose
+%1-cells are the objects of $\C$ -- with composition being the tensor product -- and
+%whose 2-cells are the arrows of $\C$.)
+
+%This latter point of view provides a very easy proof that every compact closed category $\C$
+%is equivalent, in the appropriate sense, to a strict monoidal one. To say that a symmetric
+%monoidal category is compact closed is to say that every 1-cell of its suspension has a
+%left (equivalently right) adjoint. Since pseudo-functors preserve adjointness, it must be the case
+%that $\mathbf{e}(\C)$ is compact closed, and that the equivalence with $\C$ preserves
+%the duality.
+
+%This section shows how it is possible to use \citeauthor{BTC}'s constuction to embed
+%any semi compact closed category $\C$ into a strict monoidal compact closed category
+%$\bar{\mathbf{e}}(\C)$, in such a way that the embedding is full and faithful, and every
+%object of \dots
+
+\bibliography{cs}
+\end{document}

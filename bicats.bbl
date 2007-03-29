@@ -1,0 +1,72 @@
+\begin{thebibliography}{12}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Baez and Neuchl(1996)]{HDA1}
+John Baez and Martin Neuchl.
+\newblock Higher dimensional algebra {I}. braided monoidal 2-categories.
+\newblock \emph{Advances in Mathematics}, 121:\penalty0 196--244, 1996.
+
+\bibitem[Carmody(1995)]{CarmodyThesis}
+Sean~Michael Carmody.
+\newblock \emph{Cobordism Categories}.
+\newblock PhD thesis, University of Cambridge, Cambridge, UK, 1995.
+
+\bibitem[Day and Street(1997)]{MonBicat}
+Brian Day and Ross Street.
+\newblock Monoidal bicategories and {H}opf algebroids.
+\newblock \emph{Advances in Mathematics}, 129:\penalty0 99--157, 1997.
+
+\bibitem[Gordon et~al.(1995)Gordon, Power, and Street]{GPS}
+Robert Gordon, John Power, and Ross Street.
+\newblock Coherence for tricategories.
+\newblock \emph{Memoirs of the American Mathematical Society}, 117\penalty0
+  (558), September 1995.
+
+\bibitem[Gurski(2006)]{GurskiThesis}
+Nick Gurski.
+\newblock \emph{An Algebraic Theory of Tricategories}.
+\newblock PhD thesis, University of Chicago, Chicago, IL, USA, 2006.
+
+\bibitem[Joyal and Street(1993)]{BTC}
+Andr{\'e} Joyal and Ross Street.
+\newblock Braided tensor categories.
+\newblock \emph{Advances in Mathematics}, 102\penalty0 (1):\penalty0 20--78,
+  1993.
+
+\bibitem[Joyal and Street(1991)]{GTC}
+Andr{\'e} Joyal and Ross Street.
+\newblock The geometry of tensor calculus {I}.
+\newblock \emph{Advances in Mathematics}, 88:\penalty0 55--113, 1991.
+
+\bibitem[Kelly and Street(1974)]{ks1}
+G.~Max Kelly and Ross Street.
+\newblock Review of the elements of 2-categories.
+\newblock In \emph{Category Seminar}, volume 420 of \emph{Springer Lecture
+  Notes in Mathematics}, pages 75--103, 1974.
+
+\bibitem[Kelly(1964)]{KellyML}
+Max Kelly.
+\newblock On {M}ac{L}ane's conditions for coherence of natural associativities,
+  commutativities, etc.
+\newblock \emph{Journal of Algebra}, 1:\penalty0 397--402, 1964.
+
+\bibitem[Mac~Lane(1963)]{MLCoh}
+Saunders Mac~Lane.
+\newblock Natural associativity and commutativity.
+\newblock \emph{Rice University Studies}, 49:\penalty0 28--46, 1963.
+
+\bibitem[Power(1990)]{2catPasting}
+John Power.
+\newblock A 2-categorical pasting theorem.
+\newblock \emph{Journal of Algebra}, 129:\penalty0 439--445, 1990.
+
+\bibitem[Street(1995)]{LowDim}
+Ross Street.
+\newblock Low-dimensional topology and higher-order categories.
+\newblock In \emph{Proceedings of CT95}, Halifax, 1995.
+
+\end{thebibliography}

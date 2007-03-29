@@ -1,0 +1,35 @@
+Primary technical chapters, in order
+
+ 1. Introduction
+	- Motivate study of these categories (proof nets)
+	- Introduce Prof, promonoidal categories, (coends too?)
+		thus motivating the study of pseudomonoids
+	- Related work:
+		1. L-S, D-P;
+		2. "This work rests (and builds a little) upon the vast edifice of
+			category theory. It owes an especial debt to the abstract
+			perspectives emphasised by the Sydney school, whose founder,
+			Max Kelly, sadly died while this thesis was being written."
+		 - cite:
+			o On monoidal/enriched cats: Mac Lane, Kelly, K-ML, BTC, Day (promon),
+			o On higher cats: Bénabou, 'review of elts', Baez-Neuchl, Day-Street series.
+	- Overview
+
+ 3. Bicategories
+
+ 4. Monoidal bicategories
+
+ 5. Pseudomonoids
+
+ 6. Cayley's theorem for pseudomonoids
+
+ 7. Semi SMCCs
+
+ 8. Semi compact closed categories
+
+ 9. Semi star-autonomous categories
+
+ 10. Comparison with Dosen-Petric
+
+
+Don't forget to grep for /xxxx/i, to find places that need fixing

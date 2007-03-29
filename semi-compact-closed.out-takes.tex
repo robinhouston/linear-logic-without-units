@@ -1,0 +1,38 @@
+ \begin{propn}\label{prop-phi}
+	There is a natural isomorphism $\phi: \C(A, B^*) \cong \C(B, A^*)$.
+\end{propn}
+\begin{proof}
+	Given $f: A\to B^*$, define $\phi(f)$ to be
+	\begin{center}\cdiag{d-phif}\end{center}
+	To see that this assignment is natural in $A$ and $B$, suppose we have	$g: A_1\to A_2$ and $h: B_1 \to B_2$. Then naturality amounts to the
+	claim that, for every $f: A_2\to B_2^*$,
+	\vskip\abovedisplayskip
+	\hbox to \columnwidth{\hss%
+		$\cdiag{d-phi-nat-lhs} = \cdiag{d-phi-nat-rhs}$
+	\hss}
+	\vskip\belowdisplayskip\noindent which is clearly true, by the naturality and
+	dinaturality of $\e$ and $\eta$.
+	
+	To see that $\phi$ is invertible, we shall show that it is its own inverse.%
+	\footnote{%
+		In the braided case, $\phi^{-1}$ differs from $\phi$ by the direction
+		of the braiding, as the diagrams show.%
+	}
+	For any $f: A\to B^*$, $\phi(\phi(f))$ is
+	the morphism
+	\vskip\abovedisplayskip
+	\hbox to \columnwidth{\hss%
+		\cdiag{d-phiphi-rhs}
+	\hss}
+	See Fig.~\ref{fig-phiphi} for a proof that $\phi(\phi(f)) = f$. Notice that the fourth
+	step of the proof uses the $f=1$ case of Lemma~\ref{sec}.
+\end{proof}
+\begin{figure}
+\hbox to \columnwidth{\hss$\begin{array}{rlcl}
+	& \cdiag{d-phiphi-rhs} &=&  \cdiag{d-phiphi1}\\[4em]
+	=& \cdiag{d-phiphi2} &=&  \cdiag{d-phiphi3}\\[4em]
+	=& \cdiag{d-phiphi4} &=&  \cdiag{d-phiphi5}\\[4em]
+	=& \cdiag{d-phiphi-lhs}
+\end{array}$\hss}
+\caption{Proof that $\phi(\phi(f)) = f$ (Prop.~\ref{prop-phi})}\label{fig-phiphi}
+\end{figure}

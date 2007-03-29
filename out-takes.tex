@@ -1,0 +1,741 @@
+%!TEX TS-program = latex
+\documentclass{robinthesisdraft}
+\usepackage{robincs,thesisdefs,xr}
+\externaldocument[Psmon:]{pseudomonoids}
+
+\newenvironment{snippet}[1]{\section{#1}}{}
+
+\title{The ones that got away: from the cutting-room floor}
+
+\begin{document}
+\maketitle
+
+This file consists of substantial snippets that have been removed
+from the thesis. Each such snippet is kept in a `snippet' environment,
+which can be folded in TextMate.
+
+\begin{snippet}{pseudomonoid axioms} % General (not Gray) version of axioms
+	\begin{diagram}
+		\C\tn(\C\tn(\C\tn\C))
+		& \rTo^{\C\tn(\C\tn P)} & \C\tn(\C\tn\C)
+		\\
+		\dTo<{\C\tn a_{\C,\C,\C}}
+		& \Swarrow\C\tn \aa
+		&& \rdTo^{\C\tn P}
+		\\
+		\C\tn ((\C\tn\C)\tn\C)
+		& \rTo_{\C\tn(P\tn\C)} & \C\tn(\C\tn\C)
+		& \rTo_{\C\tn P} & \C\tn\C
+		\\
+		\dTo<{a_{\C,\C\tn\C,\C}}
+		& \Swarrow a_{\C,P,\C}
+		& \dTo<{a_{\C,\C,\C}}
+		& \Swarrow\aa
+		&& \rdTo^{P}
+		\\
+		(\C\tn(\C\tn\C))\tn\C
+		& \rTo_{(\C\tn P)\tn\C}
+		& (\C\tn\C)\tn\C
+		& \rTo_{P\tn\C}
+		& \C\tn\C & \rTo_P & \C
+		\\
+		\dTo<{a_{\C,\C,\C}\tn\C}
+		& \Downarrow\aa\tn\C
+		&& \ruTo_{P\tn\C}
+		\\
+		((\C\tn\C)\tn\C)\tn\C & \rTo_{(P\tn\C)\tn\C} & (\C\tn\C)\tn\C
+	\end{diagram}
+	must be equal to
+	\begin{mspill}\begin{diagram}
+		&& \C\tn(\C\tn(\C\tn\C))
+		& \rTo^{\C\tn(\C\tn P)} & \C\tn(\C\tn\C)
+		& \rTo^{\C\tn P} & \C\tn\C
+		\\
+		& \ldTo^{\C\tn a_{\C,\C,\C}}
+		& \dTo[snake=-1.5em]<{a_{\C,\C,\C\tn\C}}
+		& \Swarrow a_{\C,\C,P}
+		& \dTo>{a_{\C,\C,\C}}
+		& \Swarrow\aa
+		&& \rdTo(2,3)^P
+		\\
+		\C\tn((\C\tn\C)\tn\C)
+		&&&& (\C\tn\C)\tn\C
+		\\
+		\dTo<{a_{\C,\C\tn\C,\C}}
+		& \begin{array}c\Leftarrow\\[-4pt]\pi_{\C,\C,\C,\C}\end{array}
+		& (\C\tn\C)\tn(\C\tn\C)
+		& \ruTo(2,1)^{(\C\tn\C)\tn P}
+		& \cong
+		& \rdTo(2,1)^{P\tn\C}
+		& \C\tn\C
+		& \rTo_P & \C
+		\\
+		(\C\tn(\C\tn\C))\tn\C
+		&& \dTo[snake=-1.5em]<{a_{\C\tn\C,\C,\C}}
+		& \rdTo(2,1)_{P\tn(\C\tn\C)}
+		&\C\tn(\C\tn\C)
+		& \ruTo(2,1)_{\C\tn P}
+		&& \ruTo(2,3)_P
+		\\
+		& \rdTo_{a_{\C,\C,\C}\tn\C}
+		&& \Swarrow a_{P,\C,\C}
+		& \dTo>{a_{\C,\C,\C}}
+		& \Swarrow\aa
+		\\
+		&&((\C\tn\C)\tn\C)\tn\C
+		& \rTo_{(P\tn\C)\tn\C} & (\C\tn\C)\tn\C
+		& \rTo_{P\tn\C} & \C\tn\C
+	\end{diagram}\end{mspill}
+	and
+	\begin{mspill}
+		\begin{diagram}[w=1em]
+			&\rnode{1}{\C\tn(I\tn\C)}
+			&& \rTo^{a_{\C,I,\C}} && (\C\tn I)\tn\C
+			\\
+			& \dTo<{\C\tn(J\tn\C)}
+			&& \hbox to0pt{\hss$\Nearrow a_{\C,J,\C}$\hss}
+			&& \dTo>{(\C\tn J)\tn\C}
+			\\
+			\begin{array}c\To\\[-4pt]\C\tn\ll\end{array}
+			& \C\tn(\C\tn\C)
+			&& \rTo_{a_{\C,\C,\C}}
+			&& (\C\tn\C)\tn\C
+			\\
+			& \dTo<{\C\tn P}
+			&& \Nearrow\aa
+			&& \dTo>{P\tn\C}
+			\\
+			& \rnode{2}{\C\tn\C}
+			& \rTo_P & \C
+			& \lTo_P & \C\tn\C
+			%
+			\nccurve[angle=180,ncurv=1]{->}12\Bput{\C\tn l_\C}
+		\end{diagram}
+		=
+		\begin{diagram}[w=2em]
+			\C\tn(I\tn\C)
+			&& \rTo^{a_{\C,I,\C}}
+			&& (\C\tn I)\tn\C
+			\\
+			& \rdTo_{\C\tn l_\C}
+			& \begin{array}c\To\\[-4pt]\mu_{\C,\C}\end{array}
+			& \ldTo[snake=-1em]_{r_\C\tn\C}
+			& \begin{array}c\To\\[-4pt]\rr\tn\C\end{array}
+			& \rdTo^{(\C\tn J)\tn\C}
+			\\
+			&& \C\tn\C
+			&&\lTo_{P\tn\C}
+			&& (\C\tn\C)\tn\C
+			\\
+			&&\dTo>P
+			\\
+			&& \C
+		\end{diagram}
+	\end{mspill}
+\end{snippet}
+
+\begin{snippet}{proof of prop-adj-2} % Old version of the 2nd half - w/o explicit mates
+	In the other direction, suppose that for every $A\in\B$ we have an
+	arrow $\gamma_A$ right adjoint to $\phi_A$, with the adjunction
+	having unit $\eta_A$ and counit $\e_A$ such that \pref{diag-adj1} is invertible.
+	%
+	We shall make $\gamma$ into a pseudo-natural transformation as follows.
+	For every $f: A\to B$ in $\B$, let $\gamma_f$ be the inverse of the pasting
+	\begin{diagram}
+		\rnode{FA}{FA} & \lTo^{\gamma_A} & \rnode{GA}{GA}\\
+		\dTo<{Ff}&\rdTo_{\phi_A}^{\raise4pt\hbox{$\begin{array}c\To\\[-4pt]\e_A\end{array}$}}
+			& \dTo>1\\
+		FB&\begin{array}c\To\\[-4pt]\phi_f\end{array}&GA\\
+		\dTo<1 & \rdTo^{\phi_B}_{\raise-4pt\hbox{$\begin{array}c\To\\[-4pt]\eta_B\end{array}$}}
+			& \dTo>{Gf}\\
+		\rnode{FB}{FB} & \lTo_{\gamma_B} & \rnode{GB}{GB}
+		\nccurve[angleA=210,angleB=140]{->}{FA}{FB}\Bput{Ff}\Aput{\ \ \ \cong}
+		\nccurve[angleA=-30,angleB=30]{->}{GA}{GB}\Aput{Gf}\Bput{\cong\ \ \ }
+	\end{diagram}
+	This is invertible by assumption, and it is clearly natural in $f$. It remains to
+	check the coherence conditions. Using naturality of the unit isomorphisms
+	and Lemma~\ref{l-psnat} applied to $\phi$, we know that for every $A\in\B$,
+	\[
+	\hskip-1em
+		\begin{diagram}[size=4em]
+			FA & \lTo^{\gamma_A} & \rnode{GA}{GA}\\
+			\dTo<{F(1)} & \llap{$\Searrow \gamma_{1_A}^{-1}\mkern4mu$}
+				& \begin{array}{c}\Rightarrow\\G_A^{-1}\end{array}\\
+			FA & \lTo_{\gamma_A} & \rnode{GB}{GA}
+			\ncarc{->}{GA}{GB}\Aput{1}
+			\ncarc{<-}{GB}{GA}\Aput{G(1)}
+		\end{diagram}
+		%
+		\hskip1em=\hskip3em
+		%
+		\begin{diagram}[size=4em]
+			\rnode{FA}{FA} & \lTo^{\gamma_A} & GA\\
+			\begin{array}{c}\Rightarrow\\F_A^{-1}\end{array}
+				& \rlap{$\mkern8mu\cong$} & \dTo>{1}\\
+			\rnode{FB}{FA} & \lTo_{\gamma_A} & \rnode{GA}{GA}
+			\ncarc{->}{FA}{FB}\Aput{1}
+			\ncarc{<-}{FB}{FA}\Aput{F(1)}
+			%\nccurve{->}{FA}{GA} \Bput{\gamma_A}
+		\end{diagram}
+	\]
+	hence $\gamma$ satisfies the unit condition. The composition condition
+	is also easy to verify. In detail: consider a composable pair
+	\[
+		A\rTo^f B\rTo^g C
+	\]
+	in $\B$. By definition of adjunction and the coherence conditions, we have
+	\[
+	\begin{diagram}
+		\rnode{FA}{FA} & \lTo^{\gamma_A} & \rnode{GA}{GA}\\
+		\dTo<{Ff}&\rdTo_{\phi_A}^{\raise4pt\hbox{$\begin{array}c\To\\[-4pt]\e_A\end{array}$}}
+			& \dTo>1\\
+		FB&\begin{array}c\To\\[-4pt]\phi_f\end{array}&GA\\
+		\dTo<1 & \rdTo^{\phi_B}_{\raise-4pt\hbox{$\begin{array}c\To\\[-4pt]\eta_B\end{array}$}}
+			& \dTo>{Gf}\\
+		\rnode{FB}{FB} & \lTo_{\gamma_B} & \rnode{GB}{GB}\\
+		\dTo<{Fg}&\rdTo_{\phi_B}^{\raise4pt\hbox{$\begin{array}c\To\\[-4pt]\e_B\end{array}$}}
+			& \dTo>1\\
+		FC&\begin{array}c\To\\[-4pt]\phi_g\end{array}&GB\\
+		\dTo<1 & \rdTo^{\phi_C}_{\raise-4pt\hbox{$\begin{array}c\To\\[-4pt]\eta_C\end{array}$}}
+			& \dTo>{Gg}\\
+		\rnode{FC}{FC} & \lTo_{\gamma_C} & \rnode{GC}{GC}\\
+		\nccurve[angleA=210,angleB=140]{->}{FA}{FB}\Bput{Ff}\Aput{\ \ \ \cong}
+		\nccurve[angleA=210,angleB=140]{->}{FB}{FC}\Bput{Fg}\Aput{\ \ \ \cong}
+		\nccurve[angleA=180,angleB=180]{->}{FA}{FC}\Bput{F(gf)}
+			\Aput{\ \ \ \begin{array}c\To\\[-4pt]F_{g,f}^{-1}\end{array}}
+		\nccurve[angleA=-30,angleB=30]{->}{GA}{GB}\Aput{Gf}\Bput{\cong\ \ \ }
+		\nccurve[angleA=-30,angleB=30]{->}{GB}{GC}\Aput{Gg}\Bput{\cong\ \ \ }
+	\end{diagram}
+	\hskip4em=\hskip6em
+	\begin{diagram}
+		\rnode{FA}{FA} & \lTo^{\gamma_A} & \rnode{GA}{GA}\\
+		\dTo<{Ff}&\rdTo_{\phi_A}^{\raise4pt\hbox{$\begin{array}c\To\\[-4pt]\e_A\end{array}$}}
+			& \dTo>1\\
+		\rnode{FB}{FB}&\begin{array}c\To\\[-4pt]\phi_f\end{array}&GA\\
+		\dTo<{Fg}&\rdTo_{\phi_B}
+			& \dTo>{Gf}\\
+		FC&\begin{array}c\To\\[-4pt]\phi_g\end{array}&\rnode{GB}{GB}\\
+		\dTo<1 & \rdTo^{\phi_C}_{\raise-4pt\hbox{$\begin{array}c\To\\[-4pt]\eta_C\end{array}$}}
+			& \dTo>{Gg}\\
+		\rnode{FC}{FC} & \lTo_{\gamma_C} & \rnode{GC}{GC}\\
+		\nccurve[angleA=210,angleB=140]{->}{FB}{FC}\Bput{Fg}\Aput{\ \ \ \cong}
+		\nccurve[angleA=180,angleB=180]{->}{FA}{FC}\Bput{F(gf)}
+			\aput(.4){\ \ \begin{array}c\To\\[-4pt]F_{g,f}^{-1}\end{array}}
+		\nccurve[angleA=-30,angleB=30]{->}{GA}{GB}\Aput{Gf}\Bput{\cong\ \ \ }
+	\end{diagram}
+	\]
+	By naturality of the unit isomorphism and the composition condition for $\phi$,
+	this is equal to
+	\begin{diagram}
+		\rnode{FA}{FA} & \lTo^{\gamma_A} & \rnode{GA}{GA}\\
+		\dTo<{F(gf)}&\rdTo_{\phi_A}^{\raise4pt\hbox{$\begin{array}c\To\\[-4pt]\e_A\end{array}$}}
+			& \dTo>1 & \rdTo^{Gf}_{\cong\ }\\
+		FB&\begin{array}c\To\\[-4pt]\phi_{gf}\end{array}&GA&\rTo^{Gf}&\rnode{GB}{GB}\\
+		\dTo<1 & \rdTo^{\phi_C}_{\raise-4pt\hbox{$\begin{array}c\To\\[-4pt]\eta_C\end{array}$}}
+			& \dTo[snake=-8pt]>{G(gf)}\\
+		\rnode{FC}{FC} & \lTo_{\gamma_C} & \rnode{GC}{GC}
+		\nccurve[angleA=200,angleB=150]{->}{FA}{FC}\Bput{F(gf)}\Aput{\ \ \ \cong}
+		\nccurve[angleA=-90,angleB=0]{->}{GB}{GC}\Aput{Gg}
+			\bput(.2){\Nearrow G_{g,f}^{-1}}
+	\end{diagram}
+	which, again by naturality and coherence of the unit isomorphism, is equal to
+	\begin{diagram}
+		\rnode{FA}{FA} & \lTo^{\gamma_A} & \rnode{GA}{GA}\\
+		\dTo<{F(gf)}&\rdTo_{\phi_A}^{\raise4pt\hbox{$\begin{array}c\To\\[-4pt]\e_A\end{array}$}}
+			& \dTo>1 \\
+		FB&\begin{array}c\To\\[-4pt]\phi_{gf}\end{array}&GA&
+			&\raise-6pt\hbox{$\begin{array}c\To\\[-4pt]G_{g,f}^{-1}\end{array}$}
+			&\rnode{GB}{GB}\\
+		\dTo<1 & \rdTo^{\phi_C}_{\raise-4pt\hbox{$\begin{array}c\To\\[-4pt]\eta_C\end{array}$}}
+			& \dTo>{G(gf)}\\
+		\rnode{FC}{FC} & \lTo_{\gamma_C} & \rnode{GC}{GC}
+		\nccurve[angleA=200,angleB=150]{->}{FA}{FC}\Bput{F(gf)}\Aput{\ \ \ \cong}
+		\nccurve[angleA=-30,angleB=30]{->}{GA}{GC}\aput(.4){G(gf)}\Bput{\cong\ \ \ }
+		\nccurve[angleB=90]{->}{GA}{GB}\Aput{Gf}\nccurve[angleA=-90]{->}{GB}{GC}\Aput{Gg}
+	\end{diagram}
+	which is equal, by definition, to
+	\begin{diagram}[h=2em,w=4em]
+		FA & \lTo^{\gamma_A} & GA\\
+		&&&\rdTo^{Gf}\\
+		\dTo<{F(gf)} & \raise-6pt\hbox{$\Nearrow \gamma_{gf}^{-1}$} & \dTo[snake=1em]<{G(gf)}
+			& \llap{$\begin{array}c\To\\[-4pt]G_{g,f}^{-1}\end{array}$}
+			& GB\\
+		&&&\ldTo_{Gg}\\
+		FC & \lTo_{\gamma_C}& GC
+	\end{diagram}
+	It follows that $\gamma$ satisfies the composition condition.
+	
+	Finally, it is an easy consequence of our definition of $\gamma_f$ that equation
+	\pref{diag-eta-mod} is satisfied, hence that $\eta$ is a modification; and a similar
+	argument shows that $\e$ is a modification too.
+\end{snippet}
+
+\begin{snippet}{all unit axioms for braiding} % Including the redundant ones
+	the following two equations must hold
+	\[
+		\begin{diagram}[hug,s=4em]
+			A\tn B\tn \I & \rTo^{A\tn s_{B,\I}} & A\tn \I\tn B \\
+			\dTo<1 & \rdTo(2,2)^{s_{A\tn B,\I}}
+				\raise 2em\hbox to 0pt{$\Arr\Nearrow{\scriptstyle S_{A,B|\I}}$\hss}
+				\raise-1em\hbox to 0pt{\hss$\mathop\Rightarrow\limits_{U_{A\tn B|\I}}$}
+				& \dTo>{s_{A,\I}\tn B} \\
+			A\tn B & \lTo_{1} & \I\tn A\tn B
+		\end{diagram}
+		\hskip3em=\hskip-1em
+		\begin{diagram}[hug,s=4em]
+			A\tn B\tn \I & \rTo^{A\tn s_{B,\I}} & A\tn \I\tn B \\
+			\dTo<1 & \ldTo(2,2)^{1}
+				\raise-1em\hbox to 0pt{$\Arr\Searrow{\scriptstyle U_{A|\I}\tn B}$\hss}
+				\raise 2em\hbox to 0pt{\hss$\mathop\Rightarrow\limits_{A\tn U_{B|\I}}$}
+				& \dTo>{s_{A,\I}\tn B} \\
+			A\tn B & \lTo_{1} & \I\tn A\tn B
+		\end{diagram}
+	\]
+	\[
+		\begin{diagram}[hug,s=4em]
+			\I\tn A\tn B & \rTo^{s_{\I,A}\tn B} & A\tn \I\tn B \\
+			\dTo<1 & \rdTo(2,2)^{s_{A\tn B,\I}}
+				\raise 2em\hbox to 0pt{$\Arr\Swarrow{\scriptstyle S_{\I|A,B}}$\hss}
+				\raise-1em\hbox to 0pt{\hss$\mathop\Leftarrow\limits_{U_{\I|A\tn B}}$}
+				& \dTo>{A\tn s_{\I,B}} \\
+			A\tn B & \lTo_{1} & A\tn B\tn \I
+		\end{diagram}
+		\hskip3em=\hskip-1em
+		\begin{diagram}[hug,s=4em]
+			\I\tn A\tn B & \rTo^{s_{\I,A}\tn B} & A\tn \I\tn B \\
+			\dTo<1 & \ldTo(2,2)^{1}
+				\raise-1em\hbox to 0pt{$\Arr\Nwarrow{\scriptstyle A\tn U_{\I|B}}$\hss}
+				\raise 2em\hbox to 0pt{\hss$\mathop\Leftarrow\limits_{U_{\I|A}\tn B}$}
+				& \dTo>{A\tn s_{\I,B}} \\
+			A\tn B & \lTo_{1} & A\tn B\tn \I
+		\end{diagram}
+	\]
+	and the four 2-cells pictured below should each be equal to the identity on $s_{A,B}$:
+	\[\begin{array}{c@{\qquad}c}
+		\begin{diagram}[hug,s=4em]
+			\I\tn A\tn B & \rTo^{\I\tn s_{A,B}} & \I\tn B\tn A \\
+			\dTo<{s_{\I\tn A,B}} & \ldTo_{s_{\I,B}\tn A}
+				\raise 2em\hbox to 0pt{\hss$\mathop\Rightarrow\limits_{S_{\I,A|B}}$}
+				\raise-2em\hbox to 0pt{$\mathop\Rightarrow\limits_{U_{\I|B}\tn A}$\hss}
+				& \dTo>{1}\\
+			B\tn \I\tn A & \rTo_{1} & B\tn A
+		\end{diagram}
+		&
+		\begin{diagram}[hug,s=4em]
+			A\tn B\tn \I & \rTo^{s_{A,B}\tn \I} & B\tn A\tn \I \\
+			\dTo<{s_{A,B\tn \I}} & \ldTo_{B\tn s_{A,\I}}
+				\raise 2em\hbox to 0pt{\hss$\mathop\Leftarrow\limits_{S_{A|B,\I}}$}
+				\raise-2em\hbox to 0pt{$\mathop\Leftarrow\limits_{B\tn U_{A|\I}}$\hss}
+				& \dTo>{1}\\
+			B\tn \I\tn A & \rTo_{1} & B\tn A
+		\end{diagram}
+		\\
+		\begin{diagram}[hug,s=2.5em]
+			A\tn \I\tn B && \rTo^{s_{A\tn \I,B}} && B\tn A\tn \I \\
+			&\rdTo_{A\tn s_{\I,B}} & \Downarrow{\scriptstyle S_{A,\I|B}}
+				& \ruTo_{s_{A,B}\tn \I} \\
+			\dTo<1 & \hbox to 0pt{\hss$\mathop\Leftarrow\limits_{A\tn U_{\I|B}}$}
+				& A\tn B\tn \I && \dTo>1 \\
+			&\ldTo_{1} \\
+			A\tn B && \rTo_{s_{A,B}} && B\tn A
+		\end{diagram}
+		&
+		\begin{diagram}[hug,s=2.5em]
+			A\tn \I\tn B && \rTo^{s_{A,\I\tn B}} && \I\tn B\tn A \\
+			&\rdTo_{s_{A,\I}\tn B} & \Uparrow{\scriptstyle S_{A|\I,B}}
+				& \ruTo_{\I\tn s_{A,B}} \\
+			\dTo<1 & \hbox to 0pt{\hss$\mathop\Rightarrow\limits_{U_{A|\I}\tn B}$}
+				& \I\tn A\tn B && \dTo>1 \\
+			&\ldTo_{1} \\
+			A\tn B && \rTo_{s_{A,B}} && B\tn A
+		\end{diagram}
+	\end{array}\]
+\end{snippet}
+
+\begin{snippet}{old diagrams from Prop.~\chref{Psmon}{prop-lrs}}
+	Since $S$ is a modification, this in turn is equal to
+	\begin{diagram}[s=4em,tight]
+		&&&&\C\tn \I\tn \C & \lTo^{s_{\C,\C\tn \I}} & \rnode{CCI}{\C^{2}\tn \I} \\
+		&&&\ldTo^{\C\tn J\tn \C} & \uTo[snake=-1ex]<{\C\tn s_{\C,\I}}
+			& \raise 2em\hbox to0pt{\hss$S_{\C|\C,\I}$}
+			\ldTo(2,2)_{s_{\C,\C}\tn\I} \\
+		&& \rnode{CCC}{\C^{3}} & \C\tn s_{J,\C} & \C^{2}\tn \I
+			& \hbox to 0pt{\quad$\ss\tn\I$} \\
+		&& \uTo<{\C\tn s_{\C,\C}}
+			& \ldTo_{\C^{2}\tn J} && \rdTo_{P\tn \I} \\
+		&\C\tn\ss&\C^{3} && \sim && \rnode{CI}{\C\tn \I} \\
+		&\ldTo_{\C\tn P} && \rdTo^{P\tn \C} && \ldTo^{\C\tn J} \\
+		\rnode{CC}{\C^{2}} && \aa && \C^{2} & \raise-1em\hbox to0pt{\hss$\rr$\hskip2em} \\
+		&\rdTo_{P} && \ldTo_{P} \\
+		&&\rnode{C}{\C}
+		%
+		\ncarc[arcangle=-40]{->}{CCC}{CC}\Bput{\C\tn P}
+		\ncarc[arcangle=45]{->}{CCI}{CI} \Aput{P\tn \I}
+		\ncarc[arcangle=45]{->}{CI}{C}   \Aput{1}
+	\end{diagram}
+	which by \pref{eq-rra} is equal to
+	\begin{diagram}[s=4em,tight]
+		&&&&\C\tn \I\tn \C & \lTo^{s_{\C,\C\tn \I}} & \rnode{tr}{\C^{2}\tn \I} \\
+		&&&\ldTo^{\C\tn J\tn \C} & \uTo[snake=-1ex]<{\C\tn s_{\C,\I}}
+			& \raise 2em\hbox to0pt{\hss$S_{\C|\C,\I}$}
+			\ldTo(2,2)_{s_{\C,\C}\tn\I} \\
+		&& \rnode{CCC}{\C^{3}} & \C\tn s_{J,\C} & \rnode{CCI}{\C^{2}\tn \I}
+			& \hbox to 0pt{\quad$\ss\tn\I$} \\
+		&& \uTo<{\C\tn s_{\C,\C}}
+			& \ldTo_{\C^{2}\tn J} && \rdTo_{P\tn \I} \\
+		&\C\tn\ss&\C^{3} \raise-1.5em\hbox to0pt{$\C\tn\rr$\hss}
+			&& && \rnode{CI}{\C\tn \I} \\
+		&\ldTo_{\C\tn P} \\
+		\rnode{CC}{\C^{2}} \\
+		&\rdTo[nohug]_{P} \\
+		&&\rnode{C}{\C}
+		%
+		\ncarc[arcangle=-40]{->}{CCC}{CC}\Bput{\C\tn P}
+		\ncarc[arcangle=45]{->}{tr}{CI} \Aput{P\tn \I}
+		\ncarc[arcangle=45]{->}{CCI}{CC}   \Aput{1}
+		\ncarc[arcangle=45]{->}{CI}{C}   \Aput{1}
+	\end{diagram}
+\end{snippet}
+
+\begin{snippet}{proof that $\phi_{X}$ is a map of modules}
+\begin{lemma}\label{lemma-ModMX-module}
+	Let $X$ be a right $M$-module. The set $\Mod_{M}(M,X)$ is
+	a right $\V(I,M)$-module, via the function that takes a
+	pair $(f, a)$, where $f: M\to X$ is a map of modules and
+	$a: I\to M$, and returns the composite
+	\[
+		M \rTo^{\cong} I\tn M \rTo^{a\tn M} M\tn M \rTo^{m} M \rTo^{f} X.
+	\]
+\end{lemma}
+\begin{proof}
+	First, we must show that the composite displayed in the statement
+	is indeed a map of modules. Consider the diagram
+	\begin{diagram}
+		M\tn M & \rTo^{\cong} & I\tn M\tn M & \rTo^{a\tn M\tn M} & M\tn M\tn M
+			& \rTo^{m\tn M} & M\tn M & \rTo^{f\tn M} & X\tn M \\
+		\dTo<{m} &\natural&\dTo>{I\tn M} & \natural & \dTo>{M\tn m}
+			&& \dTo>m && \dTo>x \\
+		M &\rTo_{\cong} & I\tn M & \rTo_{a\tn M} & M\tn M & \rTo_{m} & M & \rTo_{f} & X
+	\end{diagram}
+	From left to right, the first two squares commute by naturality,
+	the third by associativity of $M$ and the fourth since $f$ is a
+	map of modules. Thus the outer edge commutes, showing as required
+	that the composite displayed in the statement is a map of modules.
+	
+	We must also show that this function determines a module. Take
+	$f: M\to X$ and $a$, $b:I\to M$. Then we have
+	\begin{diagram}
+		I\tn M & \rTo^{b\tn M} & M\tn M & \rTo^{m} & M \\
+		\dTo<{\cong} & \natural & \dTo>\cong & \natural & \dTo>{\cong} \\
+		I\tn I\tn M & \rTo^{I\tn b\tn M} & I\tn M\tn M & \rTo^{I\tn m} & I\tn M\\
+		&\rdTo_{a\tn b\tn M} & \dTo>{a\tn M\tn M} && \dTo>{a\tn M} \\
+		&&M\tn M\tn M & \rTo_{M\tn m} & M\tn M & \rTo_{m} & M & \rTo_{f} & X
+	\end{diagram}
+	The upper squares commute by naturality of the left-unit isomorphism,
+	and the lower cells by functoriality of tensor. Thus the outside
+	commutes, as required for the first condition of Definition~\ref{def-module-map}.
+	The second condition is trivial: we need to show that
+	\[
+		M \rTo^{\cong} I\tn M \rTo^{e\tn M} M\tn M \rTo^{m} M \rTo^{f} X
+	\]
+	is equal to $f$, and we have
+	\begin{diagram}
+		M & \rTo^{\cong} & I\tn M & \rTo^{e\tn M} & M\tn M \\
+		&&&\rdTo_{\cong} & \dTo>m \\
+		&&&& M &\rTo_{f} & X
+	\end{diagram}
+	where the triangle commutes by the left-unit law for the monoid $M$,
+	and the lower edge is equal to $f$.
+\end{proof}
+\begin{lemma}\label{lemma-VIX-module}
+	Let $X$ be a right $M$-module. The set $\V(I,X)$ is a
+	right $\V(I,M)$-module via the function that takes
+	the pair $(z, a)$, for $z:I\to X$ and $a:I\to M$,
+	to the arrow
+	\[
+			I \rTo^{\cong} I\tn I \rTo^{z\tn a} X\tn M \rTo^{x} X.
+	\]
+\end{lemma}
+\begin{proof}
+	Take $z:I\to X$, and $a$, $b: I\to M$. We must show that
+	the composites
+	\[
+		I\rTo^{\cong} I\tn I\tn I \rTo^{z\tn a\tn b} X\tn M\tn M
+			\rTo^{x\tn M} X\tn M \rTo^{x} M
+	\]
+	and
+	\[
+		I\rTo^{\cong} I\tn I\tn I \rTo^{z\tn a\tn b} X\tn M\tn M
+			\rTo^{X\tn m} X\tn M \rTo^{x} M
+	\]
+	are equal. But this is an immediate consequence of the fact
+	that $X$ is a right $M$-module.
+\end{proof}
+Now we can state the claim:
+\begin{thm}\label{thm-1d-external-plus}
+	The map $\phi_{X}$ of Theorem~\ref{thm-1d-external} is a map of
+	$\V(I,M)$-modules, with respect to the module structures described
+	in Lemmas~\ref{lemma-ModMX-module} and~\ref{lemma-VIX-module}.
+\end{thm}
+\begin{proof}
+	We must show the commutativity of the square
+	\begin{diagram}
+		\V(I,M)\times\Mod_{M}(M,X) & \rTo^{\V(I,M)\times\phi_{X}} & \V(I,M)\times\V(I,X) \\
+		\dTo && \dTo \\
+		\Mod_{M}(M,X) & \rTo_{\phi_{X}} & \V(I,X)
+	\end{diagram}
+	where the vertical arrows are defined by Lemmas~\ref{lemma-ModMX-module}
+	and~\ref{lemma-VIX-module} respectively. In other words, we must show
+	that, for $a: I\to M$ and a module map $f: M\to X$, the composites
+	\[
+		I \rTo^{e} M \rTo^{\cong} I\tn M \rTo^{a\tn M} M\tn M \rTo^{m} M \rTo^{f} X
+	\]
+	and
+	\[
+		I \rTo^{\cong} I\tn I \rTo^{(f\cdot e)\tn a} X\tn M \rTo^{x} X
+	\]
+	are equal. We shall do so by showing that they are both equal to $f\cdot a$.
+	%
+	For the former, we have
+	\begin{diagram}
+		&& M \\
+		& \ruTo^{a} && \rdTo^{\cong} \\
+		I & \rTo_{\cong} & I\tn I & \rTo_{a\tn I} & M\tn I \\
+		\dTo<e && \dTo<{I\tn e} && \dTo<{M\tn e} & \rdTo^{\cong} \\
+		M & \rTo_{\cong} & I\tn M & \rTo_{a\tn M} & M\tn M & \rTo_{m} & M & \rTo_{f} & X
+	\end{diagram}
+	where the quadrilaterals commute by naturality or functoriality of tensor, and the
+	triangle by the right-unit law for the monoid $M$.
+	%
+	For the latter, we have
+	\begin{diagram}
+		I &\rTo^{\cong} & I\tn I & \rTo^{(f\cdot e)\tn a} & X\tn M & \rTo^{x} & X \\
+		\dTo<a && \dTo>{I\tn a} && \uTo>{f\tn M} && \uTo>f \\
+		M & \rTo_{\cong} & \rnode{IM}{I\tn M} & \rTo_{e\tn M} & M\tn M
+			& \rTo_{m} & \rnode{M}{M} \\\ 
+		%
+		\ncarc[arcangle=-45]{->}{IM}{M} \Bput{\cong}
+	\end{diagram}
+	whose squares commute, from left to right, by the naturality of the
+	left-unit isomorphism, the functoriality of tensor, and the fact
+	that $f$ is a module morphism. The curved cell commutes by the
+	left-unit law for the monoid $M$.
+\end{proof}
+\end{snippet}
+
+\begin{snippet}{details of Internal Cayley theorem for monoids}
+The theorem above is external in the sense that it essentially
+concerns $\V(I, M)$, the underlying ordinary monoid of $M$. If
+the monoidal category $\V$ is right closed, then we can state
+an internal version, purely in terms of arrows in $\V$ itself.
+%
+So let $\V$ be biclosed, i.e.\ suppose we are given
+functors
+\[\begin{array}{l}
+	\lolli: \V\op\times\V\to\V \\
+	\illol: \V\times\V\op\to\V,
+\end{array}\]
+and natural isomorphisms with components
+\[\begin{array}{l}
+	\curry_{A,B,C}:  \V(A\tn B, C) \cong \V(A, B\lolli C), \\
+	\curry'_{A,B,C}: \V(A\tn B, C) \cong \V(B, C\illol A).
+\end{array}\]
+We shall refer to both these operations simply as currying;
+and we shall be careful always to provide enough context that
+it is clear which  of them is intended.
+The corresponding evaluation transformations will be written
+\[\begin{array}{l}
+	\ev^{A}_{B}: (A\lolli B)\tn A \to B, \\
+	{\ev'}^{A}_{B}: A\tn(B\illol A) \to B.
+\end{array}\]
+and the dual coevaluations as
+\[\begin{array}{l}
+	\coev^{A}_{B}: B \to A\lolli(B\tn A), \\
+	{\coev'}^{A}_{B}: B \to (A\tn B)\illol A.
+\end{array}\]
+This is enough for us to be able to state the theorem:
+\begin{thm}[Internal Cayley]\label{thm-1d-internal}
+	Let $(X,x)$ be a right $M$-module. Then the diagram
+	\begin{diagram}
+		X & \rTo^{\curry_{X,M,X}(x)} & M\lolli X & \pile{\rTo^{h} \\ \rTo_{k}}
+		 & (M\tn M)\lolli X
+	\end{diagram}
+	is a coequaliser diagram, where the maps $h$ and $k$ are defined as
+	follows. The map $h$ is obtained by currying
+	\[
+		(M\lolli X)\tn M\tn M \rTo^{\ev^{M}_{X}\tn M} X\tn M \rTo^{x} X,
+	\]
+	and $k$ is obtained by currying
+	\[
+		(M\lolli X)\tn M\tn M \rTo^{(M\lolli X)\tn m} (M\lolli X)\tn M \rTo^{\ev^{M}_{X}} X.
+	\]
+\end{thm}
+%
+If the proof is to be organised in a sensible way, we need to call
+upon some elementary properties of (bi)closed monoidal categories
+\citep[Chapter~1]{KellyEnriched}. We shall state these with respect
+to the left internal hom $\illol$, though corresponding things are
+of course also true of the right internal hom. There is an internal
+composition operation
+\[
+	\comp^{B}_{A,C}: (B\illol A)\tn(C\illol B) \to C\illol A
+\]
+obtained by currying the composite
+\[
+	A\tn(B\illol A)\tn(C\illol B) \rTo^{{ev'}^{A}_{B}}
+		B\tn(C\illol B) \rTo^{{ev'}^{B}_{C}} C,
+\]
+and a family of internal unit maps
+\[
+	u_{A}: I \to A\illol A
+\]
+obtained by currying the right-unit isomorphism $A\tn I\rTo^{\cong}A$.
+The internal composition is associative, and the internal units are
+units for internal composition, in the obvious sense.
+%
+In particular the object $A\illol A$ is a monoid
+with multiplication given by internal composition, and unit $u_{A}$.
+Below we shall denote this monoid $A^{A}$ for concision.)
+
+Furthermore, for each object $A\in\V$ there is a natural transformation
+\[
+	t^{A}_{X,Y}: Y\illol X \to (A\tn Y)\illol(A\tn X)
+\]
+obtained by currying the maps
+\[
+	A\tn X\tn(Y\illol X) \rTo^{A\tn{\ev'}}^{X}_{Y} A\tn Y
+\]
+(which is dinatural in $A$, in addition to being natural in $X$ and $Y$).
+We call this the \emph{internal tensor}, and it is preserves internal
+identities and composition.
+
+For each object $A\in\V$ there is a natural transformation
+\[
+	h^{A}_{X,Y}: Y\illol X \to (Y\illol A)\illol(X\illol A)
+\]
+obtained by currying the internal composition, which is again
+dinatural in $A$ and preserves internal identities and composition.
+Also, there is a natural transformation with components
+\[
+	d_{A,B,C}: (C\illol B)\tn A \to (C\tn A)\illol B
+\]
+obtained by currying the map
+\[
+	B\tn(C\illol B)\tn A \rTo^{{\ev'}^{B}_{C}\tn A} C\tn A.
+\]
+
+\begin{lemma}\label{lemma-module-as-monoid-map}
+	A map $x: X\tn M\to X$ makes $(X,x)$ into a right $M$-module
+	if and only if
+	\[
+		\curry'_{X,M,X}(x): M\to X\illol X
+	\]
+	is a map of monoids.
+\end{lemma}
+\begin{proof}
+	Curry the diagrams in Definition~\ref{def-module}.
+\end{proof}
+%
+In conjunction with the observations above, this lemma implies
+that, for every $A\in\V$, if $(X,x)$ is a right $M$-module, there
+is a natural way to make both $A\tn X$ and $X\illol A$ into right
+$M$-modules too. For, since the $t^{A}$ and $H^{A}$ maps preserve
+internal identities and composition, in particular
+\[
+	t^{A}_{X,X}: X\illol X \to (A\tn X)\illol(A\tn X)
+\]
+and
+\[
+	h^{A}_{X,X}: X\illol X \to (X\illol A)\illol(X\illol A)
+\]
+are maps of monoids, which may be composed with $\curry'_{X,M,X}(x)$.
+Explicitly, the module structure of $A\tn X$ is given by the map
+\[
+	A\tn X\tn M \rTo^{A\tn x} A\tn X,
+\]
+and the module structure of $X\illol A$ is given by
+\[
+	(X\illol A)\tn M \rTo^{d_{M,A,X}} (A\tn M)\illol A \rTo^{x\illol A} X\illol A.
+\]
+\begin{lemma}\label{lemma-mod-map-curry}
+	Let $(X,x)$ and $(Y,y)$ be right $M$-modules.
+	If $f:A\tn X\to Y$ is a map of modules, then so is
+	\[
+		\curry'(f): X\to Y\illol A.
+	\]
+\end{lemma}
+\begin{proof}
+	Consider the diagram
+	\begin{diagram}
+		&& (A\tn X\illol A)\tn M & \rTo^{(f\illol A)\tn M} & (Y\illol A)\tn M\\
+		&\ruTo^{{\coev'}^{A}_{X}\tn M} & \dTo>{d_{M,A,A\tn X}}
+			& & \dTo>{d_{M,A,Y}} \\
+		X\tn M & \rTo_{{\coev'}^{A}_{X,M}} & A\tn X\tn M \illol A
+			& \rTo_{f\tn M\illol A} & Y\tn M\illol A \\
+		\dTo<x && \dTo>{A\tn x\illol A} && \dTo>{x\illol A} \\
+		X & \rTo_{{\coev'}^{A}_{X}} & A\tn X\illol A
+			& \rTo_{f\illol A} & Y\illol A
+	\end{diagram}
+	The triangle commutes by definition of $d$, the upper square by
+	naturality of $d$, the lower-left square by naturality of $\coev'$,
+	and the lower-right square since $f$ is a map of modules. Hence
+	the outside commutes, as required.
+\end{proof}
+
+With this background in place, it is easy to deduce the internal Cayley
+Theorem from the external one:
+\begin{proof}[Proof of Theorem~\ref{thm-1d-internal}]
+	Let $A\in\V$, and $g: A\to M\lolli X$ be such that $hg=kg$.
+	If we uncurry $g$, and recurry the resulting $g'$ with respect
+	to the left internal hom, we obtain maps
+	\[\begin{array}{l}
+		g'\phantom{{}'}: A\tn M\to X, \\
+		g'': M\to X\illol A.
+	\end{array}\]
+	The first thing to observe is that $g'$ is a map of modules, for
+	we have \begin{diagram}[midvshaft,hug,w=5em]
+		& & (M\lolli X)\tn M\tn M \\
+		A\tn M\tn M & \ruTo[snake=-1em](2,1)^{f\tn M\tn M}
+			&& \rdTo[snake=1em](2,1)^{\ev^{M}_{X}\tn M}
+			& X\tn M \\
+		& \rdTo[snake=-1em](2,1)_{f\tn M\tn M} & (M\lolli X)\tn M\tn M \\
+		\dTo<{A\tn m} && \dTo>{(M\lolli X)\tn M} && \dTo>x \\
+		A\tn M & \rTo_{f\tn M} & (M\lolli X)\tn M & \rTo_{\ev^{M}_{X}} & X
+	\end{diagram}
+	where the quadrilateral commutes by functoriality of tensor, and the
+	hexagon commutes since $hg=kg$. Thus, by Lemma~\ref{lemma-mod-map-curry},
+	$g''$ is also a map of modules.
+	
+	By the external Cayley Theorem, $g''$ is thus equal to
+	\[
+		M \rTo^{\cong} I\tn M \rTo^{f\tn M} (X\illol A)\tn M
+			\rTo^{d_{M,A,X}} (X\tn M)\illol A \rTo^{x\illol A} X\illol A
+	\]
+	for some unique $f: I \to X\illol A$.
+	%
+	Hence $g'$ is equal to
+	\[
+		A\tn M \rTo^{f'\tn M} X\tn M \rTo^{x} X
+	\]
+	for some unique $f': A\to X$ (obtained by uncurrying $f$).
+	%
+	Thus $g$ is equal to
+	\[
+		A \rTo^{f'} X \rTo^{\curry_{X,M,X}(x)} M\lolli X
+	\]
+	for this unique $f'$, which is precisely the universal property of
+	the equaliser diagram.
+\end{proof}
+\begin{remark}
+	The external theorem can be obtained as a corollary of the internal
+	one, under an additional assumption on $\V$. The additional assumption is
+	that the functor $\V(I,-); \V\to\Set$ should preserve equalisers. In
+	particular, this is always so if $\V$ has small coproducts, because in that
+	case $\V$ is \emph{tensored} \citep[in the sense of][section~2.7]{KellyEnriched}
+	as a $\Set$-category, and so the functor $\V(I,-)$ has a left adjoint.
+	Then we can obtain the external theorem simply by applying the functor
+	$\V(I,-)$ to the equaliser diagram of the internal theorem.
+\end{remark}
+\end{snippet}
+
+\end{document}

@@ -1,0 +1,93 @@
+\begin{thebibliography}{15}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{{\tt #1}}\fi
+
+\bibitem[Barr(1979)]{BarrStac}
+Michael Barr.
+\newblock {\em {$\star$}-Autonomous Categories}, volume 752 of {\em Lecture
+  Notes in Mathematics}.
+\newblock Springer-Verlag, 1979.
+
+\bibitem[C{\`a}ccamo et~al.(2002)C{\`a}ccamo, Hyland, and Winskel]{CatNotes}
+Mario C{\`a}ccamo, Martin Hyland, and Glynn Winskel.
+\newblock Lecture notes in category theory.
+\newblock URL \url{http://www.brics.dk/~mcaccamo/catnotes.ps.gz}.
+\newblock BRICS LS-02-catnotes (draft), 2002.
+
+\bibitem[Day(1970)]{DayPro}
+Brian Day.
+\newblock On closed categories of functors.
+\newblock In Saunders Mac~Lane, editor, {\em Reports of the Midwest Category
+  Seminar}, volume 137 of {\em Lecture Notes in Mathematics}, pages 1--38,
+  Berlin--New York, 1970. Springer-Verlag.
+
+\bibitem[Day(1977)]{DayMonoidalMonads}
+Brian Day.
+\newblock Note on monoidal monads.
+\newblock {\em Journal of the Australian Mathematical Society}, 23:\penalty0
+  292--311, 1977.
+
+\bibitem[Day and Street(1995)]{PromonKan}
+Brian Day and Ross Street.
+\newblock Kan extensions along promonoidal functors.
+\newblock {\em Theory and Applications of Categories}, 1\penalty0 (4):\penalty0
+  72--77, 1995.
+
+\bibitem[Day and Street(1997)]{MonBicat}
+Brian Day and Ross Street.
+\newblock Monoidal bicategories and {H}opf algebroids.
+\newblock {\em Advances in Mathematics}, 129:\penalty0 99--157, 1997.
+
+\bibitem[Day and Street(2004)]{DSQuantum}
+Brian Day and Ross Street.
+\newblock Quantum categories, star autonomy, and quantum groupoids.
+\newblock In {\em Galois Theory, {H}opf Algebras, and Semiabelian Categories},
+  volume~43 of {\em Fields Institute Communications}, pages 187--226. American
+  Mathematical Society, 2004.
+\newblock {\tt arXiv:math.CT/0301209}.
+
+\bibitem[Do{\v s}en and Petri{\'c}(2005)]{ProofNetCats}
+Kosta Do{\v s}en and Zoran Petri{\'c}.
+\newblock Coherence of proof-net categories.
+\newblock {\tt arXiv:math.CT/0503301}, March 2005.
+
+\bibitem[Eilenberg and Kelly(1965)]{EKClosed}
+Samuel Eilenberg and Max Kelly.
+\newblock Closed categories.
+\newblock In {\em Conference on Categorical Algebra, La Jolla}, pages 421--562.
+  Springer-Verlag, 1965.
+
+\bibitem[Eilenberg and Kelly(1966)]{EK66}
+Samuel Eilenberg and Max Kelly.
+\newblock A generalization of the functorial calculus.
+\newblock {\em J.\ Algebra}, 3:\penalty0 366--375, 1966.
+
+\bibitem[Girard(1987)]{Girard87}
+Jean-Yves Girard.
+\newblock Linear logic.
+\newblock {\em Theoretical Computer Science}, 50:\penalty0 1--102, 1987.
+
+\bibitem[Hughes and van Glabbeek(2005)]{MallNets}
+Dominic Hughes and Rob van Glabbeek.
+\newblock Proof nets for unit-free multiplicative-additive linear logic.
+\newblock {\em ACM Transactions on Computational Logic}, 2005.
+\newblock To appear. Invited submission November 2003, revised January 2005.
+
+\bibitem[Joyal and Street(1993)]{BTC}
+Andr{\'e} Joyal and Ross Street.
+\newblock Braided tensor categories.
+\newblock {\em Advances in Mathematics}, 102\penalty0 (1):\penalty0 20--78,
+  1993.
+
+\bibitem[Kelly and Mac~Lane(1971)]{KM71}
+Max Kelly and Saunders Mac~Lane.
+\newblock Coherence in closed categories.
+\newblock {\em J.\ Pure and Applied Algebra}, 1:\penalty0 97--140, 1971.
+
+\bibitem[Lamarche and Stra{\ss}burger(2005)]{LSFreeBool}
+Fran{\c c}ois Lamarche and Lutz Stra{\ss}burger.
+\newblock Constructing free boolean categories.
+\newblock Submission for \emph{Logic in Computer Science}, January 2005.
+
+\end{thebibliography}

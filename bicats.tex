@@ -1,0 +1,2122 @@
+%&format-test
+%!TEX TS-program = latex
+%\documentclass{robinthesisdraft}
+%\usepackage{robincs,thesisdefs}
+
+% In a few places, I used := to define things. Andrea pointed out that
+% I didn't do so consistently, so I've changed the instances of := to
+% \defeqto, which for now is just an = sign. If I later decide to consistently
+% distinguish definitional equality, I'll redefine this and change other
+% definitions to use it.
+\newcommand\defeqto{=}
+
+\title{Bicategories}
+\begin{document}
+\maketitle
+
+Monoidal and promonoidal categories are both instances of the
+general notion of a pseudomonoid in a monoidal bicategory. We
+shall need some results about promonoidal categories that are
+in fact generally true of pseudomonoids in any monoidal bicategory,
+and which we should therefore like to prove as such.
+
+Unfortunately the literature on monoidal bicategories is still fairly sparse.
+The relevant definitions may be obtained by specialising to the one-object
+case those given for tricategories by \citet{GPS}, and this has been done
+explicitly in the unpublished dissertation of \citet{CarmodyThesis}.
+Also \citet{MonBicat} and \citet{HDA1} have given explicit definitions for
+the important special case of Gray-categories. However there is no explicit,
+published account of the general notion.
+
+Even the literature on plain bicategories is rather scanty, and many
+fundamental results have no published proof. Neither is notation
+yet standardised. For these reasons, we give in this chapter a rapid
+but reasonably thorough account of the bicategory theory that we need.
+
+\section{Bicategories: basic definitions}
+\begin{definition} % bicategory
+	A bicategory $\B$ consists of:
+	\begin{itemize}
+		\item a set\footnote{Possibly quite a large set: whereas most of ordinary
+		category theory can be formalised in a ``one universe'' foundation, it's
+		convenient to assume at least two Grothendieck universes for the purposes
+		of bicategory theory. (We want to permit e.g.\ the bicategory of large
+		categories.) We shall leave these considerations implicit, on the whole.}
+		$|\B|$ of objects,
+		\item for every pair $A$, $B$ of objects, a hom-category $\B(A,B)$,
+			whose objects are called \emph{1-cells} or arrows, and whose morphisms
+			are called \emph{2-cells}
+		\item for every object $A$, a selected `identity' 1-cell $1_A\in\B(A,A)$,
+		\item for every triple $A$,$B$,$C$ of objects, a `horizontal composition' functor
+		\[
+			\o: \B(B,C)\x\B(A,B) \to \B(A,C),
+		\]
+		\item for every pair $A$, $B$ of objects, natural isomorphisms
+		\[
+			\begin{array}{l}
+			\l: 1_B\o- \To -: \B(A,B)\to\B(A,B),\\
+			\r: -\o 1_A \To -: \B(A,B)\to\B(A,B),
+			\end{array}
+		\]
+		\item for every four objects $A$,$B$,$C$,$D$, a natural isomorphism
+		\[
+			\a: -\o(-\o-)\To(-\o-)\o-: \B(C,D)\x\B(B,C)\x\B(A,B)\to\B(A,D)
+		\]
+	\end{itemize}
+	subject to two coherence conditions: for all $f\in\B(A,B)$ and $h\in\B(B,C)$,
+	the diagram
+	\begin{diagram}
+		h\o(1_B\o f) &\rTo^{\a_{h,1_B,f}}&(h\o1_B)\o f\\
+		&\rdTo[snake=-1ex](1,2)<{h\o \l_f}
+			\raise1ex\hbox{$\clr$}%
+			\ldTo[snake=1ex](1,2)>{\r_h\o f}\\
+		&h\o f,
+	\end{diagram}
+	commutes in $\B(A,C)$,
+	and for all $e\in\B(A,B)$, $f\in\B(B,C)$, $g\in\B(C,D)$, $h\in\B(D,E)$, the diagram
+	\begin{diagram}
+	  h\o \bigl(g\o (f\o e)\bigr)
+	  &\rTo^{\a_{h,g,f\o e}}&(h\o g)\o (f\o e)
+	  &\rTo^{\a_{h\o g,f,e}} & \bigl((h\o g)\o f\bigl)\o e
+	  \\
+	  &\rdTo[snake=-1em](1,2)<{h\o \a_{g,f,e}}
+	  &\ca
+	  & \ruTo[snake=1em](1,2)>{\a_{h,g,f}\o e}
+	  \\
+	  & \spleft{h\o\bigl((g\o f)\o e\bigr)}
+	  & \rTo_{\a_{h,g\o f,e}}
+	  & \spright{\bigl(h\o(g\o f)\bigr)\o e}
+	\end{diagram}
+	commutes in $\B(A,E)$.
+\end{definition}
+
+\begin{remark} % on coherence
+	A bicategory with just one object may be regarded as a monoidal
+	category: the definition simply reduces to the usual definition
+	of monoidal category, in that case.
+	%
+	Furthermore, Mac Lane's coherence theorem for monoidal categories
+	\citep{MLCoh} equally well applies to bicategories in general:
+	the proof goes through essentially unchanged. \Citet{KellyML}
+	shows -- again for monoidal categories -- that just two axioms,
+	corresponding to our $\ca$ and $\clr$, suffice for coherence; and
+	that proof, too, applies equally well to bicategories in general.
+	
+	This shows that, between any pair of functors built up from identities
+	and composition, there is at most one natural transformation built
+	from $\a$, $\l$, $\r$ and their inverses.
+	%
+	Therefore we shall not usually give names to the `structural isomorphisms'
+	$\a$, $\l$, $\r$, their inverses, and composites thereof. We shall instead
+	use the symbol `$\cong$' as a generic label for a structural isomorphism.
+	Since by coherence there is a unique such isomorphism of each type,
+	this practice introduces no ambiguity.
+\end{remark}
+\begin{remark}\label{rem-abstract-coherence} % on the abstract coherence theorem
+	There is another version of the coherence theorem, proven for
+	the case of monoidal categories by \citet[section~1]{BTC}, and
+	explicitly for bicategories by \citet[chapter~2]{GurskiThesis}%
+	\footnote{
+		The only gap in Gurski's account is that he omits to prove
+		the bicategorical Yoneda lemma, instead referring the reader to
+		two papers of Street, neither of which contains a proof either.
+		This gap is filled by Prop.~\ref{prop-yoneda} below.
+	}.
+	Anticipating some definitions we have yet to make, this version
+	says that the canonical functor from a free bicategory to the
+	corresponding free 2-category is a biequivalence. This is a
+	powerful result, which gives an honest justification for neglecting
+	the structural isomorphisms in many circumstances.
+\end{remark}
+\begin{remark} % on pasting diagrams
+	We shall often describe 2-cells, and equations between them,
+	using pasting diagrams. It's important to be clear about how
+	such diagrams are to be interpreted, which we'll explain by
+	reference to the following example. Let $\sigma$ and $\tau$
+	be 2-cells that fit into the diagram
+	\begin{diagram}
+		A & \rTo^{f} & B & \rTo^{g} & C \\
+		\dTo<h & \Arr\Swarrow\sigma & \dTo>k & \Arr\Swarrow\tau & \dTo>l \\
+		X & \rTo_{m} & Y & \rTo_{n} & Z
+	\end{diagram}
+	Firstly, notice that this diagram does not uniquely define a
+	2-cell. Instead it defines a \emph{family} of 2-cells, one
+	for each bracketing of the source and target edges, e.g.\ for
+	the bracketings $l\o(g\o f)$ and $(h\o m)\o n$,
+	the pasting diagram describes the 2-cell
+	\[
+		l\o(g\o f) \rTo^{\a_{l,g,f}} (l\o g)\o f
+			\rTo^{\tau\o f} (n\o k)\o f
+			\rTo^{\a^{-1}_{n,k,f}} n\o (k\o f)
+			\rTo^{n\o\sigma} (h\o m)\o n.
+	\]
+	This also demonstrates the second subtlety: the associativity
+	$(n\o k)\o f \rTo^{\a^{-1}_{n,k,f}} n\o (k\o f)$ must be implicitly
+	inserted between $\tau$ and $\sigma$.
+	
+	Observe also that an \emph{equation} between pasting diagrams may
+	be regarded as a family of equations, one for each bracketing of the
+	source and target 1-cells. These equations are all equivalent, in the
+	sense that each implies the others, so to prove such a family of
+	equations it suffices to prove one of them.
+	
+	These remarks are intended only to help the reader to understand
+	what we mean when we draw a pasting diagram or an equation
+	involving them. A rigorous treatment of these issues would combine
+	Power's 2-categorical pasting theorem \citep{2catPasting} with
+	the coherence theorem described in Remark~\ref{rem-abstract-coherence}.
+\end{remark}
+
+\begin{remark} % on string diagrams
+	As well as pasting diagrams, one can also use \emph{string diagrams}
+	\citep{GTC, LowDim} to represent and calculate with 2-cells in a
+	bicategory. In a string diagram, an object is represented by a region
+	of the plane, a 1-cell by a line, and a 2-cell by a node. For example,
+	the 2-cell $\gamma: f \To g: A \to B$ is drawn as
+	\begin{diagram}
+		&& A \\
+		\rnode{f}{f} && \circlenode{gamma}{\gamma} && \rnode{g}{g} \\
+		&& B
+		\ncline[nodesepB=0pt]{-}{f}{gamma}
+		\ncline[nodesepA=0pt]{-}{gamma}{g}
+	\end{diagram}
+	and a 2-cell $\delta: g\o f \To h$ would be drawn as
+	\begin{diagram}[h=1.5em]
+		\rnode{f}{f} \\
+		&&& A \\
+		& B & \circlenode{delta}{\delta} && \rnode{h}{h} \\
+		&&& C \\
+		\rnode{g}{g}
+		\ncline[nodesepB=0pt]{-}{f}{delta}
+		\ncline[nodesepB=0pt]{-}{g}{delta}
+		\ncline[nodesepA=0pt]{-}{delta}{h}
+	\end{diagram}
+	for $f: A\to B$, $g:B\to C$ and $h:A\to C$.
+	Identity 1-cells are not drawn, so a 2-cell $\zeta: 1_{A}\To f: A\to A$
+	is drawn
+	\begin{diagram}
+		&& & A \\
+		A && \circlenode{zeta}{\zeta} && \rnode{f}{f}\\
+		&& & A
+		\ncline[nodesepA=0pt]{-}{zeta}{f}
+	\end{diagram}
+	Composition of 2-cells corresponds to the pasting together of
+	string diagrams along the appropriate edge: the orientation we
+	have chosen for our diagrams has the unfortunate effect that
+	horizontal composition is represented by vertical pasting, and
+	vice versa. However it has the psychological advantage that
+	the diagrams read from left to right.
+	
+	The object labels may usually be omitted, since they can be
+	inferred from the types of the 1-cells.
+	
+	It is the case that geometric manipulations of string diagrams
+	always correspond to allowable operations. For example, given
+	2-cells $\gamma: f\To 1: A\to A$ and $\delta: 1\To g: A\to A$,
+	the diagram
+	\begin{diagram}
+		\rnode{f}{\strut f} & & \circlenode{gamma}{\strut\gamma} \\
+		& \circlenode{delta}{\strut\delta} & & \rnode{g}{\strut g}
+		\ncline[nodesepB=0pt]{-}{f}{gamma}
+		\ncline[nodesepA=0pt]{-}{delta}{g}
+	\end{diagram}
+	can be deformed to
+	\begin{diagram}
+		\rnode{f}{\strut f} & & \circlenode{gamma}{\strut\gamma} & \circlenode{delta}{\strut\delta}
+			&& \rnode{g}{\strut g}
+		\ncline[nodesepB=0pt]{-}{f}{gamma}
+		\ncline[nodesepA=0pt]{-}{delta}{g}
+	\end{diagram}
+	and then to
+	\begin{diagram}
+		& \circlenode{delta}{\strut\delta} & & \rnode{g}{\strut g} \\
+		\rnode{f}{\strut f} & & \circlenode{gamma}{\strut\gamma}
+		\ncline[nodesepB=0pt]{-}{f}{gamma}
+		\ncline[nodesepA=0pt]{-}{delta}{g}
+	\end{diagram}
+	The corresponding sequence of pasting diagrams is
+	\vskip4em
+	\hbox to \linewidth{
+	$\begin{diagram}
+		&&\cong \\
+		\rnode{1}{A} & \Arr\Downarrow{\scriptstyle\gamma} & \rnode{2}{A}
+			& \Arr\Downarrow{\scriptstyle\delta} & \rnode{3}{A} \\
+		&&\cong
+		\ncarc[arcangle=30]{->} {1}{2} \Aput{f}
+		\ncarc[arcangle=-30]{->}{1}{2} \Bput{1}
+		\ncarc[arcangle=30]{->} {2}{3} \Aput{1}
+		\ncarc[arcangle=-30]{->}{2}{3} \Bput{g}
+		\ncarc[arcangle=80,ncurv=1]{->}{1}{3} \Aput{f}
+		\ncarc[arcangle=-80,ncurv=1]{->}{1}{3} \Bput{g}
+	\end{diagram}$\hfil}
+	\vskip1em
+	\begin{diagram}[h=1em]
+		&\Arr\Downarrow{\scriptstyle\gamma} \\
+		\rnode{l}{A} & \rTo^{1} & \rnode{r}{A} \\
+		&\Arr\Downarrow{\scriptstyle\delta}
+		\ncarc[arcangle=60,ncurv=1]{->}{l}{r} \Aput{f}
+		\ncarc[arcangle=-60,ncurv=1]{->}{l}{r} \Bput{g}
+	\end{diagram}
+	\hbox to \linewidth{\hfil
+	$\begin{diagram}
+		&&\cong \\
+		\rnode{1}{A} & \Arr\Downarrow{\scriptstyle\delta} & \rnode{2}{A}
+			& \Arr\Downarrow{\scriptstyle\gamma} & \rnode{3}{A} \\
+		&&\cong
+		\ncarc[arcangle=30]{->} {1}{2} \Aput{1}
+		\ncarc[arcangle=-30]{->}{1}{2} \Bput{g}
+		\ncarc[arcangle=30]{->} {2}{3} \Aput{f}
+		\ncarc[arcangle=-30]{->}{2}{3} \Bput{1}
+		\ncarc[arcangle=80,ncurv=1]{->}{1}{3} \Aput{f}
+		\ncarc[arcangle=-80,ncurv=1]{->}{1}{3} \Bput{g}
+	\end{diagram}$}
+	\vskip4em\noindent
+	which is clearly much harder to follow. This example illustrates
+	the way that string diagrams leave the unit constraints $\l$
+	and $\r$ implicit, making powerful use of coherence. (Of
+	course the string diagram formalism -- in common with pasting
+	diagrams -- also leaves implicit the associator $\a$, though that
+	is not shown in this particular example. But the real power of string
+	diagrams comes from the ease with which they handle the identities.)
+\end{remark}
+
+\begin{definition} % ^{op} and ^{co}
+	For any bicategory $\B$ there is a bicategory $\B\op$ obtained from $\B$
+	by reversing the direction of the 1-cells, so $\B\op(A,B) = \B(B,A)$; and also a
+	bicategory $\B\co$ obtained by reversing the direction of the 2-cells, so
+	$\B\co(A,B) = \B(A,B)\op$.
+\end{definition}
+\begin{definition} % product of bicats
+	Bicategories $\B$ and $\BC$ have a product formed
+	in the obvious way: the set of objects is $|\B\x\BC| = |\B|\x|\BC|$,
+	the hom-categories are
+	$(\B\x\BC)(\langle A,B\rangle,\langle X,Y\rangle) = \B(A,X)\x\BC(B,Y)$, and
+	horizontal composition is defined pointwise. This also extends in the obvious
+	way to the product of three of more bicategories.
+\end{definition}
+
+\begin{definition} % pseudo-functor
+	Given bicategories $\B$ and $\BC$, a \emph{pseudo-functor}
+	$F:\B\to\BC$ consists of:
+	\begin{itemize}
+		\item for every object $A\in\B$, an object $FA\in\BC$,
+		\item for every pair $A$, $B$ of objects of $\B$, a functor
+		\[
+			F_{A,B}: \B(A,B)\to\B(FA,FB),
+		\]
+		\item for every $A\in\B$, an invertible 2-cell $F_A: 1_{FA}\To F(1_A): FA\to FA$,
+		\item for every $A$ and $B\in\B$, a natural isomorphism with components
+		\[
+			F_{g,f}: F(g)\o F(f) \To F(g\o f),
+		\]
+	\end{itemize}
+	such that for every $f:A\to B$ in $\B$, the diagrams below commute in the category $\BC(FA,FB)$,
+	\[
+	\begin{diagram}
+		1_{FB}\o F(f) & \rTo^{F_B\o F(f)} & F(1_B)\o F(f)\\
+		\dTo<{\l_{F(f)}} &\cFl&\dTo>{F_{1_B, f}}\\
+		F(f) & \lTo_{F(\l_f)} & F(1_B\o f)
+	\end{diagram}
+	\qquad
+	\begin{diagram}
+		F(f)\o 1_{FA} & \rTo^{F(f)\o F_A} & F(f)\o F(1_A)\\
+		\dTo<{\r_{F(f)}} &\cFr&\dTo>{F_{f,1_A}}\\
+		F(f) & \lTo_{F(\r_f)} & F(f\o 1_A)
+	\end{diagram}
+	\]
+	and for every $A\rTo^f B\rTo^g C\rTo^h D$ in $\B$, the diagram
+	\begin{diagram}
+		F(h)\o(F(g)\o F(f)) & \rTo^{\a_{Fh,Fg,Ff}}& (F(h)\o F(g))\o F(f)\\
+		\dTo<{F(h)\o F_{g,f}} && \dTo>{F_{h,g}\o F(f)}\\
+		F(h)\o F(g\o f) &\cFa& F(h\o g)\o F(f)\\
+		\dTo<{F_{h,(g\o f)}} && \dTo>{F_{(h\o g),f}}\\
+		F(h\o(g\o f)) & \rTo_{F(\a_{h,g,f})} & F((h\o g)\o f)
+	\end{diagram}
+	commutes in the category $\BC(FA,FD)$.
+	A pseudo-functor is also known as a \emph{homomorphism of bicategories}.
+\end{definition}
+
+\begin{definition}\label{def-psnat} % pseudo-natural transformation
+	Given pseudo-functors $F$, $G:\B\to\BC$, a \emph{pseudo-natural
+	transformation} $\gamma: F\To G$ consists of:
+	\begin{itemize}
+		\item for every $A\in\B$, a 1-cell $\gamma_A: FA\to GA$,
+		\item for every $f:A\to B$ in $\B$, an invertible 2-cell
+		\begin{diagram}
+			FA &\rTo^{\gamma_A} & GA\\
+			\dTo<{Ff} & \Nearrow \gamma_f& \dTo>{Gf}\\
+			FB & \rTo_{\gamma_B} & GB
+		\end{diagram}
+		such that this assignment is natural in $f$. Naturality amounts to
+		asking that, for every 2-cell $\tau: f\To g: A\to B$, we have
+		\[
+		\hskip-1em
+		\begin{diagram}[size=4em]
+			FA & \rTo^{\gamma_A} & \rnode{GA}{GA}\\
+			\dTo<{Ff} & \llap{$\Nearrow \gamma_f$}
+				& \begin{array}{c}\Rightarrow\\G(\tau)\end{array}\\
+			FB & \rTo_{\gamma_B} & \rnode{GB}{GB}
+			\ncarc{->}{GA}{GB}\Aput{Gg}
+			\ncarc{<-}{GB}{GA}\Aput{Gf}
+		\end{diagram}
+		\hskip3em=\hskip3em
+		\begin{diagram}[size=4em]
+			\rnode{FA}{FA} & \rTo^{\gamma_A} & GA\\
+			\begin{array}{c}\Rightarrow\\F(\tau)\end{array}
+				& \rlap{$\Nearrow \gamma_g$} & \dTo>{Gg}\\
+			\rnode{FB}{FB} & \rTo_{\gamma_B} & GB
+			\ncarc{->}{FA}{FB}\Aput{Fg}
+			\ncarc{<-}{FB}{FA}\Aput{Ff}
+		\end{diagram}
+		\]
+		\item These data must satisfy the \emph{unit condition}: for every $A\in\B$ we have
+		\[
+		\hskip-1em
+			\begin{diagram}[size=4em]
+				\rnode{FA}{FA} & \rTo^{\gamma_A} & GA\\
+				\begin{array}{c}\Rightarrow\\F_A\end{array}
+					& \hbox to 0pt{$\mkern4mu\Nearrow \gamma_{1_A}$} & \dTo>{G(1_A)}\\
+				\rnode{FB}{FA} & \rTo_{\gamma_A} & \rnode{GA}{GA}
+				\ncarc{->}{FA}{FB}\Aput{F(1_A)}
+				\ncarc{<-}{FB}{FA}\Aput{1_{FA}}
+				%\nccurve{->}{FA}{GA} \Bput{\gamma_A}
+			\end{diagram}
+			%
+			\hskip3em=\hskip3em
+			%
+			\begin{diagram}[size=4em]
+				FA & \rTo^{\gamma_A} & \rnode{GA}{GA}\\
+				\dTo<{1_{FA}} & \llap{$\cong\mkern4mu$}
+					& \begin{array}{c}\Rightarrow\\G_A\end{array}\\
+				FA & \rTo_{\gamma_A} & \rnode{GB}{GA}
+				\ncarc{->}{GA}{GB}\Aput{G(1_A)}
+				\ncarc{<-}{GB}{GA}\Aput{1_{GA}}
+			\end{diagram}
+		\]
+		\item and the \emph{composition condition}: for all $A\rTo^f B\rTo^g C$ in $\B$, we have
+		\[
+		\begin{diagram}[h=2em]
+			\rnode{FA}{FA} & \rTo^{Ff}& FB & \rTo^{Fg}& \rnode{FC}{FC}\\
+			&&\raise4pt\hbox{$\Downarrow F_{g,f}$}\\
+			\dTo<{\gamma_A} &&&& \dTo>{\gamma_C}\\
+			&&\Swarrow \gamma_{g\o f}\\
+			GA && \rTo_{G(g\o f)} && GC
+			\ncarc[arcangle=-60]{->}{FA}{FC}\Bput{F(g\o f)}
+		\end{diagram}
+		\quad=\quad
+		\begin{diagram}[h=2em]
+			FA & \rTo^{Ff}& FB & \rTo^{Fg}& FC\\
+			&\Swarrow\gamma_f & \dTo>{\gamma_B}&\Swarrow\gamma_g\\
+			\dTo<{\gamma_A} && GB && \dTo>{\gamma_C}\\
+			&\ruTo^{Gf} & \Downarrow G_{g,f} & \rdTo^{Gg}\\
+			GA && \rTo_{G(g\o f)} && GC
+		\end{diagram}
+		\]
+	\end{itemize} 
+\end{definition}
+
+Recall that, given a commutative diagram in an ordinary category,
+if one of the arrows is replaced by its inverse in such a way that the resulting diagram
+still has a single source and a single target object,
+then this resulting diagram also commutes.
+%
+This fact has a two-dimensional analogue, as follows: a pasting equation may be viewed
+as a polyhedron, by gluing the two pasting diagrams together along their (common)
+boundary. If, in this polyhedron, one of the cells (faces) is replaced by its
+inverse in such a way that there is still a unique way to decompose the
+resulting polyhedron as a pair of pasting diagrams, then this resulting pasting
+equation also holds.
+%
+On the whole we shall take this for granted and use it implicitly; by way of
+illustration, we give a detailed proof of one simple case:
+\begin{lemma}\label{l-psnat}
+	The unit condition of Definition~\ref{def-psnat} is equivalent to the
+	following: for any pseudo-natural transformation $\gamma: F\To G: \B\to\BC$
+	and object $A\in\B$, we have
+	\[
+		\hskip-1em
+		\begin{diagram}[size=4em]
+			FA & \rTo^{\gamma_A} & \rnode{GA}{GA}\\
+			\dTo<{F(1_{A})} & \llap{$\Nearrow\gamma_{1_A}\mkern4mu$}
+				& \begin{array}{c}\Rightarrow\\G_A^{-1}\end{array}\\
+			FA & \rTo_{\gamma_A} & \rnode{GB}{GA}
+			\ncarc{->}{GA}{GB}\Aput{1_{GA}}
+			\ncarc{<-}{GB}{GA}\Aput{G(1_A)}
+		\end{diagram}
+		%
+		\hskip2em=\hskip4em
+		%
+		\begin{diagram}[size=4em]
+			\rnode{FA}{FA} & \rTo^{\gamma_A} & GA\\
+			\begin{array}{c}\Rightarrow\\F_A^{-1}\end{array}
+				& \hbox to 0pt{$\mkern4mu\cong$} & \dTo>{1_{GA}}\\
+			\rnode{FB}{FA} & \rTo_{\gamma_A} & \rnode{GA}{GA}
+			\ncarc{->}{FA}{FB}\Aput{1_{FA}}
+			\ncarc{<-}{FB}{FA}\Aput{F(1_A)}
+			%\nccurve{->}{FA}{GA} \Bput{\gamma_A}
+		\end{diagram}
+	\]
+\end{lemma}
+\begin{proof}
+	We shall just prove one implication, since the other relies on
+	essentially the same argument. Assuming the unit condition, we
+	have the sequence of equations
+	\[\begin{array}{lcl}
+		\begin{diagram}[size=4em]
+			FA & \rTo^{\gamma_A} & \rnode{GA}{GA}\\
+			\dTo<{F(1_{A})} & \llap{$\Nearrow\gamma_{1_A}\mkern4mu$}
+				& \begin{array}{c}\Rightarrow\\G_A^{-1}\end{array}\\
+			FA & \rTo_{\gamma_A} & \rnode{GB}{GA}
+			\ncarc{->}{GA}{GB}\Aput{1_{GA}}
+			\ncarc{<-}{GB}{GA}\Aput{G(1_A)}
+		\end{diagram}
+		& \hskip2em=\hskip4em &
+		\begin{diagram}[size=4em]
+			\rnode{1}{FA} & \rTo^{\gamma_A} & \rnode{GA}{GA}\\
+			\dTo[snake=1em]<{1_{FA}} & \Nearrow\gamma_{1_A}
+				& \begin{array}{c}\Rightarrow\\G_A^{-1}\end{array}\\
+			\rnode{2}{FA} & \rTo_{\gamma_A} & \rnode{GB}{GA}
+			\ncarc{->}{GA}{GB}\Aput{1_{GA}}
+			\ncarc{<-}{GB}{GA}\aput(.3){G(1_A)}
+			%
+			\psset{arcangle=60}
+			\ncarc{->}12\aput(.3){F(1_A)}
+			\bput(.6){\mkern-10mu\begin{array}{c}\Rightarrow\\[-4pt]F_A\end{array}}
+			\ncarc{<-}21\Aput{F(1_A)}
+			\bput(.4){\mkern-10mu\begin{array}{c}\Rightarrow\\[-4pt]F_A^{-1}\end{array}}
+		\end{diagram}
+		\\[6em]
+		& \hskip2em=\hskip4em &
+		\begin{diagram}[size=4em]
+			\rnode{1}{FA} & \rTo^{\gamma_A} & \rnode{GA}{GA}\\
+			\dTo>{1_{FA}} & \llap{$\cong$\hskip6pt}
+				& \dTo[snake=-1em]>{G(1_A)}\\
+			\rnode{2}{FA} & \rTo_{\gamma_A} & \rnode{GB}{GA}
+			%
+			\psset{arcangle=80}
+			\ncarc{->}{GA}{GB}\Aput{1_{GA}}
+			\bput(.4){\mkern4mu\begin{array}{c}\Rightarrow\\[-4pt]G_A^{-1}\end{array}}
+			\ncarc{<-}{GB}{GA}\aput(.4){1_{GA}}
+			\bput(.6){\begin{array}{c}\Rightarrow\\[-4pt]G_A\end{array}\mkern4mu}
+			%
+			\psset{arcangle=60}
+			\ncarc{<-}21\Aput{F(1_A)}
+			\bput(.4){\mkern-10mu\begin{array}{c}\Rightarrow\\[-4pt]F_A^{-1}\end{array}}
+		\end{diagram}
+		\\[6em]
+		& \hskip2em=\hskip4em &
+		\begin{diagram}[size=4em]
+			\rnode{FA}{FA} & \rTo^{\gamma_A} & GA\\
+			\begin{array}{c}\Rightarrow\\F_A^{-1}\end{array}
+				& \hbox to 0pt{$\mkern4mu\cong$} & \dTo>{1_{GA}}\\
+			\rnode{FB}{FA} & \rTo_{\gamma_A} & \rnode{GA}{GA}
+			\ncarc{->}{FA}{FB}\Aput{1_{FA}}
+			\ncarc{<-}{FB}{FA}\Aput{F(1_A)}
+			%\nccurve{->}{FA}{GA} \Bput{\gamma_A}
+		\end{diagram}
+
+	\end{array}\]
+\end{proof}
+
+\begin{definition} % modification
+	Given pseudo-natural transformations $\gamma$, $\delta: F\To G:\B\to\BC$,
+	a \emph{modification} $m: \gamma\Tto\delta$ consists of: for every
+	$A\in\B$, a 2-cell $m_A: \gamma_A\To\delta_A$ such that for every $f:A\to B$
+	in $\B$, we have
+	\[
+		\begin{diagram}
+			\rnode{FA}{FA} & \Uparrow m_A & \rnode{GA}{GA}\\
+			\dTo<{Ff} & \raise-4pt\hbox{$\Nearrow\gamma_f$} & \dTo>{Gf}\\
+			FB & \rTo_{\gamma_B} & GB
+			\ncarc{->}{FA}{GA}\Aput{\delta_A}
+			\ncarc{<-}{GA}{FA}\Aput{\gamma_A}
+		\end{diagram}
+		\qquad=\qquad
+		\begin{diagram}
+			FA & \rTo^{\delta_A} & GA\\
+			\dTo<{Ff} & \raise4pt\hbox{$\Nearrow\delta_f$} & \dTo>{Gf}\\
+			\rnode{FB}{FB} & \Uparrow m_B & \rnode{GB}{GB}
+			\ncarc{->}{FB}{GB}\Aput{\delta_B}
+			\ncarc{<-}{GB}{FB}\Aput{\gamma_B}
+		\end{diagram}
+	\]
+\end{definition}
+
+The usual 2-categorical notions of adjunction, equivalence, monad, etc.\ may
+also be defined in a bicategory in the obvious way: a little of the theory of adjunctions
+is developed below. There is also an obvious
+notion of isomorphism, but it is not very useful in general. In particular, identity
+arrows in a bicategory are generally only equivalences and not isomorphisms,
+and an object of a bicategory need not even be isomorphic to itself.
+
+Pseudo-natural transformations compose in the obvious way, as do modifications.
+Given any two bicategories $\B$ and $\BC$, there is a \emph{pseudo-functor bicategory}
+$\Bicat(\B,\BC)$ whose objects are pseudo-functors $\B\to\BC$,
+whose 1-cells are pseudo-natural transformations and whose
+2-cells are modifications. We omit the routine verification that
+this is indeed a bicategory, but remark that coherence lifts from
+$\BC$. It is significant that if $\BC$ is in fact a 2-category
+(i.e.\ its associativity and unit isomorphisms are all identities) then
+$\Bicat(\B,\BC)$ is also a 2-category.
+
+A pseudo-functor $F:\B\to\BC$ is said to be a \emph{biequivalence}
+if it is a local equivalence and \emph{biessentially surjective} -- i.e.\ every
+object of $\BC$ is equivalent\footnote{The definition of equivalence is given in section~\ref{s-equiv} below}
+to one of the form $FA$. If there is such a
+biequivalence then we say that $\B$ is \emph{biequivalent} to $\BC$.
+(There is a lot more that could be said about biequivalence, of course\dots)
+
+For any bicategories $\BA$, $\B$, $\BC$, there is a biequivalence
+\[
+	\Bicat(\BA\x\B, \BC) \simsim \Bicat(\BA, \Bicat(\B,\BC))
+\]
+defined in the natural way.
+% XXXX - give more details here!
+% 
+% as follows. First on objects: let $F:\BA\x\B\to\BC$, and we'll
+% define the corresponding pseudofunctor $F': \BA\to \Bicat(\B,\BC)$.
+% For an object $A\in\BA$, let $F'(A)$ be the pseudofunctor $F(A,-)$.
+% On 1-cells: let $\gamma: F\To G: \BA\x\B\to \BC$ be a pseudo-%
+% natural transformation, and define $\gamma': F'\To G'$ to have
+% $\gamma'_A = 
+
+Below we shall often write
+% the composite $g\o f$ just as $gf$, and
+%  !! No we won't !! Fix any such uses !!
+an identity arrow $1_A$ just as $1$ when its type is clear from the context.
+% (Occasionally there may be a potential ambiguity between vertical composition --
+% i.e.\ the composition of 2-cells within a hom-category -- and horizontal composition.
+% In such situations we are careful to write horizontal composition as $\o$.)
+
+\section{The bicategorical Yoneda lemma}
+\begin{definition} % representable pseudofunctors
+	Let $A$ be an object of the bicategory $\B$. The \emph{covariant
+	representable pseudo-functor determined by $A$},
+	\[
+		\B(A,-): \B\to\Cat,
+	\]
+	is defined as follows. On an object $X\in\B$, the category $\B(A,X)$ is
+	just the the hom-category of the same name. The action
+	$\B(A,-)_{X,Y}: \B(X,Y)\to[\B(A,X),\B(A,Y)]$ is defined to be the
+	currying of the composition functor $\o:\B(X,Y)\x\B(A,X)\to\B(A,Y)$.
+	
+	For an object $X\in\B$, the unit isomorphism $\B(A,-)_X: 1_{\B(A,X)}\To1_X\o-$
+	is defined to be $\l^{-1}$, and for a composable pair
+	\[
+		X \rTo^f Y \rTo^g Z
+	\]
+	in $\B$, the isomorphism $\B(A,-)_{g,f}: \B(A,g)\o\B(A,f)\To\B(A,g\o f)$
+	is defined to be $\a_{g,f,-}$. I.e.\ for $x\in\B(A,X)$, the component
+	$(\B(A,-)_{g,f})_x: g\o(f\o x)\to (g\o f)\o x$ is just $\a_{g,f,x}$.
+	
+	By duality there is also a \emph{contravariant representable pseudo-functor},
+	$\B(-,A) \defeqto \B\op(A,-) : \B\op\to\Cat$.
+\end{definition}
+\begin{propn}\label{prop-yoneda}
+	For any bicategory $\B$, pseudo-functor $F: \B\to\Cat$
+	and object $A\in\B$, there is an equivalence of categories
+	\[
+%		\psi^F_A: FA \simeq \Bicat(\B,\Cat)(\B(A,-), F).
+		\psi: FA \simeq \Bicat(\B,\Cat)(\B(A,-), F).
+	\]
+\end{propn}
+\begin{proof}
+	Fix $F$ and $A$. We shall define a functor
+	\[
+		\psi: FA \to \Bicat(\B,\Cat)(\B(A,-), F),
+	\]
+	and show that it is an equivalence.
+	% We omit the subscript and superscript
+	% on $\psi$, in a vain effort to keep the notation under control.
+	(This gets rather dizzying, so take a deep breath.)
+	First we shall define $\psi$ on objects: for any $a\in FA$, we need a
+	pseudo-natural transformation $\psi(a): \B(A,-)\To F$. Thus for every
+	object $X\in\B$, we must give a functor
+	\[
+		\psi(a)_X: \B(A,X)\to FX.
+	\]
+	This functor is defined as follows. On objects: for $f\in\B(A,X)$, let
+	$\psi(a)_X(f) \defeqto F(f)(a)$. On morphisms: for $\beta: f\To g: A\to X$,
+	let $\psi(a)_X(\beta) \defeqto F(\beta)_a$. (Note that $F(\beta)$ is a natural
+	transformation $F(f)\To F(g)$, whose component $F(\beta)_a$ is
+	therefore indeed a map $F(f)(a)\to F(g)(a)$.)
+	
+	Also, for every 1-cell $k: X\to Y$ in $\B$, we must give a natural
+	isomorphism
+	\[
+		\psi(a)_k: \psi(a)_Y\cdot\B(A,k) \To F(k)\cdot\psi(a)_X.
+	\]
+	For $x\in\B(A,X)$, we define the component
+		$(\psi(a)_k)_x: F(k\o x)(a)\to F(k)(F(x)(a))$
+	to be $(F_{k,x}^{-1})_a$.
+	%
+	The naturality of $F_{k,x}$ ensures that $\psi(a)_k$ is natural.
+	
+	This completes the definition of $\psi$ on objects, though we must
+	check that $\psi(a)$ is indeed a pseudo-natural transformation.
+	%
+	That follows from the pseudo-functoriality of $F$, as the reader
+	may verify: for $\psi(a)$ to satisfy the unit condition is precisely
+	for $F$ to satisfy condition~$\cFl$, and for $\psi(a)$ to satisfy the composition
+	condition is precisely for $F$ to satisfy~$\cFa$.
+	
+	Next we define $\psi$ on morphisms. For each morphism $h:a\to b$ in $FA$,
+	we must define a modification
+	\(
+		\psi(h): \psi(a) \Tto \psi(b),
+	\)
+	so for each $X\in\B$ we need a natural transformation
+	\(
+		\psi(h)_X: \psi(a)_X \To \psi(b)_X,
+	\)
+	which means that for every $f:A\to X$ in $\B$ we require a map
+	\(
+		(\psi(h)_X)_f: F(f)(a) \to F(f)(b)
+	\)
+	in the category $FX$. So we define $(\psi(h)_X)_f$ to be the map $F(f)(h)$.
+	It's easy to check that this makes $\psi(h)_X$ into a natural transformation.
+	%
+	To complete the definition of $\psi$, we must
+	confirm that $\psi(h)$ is indeed a modification. This amounts to
+	checking that, for every $f: A\to X$ and $k:X\to Y$ in $\B$, and every
+	$h:a\to b$ in $FA$, the square
+	\begin{diagram}
+		F(kf)(a) & \rTo^{(F_{k,f}^{-1})_a} & (Fk \cdot Ff)(a)\\
+		\dTo<{F(kf)(h)} && \dTo>{(Fk\cdot Ff)(h)}\\
+		F(kf)(b) & \rTo_{(F_{k,f}^{-1})_b} & (Fk \cdot Ff)(b)
+	\end{diagram}
+	commutes, which is of course precisely the naturality of $F_{k,f}^{-1}$.
+	
+	We have defined $\psi$, and need to check that it is indeed a
+	functor. Consider the modification $\psi(1_{a}): \psi(a)\Tto\psi(a)$:
+	for $f:A\to X$ we have $(\psi(h)_{X})_{f} = F(f)(1_{a})$, and
+	since $F(f)$ is a functor, this is equal to $1_{F(f)(a)}$ as
+	required.
+	%
+	For composition, a similar argument applies: given arrows
+	$h:a\to b$ and $j:b\to c$ in $FA$, we have
+	$(\psi(jh)_{X})_{f} = F(f)(jh)$; and since $F(f)$ is a functor,
+	this is equal to $F(f)(j)\cdot F(f)(h)$ as required.
+	
+	It remains to show that $\psi$ is an equivalence. We begin by exhibiting
+	a local inverse, showing that $\psi$ is full and faithful. Fix objects $a$
+	and $b\in FA$. We shall define a function $\psi_{a,b}^{-1}$ from the set
+	of modifications $\psi(a)\Tto\psi(b)$ to the set $FA(a,b)$, and show that
+	it is inverse to $\psi_{a,b}$. The definition is as follows. For a modification
+	$\mu: \psi(a)\Tto\psi(b)$, let $\psi_{a,b}^{-1}(\mu)$ be the composite
+	\[
+		a = 1_{FA}(a) \rTo^{(F_A)_a} F(1_A)(a)
+			\rTo^{(\mu_A)_{1_A}} F(1_A)(b) \rTo^{(F_A^{-1})_b} 1_{FA}(b) = b.
+	\]
+	It is easy to check that, for any $h: a\to b$, we have $\psi_{a,b}^{-1}(\psi(h))= h$:
+	indeed it is immediate from the definition of $\psi$, and the naturality of $F_A$.
+	The other direction is more interesting. Fix some $\mu: \psi(a)\Tto\psi(b)$, and
+	take $X\in\B$ and $f:A\to X$. We wish to show that 
+	$(\psi(\psi_{a,b}^{-1}(\mu))_X)_f$ is equal to $(\mu_X)_f$. Consider the diagram
+	\begin{diagram}[h=2em,w=4em]
+		&&(Ff.1_{FA})(a)\\
+		&\ruTo^= && \rdTo^{Ff((F_A)_a)}\\
+		F(f)(a) && \cFr && (Ff.F1_A)(a)\\
+		&\rdTo^{F(\r_f^{-1})(a)} && \ruTo^{(F_{f,1_A})_a}\\
+		&&F(f.1_A)(a)\\
+		\dTo<{(\mu_X)_f} &\natural_{\mu_X}& \dTo>{(\mu_X)_{f.1_A}} &\qquad\S_\mu& \dTo>{(Ff)((\mu_A)_{1_A})}\\
+		&&F(f.1_A)(b)\\
+		&\ldTo^{F(\r_f)(b)} && \luTo^{(F_{f,1_A})_b}\\
+		F(f)(b) && \cFr && (Ff.F1_A)(b)\\
+		&\luTo_= && \ldTo_{Ff((F_A^{-1})_b)}\\
+		&&(Ff.1_{FA})(b)
+	\end{diagram}
+	whose regions commute for the reasons marked: $\natural_{\mu_X}$ means that
+	the square commutes because $\mu_X$ is natural, and $\S_\mu$ means that the
+	square commutes because $\mu$ is a modification.
+	
+	The composite around the upper, right, and bottom edges is equal to
+	$(\psi(\psi_{a,b}^{-1}(\mu))_X)_f$ by definition, which is therefore equal
+	to $(\mu_X)_f$ as required. Thus $\psi$ is indeed full and faithful. It remains
+	only to show that $\psi$ is essentially surjective on objects. Consider an
+	arbitrary pseudo-natural transformation
+	\(
+		\gamma: \B(A,-)\To F.
+	\)
+	We intend to show that $\psi(\gamma_A(1_A))$ is isomorphic to $\gamma$.
+	For any $X\in\B$ and $f:A\to X$, we have an invertible 2-cell
+	\begin{diagram}
+		\B(A,A) & \rTo^{\gamma_A} & FA \\
+		\dTo<{\B(A,f)} & \Nearrow\gamma_f & \dTo>{Ff}\\
+		\B(A,X) & \rTo_{\gamma_X} & FX
+	\end{diagram}
+	thus an isomorphism
+	\[
+		\gamma_X(f) \rTo^{\gamma_X(\r_f^{-1})} \gamma_X(f.1_A)
+			\rTo^{(\gamma_f)_{1_A}} F(f)(\gamma_A(1_A)) = \psi(\gamma_A(1_A))_X(f).
+	\]
+	This isomorphism is natural in $f$, since $\r_f$ and $\gamma_f$ both are.
+	So, for every $X\in\B$ we have defined a natural isomorphism
+	$\gamma_X \To \psi(\gamma_A(1_A))_X$. Finally it remains to check
+	that this collection constitutes a modification. Take $k:X\to Y$: we need to
+	check the commutativity of the diagram
+	\begin{equation}\label{diag-ymod}
+	\begin{diagram}
+		\gamma_Y(kf) & \rTo^{(\gamma_k)_f} & F(k)(\gamma_X(f))\\
+		\dTo<{\gamma_Y(\r_{kf}^{-1})} && \dTo>{Fk(\gamma_X(\r_f^{-1}))}\\
+		\gamma_Y((kf)1) && Fk(\gamma_X(f1))\\
+		\dTo<{(\gamma_{kf})_1} && \dTo>{Fk((\gamma_f)_1)}\\
+		F(kf)(\gamma_A(1)) & \rTo_{(F_{k,f}^{-1})_{\gamma_A(1)}} & (Fk\cdot Ff)(\gamma_A(1))
+	\end{diagram}
+	\end{equation}
+	
+	Since $\gamma$ is pseudo-natural, we know that
+	\[
+	\begin{diagram}
+		\B(A,A) & \rTo^{\gamma_A} & \rnode{FA}{FA}\\
+		\dTo<{\B(A,f)} & \Nearrow\gamma_f & \dTo>{Ff}\\
+		\B(A,X) & \rTo_{\gamma_X} & FX\\
+		\dTo<{\B(A,k)} & \Nearrow\gamma_k & \dTo>{Fk}\\
+		\B(A,Y) & \rTo_{\gamma_Y} & \rnode{FY}{FY}
+		\nccurve{->}{FA}{FY}\Aput{F(kf)}
+	\end{diagram}
+	\hskip4em=
+	\begin{diagram}
+		&& \rnode{BAA}{\B(A,A)} & \rTo^{\gamma_A} & FA \\
+		&\ldTo^{\B(A,f)}\\
+		\B(A,X) & \hbox to1em{$\begin{array}c\To\\[-4pt]\a_{k,f,-}\end{array}$\hss}
+			&\dTo[snake=1em]>{\B(A,kf)} && \dTo>{F(kf)}\\
+		&\rdTo_{\B(A,k)} && \raise1em\hbox{$\Nearrow\gamma_{kf}$} \\
+		&& \rnode{BAY}{\B(A,Y)} & \rTo_{\gamma_Y} & FY
+		%\nccurve{->}{BAA}{BAY}\Bput{\B(A,kf)}
+	\end{diagram}
+	\]
+	hence in particular that the diagram
+	\refstepcounter{equation}
+	\begin{diagram}[eqno=\textup(\theequation\textup)]\label{diag-yon1}
+		\gamma_Y(k(f1)) & \rTo^{\gamma_k)_{f1}} & Fk(\gamma_X(f1))\\
+		&&\dTo>{Fk((\gamma_f)_1)}\\
+		\dTo<{\gamma_Y(k)} && (Fk\cdot Ff)(\gamma_A(1))\\
+		&&\dTo>{(F_{k,f})_{\gamma_A(1)}}\\
+		\gamma_Y((kf)1) & \rTo_{(\gamma_{kf})_1} & F(kf)(\gamma_A(1))
+	\end{diagram}
+	commutes. Now we have
+	\begin{diagram}
+		\gamma_Y(kf) && \rTo^{(\gamma_k)_f} && F(k)(\gamma_X(f))\\
+		\dTo<{\gamma_Y(\r_{kf}^{-1})} &\rdTo^{\gamma_Y(k\r_f^{-1})}&&& \dTo>{Fk(\gamma_X(\r_f^{-1}))}\\
+		\gamma_Y((kf)1) &\rTo_{\gamma_Y(\a_{k,f,1}^{-1})}&\gamma_Y(k(f1))
+			&\rTo_{(\gamma_k)_{f1}}& Fk(\gamma_X(f1))\\
+		\dTo<{(\gamma_{kf})_1} &&&& \dTo>{Fk((\gamma_f)_1)}\\
+		F(kf)(\gamma_A(1)) && \rTo_{(F_{k,f}^{-1})_{\gamma_A(1)}} && (Fk\cdot Ff)(\gamma_A(1))
+	\end{diagram}
+	where the triangle commutes by coherence, the upper-right quadrilateral by
+	naturality of $\gamma_k$ and the lower region by \pref{diag-yon1}.
+	Thus diagram \pref{diag-ymod} does indeed commute, and we are done.
+\end{proof}
+%\begin{remark}
+%	The components $\psi^F_A$ may be extended to a pseudo-natural
+%	transformation $\psi^F$, once the rhs has been made pseudo-functorial
+%	in the appropriate way. But we won't go there for now.
+%\end{remark}
+\begin{definition}
+	For any bicategory $\B$, the \emph{bicategorical Yoneda embedding}
+	\[
+		Y: \B\op\to\Bicat(\B,\Cat)
+	\]
+	is defined as follows.
+	On objects $A\in\B$, we define $YA \defeqto \B(A,-)$; and
+	on hom-categories $\B(A,B)$ we define the component
+	\[
+		Y_{B,A} : \B\op(A,B) = \B(B,A) \to \Bicat(\B,\Cat)(\B(A,-), \B(B,-))
+	\]
+	to be $\psi^{\B(B,-)}_A$.
+\end{definition}
+\begin{corollary}
+	The Yoneda embedding is locally an equivalence.
+\end{corollary}
+\begin{proof}
+	Immediate from the definition, by Prop.~\ref{prop-yoneda}.
+\end{proof}
+\begin{remark}
+	Since $\Cat$ is a 2-category, so is $\Bicat(\B\op,\Cat)$.
+	And since the Yoneda embedding $Y$ is locally an equivalence, any
+	bicategory $\B$ is biequivalent to the full sub-bicategory of
+	$\Bicat(\B\op,\Cat)$ determined by the objects $YA$ for $A\in\B$, which
+	is of course still a 2-category. Thus any bicategory is biequivalent
+	to a 2-category. This is a simple coherence result, which can serve
+	as a stepping-stone to more sophisticated coherence theorems
+	\citep[Chapter~2]{GurskiThesis}.
+\end{remark}
+
+\section{Adjunctions}
+\begin{definition} % adjunction in a bicategory
+	An \emph{adjunction} in a bicategory $\B$ consists of 1-cells
+	$f: A\to B$ and $g: B\to A$, and 2-cells $\eta: 1_A\To gf$ and
+	$\e: fg\To 1_B$ with the property that
+	\[
+	\begin{diagram}
+		A & \rTo^{f} & B \\
+		\dTo<{1_{A}}>{\raise1em\rlap{$\mkern10mu
+			\begin{array}c\Rightarrow\\[-4pt]\eta\end{array}$}}
+			& \ldTo[snake=1em]_{g}
+			& \dTo>{1_{B}}<{\raise-1.5em\llap{$
+				\begin{array}c\Rightarrow\\[-4pt]\e\end{array}\mkern10mu$}}\\
+		A & \rTo_{f} & B
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+		A & \rTo^{f} & B \\
+		\dTo<{1_{A}} & \cong & \dTo>{1_{B}}\\
+		A & \rTo_{f} & B
+	\end{diagram}
+	\]
+	and
+	\[
+	\begin{diagram}
+		B & \rTo^{g} & A \\
+		\dTo<{1_{B}}>{\raise1em\rlap{$\mkern10mu
+			\begin{array}c\Leftarrow\\[-4pt]\e\end{array}$}}
+			& \ldTo[snake=1em]_{f}
+			& \dTo>{1_{A}}<{\raise-1.5em\llap{$
+				\begin{array}c\Leftarrow\\[-4pt]\eta\end{array}\mkern10mu$}}\\
+		B & \rTo_{g} & A
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+		B & \rTo^{g} & A \\
+		\dTo<{1_{B}} & \cong & \dTo>{1_{A}}\\
+		B & \rTo_{g} & A
+	\end{diagram}
+	\]
+	We write $f\dashv g$ to indicate that there is such an adjunction, and say that
+	$f$ is \emph{left adjoint} to $g$, and $g$ is \emph{right adjoint} to $f$. We
+	also write $f\dashv g : A \to B$ to mean that $f\dashv g$ for $f: A\to B$
+	and $g: B\to A$.
+\end{definition}
+\begin{remark} % identity and composition of adjunctions
+	There is an \emph{identity adjunction} on every object $A$,
+	which is just $1_{A} \dashv 1_{A}$, with the unit and counit
+	being structural isomorphisms.
+	
+	Also, adjunctions may be composed: given adjunctions
+	$f\dashv g: A \to B$ and $f'\dashv g': B\to C$, there
+	is a composite adjunction $f'\o f \dashv g\o g'$ with
+	unit
+	\[
+	\begin{diagram}
+		A & \rTo^{f} & B & \rTo^{f'} & C \\
+		\dTo<1 & \raise 2em\llap{$\Right_{\eta}$}
+			\ldTo_{g}
+			\raise -2em\rlap{$\cong$}
+			& \dTo>1
+			& \raise 2em\llap{$\Right_{\eta}$}
+			\ldTo_{g'} \\
+			A & \lTo_{g} & B
+	\end{diagram}
+	\mbox{and counit}
+	\begin{diagram}
+		A & \rTo^{f} & B & \rTo^{f'} & C \\
+		& \luTo_{g} \raise 2em \rlap{$\Left_{\e}$} & \dTo<1
+			& \luTo_{g'} \raise2em\rlap{$\Left_{\e'}$}
+			\raise-2em\llap{$\cong$}
+			& \dTo>1 \\
+		&& B & \lTo_{g'} & B
+	\end{diagram}
+	\]
+%
+	Indeed, every bicategory $\B$ has a \emph{bicategory of adjunctions},
+	whose objects are the objects of $\B$ and whose 1-cells are adjunctions.
+\end{remark}
+%
+\begin{remark}\label{rem-adj-functor} % Pseudofunctors preserve adjunctions
+	Pseudofunctors preserve adjunctions, in the following sense.
+	If $F:\B\to\BC$ is a pseudo-functor, and
+	$f\dashv g: A\to B$ is an adjunction in $\B$,
+	then there is an adjunction $Ff \dashv Fg$ in $\BC$
+	with the following unit and counit:
+	\[
+		\begin{diagram}
+			&\rnode{t}{FA} & \rTo^{Ff} & FB \\
+			\Right_{F_{A}}\hskip-3em&\dTo>{F1} & \ldTo_{Fg}
+				\raise 2em\llap{$\Right_{F\eta}$} \\
+			&\rnode{b}{FA}
+			%
+			\ncarc[arcangle=-80,ncurv=1]{->}tb\Bput{1}
+		\end{diagram}
+		\hskip3em
+		\begin{diagram}
+			FA & \lTo^{Fg} & \rnode{t}{FB} \\
+			& \rdTo_{Ff}
+				 \raise 2em\rlap{$\Right_{F\e}$}
+				&\dTo<{F1} & \hskip-3em\Right_{F_{B}^{-1}}\\
+			&&\rnode{b}{FB}
+			%
+			\ncarc[arcangle=80,ncurv=1]{->}tb\Aput{1}
+		\end{diagram}
+	\]
+\end{remark}
+\subsection{Mates}
+The theory of mates \citep[\S2]{ks1} is a useful tool
+for dealing with adjunctions in a bicategory. We shall give
+a brief overview here.
+\begin{definition}\label{def-mate}
+	Let $f \dashv g: A \to B$ and $f' \dashv g': A' \to B'$.
+	Given a 2-cell
+	\begin{diagram} % sigma
+		A & \rTo^{f} & B \\
+		\dTo<{h} & \Arr\Nearrow\sigma & \dTo>{k} \\
+		A' & \rTo_{f'} & B'
+	\end{diagram}
+	we may form a 2-cell
+	\begin{diagram} % tau
+		A & \lTo^{g} & B \\
+		\dTo<{h} & \Arr\Searrow\tau & \dTo>{k} \\
+		A' & \lTo_{g'} & B'
+	\end{diagram}
+	as the pasting
+	\begin{diagram} % definition of right mate of sigma
+	\rnode{A}{A} & \lTo^{g} & \rnode{B}{B}\\
+	\dTo<{h}&\rdTo_{f}^{\raise4pt\hbox{$\begin{array}c\To\\[-4pt]\e\end{array}$}}
+		& \dTo>1\\
+	A'&\begin{array}c\To\\[-4pt]\sigma\end{array}&B\\
+	\dTo<1
+		& \rdTo^{f'}_{\raise-4pt\hbox{$\begin{array}c\To\\[-4pt]\eta'\end{array}$}}
+		& \dTo>{k}\\
+	\rnode{A'}{A'} & \lTo_{g'} & \rnode{B'}{B'.}
+	%
+	\nccurve[angleA=210,angleB=140]{->}{A}{A'}\Bput{h}\Aput{\ \ \ \cong}
+	\nccurve[angleA=-30,angleB=30]{->}{B}{B'}\Aput{k}\Bput{\cong\ \ \ }
+	\end{diagram}
+	We say that $\tau$ is the \emph{right mate} of $\sigma$.
+	Conversely, given a 2-cell $\tau$ as above, we may form its
+	\emph{left mate} as
+	\begin{diagram} % definition of left mate of tau
+	\rnode{A}{A} & \rTo^{f} & \rnode{B}{B}\\
+	\dTo<{1}&\ldTo_{g}^{\raise4pt\hbox{$\begin{array}c\To\\[-4pt]\eta\end{array}$}}
+		& \dTo>k\\
+	A&\begin{array}c\To\\[-4pt]\tau\end{array}&B'\\
+	\dTo<h
+		& \ldTo^{g'}_{\raise-4pt\hbox{$\begin{array}c\To\\[-4pt]\e'\end{array}$}}
+		& \dTo>{1}\\
+	\rnode{A'}{A'} & \rTo_{f'} & \rnode{B'}{B'}
+	%
+	\nccurve[angleA=210,angleB=140]{->}{A}{A'}\Bput{h}\Aput{\ \ \ \cong}
+	\nccurve[angleA=-30,angleB=30]{->}{B}{B'}\Aput{k}\Bput{\cong\ \ \ }
+	\end{diagram}
+\end{definition}
+%
+\begin{propn}\label{prop-mate-inv}
+	The `left mate' and `right mate' operations are mutually
+	inverse, i.e.\ $\sigma$ is the left mate of $\tau$ if and
+	only if $\tau$ is the right mate of $\sigma$.
+	In this case we say that \emph{$\sigma$ and $\tau$ are
+	mates} (with respect to the adjunctions $f\dashv g$ and $f'\dashv g'$).
+\end{propn}
+\begin{proof}
+	This follows easily from the definition of adjunction and
+	the coherence of structural isomorphisms.
+\end{proof}
+%
+Matehood can be characterised in terms of either the units or
+counits of the adjunctions.
+\begin{propn} % characterisation of mates in terms of units or counits
+	The 2-cells $\sigma$ and $\tau$ are mates if and only if
+	\begin{equation}\label{eq-mate-eta}
+	\begin{diagram}
+		\rnode{A}{A}\\
+		\dTo<{h}&\rdTo^{f} \\
+		A'&\begin{array}c\To\\[-4pt]\sigma\end{array}&B\\
+		\dTo<1
+			& \rdTo^{f'}_{\raise-4pt\hbox{$\begin{array}c\To\\[-4pt]\eta'\end{array}$}}
+			& \dTo>{k}\\
+		\rnode{A'}{A'} & \lTo_{g'} & B'
+		%
+		\nccurve[angleA=220,angleB=140]{->}{A}{A'}\Bput{h}\Aput{\ \ \ \cong}
+	\end{diagram}
+	\qquad=\qquad
+	\begin{diagram}
+		& \rnode{A}{A} & \rTo^{f} & \rnode{B}{B}\\
+		& \dTo<{1}&\ldTo_{g}^{\raise4pt\hbox{$\begin{array}c\To\\[-4pt]\eta\end{array}$}}
+		     & \dTo>k\\
+		& A &\begin{array}c\To\\[-4pt]\tau\end{array}&B'\\
+		& \dTo<h & \ldTo_{g'} \\
+		& \rnode{A'}{A'}
+		%
+		\nccurve[angleA=220,angleB=140]{->}{A}{A'}\Bput{h}\Aput{\ \ \ \cong}
+	\end{diagram}
+	\end{equation}
+	if and only if
+	\begin{equation}\label{eq-mate-eps}
+	\begin{diagram}
+	A & \lTo^{g} & \rnode{B}{B} &\\
+	\dTo<{h}&\rdTo_{f}^{\raise4pt\hbox{$\begin{array}c\To\\[-4pt]\e\end{array}$}}
+		& \dTo>1 &\\
+	A'&\begin{array}c\To\\[-4pt]\sigma\end{array}&B& \\
+	& \rdTo_{f} & \dTo>{k} & \\
+	& & \rnode{B'}{B'} &
+	%
+	\nccurve[angleA=-30,angleB=30]{->}{B}{B'}\Aput{k}\Bput{\cong\ \ \ }
+	\end{diagram}
+	\qquad=\qquad
+	\begin{diagram}
+	& & \rnode{B}{B}\\
+	& \ldTo^{g} & \dTo>k\\
+	A & \begin{array}c\To\\[-4pt]\tau\end{array}&B'\\
+	\dTo<h
+		& \ldTo^{g'}_{\raise-4pt\hbox{$\begin{array}c\To\\[-4pt]\e'\end{array}$}}
+		& \dTo>{1}\\
+	A' & \rTo_{f'} & \rnode{B'}{B'}
+	%
+	\nccurve[angleA=-30,angleB=30]{->}{B}{B'}\Aput{k}\Bput{\cong\ \ \ }
+	\end{diagram}
+	\hskip4em
+	\end{equation}
+\end{propn}
+\begin{proof}
+	By definition we have
+	\[
+	\begin{diagram} % sigma
+		A & \rTo^{f} & B \\
+		\dTo<{h} & \Arr\Nearrow\sigma & \dTo>{k} \\
+		A' & \rTo_{f'} & B'
+	\end{diagram}
+	\qquad=\qquad
+	\begin{diagram} % definition of left mate of tau
+	\rnode{A}{A} & \rTo^{f} & \rnode{B}{B}\\
+	\dTo<{1}&\ldTo_{g}^{\raise4pt\hbox{$\begin{array}c\To\\[-4pt]\eta\end{array}$}}
+		& \dTo>k\\
+	A&\begin{array}c\To\\[-4pt]\tau\end{array}&B'\\
+	\dTo<h
+		& \ldTo^{g'}_{\raise-4pt\hbox{$\begin{array}c\To\\[-4pt]\e'\end{array}$}}
+		& \dTo>{1}\\
+	\rnode{A'}{A'} & \rTo_{f'} & \rnode{B'}{B'}
+	%
+	\nccurve[angleA=210,angleB=140]{->}{A}{A'}\Bput{h}\Aput{\ \ \ \cong}
+	\nccurve[angleA=-30,angleB=30]{->}{B}{B'}\Aput{k}\Bput{\cong\ \ \ }
+	\end{diagram}
+	\]
+	Onto both sides, we paste the 2-cell
+	\begin{diagram}[h=2em]
+		A & \rTo^{h} & A' \\
+		&\rdTo_{h} \raise 1em\rlap{$\cong$} & \dTo>1
+			& \rdTo^{f'} \raise-1em\llap{$\Right_{\eta'}$} \\
+		&& A' & \lTo_{g'} & B'
+	\end{diagram}
+	along the edge $A \rTo^{h} A' \rTo^{f'}B'$,
+	then use coherence (on the right) to deduce \pref{eq-mate-eta}.
+	
+	Similarly we can deduce \pref{eq-mate-eps} by taking the
+	equation displayed above and pasting the 2-cell
+	\begin{diagram}[h=2em]
+		A & \rTo^{f} & B \\
+		&\luTo_{g} \raise 1em\rlap{$\Right_{\eta}$} & \dTo>1
+			& \rdTo^{k} \raise-1em\llap{$\cong$} \\
+		&& B & \rTo_{k} & B'
+	\end{diagram}
+	onto both sides along the edge $A\rTo^{f} B\rTo^{k}B'$.
+\end{proof}
+%
+Next we list some useful elementary properties of mates.
+\begin{propn}\label{prop-mates}
+	Mates have the following properties:
+	\begin{enumerate}
+		\item Mating is natural in $h$ and $k$, i.e.\ if $\sigma$
+			and $\tau$ are mates then so are
+			\[
+			\begin{diagram} % sigma
+				&\rnode{A}{A} & \rTo^{f} & \rnode{B}{B} \\
+				\Right_{\gamma}\hskip-2.2em
+					& \dTo<{h}
+					& \Arr\Nearrow\sigma & \dTo>{k}
+					& \hskip-2.3em\Right_{\delta} \\
+				&\rnode{A'}{A'} & \rTo_{f'} & \rnode{B'}{B'}
+				%
+				\ncarc[arcangle=-90,ncurv=1]{->}{A}{A'}\Bput{h'}
+				\ncarc[arcangle=90,ncurv=1]{->}{B}{B'}\Aput{k'}
+			\end{diagram}
+			\qquad\mbox{and}\qquad
+			\begin{diagram}
+				&\rnode{A}{A} & \lTo^{g} & \rnode{B}{B} \\
+				\Right_{\gamma}\hskip-2.2em
+					& \dTo<{h}
+					& \Arr\Searrow\tau & \dTo>{k}
+					& \hskip-2.3em\Right_{\delta} \\
+				&\rnode{A'}{A'} & \lTo_{g'} & \rnode{B'}{B'}
+				%
+				\ncarc[arcangle=-90,ncurv=1]{->}{A}{A'}\Bput{h'}
+				\ncarc[arcangle=90,ncurv=1]{->}{B}{B'}\Aput{k'}
+			\end{diagram}
+			\]
+			for all appropriately-typed 2-cells $\gamma$ and $\delta$.
+			\label{mate-natural}
+		\item Mating preserves horizontal pasting:
+			if $\sigma_{1}$ and $\tau_{1}$ are mates with respect to the
+			adjunctions $f_{1} \dashv g_{1}$ and $f'_{1} \dashv g'_{1}$,
+			and $\sigma_{2}$ and $\tau_{2}$ are mates with respect to
+			$f_2 \dashv g_2$ and $f_2' \dashv g_2'$, then
+			\begin{diagram} % sigma_{1}, sigma_{2}
+				A & \rTo^{f_{1}} & B & \rTo^{f_2} & C\\
+				\dTo<{h} & \Arr\Nearrow{\sigma_{1}} & \dTo>{k}
+				 	& \Arr\Nearrow{\sigma_2} & \dTo>n\\
+				A' & \rTo_{f_{1}'} & B' & \rTo_{f_{2}'} & C'
+			\end{diagram}
+			and
+			\begin{diagram} % tau_{1}, tau_{2}
+				A & \lTo^{g_{1}} & B & \lTo^{g_2} & C\\
+				\dTo<{h} & \Arr\Searrow{\tau_{1}} & \dTo>{k}
+				 	& \Arr\Searrow{\tau_2} & \dTo>n\\
+				A' & \lTo_{g_{1}'} & B' & \lTo_{g_{2}'} & C'
+			\end{diagram}
+			are mates, with respect to the adjunctions
+			$f_{2}\o f_{1} \dashv g_{1}\o g_{2}$
+			and $f_{2}'\o f_{1}' \dashv g_{1}'\o g_{2}'$.
+			\label{mate-horiz}
+		\item Mating preserves vertical pasting: if $\sigma$ and $\tau$
+			are mates with respect to $f\dashv g$ and $f'\dashv g'$,
+			and $\sigma'$ and $\tau'$
+			are mates with respect to $f'\dashv g'$ and $f''\dashv g''$,
+			then
+			\[
+			\begin{diagram} % sigma
+				A & \rTo^{f} & B \\
+				\dTo<{h} & \Arr\Nearrow\sigma & \dTo>{k} \\
+				A' & \rTo_{f'} & B' \\
+				\dTo<{h'} &  \Arr\Nearrow{\sigma'} & \dTo>{k'} \\
+				A'' & \rTo_{f''} & B''
+			\end{diagram}
+			\qquad\mbox{and}\qquad
+			\begin{diagram} % tau
+				A & \lTo^{g} & B \\
+				\dTo<{h} & \Arr\Searrow\tau & \dTo>{k} \\
+				A' & \lTo_{g'} & B' \\
+				\dTo<{h'} & \Arr\Searrow{\tau'} & \dTo>{k'} \\
+				A'' & \lTo_{g''} & B''
+			\end{diagram}
+			\]
+			are mates with respect to $f\dashv g$ and $f''\dashv g''$.
+			\label{mate-vert}
+		\item For every adjunction $f\dashv g: A\to B$, the
+			structural isomorphisms
+			\[
+				\begin{diagram}
+					A & \rTo^{f} & B \\
+					\dTo<1 & \cong & \dTo>1 \\
+					A & \rTo_{f} & B
+				\end{diagram}
+				\mbox{\qquad and\qquad}
+				\begin{diagram}
+					A & \lTo^{g} & B \\
+					\dTo<1 & \cong & \dTo>1 \\
+					A & \lTo_{g} & B
+				\end{diagram}
+			\]
+			are mates.
+			\label{mate-structural}
+	\end{enumerate}
+\end{propn}
+We omit the (routine) verification of this proposition,
+which requires nothing more than the definitions of mate
+and adjunction, and the coherence of the unit isomorphisms.
+%
+The next proposition is essential for some of our applications of
+mates in later chapters.
+\begin{propn} % f -| g implies gamma_{f} is mates with gamma_{g}
+	Let $\gamma: F \To G: \B \to \BC$ be a pseudo-natural transformation,
+	and let $f\dashv g: A\to B$ be an adjunction in $\B$. Then
+	\[
+		\begin{diagram}
+			FA & \rTo^{Ff} & FB \\
+			\dTo<{\gamma_{A}} & \Arr\Nearrow{\gamma_{f}^{-1}}
+				& \dTo>{\gamma_{B}} \\
+			GA & \rTo_{Gf} & GB
+		\end{diagram}
+		\qquad\mbox{and}\qquad
+		\begin{diagram}
+			FA & \lTo^{Fg} & FB \\
+			\dTo<{\gamma_{A}} & \Arr\Searrow{\gamma_{g}}
+				& \dTo>{\gamma_{B}} \\
+			GA & \lTo_{Gg} & GB
+		\end{diagram}
+	\]
+	are mates with respect to the adjunctions $Ff\dashv Fg$ and $Gf\dashv Gg$.
+\end{propn}
+\begin{proof}
+	Consider the 2-cell
+	\begin{diagram}[h=2em]
+		\rnode{t}{FA} & \rTo^{\gamma_{A}} & GA \\
+		& \rdTo^{Ff} & \Arr\Uparrow{\gamma_{f}} & \rdTo^{Gf} \\
+		\dTo<{F1} & \llap{$\Right_{F\eta}$} & FB
+			& \rTo^{\gamma_{B}} & GB \\
+		&\ldTo_{Fg} & \Arr\Nearrow{\gamma_{g}} & \ldTo_{Gg} \\
+		\rnode{b}{FA} & \rTo_{\gamma_{A}} & GA
+		%
+		\ncarc[arcangle=-80,ncurv=1]{->}tb\Bput{1}
+	\end{diagram}
+	Since $\gamma$ is pseudo-natural, by the naturality condition
+	in Definition~\ref{def-psnat} this is equal to
+	\begin{diagram}[h=1.5em]
+		\rnode{t}{FA} & \rTo^{\gamma_{A}} & GA \\
+		& & & \rdTo^{Gf} \\
+		\dTo>{F1} & \Arr\Nearrow{\gamma_{1_{A}}} & \dTo>{G1}
+			& \llap{$\Right_{G\eta}$} & GB \\
+		& & & \ldTo_{Gg} \\
+		\rnode{b}{FA} & \rTo_{\gamma_{A}} & GA
+		%
+		\ncarc[arcangle=-80,ncurv=1]{->}tb\Bput{1}\Aput{\ \ \Right_{F_{A}}}
+	\end{diagram}
+	which, by the unit condition, is equal to
+	\begin{diagram}[h=1.5em,w=3em]
+		FA & \rTo^{\gamma_{A}} & \rnode{t}{GA} \\
+		& & & \rdTo^{Gf} \\
+		\dTo<{1} & \llap{$\cong$\quad} & \dTo>G1
+			& \llap{$\Right_{G\eta}$} & GB \\
+		& & & \ldTo_{Gg} \\
+		FA & \rTo_{\gamma_{A}} & \rnode{b}{GA}
+		%
+		\ncarc[arcangle=-60]{->}tb\Bput{1}\Aput{\ \Right_{G_{A}}}
+	\end{diagram}
+	If we paste $\gamma_{f}^{-1}$ onto the top of this equation,
+	and $\r_{\gamma_{A}}^{-1}$ onto the bottom, then we get
+	\[
+		\begin{diagram}
+		& \rnode{t}{FA} \\
+		\rlap{\quad$\Right_{F_{A}}$} & \dTo>{F1}
+			& \llap{$\Right_{F\eta}$}\rdTo(2,1)^{Ff} & FB \\
+		& \rnode{m}{FA} & \ldTo(2,1)_{Fg} & \dTo>{\gamma_{B}} \\
+		\raise 2em\hbox{$\cong$} & \dTo<{\gamma_{A}}
+			& \raise 1.5em\hbox{$\Arr\Swarrow{\gamma_{g}}$} & GB \\
+		& \rnode{b}{GA} & \ldTo(2,1)_{Gg}
+		%
+		\ncarc[arcangle=-80,ncurv=1]{->}tm\Bput{1}
+		\ncarc[arcangle=-90,ncurv=1]{->}tb\Bput{\gamma_{A}}
+		\end{diagram}
+		\quad=\hskip5em
+		\begin{diagram}
+		& \rnode{t}{FA} \\
+		\raise0em\hbox{$\cong$}& \dTo<{\gamma_{A}} & \rdTo(2,1)^{Ff} & FB \\
+		& \rnode{m}{GA} & \raise 2em\hbox{$\Arr\Nearrow{\gamma_{f}^{-1}}$}
+			& \dTo>{\gamma_{B}}\\
+		\rlap{\quad$\Right_{G_{A}}$} & \dTo>{G1}
+			& \llap{$\Right_{G\eta}$}\rdTo(2,1)^{Gf} & FB \\
+		& \rnode{b}{GA} & \ldTo(2,1)_{Fg}
+		%
+		\ncarc[arcangle=-80,ncurv=1]{->}mb\Bput{1}
+		\ncarc[arcangle=-90,ncurv=1]{->}tb\Bput{\gamma_{A}}
+		\end{diagram}
+	\]
+	Thus, by equation~\pref{eq-mate-eta} and Remark~\ref{rem-adj-functor},
+	$\gamma_{f}^{-1}$ and $\gamma_{g}$ are indeed mates.
+\end{proof}
+%
+A special case of mating that is sometimes useful occurs when the
+vertical 1-cells $h$ and $k$ are identities. In this case we may
+omit them entirely, and speak of the left mate, or right mate, of
+a 2-cell $f'\To f$, for adjunctions $f\dashv g$, $f'\dashv g': A\to B$.
+It should be clear what is meant by this: for
+example, to take the right mate of a 2-cell $\gamma: f'\To f$, one
+forms the composite
+\begin{diagram}[s=4em]
+	\rnode{A}{A} & \rTo^{f} & B \\
+	\dTo<1 & \mathop\Nearrow\limits_{\gamma} & \dTo>1 \\
+	A & \rTo_{f'} & \rnode{B}{B}
+	\ncarc[arcangle=30]{->}{A}{B} \Aput{f}
+	\ncarc[arcangle=30]{->}{B}{A} \Aput{f'}
+\end{diagram}
+(where the triangular cells contain unit isomorphisms), and takes its
+right mate, say
+\begin{diagram}
+	A & \lTo^{g} & B \\
+	\dTo<1 & \Searrow\tau & \dTo>1 \\
+	A & \lTo_{g'} & B
+\end{diagram}
+and then forms the composite
+\vskip2em
+\begin{diagram}
+	A & \lTo^{g} & \rnode{B}{B} \\
+	\dTo<1 & \Arr\Searrow\tau & \dTo>1 \\
+	\rnode{A}{A} & \lTo_{g'} & B
+	\nccurve[angleA=135,angleB=135,ncurv=2]{->}{B}{A}
+		\Bput{g} \Aput{\raise -1em\rlap{\quad$\cong$}}
+	\nccurve[angleA=-45,angleB=-45,ncurv=2]{->}{B}{A}
+		\Aput{g'} \Bput{\raise 0.5em\llap{$\cong$\quad}}
+\end{diagram}
+\vskip3em
+In general it is necessary to distinguish between left mate and right mate
+in this situation, because one cannot tell from the context which is intended.
+However, see Prop.~\ref{prop-adjeq-mate-dual} below for a case where they coincide.
+
+\subsection{Adjunctions and mates in terms of string diagrams}
+\renewcommand\graphicscale{1}
+Adjunctions and mates have a particularly elegant string diagram
+representation. Let $f\dashv g: A\to B$ be an adjunction with unit
+$\eta$ and counit $\e$. Then the unit and counit are drawn as
+\[
+	\cdiag{d-adj/eta}
+	\qquad\mbox{and}\qquad
+	\cdiag{d-adj/eps}
+\]
+The adjunction axioms say precisely that
+\[\cdiag{d-adj/snake1} \qquad\mbox{and}\qquad \cdiag{d-adj/snake2}\]
+are both identities. Given a 2-cell $\sigma$:
+\[\cdiag{d-adj/sigma}\]
+its right mate is
+\[\cdiag{d-adj/right-mate-of-sigma}\]
+and given a 2-cell $\tau$:
+\[\cdiag{d-adj/tau}\]
+its left mate is
+\[\diag{d-adj/left-mate-of-tau}\]
+
+\subsection{Adjoint pseudo-natural transformations}
+Now we turn our attention to adjoint pseudo-natural transformations,
+i.e.\ adjunctions in a pseudo-functor bicategory.
+\begin{propn}\label{prop-adj-1}
+	Let there be given an adjoint pair of pseudo-natural
+	transformations
+	\[
+		\phi \dashv \gamma: F \To G : \B\to\BC
+	\]
+	with unit $\eta: 1\Tto\gamma\phi$
+	and counit $\e: \phi\gamma \Tto 1$.
+	Then
+	\begin{enumerate}
+		\item For every object $A\in\B$, there is an adjunction
+		\[
+			\phi_{A} \dashv \gamma_{A}
+		\]
+		with unit $\eta_{A}$ and counit $\e_{A}$.
+		\item For every 1-cell $f: A\to B$ in $\B$, the
+		2-cells
+		\[
+			\begin{diagram}
+				FA & \rTo^{\phi_{A}} & GA \\
+				\dTo<{F(f)} & \Arr\Nearrow{\phi_{f}} & \dTo>{G(f)} \\
+				FB & \rTo_{\phi_{B}} & GB
+			\end{diagram}
+			\mbox{\quad and\quad}
+			\begin{diagram}
+				FA & \lTo^{\gamma_{A}} & GA \\
+				\dTo<{F(f)} & \Arr\Searrow{\gamma_{f}^{-1}} & \dTo>{G(f)} \\
+				FB & \lTo_{\gamma_{B}} & GB
+			\end{diagram}
+		\]
+		are mates with respect to the adjunctions $\phi_{A}\dashv\gamma_{A}$
+		and $\phi_{B}\dashv\gamma_{B}$.
+	\end{enumerate}
+\end{propn}
+\begin{proof}
+	The first part is immediate by definition, so let's consider the second.
+	Since $\eta$ is a modification, we know that for every $f:A\to B$,
+	\[
+	\begin{diagram}
+		FA & \rTo^{\phi_A} & GA & \rTo^{\gamma_A} & FA\\
+		\dTo<{Ff} & \Nearrow\phi_f & \dTo<{Gf} &\Nearrow\gamma_f & \dTo>{Ff}\\
+		\rnode{1}{FB} & \rTo_{\phi_B} & GB & \rTo_{\gamma_B} & \rnode{2}{FB}\\
+		\nccurve[angleA=-50,angleB=-130]{->}12\Bput1\Aput{\raise6pt\hbox{$\Uparrow\eta_B$}}
+	\end{diagram}
+	=
+	\begin{diagram}[h=2em]
+		&&GA\\
+		&\ruTo^{\phi_A} & \Uparrow\eta_A & \rdTo^{\gamma_A}\\
+		FA && \rTo_1 && FA\\
+		\dTo<{Ff} && \cong && \dTo>{Ff}\\
+		FB && \rTo_1 && FB
+	\end{diagram}
+	\]
+	Onto both sides of the equation, we paste the 2-cells
+	$\gamma_{f}^{-1}$ and $\l^{-1}: Ff\to 1\o Ff$, yielding
+	the equation
+	\[
+	\begin{diagram}
+		\rnode{FA}{FA} & \rTo^{\phi_A} & GA\\
+		\dTo<{Ff} & \Nearrow\phi_f & \dTo>{Gf}\\
+		FB & \rTo^{\phi_B} & GB\\
+		\dTo<1>{\raise6pt\hbox{$\ \begin{array}c\To\\[-4pt]\eta_B\end{array}$}} & \ldTo_{\gamma_B}\\
+		\rnode{FB}{FB}
+		\nccurve[angleA=210,angleB=140]{->}{FA}{FB}\Bput{Ff}\Aput{\ \ \ \cong}
+	\end{diagram}
+	\quad=\hskip4em
+	\begin{diagram}
+		\rnode{FA}{FA}\\
+		\dTo<1>{\raise-6pt\hbox{$\ \begin{array}c\To\\[-4pt]\eta_A\end{array}$}} & \rdTo^{\phi_A}\\
+		FA & \lTo_{\gamma_A} & GA\\
+		\dTo<{Ff} & \Searrow\gamma_f^{-1}&\dTo>{Gf}\\
+		\rnode{FB}{FB} & \lTo_{\gamma_B} & GB
+		\nccurve[angleA=210,angleB=140]{->}{FA}{FB}\Bput{Ff}\Aput{\ \ \ \cong}
+	\end{diagram}
+	\]
+	which, by \pref{eq-mate-eta}, is what we require.
+\end{proof}
+
+\begin{propn}\label{prop-adj-2}
+	Let there be given a pseudo-natural transformation
+	\[
+		\phi: F\To G: \B \to \BC.
+	\]
+	To give a right adjoint $\gamma: G\To F$ for $\phi$ is to give
+	\begin{itemize}
+		\item for each $A\in\B$, a 1-cell $\gamma_{A}: GA\to FA$ and
+			an adjunction $\phi_{A}\dashv \gamma_{A}$,			
+		\item such that for every $f:A\to B$ in $\B$, the mate of $\phi_{f}$
+			with respect to the adjunctions $\phi_{A}\dashv \gamma_{A}$
+			and $\phi_{B}\dashv \gamma_{B}$ is invertible.
+	\end{itemize}
+\end{propn}
+\begin{proof}
+	We have already shown (Prop.~\ref{prop-adj-1}) that every
+	right-adjoint pseudo-natural transformation $\gamma$ has these
+	properties, so suppose that we have a collection of
+	adjunctions $\phi_{A}\dashv \gamma_{A}$ as in the statement,
+	each with unit $\eta_{A}$ and counit $\e_{A}$, say.
+	%
+	For each 1-cell $f: A\to B$ in $\B$, define the 2-cell
+	\begin{diagram}
+		GA & \rTo^{\gamma_{A}} & FA \\
+		\dTo<{Gf} & \Arr\Nearrow{\gamma_{f}} & \dTo>{Ff} \\
+		GB & \rTo_{\gamma_{B}} & FB
+	\end{diagram}
+	to be the inverse of the mate of $\phi_{f}$.
+	%
+	We shall show that these data constitute a pseudo-natural
+	transformation $\gamma$, checking the three conditions
+	of Definition~\ref{def-psnat}. This is essentially a
+	matter of writing down the corresponding conditions for
+	$\phi$ and taking mates.
+	\begin{itemize}
+	\item The naturality condition for $\phi$ states that
+		\[
+		\hskip-1em
+		\begin{diagram}[size=4em]
+			FA & \rTo^{\phi_A} & \rnode{GA}{GA}\\
+			\dTo<{Ff} & \llap{$\Nearrow \phi_f$}
+				& \begin{array}{c}\Rightarrow\\G(\tau)\end{array}\\
+			FB & \rTo_{\phi_B} & \rnode{GB}{GB}
+			\ncarc{->}{GA}{GB}\Aput{Gg}
+			\ncarc{<-}{GB}{GA}\Aput{Gf}
+		\end{diagram}
+		\hskip3em=\hskip3em
+		\begin{diagram}[size=4em]
+			\rnode{FA}{FA} & \rTo^{\phi_A} & GA\\
+			\begin{array}{c}\Rightarrow\\F(\tau)\end{array}
+				& \rlap{$\Nearrow \phi_g$} & \dTo>{Gg}\\
+			\rnode{FB}{FB} & \rTo_{\phi_B} & GB
+			\ncarc{->}{FA}{FB}\Aput{Fg}
+			\ncarc{<-}{FB}{FA}\Aput{Ff}
+		\end{diagram}
+		\]
+		Taking mates of both sides, by Prop.~\ref{prop-mates}(\ref{mate-natural})
+		we have
+		\[
+		\hskip-1em
+		\begin{diagram}[size=4em]
+			FA & \lTo^{\gamma_A} & \rnode{GA}{GA}\\
+			\dTo<{Ff} & \llap{$\Nearrow \gamma_f^{-1}$}
+				& \begin{array}{c}\Rightarrow\\G(\tau)\end{array}\\
+			FB & \lTo_{\gamma_B} & \rnode{GB}{GB}
+			\ncarc{->}{GA}{GB}\Aput{Gg}
+			\ncarc{<-}{GB}{GA}\Aput{Gf}
+		\end{diagram}
+		\hskip3em=\hskip3em
+		\begin{diagram}[size=4em]
+			\rnode{FA}{FA} & \lTo^{\gamma_A} & GA\\
+			\begin{array}{c}\Rightarrow\\F(\tau)\end{array}
+				& \rlap{$\Nearrow \gamma_g^{-1}$} & \dTo>{Gg}\\
+			\rnode{FB}{FB} & \lTo_{\gamma_B} & GB
+			\ncarc{->}{FA}{FB}\Aput{Fg}
+			\ncarc{<-}{FB}{FA}\Aput{Ff}
+		\end{diagram}
+		\]
+		which may be rearranged into the naturality condition for $\gamma$.
+	\item The unit condition for $\phi$ states that
+		\[
+		\hskip-1em
+			\begin{diagram}[size=4em]
+				\rnode{FA}{FA} & \rTo^{\phi_A} & GA\\
+				\begin{array}{c}\Rightarrow\\F_A\end{array}
+					& \hbox to 0pt{$\mkern4mu\Nearrow \phi_{1_A}$} & \dTo>{G(1_A)}\\
+				\rnode{FB}{FA} & \rTo_{\phi_A} & \rnode{GA}{GA}
+				\ncarc{->}{FA}{FB}\Aput{F(1_A)}
+				\ncarc{<-}{FB}{FA}\Aput{1_{FA}}
+				%\nccurve{->}{FA}{GA} \Bput{\phi_A}
+			\end{diagram}
+			%
+			\hskip3em=\hskip3em
+			%
+			\begin{diagram}[size=4em]
+				FA & \rTo^{\phi_A} & \rnode{GA}{GA}\\
+				\dTo<{1_{FA}} & \llap{$\cong\mkern4mu$}
+					& \begin{array}{c}\Rightarrow\\G_A\end{array}\\
+				FA & \rTo_{\phi_A} & \rnode{GB}{GA}
+				\ncarc{->}{GA}{GB}\Aput{G(1_A)}
+				\ncarc{<-}{GB}{GA}\Aput{1_{GA}}
+			\end{diagram}
+		\]
+		Taking mates, and using Prop.~\ref{prop-mates}(\ref{mate-natural}, \ref{mate-structural}), gives
+		\[
+		\hskip-1em
+			\begin{diagram}[size=4em]
+				\rnode{FA}{FA} & \lTo^{\gamma_A} & GA\\
+				\begin{array}{c}\Rightarrow\\F_A\end{array}
+					& \hbox to 0pt{$\mkern4mu\Nearrow \gamma_{1_A}^{-1}$} & \dTo>{G(1_A)}\\
+				\rnode{FB}{FA} & \lTo_{\gamma_A} & \rnode{GA}{GA}
+				\ncarc{->}{FA}{FB}\Aput{F(1_A)}
+				\ncarc{<-}{FB}{FA}\Aput{1_{FA}}
+				%\nccurve{->}{FA}{GA} \Bput{\gamma_A}
+			\end{diagram}
+			%
+			\hskip3em=\hskip3em
+			%
+			\begin{diagram}[size=4em]
+				FA & \lTo^{\gamma_A} & \rnode{GA}{GA}\\
+				\dTo<{1_{FA}} & \llap{$\cong\mkern4mu$}
+					& \begin{array}{c}\Rightarrow\\G_A\end{array}\\
+				FA & \lTo_{\gamma_A} & \rnode{GB}{GA}
+				\ncarc{->}{GA}{GB}\Aput{G(1_A)}
+				\ncarc{<-}{GB}{GA}\Aput{1_{GA}}
+			\end{diagram}
+		\]
+		which may be rearranged into the unit condition for $\gamma$.
+	\item The composition condition for $\phi$ states that
+		\[
+		\begin{diagram}[h=2em]
+			\rnode{FA}{FA} & \rTo^{Ff}& FB & \rTo^{Fg}& \rnode{FC}{FC}\\
+			&&\raise4pt\hbox{$\Downarrow F_{g,f}$}\\
+			\dTo<{\phi_A} &&&& \dTo>{\phi_C}\\
+			&&\Swarrow \phi_{g\o f}\\
+			GA && \rTo_{G(g\o f)} && GC
+			\ncarc[arcangle=-60]{->}{FA}{FC}\Bput{F(g\o f)}
+		\end{diagram}
+		\quad=\quad
+		\begin{diagram}[h=2em]
+			FA & \rTo^{Ff}& FB & \rTo^{Fg}& FC\\
+			&\Swarrow\phi_f & \dTo>{\phi_B}&\Swarrow\phi_g\\
+			\dTo<{\phi_A} && GB && \dTo>{\phi_C}\\
+			&\ruTo^{Gf} & \Downarrow G_{g,f} & \rdTo^{Gg}\\
+			GA && \rTo_{G(g\o f)} && GC
+		\end{diagram}
+		\]
+		Taking mates, and using Prop.~\ref{prop-mates}(\ref{mate-natural}, \ref{mate-vert}), gives
+		\[
+		\begin{diagram}[h=2em]
+			\rnode{FA}{FA} & \rTo^{Ff}& FB & \rTo^{Fg}& \rnode{FC}{FC}\\
+			&&\raise4pt\hbox{$\Downarrow F_{g,f}$}\\
+			\uTo<{\gamma_A} &&&& \uTo>{\gamma_C}\\
+			&&\Searrow \gamma_{g\o f}^{-1}\\
+			GA && \rTo_{G(g\o f)} && GC
+			\ncarc[arcangle=-60]{->}{FA}{FC}\Bput{F(g\o f)}
+		\end{diagram}
+		\quad=\quad
+		\begin{diagram}[h=2em]
+			FA & \rTo^{Ff}& FB & \rTo^{Fg}& FC\\
+			&\Searrow\gamma_f^{-1} & \dTo>{\gamma_B}&\Searrow\gamma_g^{-1}\\
+			\uTo<{\gamma_A} && GB && \uTo>{\gamma_C}\\
+			&\ruTo^{Gf} & \Downarrow G_{g,f} & \rdTo^{Gg}\\
+			GA && \rTo_{G(g\o f)} && GC
+		\end{diagram}
+		\]
+		which may be rearranged into the composition condition for $\gamma$.
+	\end{itemize}
+	%
+	It remains to show that each of the collections $\eta_{A}$
+	and $\e_{A}$ constitutes a modification. By equation
+	\pref{eq-mate-eta}, we know that
+	\[
+	\begin{diagram}
+		\rnode{A}{FA}\\
+		\dTo<{Ff}&\rdTo^{\phi_{A}} \\
+		FB&\begin{array}c\To\\[-4pt]\phi_{f}\end{array} & GA \\
+		\dTo<1
+			& \rdTo^{\phi_{B}}_{\raise-4pt\hbox{$\begin{array}c\To\\[-4pt]\eta_B\end{array}$}}
+			& \dTo>{Gf}\\
+		\rnode{A'}{FB} & \lTo_{\gamma_{B}} & GB
+		%
+		\nccurve[angleA=220,angleB=140]{->}{A}{A'}\Bput{Ff}\Aput{\ \ \ \cong}
+	\end{diagram}
+	\qquad=\qquad
+	\begin{diagram}
+		& \rnode{A}{FA} & \rTo^{\phi_{A}} & \rnode{B}{GA}\\
+		& \dTo<{1}&\ldTo_{\gamma_{A}}^{\raise4pt\hbox{$\begin{array}c\To\\[-4pt]\eta_{A}\end{array}$}}
+		     & \dTo>Gf\\
+		& FA &\begin{array}c\To\\[-4pt]\gamma_{f}^{-1}\end{array} & GB \\
+		& \dTo<{Ff} & \ldTo_{\gamma_{B}} \\
+		& \rnode{A'}{FB}
+		%
+		\nccurve[angleA=220,angleB=140]{->}{A}{A'}\Bput{Ff}\Aput{\ \ \ \cong}
+	\end{diagram}
+	\]
+	This can be rearranged to give
+	\[
+		\begin{diagram}
+			FB & \rTo^{Ff} & FA \\
+			&\rdTo^{\phi_{B}} & \Arr\Swarrow{\phi_{f}} & \rdTo^{\phi_{A}} \\
+			\dTo<1 & \Right_{\eta_{B}} & GB & \rTo_{Gf} & GA \\
+			& \ldTo_{\gamma_{A}} & \Arr\Searrow{\gamma_{f}} & \ldTo_{\gamma_{A}} \\
+			FB & \lTo_{Ff} & FA
+		\end{diagram}
+		\quad=\quad
+		\begin{diagram}
+			FB & \lTo^{Ff} & FA \\
+			&&&\rdTo^{\phi_A} \\
+			\dTo<1 & \cong & \dTo<1 & \Right_{\eta_{A}} & GA \\
+			&&&\ldTo_{\gamma_{A}} \\
+			FB & \lTo_{Ff} & FA
+		\end{diagram}
+	\]
+	which shows that $\eta$ is a modification.
+	%
+	Similarly, we may use equation \pref{eq-mate-eps} to show that
+	$\e$ is a modification.
+\end{proof}
+
+In the bicategory $\Cat$, adjunctions $F \dashv G: \C\to\D$ are
+characterised by the existence of a natural isomorphism
+\[
+	\D(FA, B) \cong \C(A, GB),
+\]
+natural in $A$ and $B$. It is interesting to observe that a similar
+characterisation exists for adjunctions in an \emph{arbitrary} bicategory,
+as the next proposition shows.
+\begin{propn} % characterisation of adjunctions in a bicategory
+	Let there be given 1-cells $f:A\to B$ and $g:B\to A$ in a bicategory $\B$.
+	To give an adjunction $f\dashv g$ is to give, for every $A\lTo^a X\rTo^b B$,
+	an isomorphism
+	\[
+		\phi_{a,b}: \B(X,B)(f\o a, b) \cong \B(X,A)(a, g\o b),
+	\]
+	natural in the sense that:
+	\begin{itemize}
+	\item	for every $\sigma: a\To a'$, $\tau: b\To b'$,
+		and $\zeta: f\o a' \To b$, we have
+		\[
+		\begin{diagram}[w=2em]
+			&&\rnode{X}{X}\\
+			&\ldTo[snake=1em]_{a'}
+				& \raise-1em\hbox{$\begin{array}c\To\\[-4pt]\phi_{a',b}(\zeta)\end{array}$}
+				& \rdTo[snake=-1em]_b\\
+			\rnode{A}{A} && \lTo_{g} && \rnode{B}{B}
+			\ncarc[arcangle=-50,ncurv=1]{->}XA\Bput{a}
+				\Aput{\Searrow\sigma}
+			\ncarc[arcangle=50,ncurv=1]{->}XB\Aput{b'}
+				\Bput{\Nearrow\tau}
+		\end{diagram}
+		\qquad=\qquad
+		\begin{diagram}[w=2em]
+			&&\rnode{X}{X}\\
+			&& \begin{array}c\To\\\phi_{a,b'}(\tau\cdot\zeta\cdot(f\o\sigma))\end{array}
+				&\\
+			\rnode{A}{A} && \lTo_{g} && \rnode{B}{B}
+			\ncarc[arcangle=-30]{->}XA\Bput{a}
+			\ncarc[arcangle=30]{->}XB\Aput{b'}
+		\end{diagram}
+	\]
+	\item for every $k:Y\to X$ and $\zeta:fa\To b$, we have
+	\[
+		\begin{diagram}[w=2em]
+			&&Y\\
+			&&\dTo>k\\
+			&&X\\
+			&\ldTo^{a} & \begin{array}c\To\\[-4pt]\phi_{a,b}(\zeta)\end{array} & \rdTo^b\\
+			A && \lTo_{g} && B
+		\end{diagram}
+		\quad=\hskip3em
+		\begin{diagram}[w=2em]
+			&&Y\\
+			&\ldTo^k&&\rdTo^k\\
+			X&&&&X\\
+			\dTo<{a} && \begin{array}c\To\\[-4pt]\phi_{ak,bk}(\zeta\o k)\end{array} && \dTo>b\\
+			A && \lTo_{g} && B
+		\end{diagram}
+	\]
+	\end{itemize}
+\end{propn}
+\begin{proof}
+	By Yoneda, we know that to give an adjunction $f\dashv g$ is to give
+	an adjunction $\B(-,f)\dashv\B(-,g)$. By Prop.~\ref{prop-adj-2}, we know that
+	to give such an adjunction is to give, for every $X\in\B$, an adjunction
+	$\B(X,f)\dashv\B(X,g)$, collectively subject to condition \pref{eq-mate-eta}.
+	%
+	This is just an ordinary adjunction, which can therefore be given as a
+	natural isomorphism
+	\[
+		\B(X,B)(\B(X,f)(a), b) \cong \B(X,A)(a, \B(X,g)(b))
+	\]
+	natural in $a\in\B(X,A)$ and $b\in\B(X,B)$, i.e.\ a natural isomorphism
+	\[
+		\B(X,B)(f\o a, b) \cong \B(X,A)(a, g\o b).
+	\]
+	%
+	This corresponds to the data in the statement of this Proposition,
+	subject to our first naturality condition. We shall write the unit
+	of this adjunction as \[\eta_a: a\To g\o(f\o a)\] for $a:X\to A$.
+	
+	It remains to show that the second naturality condition is satisfied just
+	when \pref{eq-mate-eta} is. Writing down the concrete interpretation
+	of~\pref{eq-mate-eta} in our setting, we find that it holds
+	when, for every $a:X\to A$ and $k:Y\to X$, the diagram
+	\begin{diagram}
+		a\o k & \rTo^{\eta_{a\o k}} & g\o (f\o (a\o k))\\
+		\dTo<{\eta_a\o k} && \dTo>{g\o\a_{f,a,k}}\\
+		(g\o (f\o a))\o k & \rTo_{\a_{g,f\o a,k}} & g\o((f\o a)\o k)
+	\end{diagram}
+	commutes in $\B(Y,B)$.
+	%
+	In pictures, this says that
+	\[
+		\begin{diagram}[w=1em,h=1.5em]
+			&& &&Y\\ \\
+			&& &&\dTo>k\\ \\
+			&& &&\rnode{X}{X}\\
+			&& &\ldTo(4,4)^{a} && \rdTo^a\\
+			&& &&\begin{array}c\To\\[-4pt]\eta_a\end{array} &&A\\
+			&&&&&&&\rdTo^f\\
+			A && && \lTo_{g}&&  && \rnode{B}{B}
+			\ncarc[arcangle=70,ncurv=1]{->}XB\Aput{b}\Bput{\Nearrow\zeta}
+		\end{diagram}
+		\qquad=\qquad
+		\begin{diagram}[w=2em,h=1.5em]
+			&&Y\\
+			&\ldTo(2,4)^k&&\rdTo(2,4)^k\\
+			\\
+			\\
+			X&&&&\rnode{X}{X}\\
+			&&&& \dTo>a\\
+			\dTo<{a} && \begin{array}c\To\\[-4pt]\eta_{a\o k}\end{array} && A\\
+			&&&&\dTo>{f}\\
+			A && \lTo_{g} && \rnode{B}{B}
+			\ncarc[arcangle=70,ncurv=1]{->}XB\Aput{b}\Bput{\begin{array}c\To\\[-4pt]\zeta\end{array}}
+		\end{diagram}
+	\]
+	%
+	And since $\eta_a = \phi_{a,fa}(1_{fa})$ by definition,
+	this is equivalent to the particular case of our second naturality condition
+	with $b=f\o a$ and $\zeta = 1_{f\o a}$.
+	
+	But this special case
+	implies the general case, by the first naturality condition: for we have
+	\[\begin{array}{rl@{\qquad}c@{\qquad}r}
+		&\begin{diagram}[w=2em]
+			&&Y\\
+			&&\dTo>k\\
+			&&X\\
+			&\ldTo^{a} & \begin{array}c\To\\[-4pt]\phi_{a,b}(\zeta)\end{array} & \rdTo^b\\
+			A && \lTo_{g} && B
+		\end{diagram}
+		&=&
+		\begin{diagram}[w=1em,h=1.5em]
+			&& &&Y\\ \\
+			&& &&\dTo>k\\ \\
+			&& &&\rnode{X}{X}\\
+			&& &\ldTo(4,4)^{a} && \rdTo^a\\
+			&& &&\begin{array}c\To\\[-4pt]\eta_a\end{array} &&A\\
+			&&&&&&&\rdTo^f\\
+			A && && \lTo_{g}&&  && \rnode{B}{B}
+			\ncarc[arcangle=70,ncurv=1]{->}XB\Aput{b}\Bput{\Nearrow\zeta}
+		\end{diagram}
+		\\[9em]
+		=&
+		\begin{diagram}[w=2em,h=1.5em]
+			&&Y\\
+			&\ldTo(2,4)^k&&\rdTo(2,4)^k\\
+			\\
+			\\
+			X&&&&\rnode{X}{X}\\
+			&&&& \dTo>b\\
+			\dTo<{a} && \begin{array}c\To\\[-4pt]\eta_{a\o k}\end{array} && A\\
+			&&&&\dTo>{f}\\
+			A && \lTo_{g} && \rnode{B}{B}
+			\ncarc[arcangle=70,ncurv=1]{->}XB\Aput{b}\Bput{\begin{array}c\To\\[-4pt]\zeta\end{array}}
+		\end{diagram}
+		&=&
+		\begin{diagram}[w=2em]
+			&&Y\\
+			&\ldTo^k&&\rdTo^k\\
+			X&&&&X\\
+			\dTo<{a} && \begin{array}c\To\\[-4pt]\phi_{a\o k,b\o k}(\zeta\o k)\end{array} && \dTo>b\\
+			A && \lTo_{g} && B
+		\end{diagram}
+	\end{array}\]
+	as required.
+\end{proof}
+
+\begin{remark} % pseudo-adjunctions between bicategories
+	In this section we have considered adjunctions \emph{in} a bicategory.
+	It is also possible to consider \emph{pseudo-adjunctions between bicategories}:
+	to exhibit $G:\BC\to\B$ as right pseudo-adjoint to $F:\B\to\BC$ is to give
+	an equivalence $\BC(FA,X)\simeq\B(A, GX)$ pseudo-natural in $A$ and $X$.
+	We do not pursue pseudo-adjunctions further here.
+\end{remark}
+
+\section{On equivalence}\label{s-equiv}
+\begin{definition} % equivalence
+	An \emph{equivalence} from $A$ to $B$ in a bicategory consists of a pair of 1-cells
+	$f: A\to B$ and $g:B\to A$, and a pair of invertible 2-cells $e: 1_A\To g\o f$
+	and $e': 1_B\To f\o g$. We also say that the arrow $f$ is an equivalence
+	just when there exist $g$, $e$, $e'$ as above.
+\end{definition}
+\begin{definition} % adjoint equivalence
+	An \emph{adjoint equivalence} is an adjunction whose unit and
+	counit are invertible.
+\end{definition}
+\begin{remark}
+	If $f \dashv g$ is an adjoint equivalence with unit $\eta$ and counit $\e$,
+	then $g\dashv f$ is an adjoint equivalence with unit $\e^{-1}$
+	and counit $\eta^{-1}$.
+\end{remark}
+%
+In later chapters, particularly Chapter~XXXX, we will often consider
+mates with respect to adjoint equivalences. Such mating has some special
+properties which are crucial for our applications.
+%
+\begin{lemma}\label{lemma-adjeq-mate}
+	If we have mates
+	\[
+	\begin{diagram} % sigma
+		A & \rTo^{f} & B \\
+		\dTo<{h} & \Arr\Nearrow\sigma & \dTo>{k} \\
+		A' & \rTo_{f'} & B'
+	\end{diagram}
+	\qquad\mbox{and}\qquad
+	\begin{diagram} % tau
+		A & \lTo^{g} & B \\
+		\dTo<{h} & \Arr\Searrow\tau & \dTo>{k} \\
+		A' & \lTo_{g'} & B'
+	\end{diagram}
+	\]
+	with respect to adjoint \emph{equivalences} $f\dashv g$
+	and $f'\dashv g'$, then $\sigma$ is invertible if and only
+	if $\tau$ is.
+\end{lemma}
+\begin{proof}
+	Immediate from the definition of mate.
+\end{proof}
+%
+\begin{lemma}\label{lemma-adjeq-twisted}
+	Given adjoint equivalences $f\dashv g: A\to B$
+	and $f'\dashv g': A'\to B'$,
+	and an invertible 2-cell
+	\begin{diagram} % sigma
+		A & \rTo^{f} & B \\
+		\dTo<{h} & \Arr\Nearrow\sigma & \dTo>{k} \\
+		A' & \rTo_{f'} & B',
+	\end{diagram}
+	the inverse of the right mate of $\sigma$ is equal to the
+	left mate of its inverse.
+\end{lemma}
+\begin{proof}
+	The right mate of $\sigma$ is
+	\begin{diagram} % right mate of sigma
+	\rnode{A}{A} & \lTo^{g} & \rnode{B}{B}\\
+	\dTo<{h}&\rdTo_{f}^{\raise4pt\hbox{$\begin{array}c\To\\[-4pt]\e\end{array}$}}
+		& \dTo>1\\
+	A'&\begin{array}c\To\\[-4pt]\sigma\end{array}&B\\
+	\dTo<1
+		& \rdTo^{f'}_{\raise-4pt\hbox{$\begin{array}c\To\\[-4pt]\eta'\end{array}$}}
+		& \dTo>{k}\\
+	\rnode{A'}{A'} & \lTo_{g'} & \rnode{B'}{B',}
+	%
+	\nccurve[angleA=210,angleB=140]{->}{A}{A'}\Bput{h}\Aput{\ \ \ \cong}
+	\nccurve[angleA=-30,angleB=30]{->}{B}{B'}\Aput{k}\Bput{\cong\ \ \ }
+	\end{diagram}
+	whose inverse is
+	\begin{diagram} % inverse of right mate of sigma
+	\rnode{A}{A} & \lTo^{g} & \rnode{B}{B}\\
+	\dTo<{h}&\rdTo_{f}^{\raise4pt\hbox{$\begin{array}c\Leftarrow\\[-4pt]\e^{-1}\end{array}$}}
+		& \dTo>1\\
+	A'&\begin{array}c\Leftarrow\\[-4pt]\sigma^{-1}\end{array}&B\\
+	\dTo<1
+		& \rdTo^{f'}_{\raise-4pt\hbox{$\begin{array}c\Leftarrow\\[-4pt]\eta'^{-1}\end{array}$}}
+		& \dTo>{k}\\
+	\rnode{A'}{A'} & \lTo_{g'} & \rnode{B'}{B',}
+	%
+	\nccurve[angleA=210,angleB=140]{->}{A}{A'}\Bput{h}\Aput{\ \ \ \cong}
+	\nccurve[angleA=-30,angleB=30]{->}{B}{B'}\Aput{k}\Bput{\cong\ \ \ }
+	\end{diagram}
+	which is the left mate of $\sigma^{-1}$.
+\end{proof}
+%
+\begin{propn}\label{prop-adjeq-mate-dual}
+	Given adjoint equivalences $f\dashv g: A\to B$
+	and $f'\dashv g': A\to B$,
+	and an invertible 2-cell
+	\vskip0pt
+	\begin{diagram}
+		\rnode{A}{A} & \Arr\Downarrow\gamma & \rnode{B}{B}
+		\ncarc[arcangle=30]{->}{A}{B} \Aput{f}
+		\ncarc[arcangle=30]{->}{B}{A} \Aput{f'}
+	\end{diagram}
+	\vskip2em
+	the left mate of $\gamma$ is equal to its right mate.
+\end{propn}
+\begin{proof}
+	The proof is surprisingly intricate, and rather difficult to
+	follow unless string diagrams are used. (In fact, this proof is
+	the reason that we have introduced string diagrams into this
+	chapter.) In string diagram terms, what we have to prove is that
+	\[
+		\cdiag{d-adj/gamma-up} \qquad=\qquad \cdiag{d-adj/gamma-down}
+	\]
+	The proof is as follows:
+%	\begin{mspill} \cdiag{d-adj/gamma-up} \quad=\quad \cdiag{d-adj/gamma-pf-1} \end{mspill}
+	\[ \cdiag{d-adj/gamma-up} \]
+	\[ =\quad \cdiag{d-adj/gamma-pf-1} \]
+	\[ =\quad \cdiag{d-adj/gamma-pf-2} \]
+	\[ =\quad \cdiag{d-adj/gamma-pf-3} \]
+	\[ =\quad \cdiag{d-adj/gamma-pf-4} \]
+	\[ =\quad \cdiag{d-adj/gamma-pf-5} \]
+	\[ =\quad \cdiag{d-adj/gamma-down} \]
+\end{proof}
+%
+\begin{propn}\label{prop-adjeq} % equivalence -> adjoint equivalence with same unit
+	If there is an equivalence $(f,g,e,e')$ from $A$ to $B$, then there
+	is an adjoint equivalence $f\dashv g$ with unit $e$.
+\end{propn}
+\begin{proof}
+	It is well known\footnote{And easy to prove using
+	the ordinary Yoneda lemma.} that this is true in $\Cat$.
+	We shall use Yoneda to
+	infer that it is therefore true in an arbitrary bicategory. Let there be
+	given an equivalence $(f,g,e,e')$ from $A$ to $B$. This induces
+	an equivalence from $\B(-,A)$ to $\B(-,B)$ in $\Bicat(\B\op,\Cat)$.
+	Thus for every $X\in\B$ we have an adjoint equivalence in $\Cat$
+	from $\B(X,A)$ to $\B(X,B)$, with unit $\B(X,e)$. By Prop.~\ref{prop-adj-2}
+	and Lemma~\ref{lemma-adjeq-mate}
+	this induces an adjoint equivalence in $\Bicat(\B\op,\Cat)$, and Yoneda
+	therefore yields the desired adjoint equivalence in $\B$.
+\end{proof}
+\begin{remark} % elementary proof
+	It is possible to give a more elementary proof of the preceding
+	Proposition, by directly constructing a counit for the adjoint
+	equivalence. This parallels the situation that one frequently
+	encounters in ordinary category theory, where there is a choice
+	between a concise, perspicuous Yoneda proof and an obscure but
+	elementary equational one.
+\end{remark}
+\begin{remark} % duality (can keep counit instead of unit)
+	An adjunction in $\B$ is an adjunction in ${\B\co}\op$, with the
+	unit and counit reversed. Thus in the situation of Prop.~\ref{prop-adjeq}
+	there is also a (generally different) adjoint equivalence with counit $e'$.
+\end{remark}
+Just as an ordinary natural transformation is invertible just when all its
+components are, so a modification is invertible just when all its components
+are. Furthermore a pseudo-natural transformation is an equivalence
+in $\Bicat(\B,\BC)$ just when all its components are equivalences in
+their respective hom-categories. This latter fact, though unsurprising,
+is not altogether trivial to prove -- though we have done the hard work
+already.
+\begin{propn}\label{prop-pneq}
+	Let there be given a pseudo-natural transformation
+	\[
+		\gamma: F\To G: \B\to\BC.
+	\]
+	This $\gamma$ is an equivalence in $\Bicat(\B,\BC)$ just
+	when for every $A\in\B$ the 1-cell $\gamma_A: FA\to GA$
+	is an equivalence.
+\end{propn}
+\begin{proof}
+	Suppose that for every $A$, the component $\gamma_A: FA\to GA$
+	is an equivalence. By Prop.~\ref{prop-adjeq} we may suppose that
+	there is an arrow $\delta_A: $ and an adjoint equivalence
+	$\gamma_A\dashv\delta_A$. Now the claim follows from
+	Lemma~\ref{lemma-adjeq-mate} and Prop.~\ref{prop-adj-2}.
+\end{proof}
+
+\section{Normal pseudo-functors}
+Here we prove a useful coherence-type result about pseudo-functors.
+It is certainly well-known, but I am not aware of a published proof.%
+%\footnote{The proof herein is hideously ugly: perhaps that is the reason.}
+\begin{definition} % normal pseudo-functor
+	A pseudo-functor $F:\B\to\BC$ is \emph{normal} if
+	$F_A: 1_{FA}\to F(1_A)$ is an identity map for every $A\in\B$.
+\end{definition}
+\begin{lemma}\label{l-normal}
+	Let $F:\B\to\BC$ be a pseudo-functor, and let there be given,
+	for all $A$, $B\in\B$, a functor $G_{A,B}: \B(A,B)\to\BC(FA,FB)$
+	and a natural isomorphism $\phi_{A,B}: F_{A,B}\To G_{A,B}$.
+	
+	Then $G$ may be extended to a pseudo-functor that coincides
+	with $F$ on objects, such that $\phi$ becomes a pseudo-natural
+	equivalence between $F$ and $G$.
+\end{lemma}
+\begin{proof}
+	Define $G$ like $F$ on objects, and let its action on the hom-category
+	$\B(A,B)$ be the functor $G_{A,B}$. For an object $A$, let $G_A$ be the composite
+	\[
+		1_{GA} = 1_{FA} \rTo^{F_A} F(1_A) \rTo^{(\phi_{A,A})_{1_A}} G(1_A),
+	\]
+	and for a composable pair
+	\(
+		A\rTo^f B\rTo^g C
+	\)
+	let $G_{g,f}$ be the composite
+	\[
+		G(g)\o G(f) \rTo^{(\phi_{B,C}^{-1})_g\o(\phi_{A,B}^{-1})_f} F(g)\o F(f)
+			\rTo^{F_{g,f}} F(g\o f) \rTo^{(\phi_{A,C})_{g\o f}} G(g\o f).
+	\]
+	It is necessary to check that $G$ is indeed a pseudo-functor. For example,
+	for condition $\cFl$ take an arrow $f:A\to B$. We have the diagram
+	\begin{diagram}[w=6em]
+		1\o Gf & \rTo^{F_B\o Gf} & F1\o Gf & \rTo^{\phi_1\o Gf} & G1\o Gf\\
+		&\rdTo(0,6)<{\l_{Gf}}\rdTo(1,2)>{1\o\phi_f^{-1}} &&\rdTo(1,2)<{F1\o \phi_f^{-1}}
+			\ldTo(1,2)^{\phi_1^{-1}\o\phi_f^{-1}}\ruTo(0,6)<{G_{1,f}}\\
+		& 1\o Ff & \rTo_{F_B\o Ff} & F1\o Ff\\
+		\rlap{\qquad$\natural_\l$}&\dTo<{\l_{Ff}} &\cFl& \dTo<{F_{1,f}}\\
+		&Ff & \rTo_{F(\l_f)} & F(1\o f)\\
+		\ldTo(1,2)>{\phi_f} &&\natural_\phi&& \rdTo(1,2)_{\phi_{1\o f}}\\
+		Gf && \rTo_{G(\l_f)} && G(1\o f)
+	\end{diagram}
+	where we have omitted the object subscripts of $\phi$.
+	The regions commute for the marked reasons, or functoriality of composition,
+	except for the rightmost region which commutes by definition of $G_{1,f}$.
+	Thus the outside commutes, and $G$ satisfies condition $\cFl$.
+	The other conditions may be checked similarly.
+	
+	We make $\phi$ into a pseudo-natural transformation by defining $\phi_A$
+	to be the identity at $FA=GA$, for every object $A$. For an arrow $f:A\to B$,
+	$\phi_f$ is defined to be the pasting
+	\begin{diagram}[size=5em]
+		\rnode{FA}{FA} & \rTo^{\phi_A = 1} & GA\\
+		\dTo<{Ff} &\hskip4pt\Nearrow (\phi_{A,B})_f& \dTo>{Gf}\\
+		FA & \rTo_{\phi_B = 1} & \rnode{GB}{GB}
+		\ncarc{->}{FA}{GB}\Aput{Gf}
+		\ncarc{<-}{GB}{FA}\Aput{Ff}
+	\end{diagram}
+	It is easy to check that this constitutes a pseudo-natural transformation,
+	and its components are identities (hence equivalences), so by
+	Prop.~\ref{prop-pneq} it is a pseudo-natural equivalence, as required.
+\end{proof}
+
+\begin{propn}\label{prop-normal}
+	Every pseudo-functor $F$ is equivalent to a normal pseudo-functor
+	that agrees with $F$ on objects, as well as on non-identity 1-cells and
+	the 2-cells between them.
+\end{propn}
+\begin{proof}
+	Let there be given a pseudofunctor $F:\B\to\BC$. We shall
+	construct an equivalent normal pseudofunctor $G$. By Lemma~\ref{l-normal}
+	it suffices to do so for each hom-category separately. The definition
+	of $G_{A,B}$ and $\phi_{A,B}$ is by cases, as follows.
+	%
+	\begin{itemize}
+		\item Given objects $A\neq B$, let $G_{A,B} \defeqto F_{A,B}$
+			and let $\phi_{A,B}$ be the identity.
+		%
+		\item For each object $A$, let $G_{A,A}(1) \defeqto 1$, and let
+			$G_{A,A}(f) \defeqto F_{A,A}(f)$ for $f \neq 1$.
+		\item Given a 2-cell $\beta:f\To g: A\to A$ with $f\neq1\neq g$,
+			let $G_{A,A}(\beta) \defeqto \beta$.
+		\item Given a 2-cell $\beta:1\To f: A\to A$ with $f\neq 1$,
+			let $G_{A,A}(\beta) \defeqto F(\beta)\cdot F_A$.
+		\item Given a 2-cell $\gamma:f\To 1: A\to A$ with $f\neq 1$,
+			let $G_{A,A}(\gamma) \defeqto F_A^{-1}\cdot F(\gamma)$.
+		\item Given a 2-cell $\delta: 1\To 1: A\to A$,
+			let $G_{A,A}(\delta) \defeqto F_A^{-1}\cdot F(\delta)\cdot F_A$.
+		%
+		\item Let $(\phi_{A,A})_1: F(1_A)\to G(1_A) = 1_{GA} = 1_{FA}$ be $F_A^{-1}$,
+		\item and let $(\phi_{A,A})_f \defeqto 1$.
+	\end{itemize}
+	%
+	It is straightforward to check (four cases) that this
+	makes $\phi_{A,A}$ a natural transformation.
+	
+	Now we may extend $G$ to a pseudo-functor using Lemma~\ref{l-normal},
+	in which $G_A$ is defined to be $(\phi_{A,A})_1\cdot F_A$. Since
+	$(\phi_{A,A})_1 = F_A^{-1}$ by definition, $G_A$ is the identity and
+	so $G$ is normal, as required.
+\end{proof}
+
+\bibliography{cs}
+\end{document}

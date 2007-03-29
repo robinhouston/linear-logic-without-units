@@ -1,0 +1,40 @@
+\begin{thebibliography}{6}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Do{\v s}en and Petri{\'c}(2005)]{ProofNetCats}
+Kosta Do{\v s}en and Zoran Petri{\'c}.
+\newblock Coherence of proof-net categories.
+\newblock {\tt arXiv:math.CT/0503301}, March 2005.
+
+\bibitem[Hines(1999)]{HinesSS}
+Peter Hines.
+\newblock The categorical theory of self-similarity.
+\newblock \emph{Theory and Applications of Categories}, 6\penalty0
+  (2):\penalty0 33--46, 1999.
+
+\bibitem[Houston(2006)]{UPC}
+Robin Houston.
+\newblock Units in promonoidal categories.
+\newblock In preparation, 2006.
+
+\bibitem[Houston et~al.(2005)Houston, Hughes, and Schalk]{LL-U}
+Robin Houston, Dominic Hughes, and Andrea Schalk.
+\newblock Modelling linear logic without units (preliminary results).
+\newblock {\tt arXiv:math.CT/0504037}, April 2005.
+
+\bibitem[Joyal and Street(1993)]{BTC}
+Andr{\'e} Joyal and Ross Street.
+\newblock Braided tensor categories.
+\newblock \emph{Advances in Mathematics}, 102\penalty0 (1):\penalty0 20--78,
+  1993.
+
+\bibitem[Joyal and Street(1991)]{GTC}
+Andr{\'e} Joyal and Ross Street.
+\newblock The geometry of tensor calculus {I}.
+\newblock \emph{Advances in Mathematics}, 88:\penalty0 55--113, 1991.
+
+\end{thebibliography}

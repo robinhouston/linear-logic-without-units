@@ -1,0 +1,30 @@
+\begin{thebibliography}{4}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Day and Street(1997)]{MonBicat}
+Brian Day and Ross Street.
+\newblock Monoidal bicategories and {H}opf algebroids.
+\newblock \emph{Advances in Mathematics}, 129:\penalty0 99--157, 1997.
+
+\bibitem[Joyal and Street(1993)]{BTC}
+Andr{\'e} Joyal and Ross Street.
+\newblock Braided tensor categories.
+\newblock \emph{Advances in Mathematics}, 102\penalty0 (1):\penalty0 20--78,
+  1993.
+
+\bibitem[Kelly(1964)]{KellyML}
+Max Kelly.
+\newblock On {M}ac{L}ane's conditions for coherence of natural associativities,
+  commutativities, etc.
+\newblock \emph{Journal of Algebra}, 1:\penalty0 397--402, 1964.
+
+\bibitem[Lack(1995)]{LackThesis}
+Stephen~Geoffrey Lack.
+\newblock \emph{The Algebra of Distributive and Extensive Categories}.
+\newblock PhD thesis, University of Cambridge, Cambridge, UK, 1995.
+
+\end{thebibliography}

@@ -1,0 +1,1418 @@
+%!TEX TS-program = latex
+
+% This document contains material that will form part of the chapters
+% _Pseudomonoids_ and _Cayley's theorem for pseudomonoids_. It is not
+% itself a chapter of the thesis.
+
+\documentclass{robinminion}
+\usepackage[round]{natbib}
+\usepackage{robincs}
+\bibliographystyle{plainnat}
+
+\newtheorem{conj}[propn]{Conjecture}
+
+\newcommand\orp{\ensuremath{\mathrel{\shortleftarrow\!\!\!\!\!+\!\!\!-}}}
+\newarrow{Pro}--+->
+
+\newcommand\Arr[2]{{}#1{\hbox to 0pt{\mathsurround=0pt$\!#2$\hss}}}
+
+\newcommand\V{\mathscr{V}}
+\newcommand\B{\mathcal{B}}
+\newcommand\Cat{\mathrm{Cat}}
+\newcommand\Prof{\mathrm{Prof}}
+\newcommand\Lin{\mathrm{Lin}}
+
+\newcommand\I{\mathbb{I}}
+
+\renewcommand\aa{\mathfrak{a}}
+\renewcommand\ll{\mathfrak{l}}
+\newcommand\rr{\mathfrak{r}}
+\renewcommand\ss{\mathfrak{s}}
+
+\renewcommand\e{\hat{\mathbf{e}}}
+
+% Doesn't work!
+%\newarrow{Eq}===={}
+
+\title{Units in Promonoidal Categories}
+\begin{document}
+\maketitle
+
+\noindent \citet{BTC} show how to construct, for any monoidal category $\C$, a strict monoidal
+category $\mathbf{e}(\C)$ that is monoidally equivalent to $\C$. This construction is
+a crucial step in their proof of the coherence theorem for monoidal categories.
+%
+Here we generalise this construction to pseudomonoids in any monoidal bicategory.
+Applying the theorem to the case of promonoidal categories (i.e.\ pseudomonoids in
+$\Prof\op$)  allows us to derive a useful characterisation of the
+units in a promonoidal category.
+
+Recall the coherence theorem for monoidal bicategories \citep{GPS, MonBicat},
+which shows that every monoidal bicategory is monoidally biequivalent to a
+Gray-category. It therefore suffices here to work in a Gray-category, since the
+coherence theorem will allow our result to be transferred to arbitrary monoidal
+bicategories. This is very useful in practical terms, since it allows us to suppress
+some of the routine notational bureaucracy.
+
+Therefore let $\B$ be a Gray-category, and $\C$ be a pseudomonoid in $\B$,
+with unit $J: \I\to \C$ and tensor $P: \C\times\C\to\C$. We denote the tensor product
+of $\B$ by $\times$, which should not be taken to imply that it is a cartesian product.
+(We also write $\C^2$ as an abbreviation for $\C\times\C$, etc.)
+The unit of $\B$ shall be denoted $\I$.
+The associativity and unit isomorphisms of the pseudomonoid will be written
+$\aa$, $\ll$, and $\rr$:
+\[
+	\begin{diagram}
+		\I\times\C &\rTo^{J\times\C}&\C\times\C\\
+		&\rdTo[snake=-1ex](1,2)<{1}
+			\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\ll\end{array}$}%
+			\ldTo[snake=1ex](1,2)>{P}\\
+		&\C
+	\end{diagram}
+	\quad
+	\begin{diagram}
+		\C\times\C\times\C & \rTo^{P\times\C} & \C\times \C\\
+		\dTo<{\C\times P} &\Nearrow \aa& \dTo>{P}\\
+		\C\times\C & \rTo_P & \C
+	\end{diagram}
+	\quad
+	\begin{diagram}
+		\C\times \I &\rTo^{\C\times J}&\C\times\C\\
+		&\rdTo[snake=-1ex](1,2)<{1}
+			\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\rr\end{array}$}%
+			\ldTo[snake=1ex](1,2)>{P}\\
+		&\C
+	\end{diagram}
+\]
+Since these 2-cells are assumed to be invertible, we shall permit ourselves to omit the
+arrow below.
+
+In our Gray monoid setting, the definition of pseudomonoid requires that
+\begin{equation}\label{eq-lra}
+\begin{diagram}
+	\C\times\I\times\C\\
+	\dTo<1 &\hbox to0pt{\hss$\C\times\ll$}\rdTo(2,1)^{\C\times J\times\C} & \C\times\C\times\C\\
+	\C\times\C & \ldTo(2,1)_{\C\times P} &\dTo>{P\times\C}\\
+	\dTo<P & \raise1.5em\hbox{$\aa$}& \C\times\C\\
+	\C&\ldTo(2,1)_P
+\end{diagram}
+\qquad=\qquad
+\begin{diagram}
+	\C\times\I\times\C\\
+	\dTo<1 &\hbox to0pt{\hss$\rr\times\C$}\rdTo(2,1)^{\C\times J\times\C} & \C\times\C\times\C\\
+	\C\times\C & \ldTo(2,1)_{P\times\C}\\
+	\dTo<P\\
+	\C
+\end{diagram}
+\end{equation}
+and
+\begin{equation}\label{eq-aa}
+	\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+		&&\C^3\\
+		&\ruTo^{\C^2\times P}&\dTo[snake=-5pt]<{P\times\C}&\rdTo^{\C\times P}\\
+		\C^4 &\sim& \C^2 &\mathop{\Leftarrow}\limits_{\;\;\;\aa}& \C^2\\
+		\dTo<{P\times\C^2}&\ruTo_{\C\times P} && \rdTo_P & \dTo>{P}\\
+		\C^3 && \Arr\Downarrow\aa && \C\\
+		&\rdTo_{P\times\C}&&\ruTo>{P}\\
+		&&\C^2
+	\end{diagram}
+	\qquad=\qquad
+	\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+		&&\C^3\\
+		&\ruTo^{\C^2\times P}&&\rdTo^{\C\times P}\\
+		\C^4 && \Arr\Downarrow{\C\times \aa} && \C^2\\
+		\dTo<{P\times\C^2}&\rdTo^{\C\times P\times\C} && \ruTo^{\C\times P} & \dTo>{P}\\
+		\C^3 &\mathop{\Leftarrow}\limits_{\;\;\;\aa\times\C}& \C^3 &\Arr\Swarrow{\scriptstyle\!\!\!\aa}& \C\\
+		&\rdTo_{P\times\C}&\dTo[snake=5pt]>{\!\!P\times\C}&\ruTo>{P}\\
+		&&\C^2
+	\end{diagram}
+\end{equation}
+Note that equation (\ref{eq-lra}) is equivalent to
+\[
+\begin{diagram}
+	\C\times\I\times\C\\
+	\dTo<1 &\hbox to0pt{\hss$\C\times\ll$}\rdTo(2,1)^{\C\times J\times\C} & \C\times\C\times\C\\
+	\C\times\C & \ldTo(2,1)_{\C\times P}\\
+	\dTo<P\\
+	\C
+\end{diagram}
+\qquad=\qquad
+\begin{diagram}
+	\C\times\I\times\C\\
+	\dTo<1 &\hbox to0pt{\hss$\rr\times\C$}\rdTo(2,1)^{\C\times J\times\C} & \C\times\C\times\C\\
+	\C\times\C & \ldTo(2,1)_{P\times\C} &\dTo>{\C\times P}\\
+	\dTo<P & \raise1.5em\hbox{$\aa$}& \C\times\C\\
+	\C&\ldTo(2,1)_P
+\end{diagram}
+\]
+by composing with the inverse of $\aa$. We shall often use it in this form, without
+further remark. Similar variations of other equations may also be used without
+drawing attention to the fact.
+
+\section{Some facts about pseudomonoids}
+This section is essentially a translation of \cite{KellyML} into the language
+of general pseudomonoids. In particular, we shall show that the following
+three equations hold of any pseudomonoid $\C$.
+\begin{equation}\label{eq-lla}
+\begin{diagram}
+	\I\times\C^2 & \rTo^{J\times\C^2} &\C^3& \rTo^{\C\times P} & \C^2\\
+	&\rdTo(2,2)<1\raise1em\hbox to0pt{$\ll\times\C$\hss} & \dTo[snake=.5em]>{P\times\C} &\aa&\dTo>P\\
+	&&\C^2 &\rTo_P &\C
+\end{diagram}
+\quad=\quad
+\begin{diagram}
+	\I\times\C^2 &\rTo^{J\times\C^2} & \C^3\\
+	\dTo<{\I\times P} &\sim & \dTo>{\C\times P}\\
+	\I\times\C &\rTo^{J\times\C} & \C^2\\
+	&\rdTo(2,2)_1\raise0.5em\hbox to0pt{\hskip0.5em$\ll$\hss} &\dTo>P\\
+	&&\C
+\end{diagram}
+\end{equation}
+\begin{equation}\label{eq-rra}
+\begin{diagram}
+	\C^2\times\I & \rTo^{\C^2\times J} &\C^3& \rTo^{P\times\C} & \C^2\\
+	&\rdTo(2,2)<1\raise1em\hbox to0pt{$\C\times\rr$\hss} & \dTo[snake=.5em]>{\C\times P} &\aa&\dTo>P\\
+	&&\C^2 &\rTo_P &\C
+\end{diagram}
+\quad=\quad
+\begin{diagram}
+	\C^2\times\I &\rTo^{\C^2\times J} & \C^3\\
+	\dTo<{P\times\I} &\sim & \dTo>{P\times\C}\\
+	\C\times\I &\rTo^{\C\times J} & \C^2\\
+	&\rdTo(2,2)_1\raise0.5em\hbox to0pt{\hskip0.5em$\rr$\hss} &\dTo>P\\
+	&&\C
+\end{diagram}
+\end{equation}
+\begin{equation}\label{eq-lr}
+\begin{diagram}
+	\I\times\I\\
+	\dTo<{J\times\I} & \rdTo(2,1)^{\I\times J} & \I\times\C\\
+	\C\times\I &\raise1em\hbox{$\sim$}&\dTo>{J\times\C}\\
+	\dTo<1 & \hbox to0pt{\hss$\rr$\hskip0.5em}\rdTo(2,1)^{\C\times J}& \C\times\C\\
+	\C&\ldTo(2,1)_P
+\end{diagram}
+\quad=\quad
+\begin{diagram}
+	\I\times\I\\
+	\dTo<{J\times\I} & \rdTo(2,1)^{\I\times J} & \I\times\C\\
+	\C\times\I &\ldTo(2,3)^1&\dTo>{J\times\C}\\
+	\dTo<1 & \raise1em\hbox to0pt{\hskip1em$\ll$\hss}& \C\times\C\\
+	\C&\ldTo(2,1)_P
+\end{diagram}
+\end{equation}
+%
+In fact, it turns out that only equation (\ref{eq-lla}) is needed to prove the embedding theorem.
+For the sake of completeness, however, we shall prove all three.
+%
+The following lemma will be very useful. It corresponds to the fact that, in a monoidal category,
+the functors $I\tn-$ and $-\tn I$ are faithful.
+\begin{lemma}\label{lemma-faithful}
+	Let $A$ be some object of $\B$, let $f$, $g: A\to\C$
+	and let $\gamma$, $\delta: f\To g$. If
+	\[\hbox{\vrule height 3em depth 2em width 0pt}
+	\begin{diagram}
+		\rnode{CA}{\C\times A} & \Downarrow{\scriptstyle\C\times\gamma} & \rnode{CC}{\C\times\C} &\rTo^P &\C
+		\ncarc{->}{CA}{CC}\Aput{\C\times f}
+		\ncarc{<-}{CC}{CA}\Aput{\C\times g}
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+		\rnode{CA}{\C\times A} & \Downarrow{\scriptstyle\C\times\delta} & \rnode{CC}{\C\times\C} &\rTo^P &\C
+		\ncarc{->}{CA}{CC}\Aput{\C\times f}
+		\ncarc{<-}{CC}{CA}\Aput{\C\times g}
+	\end{diagram}
+	\]
+	then $\gamma = \delta$.
+	%
+	Dually, if
+	\[\hbox{\vrule height 3em depth 2em width 0pt}
+	\begin{diagram}
+		\rnode{AC}{A\times\C} & \Downarrow{\scriptstyle\gamma\times\C} & \rnode{CC}{\C\times\C} &\rTo^P &\C
+		\ncarc{->}{AC}{CC}\Aput{f\times\C}
+		\ncarc{<-}{CC}{AC}\Aput{g\times\C}
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+		\rnode{AC}{A\times\C} & \Downarrow{\scriptstyle\delta\times\C} & \rnode{CC}{\C\times\C} &\rTo^P &\C
+		\ncarc{->}{AC}{CC}\Aput{f\times\C}
+		\ncarc{<-}{CC}{AC}\Aput{g\times\C}
+	\end{diagram}
+	\]
+	then $\gamma=\delta$.
+\end{lemma}
+\begin{proof}
+	For the first part, suppose
+	\[\hbox{\vrule height 3em depth 2em width 0pt}
+	\begin{diagram}
+		\rnode{CA}{\C\times A} & \Downarrow{\scriptstyle\C\times\gamma} & \rnode{CC}{\C\times\C} &\rTo^P &\C
+		\ncarc{->}{CA}{CC}\Aput{\C\times f}
+		\ncarc{<-}{CC}{CA}\Aput{\C\times g}
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+		\rnode{CA}{\C\times A} & \Downarrow{\scriptstyle\C\times\delta} & \rnode{CC}{\C\times\C} &\rTo^P &\C.
+		\ncarc{->}{CA}{CC}\Aput{\C\times f}
+		\ncarc{<-}{CC}{CA}\Aput{\C\times g}
+	\end{diagram}
+	\]
+	Then
+	\[\begin{array}{rcl}
+		\gamma &=&
+			\begin{diagram}
+			&&\rnode{top}{\I\times\C}\\
+			&&\sim\\
+			\rnode{IA}{\I\times A} & \rTo^{J\times A} & \rnode{CA}{\C\times A}
+				& \Downarrow{\scriptstyle\C\times\gamma} & \rnode{CC}{\C\times\C}
+				\raise2em\hbox to0pt{\hskip.5em$\ll$\hss}
+				\raise-2em\hbox to0pt{\hskip.5em$\ll$\hss}
+				&\rTo^P & \rnode{C}{\C}\\
+			&&\sim\\
+			&&\rnode{bot}{\I\times\C}
+			\ncarc{->}{CA}{CC}\Aput{\C\times f}
+			\ncarc{<-}{CC}{CA}\Aput{\C\times g}
+			\ncarc{->}{IA}{top}\Aput{\I\times f}
+			\ncarc{->}{top}{CC}\aput{-53}(0.6){J\times\C}
+			\ncarc{->}{top}{C}\Aput{1}
+			\ncarc{<-}{C}{bot}\Aput{1}
+			\ncarc{<-}{CC}{bot}\aput{53}(0.4){J\times\C}
+			\ncarc{<-}{bot}{IA}\Aput{\I\times g}
+			\end{diagram}
+		\\[7em]
+		&=&
+			\begin{diagram}
+			&&\rnode{top}{\I\times\C}\\
+			&&\sim\\
+			\rnode{IA}{\I\times A} & \rTo^{J\times A} & \rnode{CA}{\C\times A}
+				& \Downarrow{\scriptstyle\C\times\delta} & \rnode{CC}{\C\times\C}
+				\raise2em\hbox to0pt{\hskip.5em$\ll$\hss}
+				\raise-2em\hbox to0pt{\hskip.5em$\ll$\hss}
+				&\rTo^P & \rnode{C}{\C}\\
+			&&\sim\\
+			&&\rnode{bot}{\I\times\C}
+			\ncarc{->}{CA}{CC}\Aput{\C\times f}
+			\ncarc{<-}{CC}{CA}\Aput{\C\times g}
+			\ncarc{->}{IA}{top}\Aput{\I\times f}
+			\ncarc{->}{top}{CC}\aput{-53}(0.6){J\times\C}
+			\ncarc{->}{top}{C}\Aput{1}
+			\ncarc{<-}{C}{bot}\Aput{1}
+			\ncarc{<-}{CC}{bot}\aput{53}(0.4){J\times\C}
+			\ncarc{<-}{bot}{IA}\Aput{\I\times g}
+			\end{diagram}
+		\\
+		&=&\delta.
+	\end{array}\]
+	The second part is proved similarly.
+\end{proof}
+%
+\begin{propn}
+	Equations (\ref{eq-lla}) and (\ref{eq-rra}) hold, of any pseudomonoid $\C$.
+\end{propn}
+\begin{proof}
+	Consider the 2-cell
+	\begin{diagram}
+	\C\times\I\times\C^2 & \rTo^{\C\times J\times\C^2} &\C^4& \rTo^{\C^2\times P} & \C^3\\
+	&\rdTo(2,2)<1\raise1em\hbox to0pt{$\C\times\ll\times\C$\hss}
+		& \dTo[snake=.5em]>{\C\times P\times\C} &\C\times\aa&\dTo>{\C\times P}\\
+	&&\C^3 &\rTo_{\C\times P} &\C^2\\
+	&&\dTo<{P\times\C} & \aa & \dTo>P\\
+	&&\C^2 & \rTo_P & \C
+	\end{diagram}
+	%
+	By equation (\ref{eq-lra}), this is equal to
+	\begin{diagram}
+	\C\times\I\times\C^2 & \rTo^{\C\times J\times\C^2} &\C^4& \rTo^{\C^2\times P} & \C^3\\
+	\dTo<1&\raise1em\hbox to0pt{\hss$\rr\times\C^2$}\ldTo[hug]_{P\times\C^2}
+		& \dTo[snake=.8em]>{\C\times P\times\C} &\C\times\aa&\dTo>{\C\times P}\\
+	\C^3&&\C^3 &\rTo_{\C\times P} &\C^2\\
+	&\rdTo_{P\times\C}&\dTo<{P\times\C} & \aa & \dTo>P\\
+	&&\C^2 & \rTo_P & \C
+	\end{diagram}
+	%
+	which, by (\ref{eq-aa}), is equal to
+	\begin{diagram}[tight,w=3.5em]
+	\C\times\I\times\C^2 & \rTo^{\C\times J\times\C^2} &\C^4& \rTo^{\C^2\times P} & \C^3\\
+	\dTo<1 &\ldTo(2,2)_{P\times\C^2}\raise1em\hbox to0pt{\hss$\rr\times\C^2$}&\sim
+		&\ldTo^{P\times\C} &\dTo>{\C\times P}\\
+	\C^3 &\rTo_{\C\times P} & \C^2 &\aa &\C^2\\
+	&\rdTo_{P\times\C} &\aa&\rdTo_P&\dTo>P\\
+	&&\C^2 & \rTo_P & \C
+	\end{diagram}
+	%
+	Pasting on a structural 2-cell and its inverse gives
+	\begin{diagram}[tight,w=4em]
+	&&\C^4\\
+	&\ruTo^{\C\times J\times\C^2} &\sim&\rdTo^{\C^2\times P}\\
+	\C\times\I\times\C^2&\rTo^{\C\times\I\times P} &\C\times\I\times\C &\rTo_{\C\times J\times\C} &\rnode{x}{\C^3}\\
+	&\rdTo[snake=1em]^{\C\times J\times\C^2} &&\sim\\
+	\dTo<1 &\rr&\C^4& \rTo^{\C^2\times P} & \rnode{y}{\C^3}\\
+	&\ldTo(2,2)_{P\times\C^2}&\sim
+		&\ldTo^{P\times\C} &\dTo>{\C\times P}\\
+	\C^3 &\rTo_{\C\times P} & \C^2 &\aa &\C^2\\
+	&\rdTo_{P\times\C} &\aa&\rdTo_P&\dTo>P\\
+	&&\C^2 & \rTo_P & \C
+	\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\end{diagram}
+	which, since the structural 2-cells behave naturally, is equal to
+	\begin{diagram}[tight,w=4em]
+	&&\C^4\\
+	&\ruTo^{\C\times J\times\C^2} &\sim&\rdTo^{\C^2\times P}\\
+	\C\times\I\times\C^2&\rTo^{\C\times\I\times P} &\C\times\I\times\C &\rTo_{\C\times J\times\C} &\rnode{x}{\C^3}\\
+	&&&\raise-1em\hbox{$\rr\times\C$}\\
+	\dTo<1 &&\dTo<1&& \rnode{y}{\C^3}\\
+	&&&\ldTo^{P\times\C} &\dTo>{\C\times P}\\
+	\C^3 &\rTo_{\C\times P} & \C^2 &\aa &\C^2\\
+	&\rdTo_{P\times\C} &\aa&\rdTo_P&\dTo>P\\
+	&&\C^2 & \rTo_P & \C\hbox{\hskip1pt.\hss}
+	\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\end{diagram}
+	%
+	This diagram can be redrawn as
+	\begin{diagram}
+	&&\rnode{CICC}{\C\times\I\times\C^2} &\rTo^{\C\times J\times\C^2} &\C^4\\
+	&&\dTo<{\C\times\I\times P} &\sim& \dTo>{\C^2\times P}\\
+	&&\C\times\I\times\C &\rTo^{\C\times J\times\C} &\rnode{x}{\C^3}\\
+	&&\dTo<1&\rr\times\C\\
+	\rnode{CCC}{\C^3}&\rTo^{\C\times P}&\C^2 &\lTo^{P\times\C} &\rnode{y}{\C^3}\\
+	\dTo<{P\times\C} &\aa & \dTo>P & \aa & \dTo>{\C\times P}\\
+	\C^2 &\rTo_P & \C &\lTo_P & \C^2
+	\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\nccurve[angleA=180,angleB=90]{->}{CICC}{CCC}\Bput{1}
+	\end{diagram}
+	%
+	which by equation (\ref{eq-lra}) is equal to
+	\begin{diagram}
+	&&\rnode{CICC}{\C\times\I\times\C^2} &\rTo^{\C\times J\times\C^2} &\C^4\\
+	&&\dTo<{\C\times\I\times P} &\sim& \dTo>{\C^2\times P}\\
+	&&\C\times\I\times\C &\rTo^{\C\times J\times\C} &\rnode{x}{\C^3}\\
+	&&\dTo<1&\C\times\ll\\
+	\rnode{CCC}{\C^3}&\rTo^{\C\times P}&\C^2 &\lTo^{\C\times P} &\rnode{y}{\C^3}\\
+	\dTo<{P\times\C} &\aa & \dTo>P\\
+	\C^2 &\rTo_P & \C\hbox to0pt{\hskip1pt.\hss}
+	\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\nccurve[angleA=180,angleB=90]{->}{CICC}{CCC}\Bput{1}
+	\end{diagram}
+	%
+	Comparing this with the diagram we started with, and cancelling $\aa$, we have
+	\[
+	\begin{diagram}
+	\C\times\I\times\C^2 & \rTo^{\C\times J\times\C^2} &\C^4& \rTo^{\C^2\times P} & \C^3\\
+	&\rdTo(2,2)<1\raise1em\hbox to0pt{$\C\times\ll\times\C$\hss}
+		& \dTo[snake=.5em]>{\C\times P\times\C} &\C\times\aa&\dTo>{\C\times P}\\
+	&&\C^3 &\rTo_{\C\times P} &\C^2\\
+	&&&& \dTo>P\\
+	&&&& \C
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+	\C\times\I\times\C^2 &\rTo^{\C\times J\times\C^2} &\C^4\\
+	\dTo<{\C\times\I\times P} &\sim& \dTo>{\C^2\times P}\\
+	\C\times\I\times\C &\rTo^{\C\times J\times\C} &\rnode{x}{\C^3}\\
+	\dTo<1&\C\times\ll\\
+	\C^2 &\lTo^{\C\times P} &\rnode{y}{\C^3}\\
+	\dTo>P\\
+	\C
+	\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\end{diagram}
+	\]
+	whence Lemma~\ref{lemma-faithful} allows us to deduce equation (\ref{eq-lla}), as required.
+	Equation (\ref{eq-rra}) follows by symmetry.
+\end{proof}
+%
+The next lemma is the general form of the fact that $I\tn\lambda_A = \lambda_{I\tn A}$
+in a monoidal category.
+\begin{lemma}\label{lemma-lambda}
+The following equation holds of any pseudomonoid $\C$:
+\begin{equation}\label{eq-lambda}
+\hskip-2em
+\begin{diagram}
+	\I\times\I\times\C & \rTo^{J\times\I\times\C} & \rnode{CIC}{\C\times\I\times\C}\\
+	&&\dTo>{\C\times J\times\C}\\
+	&\hbox to0pt{\hskip1em$\C\times\ll$\hss}&\C^3\\
+	&&\dTo>{\C\times P}\\
+	&&\rnode{CC}{\C^2}\\
+	&&\dTo>P\\
+	&&\C
+	\ncarc[arcangle=-70]{->}{CIC}{CC}\Bput{1}
+\end{diagram}
+=
+\begin{diagram}
+	\I\times\I\times\C & \rTo^{J\times\I\times\C} & \C\times\I\times\C\\
+	\dTo<{\I\times J\times\C} & \sim & \dTo>{\hbox to0pt{$\C\times J\times\C$\hss}}\\
+	\I\times\C^2 & \rTo_{J\times\C^2}& \C^3\\
+	\dTo<{\I\times P} & \sim & \dTo>{\C\times P}\\
+	\I\times\C & \rTo^{J\times \C} & \C^2\\
+	&\rdTo(2,2)_1\raise1em\hbox to 0pt{$\ll$\hss} & \dTo>P\\
+	&&\C
+\end{diagram}
+\end{equation}
+\end{lemma}
+\begin{proof}
+	Since the structural 2-cells behave naturally,
+	\begin{diagram}
+		\I\times\I\times\C & \rTo^{J\times\I\times\C} & \rnode{CIC}{\C\times\I\times\C}\\
+		&&\dTo>{\C\times J\times\C}\\
+		\dTo<1&\hbox to0pt{\hskip1em$\C\times\ll$\hss}&\C^3\\
+		&&\dTo>{\C\times P}\\
+		\I\times\C&\rTo^{J\times\C}&\rnode{CC}{\C^2}\\
+		&\rdTo(2,2)_1\raise1em\hbox to0pt{\hskip1em$\ll$\hss}&\dTo>P\\
+		&&\C
+		\ncarc[arcangle=-70]{->}{CIC}{CC}\Bput{1}
+	\end{diagram}
+	is equal to
+	\begin{diagram}
+		&\rnode{IIC}{\I\times\I\times\C} & \rTo^{J\times\I\times\C} & \C\times\I\times\C\\
+		&\dTo<{\I\times J\times\C} & \sim & \dTo>{\C\times J\times\C}\\
+		\ll&\rnode{IC}{\I\times\C^2} & \rTo_{J\times\C^2}& \C^3\\
+		&\dTo<{\I\times P} & \sim & \dTo>{\C\times P}\\
+		&\rnode{IC}{\I\times\C} & \rTo^{J\times \C} & \C^2\\
+		&&\rdTo(2,2)_1\raise1em\hbox to 0pt{\hskip1em$\ll$\hss} & \dTo>P\\
+		&&&\C
+		\ncarc[arcangle=-70,ncurv=1]{->}{IIC}{IC}\Bput{1}
+	\end{diagram}
+	Vertically composing with the inverse of $\ll$ gives the claimed equation.
+\end{proof}
+%
+\begin{propn}
+	Equation (\ref{eq-lr}) holds of any pseudomonoid $\C$.
+\end{propn}
+\begin{proof}
+	\[\begin{array}{rcl}
+	\begin{diagram}
+		&\I\times\I\times\C \\
+		&\dTo<{J\times\I\times\C} \\
+		&\rnode{CIC}{\C\times\I\times\C}\\
+		&\dTo>{\C\times J\times\C} \\
+		\rr\times\C & \C^3 &\rTo^{\C\times P} & \C^2 \\
+		&\dTo>{P\times\C} &\aa& \dTo>P \\
+		&\rnode{CC}{\C^2} &\rTo_{P} & \C
+		\ncarc[arcangle=-70,ncurv=1]{->}{CIC}{CC}\Bput{1}
+	\end{diagram}
+	&\quad=\quad&
+	\begin{diagram}
+		&\I\times\I\times\C \\
+		&\dTo<{J\times\I\times\C} \\
+		&\rnode{CIC}{\C\times\I\times\C}\\
+		&\dTo>{\C\times J\times\C} \\
+		\C\times\ll & \C^3 \\
+		&\dTo>{\C\times P} \\
+		&\rnode{CC}{\C^2} &\rTo_{P} & \C
+		\ncarc[arcangle=-70,ncurv=1]{->}{CIC}{CC}\Bput{1}
+	\end{diagram}
+	\\[11em]
+	&=&
+	\begin{diagram}
+		\I\times\I\times\C & \rTo^{J\times\I\times\C} & \C\times\I\times\C\\
+		\dTo<{\I\times J\times\C} & \sim & \dTo>{\C\times J\times\C}\\
+		\I\times\C^2 & \rTo_{J\times\C^2}& \C^3\\
+		\dTo<{\I\times P} & \sim & \dTo>{\C\times P}\\
+		\I\times\C & \rTo^{J\times \C} & \C^2\\
+		&\rdTo(2,2)_1\raise1em\hbox to 0pt{$\ll$\hss} & \dTo>P\\
+		&&\C
+	\end{diagram}
+	\\[10em]
+	&=&
+	\begin{diagram}
+		\I\times\I\times\C & \rTo^{J\times\I\times\C} & \C\times\I\times\C\\
+		\dTo<{\I\times J\times\C} & \sim & \dTo>{\C\times J\times\C} \\
+		\I\times\C^2 & \rTo^{J\times\C^2} & \rnode{x}{\C^3}\\
+		\dTo<1 & \ll\times\C \\
+		\C^2 & \lTo^{P\times\C} & \rnode{y}{\C^3} \\
+		\dTo<P & \aa & \dTo>{\C\times P} \\
+		\C & \lTo_P & \C^2
+		\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\end{diagram}
+	\end{array}\]
+	These equalities hold by, respectively, equations (\ref{eq-lra}), (\ref{eq-lambda}), and (\ref{eq-lla}).
+	Now vertically compose with the inverse of $\aa$, and apply Lemma~\ref{lemma-faithful}
+	to deduce the claim.
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Equivalence theorem for pseudomonoids}
+
+Let $\C_0$ denote the monoidal category underlying the pseudomonoid.
+Precisely, $\C_0$ is the category $\B(\I, \C)$, equipped with the following
+monoidal structure. The unit is $J$, and the tensor product $A\tn B$ of
+two objects $A$,$B$ is the composite
+\[
+	\I=\I\times \I\rTo^{\I\times B}\I\times\C\rTo^{A\times\C}\C\times\C\rTo^P\C.
+\]
+The associativity and unit isomorphisms are derived in the obvious way
+from those of $\C$, and inherit their coherence properties.
+
+(Note that if we take $\B$ to be a Gray-category equivalent to $\Prof\op$,
+then a pseudomonoid in $\B$ is a promonoidal category, and $\C_0$ is
+the functor category $[\C,\Set]$ equipped with Day's convolution tensor.)
+
+The main theorem of this section is that $\C_0$ is monoidally equivalent to
+a certain strict monoidal category,
+which we denote $\e(\C)$ and define as follows. An object is a 1-cell
+\[
+	\C \rTo^F \C
+\]
+together with an invertible 2-cell
+\begin{diagram}
+	\C\times\C & \rTo^P & \C\\
+	\dTo<{F\times\C}&\Arr\Swarrow{\phi^F}&\dTo>F\\
+	\C\times\C&\rTo_P & \C
+\end{diagram}
+such that
+\[
+	\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+		&&\C^2\\
+		&\ruTo^{\C\times P}&\dTo[snake=-5pt]<{F\times\C}&\rdTo^P\\
+		\C^3 &\sim& \C^2 &\mathop{\Leftarrow}\limits_{\;\;\;\phi^F}& \C\\
+		\dTo<{F\times\C^2}&\ruTo_{\C\times P} && \rdTo_P & \dTo>{F}\\
+		\C^3 && \Arr\Downarrow\aa && \C\\
+		&\rdTo_{P\times\C}&&\ruTo>{P}\\
+		&&\C^2
+	\end{diagram}
+	\qquad=\qquad
+	\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+		&&\C^2\\
+		&\ruTo^{\C\times P}&&\rdTo^P\\
+		\C^3 && \Arr\Downarrow\aa && \C\\
+		\dTo<{F\times\C^2}&\rdTo^{P\times\C} && \ruTo^P & \dTo>{F}\\
+		\C^3 &\mathop{\Leftarrow}\limits_{\;\;\;\phi^F\times\C}& \C^2 &\Arr\Swarrow{\scriptstyle\!\!\!\phi^F}& \C\hbox to 0pt{\hskip1pt.\hss}\\
+		&\rdTo_{P\times\C}&\dTo[snake=5pt]>{\!\!F\times\C}&\ruTo>{P}\\
+		&&\C^2
+	\end{diagram}
+\]
+%
+In one place below -- the proof of Proposition~\ref{prop-i-equiv} -- it is convenient
+to use the following rotated view of this cube:
+\[
+	\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+		&&\C^3\\
+		&\ldTo^{\C\times P}&\dTo[snake=-5pt]<{F\times\C^2}&\rdTo^{P\times\C}\\
+		\C^2 &\sim& \C^3 &\phi^F\!\!\times\!\C& \C^2\\
+		\dTo<{F\times\C}&\ldTo_{\C\times P} && \rdTo_{P\times\C} & \dTo>{F\times\C}\\
+		\C^2 && \aa && \C^2\\
+		&\rdTo_{P}&&\ldTo>{P}\\
+		&&\C
+	\end{diagram}
+	\qquad=\qquad
+	\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+		&&\C^3\\
+		&\ldTo^{\C\times P}&&\rdTo^{P\times\C}\\
+		\C^2 && \aa && \C^2\\
+		\dTo<{F\times\C}&\rdTo^{P} && \ldTo^P & \dTo>{F\times\C}\\
+		\C^2 &\phi^F& \C &\phi^F& \C\hbox to 0pt{\hskip1pt.\hss}\\
+		&\rdTo_{P}&\dTo[snake=5pt]>{F}&\ldTo>{P}\\
+		&&\C
+	\end{diagram}
+\]
+%
+The tensor product $F\tn G$ of two objects is their composite $FG$ in $\B$, with $\phi^{FG}$
+being the pasting
+\begin{diagram}
+	\rnode{b}{\C\times\C} & \rTo^P & \C\\
+	\dTo<{G\times\C}&\Arr\Swarrow{\phi^G}&\dTo>G\\
+	\C\times\C&\rTo_P & \C\\
+	\dTo<{F\times\C}&\Arr\Swarrow{\phi^F}&\dTo>F\\
+	\rnode{a}{\C\times\C}&\rTo_P & \C
+%	This is an equality in a Gray-category...
+%	\ncarc[arcangle=90,linestyle=none]{->}ab
+%	\lput*{:U}{\shortmid}
+%	\ncarc[arcangle=90]{->}ab
+%	\Aput{(GF)\times\C}\Bput{\hskip 1.3em\cong}
+\end{diagram}
+The tensor unit $I\in\e(\C)$ is the identity 1-cell, with the identity 2-cell.
+
+A morphism $F\to G$ is a natural transformation $\gamma: F\To G$ such that
+\[\psset{ncurv=2}
+	\begin{diagram}
+		\rnode{b}{\C\times\C} & \rTo^P & \C\\
+		\dTo<{F\times\C}&\Arr\Swarrow{\phi^F}&\dTo>F\\
+		\rnode{a}{\C\times\C} & \rTo_P & \C
+		\ncarc[arcangle=90]{<-}ab
+		\Aput{G\times\C}\Bput{\hskip .7em\mathop{\Leftarrow}\limits_{\gamma\times\C}}
+	\end{diagram}
+	\quad=\qquad
+	\begin{diagram}
+		\C\times\C & \rTo^P & \rnode{b}{\C}\\
+		\dTo<{G\times\C}&\Arr\Swarrow{\phi^G}&\dTo>G\\
+		\C\times\C & \rTo_P & \rnode{a}{\C}
+		\ncarc[arcangle=-90]{<-}ab
+		\Bput{F}\Aput{\mathop{\Leftarrow}\limits_{\textstyle\gamma}\hskip 1.3em}
+	\end{diagram}
+\]
+\begin{remark}
+	Note that $\e(\C)$ is only strict monoidal because we are taking $\B$
+	to be a Gray monoid. When $\B$ is a general bicategory, $\e(\C)$
+	will still be monoidal, but not usually strict.
+\end{remark}
+Our object is to show that $\e(\C)$ is monoidally equivalent to $\C_0$.
+Thus we define a functor
+\[
+	i_\C: \C_0 \to \e(\C)
+\]
+as follows. For an object $M\in\C_0$, we let $i_\C(M)$ be the composite
+\[
+	\I\times\C \rTo^{M\times\C} \C\times\C\rTo^P \C.
+\]
+The associated natural isomorphism $\phi^{i_\C(M)}$ is
+\begin{diagram}[h=2em]
+	\I\times\C\times\C & \rTo^{\I\times P}& \I\times \C\\
+	\dTo<{M\times\C\times\C} & \raise6pt\hbox{$\sim$} & \dTo>{M\times\C}\\
+	\C\times\C\times\C & \rTo^{\C\times P} & \C\times\C\\
+	\dTo<{P\times\C} & {\aa} & \dTo>P\\
+	\C\times\C & \rTo_P & \C
+\end{diagram}
+thus a morphism $\gamma: i_\C(M)\to i_\C(N)$ is a natural transformation that
+satisfies the equation
+\begin{equation}\label{eq-box}
+	\begin{diagram}[w=2.8em,h=2em,labelstyle=\scriptstyle,tight]
+		&&\C\times\C\\
+		&\ruTo^{M\times\C}&\dTo[snake=-5pt]<{\C\times P}&\rdTo^P\\
+		\I\times\C &\sim& \C\times\C &\aa& \C\\
+		\uTo<{\I\times P}&\ruTo_{M\times\C\times\C} && \rdTo_{P\times\C} & \uTo>{P}\\
+		\I\times\C\times\C && \Arr\Downarrow{\gamma\times\C} && \C\times\C\\
+		&\rdTo_{N\times\C\times\C}&&\ruTo>{P\times\C}\\
+		&&\C\times\C\times\C
+	\end{diagram}
+	=
+	\begin{diagram}[w=2.8em,h=2em,labelstyle=\scriptstyle,tight]
+		&&\C\times\C\\
+		&\ruTo^{M\times\C}&&\rdTo^P\\
+		\I\times\C && \Arr\Downarrow\gamma && \C\\
+		\uTo<{\I\times P}&\rdTo^{N\times\C} && \ruTo^P & \uTo>{P}\\
+		\I\times\C\times\C &\sim& \C\times\C &\aa & \C\times\C\\
+		&\rdTo_{N\times\C\times\C}&\uTo[snake=5pt]>{\!\!\C\times P}&\ruTo>{P\times\C}\\
+		&&\C\times\C\times\C
+	\end{diagram}
+\end{equation}
+%
+Given a natural transformation $\delta: M\To N$, define $i_\C(\delta)$ to be the whiskering
+\begin{diagram}[h=4em]\\
+\rnode{1C}{\I\times \C} & \Downarrow {\scriptstyle\delta\times\C} &
+\rnode{CC}{\C\times\C}&\rTo^P&\C\\
+	\ncarc[arcangle=90]{->}{1C}{CC}
+	\Aput{M\times\C}
+	%
+	\ncarc[arcangle=-90]{->}{1C}{CC}
+	\Bput{N\times\C}
+\end{diagram}
+which clearly satisfies the equation above.
+
+\begin{propn}\label{prop-i-ff}
+	The functor $i_\C$ is full and faithful.
+\end{propn}
+\begin{proof}
+Fix some $M$ and $N$ in $\B(\I,\C)$.
+Given a map $\gamma: i_\C(M)\to i_\C(N)$, define the map $p(\gamma)\in\B(\I,\C)(M,N)$ to
+be the pasting
+\begin{diagram}
+	&&&&\rnode{top}{\C\times \I}\\
+	&&&&\dTo>{\C\times J}\\
+	&&\raise2em\hbox{$\sim$}&&\C\times\C&\raise1em\hbox{$\rr$}\\
+	\rnode{II}{\I\times \I} & \rTo_{\I\times J} & \I\times\C&\ruTo(2,1)^{M\times\C}&\Arr\Downarrow\gamma
+		&\rdTo(2,1)^P &\rnode{C}{\C}\\
+	&&\raise-1.5em\hbox{$\sim$}&\rdTo(2,1)_{N\times\C}&\C\times\C&\ruTo(2,1)_P\raise-1em\hbox{$\rr$}\\
+	&&&&\uTo>{\C\times J}\\
+	&&&&\rnode{bot}{\C\times \I}
+	\ncarc{->}{II}{top}\Aput{M\times \I}
+	\ncarc{->}{top}{C}\Aput{1}
+	\ncarc{<-}{bot}{II}\Aput{N\times \I}
+	\ncarc{<-}{C}{bot}\Aput{1}
+\end{diagram}
+%
+We shall show that this $p$ is inverse to the action of $i_\C$ on the homset
+$\B(\I,\C)(M,N)$, hence that $i_\C$ is full and faithful. So first we need to show
+that for each $\delta\in [\C,\Set](M,N)$, we have $p(i_\C(\delta)) = \delta$.
+Diagramatically, $p(i_\C(\delta))$ is the pasting
+\begin{diagram}
+	&&&&\rnode{top}{\C\times \I}\\
+	&&\sim&&\dTo>{\C\times J}\\
+	\rnode{II}{\I\times \I} & \rTo_{\I\times J} & \rnode{IC}{\I\times\C}&\Downarrow{\scriptstyle\delta\times\C}
+		&\rnode{CC}{\C\times\C} &\rTo^P &\rnode{C}{\C}\\
+	&&\sim&&\uTo>{\C\times J}\\
+	&&&&\rnode{bot}{\C\times \I}
+	\ncarc{->}{II}{top}\Aput{M\times \I}
+	\ncarc{->}{top}{C}\Aput{1}
+	\ncarc{<-}{bot}{II}\Aput{N\times \I}
+	\ncarc{<-}{C}{bot}\Aput{1}
+	\ncarc{->}{IC}{CC}\Aput{M\times\C}
+	\ncarc{<-}{CC}{IC}\Aput{N\times\C}
+\end{diagram}
+By definition of a Gray monoid, we know that
+\[
+	\begin{diagram}
+	\\
+	\rnode{IC}{\I\times\C} & \Downarrow{\scriptstyle\delta\times\C} & \rnode{CC}{\C\times\C}\\
+	\uTo<{\I\times J} & \raise-1em\hbox{$\sim$} & \uTo>{\C\times J}\\
+	\I\times \I & \rTo_{N\times \I} & \C\times \I\\
+	\ncarc{->}{IC}{CC}\Aput{M\times\C}
+	\ncarc{<-}{CC}{IC}\Aput{N\times\C}
+	\end{diagram}
+	\qquad=\qquad
+	\begin{diagram}
+	\\
+	\I\times \C & \rTo_{M\times \C} & \C\times\C\\
+	\uTo<{\I\times J} & \raise1em\hbox{$\sim$} & \uTo>{\C\times J}\\
+	\rnode{II}{\I\times \I} & \Downarrow{\scriptstyle\delta\times \I} & \rnode{CI}{\C\times \I}\\
+	\ncarc{->}{II}{CI}\Aput{M\times \I}
+	\ncarc{<-}{CI}{II}\Aput{N\times \I}
+	\end{diagram}
+\]
+from which it easily follows that $p(i_\C(\delta))=\delta$, as required.
+
+For the other direction, consider some $\gamma: i_\C(M)\to i_\C(N)$ in $\e(\C)$.
+Diagramatically, $i_\C(p(\gamma))$ is the pasting
+\begin{diagram}[w=4em,labelstyle=\scriptstyle]
+	&&&&\rnode{top}{\C\times \I\times\C}\\
+	&&&&\dTo<{\C\times J\times\C}\\
+	&&\raise1em\hbox{$\sim$}&&\C\times\C\times\C&\raise1em\hbox{$\rr\times\C$}\\
+	\rnode{IIC}{\I\times \I\times\C}&\rTo^{\I\times J\times\C}&\I\times\C\times\C&\ruTo(2,1)^{M\times\C\times\C}
+		&\Arr\Downarrow{\gamma\times\C}&\rdTo(2,1)^{P\times\C}&\rnode{CC}{\C\times\C}
+		&\rTo^{\textstyle P}&\C\\
+	&&\raise-1em\hbox{$\sim$}&\rdTo(2,1)_{N\times\C\times\C}&\C\times\C\times\C&\ruTo(2,1)_{P\times\C}
+		\raise-1em\hbox{$\rr\times\C$}\\
+	&&&&\uTo<{\C\times J\times\C}\\
+	&&&&\rnode{bot}{\C\times \I\times\C}
+	\ncarc{->}{IIC}{top}\Aput{M\times \I\times\C}
+	\ncarc{->}{top}{CC}\Aput{1}
+	\ncarc{<-}{bot}{IIC}\Aput{N\times \I\times\C}
+	\ncarc{<-}{CC}{bot}\Aput{1}
+\end{diagram}
+We want to show that this is equal to $\gamma$, for which we use an easy lemma:
+\begin{lemma}\label{lemma-gamma}
+\begin{diagram}[labelstyle=\scriptstyle]
+	&&\C\times\C\times\C\\
+	\I\times\C\times\C&\ruTo(2,1)^{M\times\C\times\C}&\Downarrow{\gamma\times\C}
+		&\rdTo(2,1)^{P\times\C}&\rnode{CC}{\C\times\C}&\rTo^{\textstyle P}&\C\\
+	&\rdTo(2,1)_{N\times\C\times\C}&\C\times\C\times\C&\ruTo(2,1)_{P\times\C}
+\end{diagram}
+is equal to
+\begin{diagram}[w=4em,labelstyle=\scriptstyle]
+	&&&&\rnode{top}{\C\times\C\times\C}\\
+	&&&&\dTo<{\C\times P}&\rdTo(2,1)^{P\times\C}&\C\times\C\\
+	&&\raise3em\hbox{$\sim$}&&\C\times\C&\raise1em\hbox{$\aa$}&\dTo>{P}\\
+	\rnode{ICC}{\I\times\C\times\C}&\rTo^{\I\times P}&\C\times\C&\ruTo(2,1)^{M\times\C}
+		&\Arr\Downarrow{\gamma}&\rdTo(2,1)^{P}&\C\\
+	&&\raise-1em\hbox{$\sim$}&\rdTo(2,1)_{N\times\C}&\C\times\C&\ruTo(2,1)_{P}
+		\raise-2em\hbox{$\aa$}&\uTo>P\\\
+	&&&&\uTo<{\C\times P} &&\C\times\C.\\
+	&&&&\rnode{bot}{\C\times\C\times\C}&\ruTo(2,1)_{P\times\C}
+	\ncarc{->}{ICC}{top}\Aput{M\times \I\times\C}
+	\ncarc{<-}{bot}{ICC}\Aput{N\times \I\times\C}
+\end{diagram}
+\end{lemma}
+\begin{proof}
+	Clearly the identity 2-cell on
+	\[
+	\I\times\C\times\C \rTo^{M\times\C\times\C} \C\times\C\times\C
+		\rTo^{P\times\C}\C\times\C\rTo^P\C
+	\]
+	is equal to
+	\begin{diagram}[tight,w=4em]
+	&&\C\times\C\times\C&\rTo^{P\times\C}&\C\times\C\\
+	&\ruTo^{M\times\C\times\C}&\sim&\rdTo^{\C\times P}&\aa&\rdTo^P\\
+	\I\times\C\times\C&\rTo^{\I\times P}&\I\times\C&\rTo^{M\times\C}&\C\times\C&\rTo^P&\C.\\
+	&\rdTo_{M\times\C\times\C}&\sim&\ruTo_{\C\times P} & \aa &\ruTo_P\\
+	&&\C\times\C\times\C&\rTo_{P\times\C\times\C}&\C\times\C
+	\end{diagram}
+	Vertically compose this with
+	\begin{diagram}[labelstyle=\scriptstyle]
+	&&\C\times\C\times\C\\
+	\I\times\C\times\C&\ruTo(2,1)^{M\times\C\times\C}&\Downarrow{\gamma\times\C}
+		&\rdTo(2,1)^{P\times\C}&\rnode{CC}{\C\times\C}&\rTo^{\textstyle P}&\C,\\
+	&\rdTo(2,1)_{N\times\C\times\C}&\C\times\C\times\C&\ruTo(2,1)_{P\times\C}
+	\end{diagram}
+	then equation (\ref{eq-box}) gives the desired result.
+\end{proof}
+%
+So, by Lemma~\ref{lemma-gamma}, $i_\C(p(\gamma))$ is equal to
+\begin{diagram}[w=4em,labelstyle=\scriptstyle]
+	&&&&&&\rnode{topCIC}{\C\times \I\times\C}\\
+	&&&&&&\dTo<{\C\times J\times\C}&\raise-2em\hbox{$\rr\times\C$}\\
+	&&&&\raise2em\hbox{$\sim$}&&\rnode{topCCC}{\C\times\C\times\C}\\
+	&&&&&&\dTo<{\C\times P}&\rdTo(2,1)^{P\times\C}&\rnode{topCC}{\C\times\C}\\
+	&&&&\raise1em\hbox{$\sim$}&&\C\times\C&\raise1em\hbox{$\aa$}&\dTo>{P}\\
+	\rnode{IIC}{\I\times \I\times\C}&\rTo^{\I\times J\times\C}&\rnode{ICC}{\I\times\C\times\C}
+		&\rTo^{\I\times P}&\C\times\C&\ruTo(2,1)^{M\times\C}
+		&\Arr\Downarrow{\gamma}&\rdTo(2,1)^{P}&\C\\
+	&&&&\raise-1em\hbox{$\sim$}&\rdTo(2,1)_{N\times\C}&\C\times\C&\ruTo(2,1)_{P}
+		\raise-2em\hbox{$\aa$}&\uTo>P\\\
+	&&&&&&\uTo<{\C\times P} &&\rnode{botCC}{\C\times\C}\\
+	&&&&\raise-2em\hbox{$\sim$}&&\rnode{botCCC}{\C\times\C\times\C}&\ruTo(2,1)_{P\times\C}\\
+	&&&&&&\uTo<{\C\times J\times\C}&\raise2em\hbox{$\rr\times\C$}\\
+	&&&&&&\rnode{botCIC}{\C\times \I\times\C}
+	\ncarc{->}{ICC}{topCCC}\Aput{M\times \I\times\C}
+	\ncarc{->}{IIC}{topCIC}\Aput{M\times \I\times\C}
+	\ncarc{->}{topCIC}{topCC}\Aput{1}
+	\ncarc{<-}{botCCC}{ICC}\Aput{N\times \I\times\C}
+	\ncarc{<-}{botCIC}{IIC}\Aput{N\times \I\times\C}
+	\ncarc{<-}{botCC}{botCIC}\Aput{1}
+\end{diagram}
+%
+which, by definition of a pseudomonoid, is equal to
+\begin{diagram}[w=4em,labelstyle=\scriptstyle]
+	&&&&&&\rnode{topCIC}{\C\times \I\times\C}\\
+	&&&&&&\dTo<{\C\times J\times\C}\\
+	&&&&\raise2em\hbox{$\sim$}&&\rnode{topCCC}{\C\times\C\times\C}&\C\times\ll\\
+	&&&&&&\dTo<{\C\times P}\\
+	&&&&\raise1em\hbox{$\sim$}&&\rnode{topCC}{\C\times\C}\\
+	\rnode{IIC}{\I\times \I\times\C}&\rTo^{\I\times J\times\C}&\rnode{ICC}{\I\times\C\times\C}
+		&\rTo^{\I\times P}&\C\times\C&\ruTo(2,1)^{M\times\C}
+		&\Arr\Downarrow{\gamma}&\rdTo(2,1)^{P}&\C\\
+	&&&&\raise-1em\hbox{$\sim$}&\rdTo(2,1)_{N\times\C}&\rnode{botCC}{\C\times\C}&\ruTo(2,1)_{P}\\
+	&&&&&&\uTo<{\C\times P} &&\\
+	&&&&\raise-2em\hbox{$\sim$}&&\rnode{botCCC}{\C\times\C\times\C}&\C\times\ll\\
+	&&&&&&\uTo<{\C\times J\times\C}\\
+	&&&&&&\rnode{botCIC}{\C\times \I\times\C}
+	\ncarc{->}{ICC}{topCCC}\Aput{M\times \I\times\C}
+	\ncarc{->}{IIC}{topCIC}\Aput{M\times \I\times\C}
+	\ncarc[arcangle=90,ncurv=1.5]{->}{topCIC}{topCC}\Aput{1}
+	\ncarc{<-}{botCCC}{ICC}\Aput{N\times \I\times\C}
+	\ncarc{<-}{botCIC}{IIC}\Aput{N\times \I\times\C}
+	\ncarc[arcangle=90,ncurv=1.5]{<-}{botCC}{botCIC}\Aput{1}
+\end{diagram}
+which is equal to
+\begin{diagram}
+	&&&&&&\rnode{top}{\C\times \I\times\C}\\
+	&&&&&&\dTo>1\\
+	&&\ll&&&&\C\times\C\\
+	\rnode{IIC}{\I\times \I\times\C} &\rTo^{\I\times J\times\C} & \I\times\C\times\C &\rTo^{\I\times P}
+		&\rnode{IC}{\I\times C} &\ruTo(2,1)^{M\times\C}&\Arr\Downarrow\gamma&\rdTo(2,1)^P&\C\\
+	&&\ll&&&\rdTo(2,1)_{N\times\C}&\C\times\C&\ruTo(2,1)_P\\
+	&&&&&&\uTo>1\\
+	&&&&&&\rnode{bot}{\C\times \I\times\C}
+	\psset{ncurv=1,arcangle=60}
+	\nccurve[angleA=90,angleB=180]{->}{IIC}{top}\Aput{M\times \I\times\C}
+	\ncarc{->}{IIC}{IC}\Aput{1}
+	\nccurve[angleA=180,angleB=-90]{<-}{bot}{IIC}\Aput{N\times \I\times\C}
+	\ncarc{<-}{IC}{IIC}\Aput{1}
+\end{diagram}
+which is clearly equal to $\gamma$, as required. So $i_\C$ is indeed a full and
+faithful functor.
+\end{proof}
+%
+\begin{propn}\label{prop-i-monoidal}
+	The functor $i_\C$ is strong monoidal, when equipped with the
+	isomorphism $m_I: I\to i_\C(J)$:
+	\begin{diagram}
+		\I\times\C &\rTo^{J\times\C}&\C\times\C\\
+		&\rdTo[snake=-1ex](1,2)<{1}
+			\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\ll\end{array}$}%
+			\ldTo[snake=1ex](1,2)>{P}\\
+		&\C,
+	\end{diagram}
+	and the natural family of isomorphisms $m_{M,N}: i_\C(M)\tn i_\C(N)\to i_\C(M\tn N)$:
+	\begin{diagram}
+	&&\I\times\C &\rTo^{M\times\C} & \C\times\C & \rTo^P & \C\\
+	&&\uTo<{\I\times P} & \sim & \uTo<{\C\times P} & \Arr\Searrow\aa &\uTo>P\\
+	\I\times\I\times\C &\rTo_{\I\times N\times\C} & \I\times\C\times\C & \rTo_{M\times\C\times\C}
+		&\C\times\C\times\C & \rTo_{P\times\C} & \C\times\C.
+	\end{diagram}
+\end{propn}
+\begin{proof}
+	First we must verify that the natural transformations $m_I$ and $m_{M,N}$ are indeed
+	arrows of $\e(\C)$. For $m_I$, this means that
+	\[
+	\begin{diagram}
+		&&\I\times\C^2 & \rTo^{\I\times P} & \I\times \C \\
+		&\ldTo^{J\times\C^2} \\
+		\C^3 & \ll\times\C & \dTo>1 && \dTo>1 \\
+		&\rdTo_{P\times\C} \\
+		&&\C^2 &\rTo_P & \C
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+		&&\I\times\C^2 & \rTo^{\I\times P} & \I\times \C \\
+		&\ldTo^{J\times\C^2} &\sim & \ldTo^{J\times \C} \\
+		\C^3 & \rTo^{\C\times P} & \C^2 &\ll& \dTo>1 \\
+		&\rdTo_{P\times\C} & \aa & \rdTo_P \\
+		&&\C^2 &\rTo_P & \C
+	\end{diagram}
+	\]
+	which follows easily from (\ref{eq-lla}). For $m_{M,N}$, we have
+	\[\hskip-4em
+	\begin{diagram}[hug]
+	&&\I^2\times\C \\
+	&\ruTo[nohug]^{\I^2\times P} &\dTo>{\I\times N\times\C} \\
+	\I^2\times\C^2 & \sim & \I\times\C^2 \\
+	\dTo<{\I\times N \times \C^2} & \ruTo^{\I\times \C\times P} &&\rdTo[nohug]^{\I\times P} \\
+	\I\times\C^3 && \I\times\aa &&\I\times\C \\
+	\dTo<{M\times\C^3} & \rdTo^{\I\times P\times\C} &&\ruTo^{\I\times P} &\dTo>{M\times\C} \\
+	\C^4 &\sim & \I\times\C^2 & \sim & \C^2 \\
+	\dTo<{P\times\C^2} & \rdTo^{\C\times P\times\C} &\dTo[snake=1em]>{M\times\C^2} & \ruTo_{\C\times P} & \dTo>P \\
+	\C^3 & \aa\times\C & \C^3 & \aa & \C \\
+	&\rdTo[nohug]_{P\times\C} & \dTo[snake=1em]>{P\times\C} & \ruTo[nohug]_{P} \\
+	&&\C^2
+	\end{diagram}
+	=
+	\begin{diagram}[hug]
+	&&\I^2\times\C \\
+	&\ruTo[nohug]^{\I^2\times P} &\dTo>{\I\times N\times\C} \\
+	\I^2\times\C^2 & \sim & \I\times\C^2 \\
+	\dTo<{\I\times N \times \C^2} & \ruTo^{\I\times \C\times P} &\dTo[snake=-1em]>{M\times\C^2}&\rdTo[nohug]^{\I\times P} \\
+	\I\times\C^3 &\sim& \C^3 &\sim&\I\times\C \\
+	\dTo<{M\times\C^3} & \ruTo_{\C^2\times P} &&\rdTo_{\C\times P} &\dTo>{M\times\C} \\
+	\C^4 && \C\times\aa && \C^2 \\
+	\dTo<{P\times\C^2} & \rdTo^{\C\times P\times\C} && \ruTo_{\C\times P} & \dTo>P \\
+	\C^3 & \aa\times\C & \C^3 & \aa & \C \\
+	&\rdTo[nohug]_{P\times\C} & \dTo[snake=1em]>{P\times\C} & \ruTo[nohug]_{P} \\
+	&&\C^2
+	\end{diagram}
+	\]
+	\[
+	=
+	\begin{diagram}[hug]
+	&&\I^2\times\C \\
+	&\ruTo[nohug]^{\I^2\times P} &\dTo>{\I\times N\times\C} \\
+	\I^2\times\C^2 & \sim & \I\times\C^2 \\
+	\dTo<{\I\times N \times \C^2} & \ruTo^{\I\times \C\times P} &\dTo[snake=-1em]>{M\times\C^2}&\rdTo[nohug]^{\I\times P} \\
+	\I\times\C^3 &\sim& \C^3 &\sim&\I\times\C \\
+	\dTo<{M\times\C^3} & \ruTo^{\C^2\times P} &\dTo[snake=-1em]>{P\times\C}&\rdTo^{\C\times P} &\dTo>{M\times\C} \\
+	\C^4 &\sim& \C^2 &\aa& \C^2 \\
+	\dTo<{P\times\C^2} & \ruTo^{\C\times P} && \rdTo^{P} & \dTo>P \\
+	\C^3 && \aa && \C \\
+	&\rdTo[nohug]_{P\times\C} && \ruTo[nohug]_{P} \\
+	&&\C^2
+	\end{diagram}
+	\]
+	showing that $m_{M,N}$ is indeed a morphism of $\e(\C)$.
+	
+	We also need to check that these definitions make $i_\C$ into a monoidal
+	functor, i.e. that the following diagrams commute:
+	\[\begin{array}{cc}
+		\begin{diagram}
+			i_\C(M)\tn I & \rTo^{i_\C(M)\tn m_I} & i_\C(M)\tn i_\C(I) \\
+			\dTo<{\rho_{i_\C(M)}} && \dTo>{m_{M,I}} \\
+			i_\C(M) & \lTo_{i_\C(\rho_M)} & i_\C(M\tn I)
+		\end{diagram}
+		&
+		\begin{diagram}
+			I\tn i_\C(M) & \rTo^{m_I \tn i_\C(M)} & i_\C(I)\tn i_\C(M) \\
+			\dTo<{\lambda_{i_\C(M)}} && \dTo>{m_{I,M}} \\
+			i_\C(M) & \lTo_{i_\C(\lambda_M)} & i_\C(I\tn M)
+		\end{diagram}
+		\\
+		\multicolumn 2c{\begin{diagram}
+			& & i_\C(M\tn N)\tn i_\C(Q) & \rTo^{m_{M,N\tn Q}} & i_\C(M\tn(N\tn Q)) \\
+			& \ruTo^{i_\C(M)\tn m_{N,Q}} \\
+			i_\C(M)\tn i_\C(N)\tn i_\C(Q) &&&& \dTo>{i_\C(\alpha_{M,N,Q})} \\
+			& \rdTo_{m_{M,N}\tn i_\C(Q)} \\
+			& & i_\C(M)\tn i_\C(N\tn Q) & \rTo_{m_{M\tn N, Q}} & i_\C((M\tn N)\tn Q) 
+		\end{diagram}}
+	\end{array}\]
+	%
+	The first of these diagrams corresponds to the claim that
+	\begin{diagram}
+		& \rnode{IC}{\I\times\C} & \rTo^{M\times\C} & \C^2 & \rTo^P & \C \\
+		& \uTo<{\I\times P} & \sim & \uTo<{\C\times P} & \aa & \uTo>P \\
+		\I\times\ll& \I\times\C^2 & \rTo_{M\times\C^2} & \C^3 & \rTo_{P\times\C} & \rnode{CC}{\C^2} \\
+		& \uTo<{\I\times J\times\C} & \sim & \uTo<{\C\times J\times\C} & \rr\times\C \\
+		& \rnode{IIC}{\I^2\times\C} & \rTo_{M\times\I\times\C} & \rnode{CIC}{\C\times\I\times\C}
+		\ncarc[arcangle=70,ncurv=1]{->}{IIC}{IC}\Aput{1}
+		\nccurve[angleA=0,angleB=-90]{->}{CIC}{CC}\Bput{1}
+	\end{diagram}
+	is equal to the identity 2-cell, which follows from equation~(\ref{eq-lra}) and the naturality of
+	the $\sim$~cells. The second corresponds to the claim that
+	\begin{diagram}
+		& \I^2\times\C \\
+		& \dTo<{\I\times M\times\C} \\
+		& \rnode{ICC}{\I\times\C^2} & \rTo^{\I\times P} & \rnode{IC}{\I\times\C} \\
+		& \dTo<{J\times\C^2} & \sim & \dTo>{J\times\C} \\
+		\ll\times\C & \C^3 & \rTo^{\C\times P} & \C^2 & \ll \\
+		& \dTo<{P\times\C} & \aa & \dTo>{P} \\
+		& \rnode{CC}{\C^2} & \rTo_P & \rnode{C}{\C}
+		\ncarc[arcangle=-70,ncurv=1]{->}{ICC}{CC}\Bput{1}
+		\ncarc[arcangle=70,ncurv=1]{->}{IC}{C}\Aput{1}
+	\end{diagram}
+	is the identity, which follows from (\ref{eq-lla}).
+	
+	The final, associativity, diagram
+	amounts to
+	\[\hskip-4em
+	\begin{diagram}[hug]
+	I^3\times\C&&\I^2\times\C \\
+	\dTo<{I^2\times Q\times\C}&\ruTo^{\I^2\times P} &\dTo>{\I\times N\times\C} \\
+	\I^2\times\C^2 & \sim & \I\times\C^2 \\
+	\dTo<{\I\times N \times \C^2} & \ruTo^{\I\times \C\times P} &&\rdTo[nohug]^{\I\times P} \\
+	\I\times\C^3 && \I\times\aa &&\I\times\C \\
+	\dTo<{M\times\C^3} & \rdTo^{\I\times P\times\C} &&\ruTo^{\I\times P} &\dTo>{M\times\C} \\
+	\C^4 &\sim & \I\times\C^2 & \sim & \C^2 \\
+	\dTo<{P\times\C^2} & \rdTo^{\C\times P\times\C} &\dTo[snake=1em]>{M\times\C^2} & \ruTo_{\C\times P} & \dTo>P \\
+	\C^3 & \aa\times\C & \C^3 & \aa & \C \\
+	&\rdTo[nohug]_{P\times\C} & \dTo[snake=1em]>{P\times\C} & \ruTo[nohug]_{P} \\
+	&&\C^2
+	\end{diagram}
+	=
+	\begin{diagram}[hug]
+	\I^3\times\C&&\I^2\times\C \\
+	\dTo<{I^2\times Q\times\C}&\ruTo^{\I^2\times P} &\dTo>{\I\times N\times\C} \\
+	\I^2\times\C^2 & \sim & \I\times\C^2 \\
+	\dTo<{\I\times N \times \C^2} & \ruTo^{\I\times \C\times P} &\dTo[snake=-1em]>{M\times\C^2}&\rdTo[nohug]^{\I\times P} \\
+	\I\times\C^3 &\sim& \C^3 &\sim&\I\times\C \\
+	\dTo<{M\times\C^3} & \ruTo^{\C^2\times P} &\dTo[snake=-1em]>{P\times\C}&\rdTo^{\C\times P} &\dTo>{M\times\C} \\
+	\C^4 &\sim& \C^2 &\aa& \C^2 \\
+	\dTo<{P\times\C^2} & \ruTo^{\C\times P} && \rdTo^{P} & \dTo>P \\
+	\C^3 && \aa && \C \\
+	&\rdTo[nohug]_{P\times\C} && \ruTo[nohug]_{P} \\
+	&&\C^2
+	\end{diagram}
+	\]
+	which is true by the argument used above to show that $m_{M,N}$ is
+	a morphism of $\e(\C)$.
+\end{proof}
+%
+\begin{propn}\label{prop-i-equiv}
+	$i_\C$ is a monoidal equivalence.
+\end{propn}
+\begin{proof}
+	By Propositions~\ref{prop-i-ff} and~\ref{prop-i-monoidal}, it suffices to show that
+	$i_\C$ is essentially surjective on objects. Therefore let $(F, \phi^F)$ be an
+	object of $\e(\C)$. We claim that this object is isomorphic to $i_\C(FJ)$,
+%	applied to
+%	\[
+%		I\rTo^J\C\rTo^F\C,
+%	\]
+	by the isomorphism
+	\begin{diagram}
+		\rnode{IC}{\I\times\C} & \rTo^{J\times\C} & \C\times\C & \rTo^{F\times\C} & \C\times\C\\
+		&\ll & \dTo>P & \phi^F & \dTo>P \\
+		&&\rnode{C}{\C} & \rTo_F & \C.
+		\nccurve[angleA=270,angleB=180]{->}{IC}{C}\Bput{1}
+	\end{diagram}
+	It remains only to show that this isomorphism is indeed a morphism of $\e(\C)$,
+	i.e. that
+	\[
+	\begin{diagram}
+	\I\times\C^2 & \rTo^{\I\times P} & \rnode x{\I\times\C} & & \rnode y{\I\times\C} \\
+	\dTo<1 && \dTo<1 & \ll & \dTo>{J\times\C} \\
+	\C^2 & \rTo^P & \C & \lTo^P & \C^2 \\
+	\dTo<{F\times\C} & \phi^F & \dTo<F & \phi^F & \dTo>{F\times\C} \\
+	\C^2 & \rTo_{P} & \C & \lTo_P & \C^2
+	\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+	\rnode x{\I\times\C^2} && \rnode y{\I\times\C^2} & \rTo^{\I\times P} & \I \times\C \\
+	\dTo<1 & \ll\times\C & \dTo[snake=1em]>{J\times\C^2} & \sim & \dTo>{J\times\C} \\
+	\C^2 & \lTo^{P\times\C} & \C^3 & \rTo^{\C\times P} & \C^2 \\
+	\dTo<{F\times\C} & \phi^F\!\!\times\C & \dTo[snake=1em]>{F\times\C^2} & \sim & \dTo>{F\times\C} \\
+	\C^2 & \lTo^{P\times\C} & \C^3 & \rTo^{\C\times P} & \C^2 \\
+	&\rdTo_P & \raise.7em\hbox{$\aa$} & \ldTo_P \\
+	&& \C
+	\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\end{diagram}
+	\]
+	By the rotated version of the cube that defines the objects of $\e(\C)$, the
+	right-hand side is equal to
+	\begin{diagram}
+	\rnode x{\I\times\C^2} && \rnode y{\I\times\C^2} & \rTo^{\I\times P} & \I \times\C \\
+	\dTo<1 & \ll\times\C & \dTo[snake=1em]>{J\times\C^2} & \sim & \dTo>{J\times\C} \\
+	\C^2 & \lTo^{P\times\C} & \C^3 & \rTo^{\C\times P} & \C^2 \\
+	\dTo<{F\times\C} & \rdTo^P & \raise.7em\hbox{$\aa$} & \ldTo^P & \dTo>{F\times\C} \\
+	\C^2 & \phi^F & \C & \phi^F & \C^2 \\
+	&\rdTo_P & \dTo>F & \ldTo_P \\
+	&& \C
+	\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\end{diagram}
+	which, by (\ref{eq-lla}), is equal to the left-hand side, as required.
+\end{proof}
+
+\iffalse
+\section{Braided and symmetric pseudomonoids}
+So far, we have assumed only that $\B$ is a monoidal bicategory. However, many of the
+monoidal bicategories we're interested in -- especially $\Cat$ and $\Prof$ -- are
+actually \emph{symmetric} monoidal. The definition of symmetric monoidal bicategory
+is inevitably fairly complicated: we have a pseudonatural equivalence $\sigma$ with
+object components \[
+	\sigma_{A,B}: A\times B\to B\times A,
+\]called the braiding, and invertible modifications
+\begin{diagram}
+	A\times B\times C\times D & \rTo^{A\times B \times\sigma_{C,D}} & A\times B\times D\times C \\
+	\dTo<{\sigma_{A,B}\times C\times D} & \Arr\Nearrow{\varpi_{A,B,C,D}} & \dTo>{\sigma_{A,B\times D}\times C} \\
+	B\times A\times C\times D & \rTo_{B\times\sigma_{A\times C,D}} & B\times D\times A\times C
+\end{diagram}
+and \begin{diagram}[h=1.5em]
+	A\times B \\
+	&\rdTo^{\sigma_{A,B}} \\
+	\dTo<1 & \hbox to0pt{\hss$\mathop\Rightarrow\limits_{\displaystyle\nu_{A,B}}$} & B\times A \\
+	&\ldTo_{\sigma_{B,A}} \\
+	A\times B
+\end{diagram}
+subject to various axioms: the reader is referred to \citet[sections~4 and~5]{MonBicat}
+for the details of these. Note that this definition takes $\B$ to be a Gray monoid.
+Generalising to an arbitrary monoidal bicategory $\B$ is routine in principle, though
+in practice very complicated.
+
+Now, a braided pseudomonoid in the symmetric Gray monoid $\B$ is a pseudomonoid
+$\C$ equipped with an invertible 2-cell $\ss$:
+\begin{diagram}
+	\rnode{left}{\C\times\C} & \rTo^{\sigma_{\C,\C}} & \rnode{right}{\C\times\C} \\
+	&\raise1em\hbox{$\mathop\Rightarrow\limits_{\displaystyle\ss}$} \\
+	&\rnode{C}{\C}
+	\nccurve[angleA=-90,angleB=135]{->}{left}{C}\Bput{P}
+	\nccurve[angleA=-90,angleB=45]{->}{right}{C}\Aput{P}
+\end{diagram}
+\fi
+
+\section{The promonoidal unit}
+In the case $\B=\mathbf{Cat}$, the embedding theorem shows that every monoidal category is
+monoidally equivalent to a \emph{strict} monoidal category. In the case $\B=\mathbf{Prof}$,
+which is the case we're interested in here, the embedding allows us to construct a canonical
+representation for the promonoidal unit. (This turns out to be particularly powerful in the
+braided, or symmetric, case.)
+
+In summary, the story goes as follows.
+It is a familiar fact that, in a semigroup, all units must be equal: if $i$ and $j$ are
+both units, then $i=ij=j$. The existence or otherwise of a unit is really a \emph{property}
+of a semigroup; there is no choice of how to define the unit. By a similar argument, in a
+pseudomonoid (or `pseudosemigroup', a pseudomonoid without the unit structure) all units
+are isomorphic. Being good category theorists, we don't care about the difference
+between isomorphic structures; so we have no real choice in how to define the unit of
+a pseudomonoid: given the tensor structure ($P$ and $\aa$), either it is possible to
+define a unit, or it isn't. We might say that the unit is `essentially property-like'
+\citep[cf.][]{proplike}. This point may seem rather irrelevant, since the easiest way
+to demonstrate the existence of a unit is often to exhibit one. However, it turns out
+that in the case of promonoidal categories that is not necessarily true. There is a
+canonical representative for the unit -- the functor denoted $\Lin$ below -- defined
+solely in terms of the tensor structure ($P$ and $\alpha$) that is isomorphic to the
+unit whenever there is a unit to be isomorphic to. Furthermore, in the case of braided
+or symmetric promonoidal categories, we can define a simple test of whether or not
+there is a unit. So we may \emph{define} a braided promonoidal category purely in
+terms of the tensor, associator and braiding, subject to a condition that determines
+the existence of a unit. Should an actual unit be required, we are free to use the
+canonical unit $\Lin$.
+
+Now for the details. Let $\C$ be a promonoidal category. The monoidal category $\mathbf{Prof}(1, \C)$
+is $[\C, \Set]$, equipped with Day's convolution tensor. The monoidal category
+$\e(\C)$ does not really have a simpler description than the general one given above:
+an object is a profunctor $\C\rPro\C$ together with a natural transformation
+\begin{diagram}
+	\C\times\C & \rPro^P & \C\\
+	\dPro<{F\times\C}&\Arr\Swarrow{\phi^F}&\dTo>F\\
+	\C\times\C&\rPro_P & \C
+\end{diagram}
+So $\phi^F$ is a natural isomorphism with components
+\[
+	\phi^F_{A,B,C}: \int^X P(A,B;X)\times F(X;C) \to \int^X F(A;X)\times P(X,B;C).
+\]
+Now let $A\in\C$. We have the sequence of natural isomorphisms
+\[\begin{array}{rclp{5cm}}
+	JA &\cong& [\C,\Set](\C(A,-), J) & {by Yoneda} \\
+	&\cong& \e(\C)(i_\C(\C(A,-)), i_\C(J)) & {since $i_\C$ is full and faithful} \\
+	&\cong& \e(\C)(i_\C(\C(A,-)), I) & {applying $m_I$}
+\end{array}\]
+Define the functor $\Lin: \C\to\Set$ as $Lin(A) := \e(\C)(i_\C(\C(A,-)), I)$.
+Thus we have exhibited a natural isomorphism $\theta: J \To \Lin$.
+An element of the set $\Lin(A)$ is a natural transformation $\gamma$ with components
+\[
+	\gamma_{X,Y}: P(A,X;Y) \to \C(X,Y)
+\]
+such that the diagram
+\begin{equation}\label{diag-linel}
+\begin{diagram}
+	\int^X P(L,M;X)\times P(A,X;N) & \rTo^{\int^X P(L,M;X)\times\gamma_{X,N}}
+		& \int^X P(L,M;X)\times\C(X,N) \\
+	&&\dTo>\cong \\
+	\dTo<{\alpha_{A,L,M}} && P(L,M;N) \\
+	&&\uTo>\cong \\
+	\int^X P(A,L;X)\times P(X,M;N) & \rTo_{\int^X \gamma_{L,X}\times P(X,M;N)}
+		& \int^X\C(L,X)\times P(X,M;N)
+\end{diagram}
+\hskip-2em % Tuck the equation number in
+\end{equation}
+commutes for all $L$, $M$ and $N$ in $\C$. We shall refer to the elements
+of this set as the \defns{linear element} of $A$.
+
+For the purposes of this thesis, of course, we're particularly interested
+in the case where the profunctor $P$ is represented by a functor $\tn: \C\times\C\to\C$.
+In this case, a linear element is a natural transformation with components
+\[
+	\gamma_{X,Y}: \C(A\tn X, Y) \to \C(X,Y)
+\]
+which, by Yoneda, can be represented by a natural transformation with components
+\[
+	\gamma_X: X \to A\tn X.
+\]
+With this representation, the condition boils down to the requirement that
+the diagram
+\begin{diagram}
+	A &\rTo^{\gamma_Y} & A\tn Y \\
+	\dTo<{\gamma_{X\tn Y}} && \dTo>{\gamma_X\tn Y} \\
+	A\tn(X\tn Y) & \rTo_{\alpha_{A,X,Y}} & (A\tn X)\tn Y
+\end{diagram}
+should commute, for all $X$, $Y\in\C$.
+
+Since an element of $\Lin(A)$ is a natural transformation 
+\[
+	\gamma_{X,Y}: P(A,X;Y) \to \C(X,Y)
+\]
+for every $A$ there is an obvious natural transformation $\lambda'^A$
+with components
+\[
+	\lambda'^A_{X,Y}: Lin(A)\times P(A,X;Y) \to \C(X,Y),
+\]
+dinatural in $A$.
+
+\begin{propn}
+	The diagram
+	\begin{diagram}[h=2em]
+		JA\times P(A,X;Y) \\
+		&\rdTo^{\lambda^A_{X,Y}}\\
+		\dTo<{\theta_A\times P(A,X;Y)} && \C(X,Y) \\
+		&\ruTo_{\lambda'^A_{X,Y}} \\
+		\Lin A \times P(A,X;Y)
+	\end{diagram}
+	commutes, for all $A$, $X$ and $Y\in\C$.
+\end{propn}
+\begin{proof}
+	This is a direct consequence of the definition of $\theta$: any
+	apparent complexity here is notational rather than mathematical.
+	First we shall calculate the effect of $\theta_A: JA\to\Lin A$
+	on an element $\e\in JA$. We'll consider in sequence the three
+	isomorphisms that define $\theta$. The first takes $e$ to the
+	natural transformation with $X$-component
+	\[
+		(f:A\to X) \mapsto J(f)(e);
+	\]
+	this must then be mapped by the second to a natural transformation
+	\[
+		P(A,X;Y) \to \int^Z JZ\times P(Z,X;Y)
+	\]
+	natural in $X$ and $Y$.
+	The elements of $\int^Z JZ\times P(Z,X;Y)$ are equivalence classes
+	of pairs $\langle j, p\rangle$, with $j\in JZ$ and $p\in P(Z,X;Y)$
+	for some $Z\in\C$. Our element is mapped to the $A$-indexed natural
+	family of functions
+	\[
+		(p\in P(A,X;Y)) \mapsto [\langle e,p\rangle].
+	\]
+	where $[\langle e,p\rangle]$ denotes the equivalence class containing
+	$\langle e,p\rangle$. The final natural isomorphism takes this element
+	to the $A$-indexed natural family of functions
+	\[
+		(p\in P(A,X;Y)) \mapsto \lambda_{X,Y}([\langle e,p\rangle]).
+	\]
+	Now it's easy to show that the diagram commutes: let $\langle e,p\rangle$
+	be an element of $JA\times P(A,X;Y)$. The vertical arrow maps it to
+	the pair $\langle f, p\rangle$, where $f$ is the linear element
+	displayed above. $\lambda'$ then maps this to $\lambda_{X,Y}^A(e,p)$,
+	as required.
+\end{proof}
+%
+There is an apparent asymmetry here: although it was easy to define
+$\lambda'$, there is no obvious way to define a corresponding $\rho'$
+-- unless of course our promonoidal category is braided, of which more
+below. This asymmetry derives from the asymmetric definition of $\e(\C)$,
+and of course it would be possible to define a dual version $\mbox{\textbf{\v e}}(\C)$,
+which would also be monoidally isomorphic to $\Prof(1,\C)$, hence to $\e(\C)$.
+Using this, we could define a `co-linear elements' functor $\Lin': \C\to\Set$,
+with a canonical natural isomorphism
+\[
+	\rho'^A_{X,Y}: \Lin'A\times P(X,A;Y) \to \C(X,Y).
+\]
+However, in general there is no canonical natural isomorphism between
+$\Lin$ and $\Lin'$. In the braided case, there is. So in that case we
+may simply take $\Lin$ (or equivalently $\Lin'$) to be the unit, which
+role it is able to fulfil if and only if $\lambda'$ (equivalently $\rho'$)
+is invertible. More formally we have:
+\begin{propn}
+	Let $\C$ be a category, and $P: \C\times\C\rPro\C$ a profunctor.
+	Let $\alpha$ be an associator satisfying the pentagon
+	condition, and let $\sigma$ be a braiding satisfying the
+	hexagon conditions. There exists a unit $J:1\rPro\C$ (with
+	coherent unit isomorphisms $\lambda$ and $\rho$) if and only
+	if the natural transformation
+	\[
+		\lambda': \int^A \Lin A\times P(A,X;Y) \to \C(X,Y),
+	\]
+	defined above, is invertible.
+\end{propn}
+\begin{proof}
+	We have already established the `only if' direction, so let
+	$\C$, $P$, $\alpha$ and $\sigma$ be given, and define $\Lin: \C\to\Set$
+	and $\lambda'$. Suppose that $\lambda'$ is invertible.
+	
+	By a general fact about braided pseudomonoids that I haven't written
+	up yet, it suffices to show that
+	\[
+		\begin{diagram}
+			1\times\C^2 & \rPro^{\Lin\times\C^2} & \C^3 \\
+			\dPro<{1\times P} & \sim & \dPro>{\C\times P} \\
+			\rnode{IC}{1\times\C} & \rPro^{\Lin\times\C} & \C^2 \\
+			&\lambda' & \dPro>P \\
+			&&\rnode{C}{\C}
+			\nccurve[angleA=270,angleB=180,ncurv=1]{->}{IC}{C}\Bput1
+		\end{diagram}
+		=
+		\begin{diagram}
+			\rnode{ICC}{1\times\C^2} & \rPro^{\Lin\times\C^2} & \C^3 & \rPro^{\C\times P} & \C^2 \\
+			&\lambda'\times\C &\dPro[snake=1em]>{P\times\C} & \alpha & \dPro>P \\
+			&&\rnode{CC}{\C^2} & \rPro_P & \C
+			\nccurve[angleA=270,angleB=180,ncurv=1]{->}{ICC}{CC}\Bput1
+		\end{diagram}
+	\]
+	Concretely, this amounts to showing that the diagram
+	\begin{diagram}[labelstyle=\scriptstyle]
+		\int^{A,X} P(A,X;N)\times\Lin A\times P(L,M;X)
+		& \rTo^{\int^X \lambda'_{X,N}\times P(L,M;X)}
+		& \int^X \C(X,N)\times P(L,M;X) \\
+		&&\dTo>\cong \\
+		\dTo<{\int^A\Lin A\times\alpha_{A,L,M,N}}
+		&& P(L,M;N) \\
+		&&\uTo>\cong \\
+		\int^{A,X}\Lin A\times P(A,L;X)\times P(X,M;N)
+		& \rTo_{\int^X\lambda'_{L,X}\times P(X,M;N)}
+		& \int^X\C(L,X)\times P(X,M;N)
+	\end{diagram}
+	commutes, which is an immediate consequence of (\ref{diag-linel}).
+\end{proof}
+%It has been observed by Gordon and Power that
+%\citeauthor{BTC}'s theorem is essentially an application of the bicategorical Yoneda
+%lemma \citep{FIB} to the suspension of a monoidal category (i.e. to a monoidal
+%category \emph{qua} one-object bicategory). There is a general notion of
+%\emph{enriched bicategory}, whose hom-objects are drawn from a monoidal bicategory.
+%Given this idea, the suspension of a promonoidal category may be defined: it is
+%a $\Prof$-enriched category with one object. It seems almost inevitable that something
+%like the following must be true.
+%\begin{conj}[weak Yoneda for enriched bicategories]
+%	For any $\V$-bicategory $\B$, the obvious `Yoneda' pseudo-functor
+%	\[
+%		\B_0 \to [\B\op,\V]_0
+%	\]
+%	is locally an equivalence.
+%\end{conj}
+%The only seeming difficulty with proving this conjecture is one that is all too familiar in
+%higher-dimensional category theory: the notions involved require a vast number of
+%coherence conditions to be satisfied. (Even the general definition of monoidal bicategory
+%is not for the faint of heart.) Therefore we have satisfied ourselves, for the moment, with
+%proving just the needed case of this general conjecture. Our theorem corresponds (very
+%nearly) to the case where $\V=\Prof$ and $\B$ has just one object.
+
+%One final remark is in order. As indicated by the vague qualifier `very nearly' in the preceding
+%sentence, our theorem as stated is a little stronger than would be obtained from the Yoneda
+%conjecture. Specialising the general conjecture yields a construction that is identical to
+%our $\e(\C)$ \emph{except} that the definition of object in $\e(\C)$ is subject to an extra condition,
+%involving the unit of $\C$. This matters to us, since it is significant in our application that the
+%definition of $\e(\C)$ does not involve the unit of $\C$ in any way.
+
+
+
+\bibliography{cs}
+\end{document}
+  

@@ -1,0 +1,628 @@
+{
+    DKDChangeTimeStamp = "2007-03-19 14:19:11 +0000"; 
+    DKDCreateTimeStamp = "2007-03-19 14:16:17 +0000"; 
+    DKDDocumentScale = {
+        HighPrecisonAngles = NO; 
+        ScaleOriginX = "0.000000"; 
+        ScaleOriginY = "0.000000"; 
+        ScalePlusDown = YES; 
+        ScalePlusToRight = YES; 
+        ScaleScale = "1.000000"; 
+        ScaleUnits = Inches; 
+    }; 
+    DKDDocumentVersion = 1; 
+    DKDEazyDrawVersion = "rev. 2.1.3c"; 
+    DKDExportDoc = {
+        BMPExporBackground = "No Background"; 
+        DOSEPSPreview = NO; 
+        DataExporBackground = "No Background"; 
+        EPSColorSpace = RGB; 
+        EPSExporBackground = "No Background"; 
+        EPSLatexPsfrag = NO; 
+        ExporBackground = "No Background"; 
+        ExportButtonDragFormat = File; 
+        ExportButtonFileExtension = pdf; 
+        ExportColorTable = "256 Best"; 
+        ExportCompresion = "1.000000"; 
+        ExportContent = "Just Graphics"; 
+        ExportExpand = "1.000000"; 
+        ExportFileExtension = eps; 
+        ExportImageAntialias = YES; 
+        ExportImageInterpolation = Automatic; 
+        ExportPath = "/Users/robin/thesis/d-adj"; 
+        ExportTransparentColor = Automatic; 
+        GIFExporBackground = "White Background"; 
+        GIFFDither = NO; 
+        HideExtension = NO; 
+        ICNSExporBackground = "No Background"; 
+        ICOColorTable = "256 Best"; 
+        ICOExporBackground = "No Background"; 
+        IncludePictHeader = YES; 
+        JPGExporBackground = "White Background"; 
+        KeynoteExporBackground = "No Background"; 
+        KeynoteExportMapping = "One Slide"; 
+        MirrorTextEncoding = "-1"; 
+        PDFExporBackground = "No Background"; 
+        PNGExporBackground = "White Background"; 
+        PNGInterlace = NO; 
+        TIFExporBackground = "No Background"; 
+        TIFFColorSpace = RGBA; 
+        TIFFCompresionType = None; 
+        ThumbnailPreview = YES; 
+    }; 
+    DKDGrids = {
+        DynamicSnapGrid = YES; 
+        MajorGrid = {
+            GridAboveGraphics = NO; 
+            GridRGB = {
+                Blue = "1.000000"; 
+                ColorSpace = NSCalibratedRGBColorSpace; 
+                Green = "0.713726"; 
+                Opacity = "1.000000"; 
+                Red = "0.549020"; 
+            }; 
+            GridSpacingX = "36.000000"; 
+            GridSpacingY = "36.000000"; 
+            LinkGridToRulers = NO; 
+            PrintLineWidth = "1.100000"; 
+            PrintsGrid = NO; 
+            ShowsGrid = YES; 
+            SnapsToGrid = YES; 
+        }; 
+        MinorGrid = {
+            GridAboveGraphics = NO; 
+            GridRGB = {
+                Blue = "0.874510"; 
+                ColorSpace = NSCalibratedRGBColorSpace; 
+                Green = "0.854902"; 
+                Opacity = "1.000000"; 
+                Red = "0.745098"; 
+            }; 
+            GridSpacingX = "4.500000"; 
+            GridSpacingY = "4.500000"; 
+            LinkGridToRulers = NO; 
+            PrintLineWidth = "0.850000"; 
+            PrintsGrid = NO; 
+            ShowsGrid = YES; 
+            SnapsToGrid = YES; 
+        }; 
+        SnapEnds = NO; 
+        SnapGuidelines = NO; 
+        SnapRadiusGrid = "3.000000"; 
+        SnapSound = None; 
+        SoftSnap = NO; 
+    }; 
+    DKDHideExtension = YES; 
+    DKDLayersList = (
+        {
+            CloakLayerGuidelines = NO; 
+            CloakLayerVertices = NO; 
+            FullLayerScale = {
+                HighPrecisonAngles = NO; 
+                ScaleOriginX = "0.000000"; 
+                ScaleOriginY = "0.000000"; 
+                ScalePlusDown = YES; 
+                ScalePlusToRight = YES; 
+                ScaleScale = "1.000000"; 
+                ScaleUnits = Inches; 
+            }; 
+            GraphicsList = (
+                {
+                    Bounds = "{{63, 31.5}, {18, 27}}"; 
+                    Class = DKDRectangle; 
+                    CloakGuidelines = NO; 
+                    CloakVertices = NO; 
+                    GraphicID = 6778A714; 
+                    GraphicName = Rectangle; 
+                    GraphicStyle = {
+                        DrawsFill = NO; 
+                        DrawsLine = YES; 
+                        LineCapStyle = Square; 
+                        LineJoinStyle = Miter; 
+                        LineRGB = {
+                            Blue = "0.000000"; 
+                            ColorSpace = NSCalibratedRGBColorSpace; 
+                            Green = "0.000000"; 
+                            Opacity = "1.000000"; 
+                            Red = "0.000000"; 
+                        }; 
+                        LineWidth = "1.500000"; 
+                        MiterLimit = 10; 
+                        StrokePosition = Front; 
+                        WindingRule = "Non-Zero"; 
+                    }; 
+                    GridRef = {GridRefPosition = "Top Left"; GridRefX = "0.000000"; GridRefY = "0.000000"; }; 
+                    Locked = NO; 
+                    ReversedPath = NO; 
+                }, 
+                {
+                    Bounds = "{{81, 36}, {18, 0}}"; 
+                    Class = DKDLine; 
+                    CloakGuidelines = NO; 
+                    CloakVertices = NO; 
+                    DkBezierPath = (
+                        {
+                            BezierPathElement = MoveToElement; 
+                            PositionPoint = {X = "81.000000"; Y = "36.000000"; }; 
+                        }, 
+                        {
+                            BezierPathElement = LineToElement; 
+                            PositionPoint = {X = "99.000000"; Y = "36.000000"; }; 
+                        }
+                    ); 
+                    GraphicID = 7778A714; 
+                    GraphicName = Line; 
+                    GraphicStyle = {
+                        DrawsFill = NO; 
+                        DrawsLine = YES; 
+                        LineCapStyle = Square; 
+                        LineJoinStyle = Miter; 
+                        LineRGB = {
+                            Blue = "0.000000"; 
+                            ColorSpace = NSCalibratedRGBColorSpace; 
+                            Green = "0.000000"; 
+                            Opacity = "1.000000"; 
+                            Red = "0.000000"; 
+                        }; 
+                        LineWidth = "1.000000"; 
+                        MiterLimit = 10; 
+                        StrokePosition = Front; 
+                        WindingRule = "Non-Zero"; 
+                    }; 
+                    GridRef = {GridRefPosition = "Top Left"; GridRefX = "0.000000"; GridRefY = "0.000000"; }; 
+                    Locked = NO; 
+                    ReversedPath = NO; 
+                }, 
+                {
+                    Bounds = "{{45, 36}, {18, 0}}"; 
+                    Class = DKDLine; 
+                    CloakGuidelines = NO; 
+                    CloakVertices = NO; 
+                    DkBezierPath = (
+                        {
+                            BezierPathElement = MoveToElement; 
+                            PositionPoint = {X = "45.000000"; Y = "36.000000"; }; 
+                        }, 
+                        {
+                            BezierPathElement = LineToElement; 
+                            PositionPoint = {X = "63.000000"; Y = "36.000000"; }; 
+                        }
+                    ); 
+                    GraphicID = 8778A714; 
+                    GraphicName = Line; 
+                    GraphicStyle = {
+                        DrawsFill = NO; 
+                        DrawsLine = YES; 
+                        LineCapStyle = Square; 
+                        LineJoinStyle = Miter; 
+                        LineRGB = {
+                            Blue = "0.000000"; 
+                            ColorSpace = NSCalibratedRGBColorSpace; 
+                            Green = "0.000000"; 
+                            Opacity = "1.000000"; 
+                            Red = "0.000000"; 
+                        }; 
+                        LineWidth = "1.000000"; 
+                        MiterLimit = 10; 
+                        StrokePosition = Front; 
+                        WindingRule = "Non-Zero"; 
+                    }; 
+                    GridRef = {GridRefPosition = "Top Left"; GridRefX = "0.000000"; GridRefY = "0.000000"; }; 
+                    Locked = NO; 
+                    ReversedPath = NO; 
+                }, 
+                {
+                    Bounds = "{{81, 54}, {18, 0}}"; 
+                    Class = DKDLine; 
+                    CloakGuidelines = NO; 
+                    CloakVertices = NO; 
+                    DkBezierPath = (
+                        {
+                            BezierPathElement = MoveToElement; 
+                            PositionPoint = {X = "99.000000"; Y = "54.000000"; }; 
+                        }, 
+                        {
+                            BezierPathElement = LineToElement; 
+                            PositionPoint = {X = "81.000000"; Y = "54.000000"; }; 
+                        }
+                    ); 
+                    GraphicID = 9778A714; 
+                    GraphicName = Line; 
+                    GraphicStyle = {
+                        DrawsFill = NO; 
+                        DrawsLine = YES; 
+                        LineCapStyle = Square; 
+                        LineJoinStyle = Miter; 
+                        LineRGB = {
+                            Blue = "0.000000"; 
+                            ColorSpace = NSCalibratedRGBColorSpace; 
+                            Green = "0.000000"; 
+                            Opacity = "1.000000"; 
+                            Red = "0.000000"; 
+                        }; 
+                        LineWidth = "1.000000"; 
+                        MiterLimit = 10; 
+                        StrokePosition = Front; 
+                        WindingRule = "Non-Zero"; 
+                    }; 
+                    GridRef = {GridRefPosition = "Top Left"; GridRefX = "0.000000"; GridRefY = "0.000000"; }; 
+                    Locked = NO; 
+                    ReversedPath = NO; 
+                }, 
+                {
+                    Bounds = "{{45, 54}, {18, 0}}"; 
+                    Class = DKDLine; 
+                    CloakGuidelines = NO; 
+                    CloakVertices = NO; 
+                    DkBezierPath = (
+                        {
+                            BezierPathElement = MoveToElement; 
+                            PositionPoint = {X = "63.000000"; Y = "54.000000"; }; 
+                        }, 
+                        {
+                            BezierPathElement = LineToElement; 
+                            PositionPoint = {X = "45.000000"; Y = "54.000000"; }; 
+                        }
+                    ); 
+                    GraphicID = A778A714; 
+                    GraphicName = Line; 
+                    GraphicStyle = {
+                        DrawsFill = NO; 
+                        DrawsLine = YES; 
+                        LineCapStyle = Square; 
+                        LineJoinStyle = Miter; 
+                        LineRGB = {
+                            Blue = "0.000000"; 
+                            ColorSpace = NSCalibratedRGBColorSpace; 
+                            Green = "0.000000"; 
+                            Opacity = "1.000000"; 
+                            Red = "0.000000"; 
+                        }; 
+                        LineWidth = "1.000000"; 
+                        MiterLimit = 10; 
+                        StrokePosition = Front; 
+                        WindingRule = "Non-Zero"; 
+                    }; 
+                    GridRef = {GridRefPosition = "Top Left"; GridRefX = "0.000000"; GridRefY = "0.000000"; }; 
+                    Locked = NO; 
+                    ReversedPath = NO; 
+                }, 
+                {
+                    Bounds = "{{63, 37.9688}, {20.25, 20.25}}"; 
+                    Class = DKDTextArea; 
+                    CloakGuidelines = NO; 
+                    CloakVertices = NO; 
+                    GraphicID = B778A714; 
+                    GraphicName = Text; 
+                    GraphicStyle = {
+                        DrawsFill = NO; 
+                        DrawsLine = NO; 
+                        LineCapStyle = Square; 
+                        LineJoinStyle = Miter; 
+                        LineWidth = "1.000000"; 
+                        MiterLimit = 10; 
+                        StrokePosition = Front; 
+                        WindingRule = "Non-Zero"; 
+                    }; 
+                    GridRef = {
+                        GridRefPosition = "User Defined"; 
+                        GridRefX = "0.000000"; 
+                        GridRefY = "0.125000"; 
+                    }; 
+                    KeyedText = <62706c69 73743030 d4010203 04050607 0a592461 72636869 76657258 24766572 73696f6e 5424746f 7058246f 626a6563 74735f10 0f4e534b 65796564 41726368 69766572 12000186 a0d10809 54726f6f 748001af 10110b0c 15191f2b 2c2d2e34 363e3f41 45484b55 246e756c 6cd40d0e 0f101112 13145c4e 53417474 72696275 7465735a 4e534465 6c656761 74655624 636c6173 73584e53 53747269 6e678004 80008010 8002d216 0f171859 4e532e73 7472696e 676103c4 8003d21a 1b1c1d58 24636c61 73736573 5a24636c 6173736e 616d65a3 1d101e5f 100f4e53 4d757461 626c6553 7472696e 67584e53 4f626a65 6374d320 210f2226 2a5a4e53 2e6f626a 65637473 574e532e 6b657973 a3232425 8008800a 800da327 28298005 80068007 800f574e 53436f6c 6f72564e 53466f6e 745f1010 4e535061 72616772 61706853 74796c65 d32f300f 31323357 4e535768 6974655c 4e53436f 6c6f7253 70616365 42300010 038009d2 1a1b352b a22b1ed4 37380f39 3a3b3c3d 564e5353 697a6556 4e534e61 6d65584e 5366466c 61677322 41400000 800b800c 10105c4d 696e696f 6e50726f 2d4974d2 1a1b402c a22c1ed2 420f1244 5a4e5354 61625374 6f707380 00800ed2 1a1b4647 a3472d1e 5f10174e 534d7574 61626c65 50617261 67726170 68537479 6c65d21a 1b494aa2 4a1e5c4e 53446963 74696f6e 617279d2 1a1b4c4d a44d4e4f 1e5d4e53 54657874 53746f72 6167655f 10194e53 4d757461 626c6541 74747269 62757465 64537472 696e675f 10124e53 41747472 69627574 65645374 72696e67 00080011 001b0024 00290032 00440049 004c0051 00530067 006d0076 0083008e 0095009e 00a000a2 00a400a6 00ab00b5 00b800ba 00bf00c8 00d300d7 00e900f2 00f90104 010c0110 01120114 0116011a 011c011e 01200122 012a0131 0144014b 01530160 01630165 0167016c 016f0178 017f0186 018f0194 01960198 019a01a7 01ac01af 01b401bf 01c101c3 01c801cc 01e601eb 01ee01fb 02000205 0213022f 00000000 00000201 00000000 00000050 00000000 00000000 00000000 00000244 >; 
+                    Locked = NO; 
+                    MirrorOfTextContents = {
+                        AttributesForRange = (
+                            {
+                                FontName = "MinionPro-It"; 
+                                PointSize = "12.000000"; 
+                                RangeLength = 1; 
+                                RangeStart = 0; 
+                            }
+                        ); 
+                        TextString = "\U03c4"; 
+                    }; 
+                    TextFontStrokeWidth = "3.000000"; 
+                    TextTransform = {
+                        coefficientM11 = "1.125000"; 
+                        coefficientM12 = "0.000000"; 
+                        coefficientM21 = "0.000000"; 
+                        coefficientM22 = "1.125000"; 
+                        coefficientTX = "0.000000"; 
+                        coefficientTY = "0.000000"; 
+                    }; 
+                }, 
+                {
+                    Bounds = "{{31.5, 47.25}, {9, 18}}"; 
+                    Class = DKDTextArea; 
+                    CloakGuidelines = NO; 
+                    CloakVertices = NO; 
+                    GraphicID = 0878A714; 
+                    GraphicName = Text; 
+                    GraphicStyle = {
+                        DrawsFill = NO; 
+                        DrawsLine = NO; 
+                        LineCapStyle = Square; 
+                        LineJoinStyle = Miter; 
+                        LineWidth = "1.000000"; 
+                        MiterLimit = 10; 
+                        StrokePosition = Front; 
+                        WindingRule = "Non-Zero"; 
+                    }; 
+                    GridRef = {
+                        GridRefPosition = "User Defined"; 
+                        GridRefX = "0.000000"; 
+                        GridRefY = "0.125000"; 
+                    }; 
+                    KeyedText = <62706c69 73743030 d4010203 04050607 0a592461 72636869 76657258 24766572 73696f6e 5424746f 7058246f 626a6563 74735f10 0f4e534b 65796564 41726368 69766572 12000186 a0d10809 54726f6f 748001af 10110b0c 15191f2b 2c2d2e34 363e3f41 45484b55 246e756c 6cd40d0e 0f101112 13145c4e 53417474 72696275 7465735a 4e534465 6c656761 74655624 636c6173 73584e53 53747269 6e678004 80008010 8002d216 0f171859 4e532e73 7472696e 67516880 03d21a1b 1c1d5824 636c6173 7365735a 24636c61 73736e61 6d65a31d 101e5f10 0f4e534d 75746162 6c655374 72696e67 584e534f 626a6563 74d32021 0f22262a 5a4e532e 6f626a65 63747357 4e532e6b 657973a3 23242580 08800a80 0da32728 29800580 06800780 0f574e53 436f6c6f 72564e53 466f6e74 5f10104e 53506172 61677261 70685374 796c65d3 2f300f31 3233574e 53576869 74655c4e 53436f6c 6f725370 61636542 30001003 8009d21a 1b352ba2 2b1ed437 380f393a 3b3c3d56 4e535369 7a65564e 534e616d 65584e53 66466c61 67732241 40000080 0b800c10 105c4d69 6e696f6e 50726f2d 4974d21a 1b402ca2 2c1ed242 0f12445a 4e535461 6253746f 70738000 800ed21a 1b4647a3 472d1e5f 10174e53 4d757461 626c6550 61726167 72617068 5374796c 65d21a1b 494aa24a 1e5c4e53 44696374 696f6e61 7279d21a 1b4c4da4 4d4e4f1e 5d4e5354 65787453 746f7261 67655f10 194e534d 75746162 6c654174 74726962 75746564 53747269 6e675f10 124e5341 74747269 62757465 64537472 696e6700 08001100 1b002400 29003200 44004900 4c005100 53006700 6d007600 83008e00 95009e00 a000a200 a400a600 ab00b500 b700b900 be00c700 d200d600 e800f100 f8010301 0b010f01 11011301 15011901 1b011d01 1f012101 29013001 43014a01 52015f01 62016401 66016b01 6e017701 7e018501 8e019301 95019701 9901a601 ab01ae01 b301be01 c001c201 c701cb01 e501ea01 ed01fa01 ff020402 12022e00 00000000 00020100 00000000 00005000 00000000 00000000 00000000 000243>; 
+                    Locked = NO; 
+                    MirrorOfTextContents = {
+                        AttributesForRange = (
+                            {
+                                FontName = "MinionPro-It"; 
+                                PointSize = "12.000000"; 
+                                RangeLength = 1; 
+                                RangeStart = 0; 
+                            }
+                        ); 
+                        TextString = h; 
+                    }; 
+                    TextFontStrokeWidth = "3.000000"; 
+                }, 
+                {
+                    Bounds = "{{31.5, 28.8}, {9, 18}}"; 
+                    Class = DKDTextArea; 
+                    CloakGuidelines = NO; 
+                    CloakVertices = NO; 
+                    GraphicID = 1878A714; 
+                    GraphicName = Text; 
+                    GraphicStyle = {
+                        DrawsFill = NO; 
+                        DrawsLine = NO; 
+                        LineCapStyle = Square; 
+                        LineJoinStyle = Miter; 
+                        LineWidth = "1.000000"; 
+                        MiterLimit = 10; 
+                        StrokePosition = Front; 
+                        WindingRule = "Non-Zero"; 
+                    }; 
+                    GridRef = {
+                        GridRefPosition = "User Defined"; 
+                        GridRefX = "0.000000"; 
+                        GridRefY = "0.400000"; 
+                    }; 
+                    KeyedText = <62706c69 73743030 d4010203 04050607 0a592461 72636869 76657258 24766572 73696f6e 5424746f 7058246f 626a6563 74735f10 0f4e534b 65796564 41726368 69766572 12000186 a0d10809 54726f6f 748001af 10110b0c 15191f2b 2c2d2e34 363e3f41 45484b55 246e756c 6cd40d0e 0f101112 13145c4e 53417474 72696275 7465735a 4e534465 6c656761 74655624 636c6173 73584e53 53747269 6e678004 80008010 8002d216 0f171859 4e532e73 7472696e 67516780 03d21a1b 1c1d5824 636c6173 7365735a 24636c61 73736e61 6d65a31d 101e5f10 0f4e534d 75746162 6c655374 72696e67 584e534f 626a6563 74d32021 0f22262a 5a4e532e 6f626a65 63747357 4e532e6b 657973a3 23242580 08800a80 0da32728 29800580 06800780 0f574e53 436f6c6f 72564e53 466f6e74 5f10104e 53506172 61677261 70685374 796c65d3 2f300f31 3233574e 53576869 74655c4e 53436f6c 6f725370 61636542 30001003 8009d21a 1b352ba2 2b1ed437 380f393a 3b3c3d56 4e535369 7a65564e 534e616d 65584e53 66466c61 67732241 40000080 0b800c10 105c4d69 6e696f6e 50726f2d 4974d21a 1b402ca2 2c1ed242 0f12445a 4e535461 6253746f 70738000 800ed21a 1b4647a3 472d1e5f 10174e53 4d757461 626c6550 61726167 72617068 5374796c 65d21a1b 494aa24a 1e5c4e53 44696374 696f6e61 7279d21a 1b4c4da4 4d4e4f1e 5d4e5354 65787453 746f7261 67655f10 194e534d 75746162 6c654174 74726962 75746564 53747269 6e675f10 124e5341 74747269 62757465 64537472 696e6700 08001100 1b002400 29003200 44004900 4c005100 53006700 6d007600 83008e00 95009e00 a000a200 a400a600 ab00b500 b700b900 be00c700 d200d600 e800f100 f8010301 0b010f01 11011301 15011901 1b011d01 1f012101 29013001 43014a01 52015f01 62016401 66016b01 6e017701 7e018501 8e019301 95019701 9901a601 ab01ae01 b301be01 c001c201 c701cb01 e501ea01 ed01fa01 ff020402 12022e00 00000000 00020100 00000000 00005000 00000000 00000000 00000000 000243>; 
+                    Locked = NO; 
+                    MirrorOfTextContents = {
+                        AttributesForRange = (
+                            {
+                                FontName = "MinionPro-It"; 
+                                PointSize = "12.000000"; 
+                                RangeLength = 1; 
+                                RangeStart = 0; 
+                            }
+                        ); 
+                        TextString = g; 
+                    }; 
+                    TextFontStrokeWidth = "3.000000"; 
+                }, 
+                {
+                    Bounds = "{{99, 29.25}, {9, 18}}"; 
+                    Class = DKDTextArea; 
+                    CloakGuidelines = NO; 
+                    CloakVertices = NO; 
+                    GraphicID = 2878A714; 
+                    GraphicName = Text; 
+                    GraphicStyle = {
+                        DrawsFill = NO; 
+                        DrawsLine = NO; 
+                        LineCapStyle = Square; 
+                        LineJoinStyle = Miter; 
+                        LineWidth = "1.000000"; 
+                        MiterLimit = 10; 
+                        StrokePosition = Front; 
+                        WindingRule = "Non-Zero"; 
+                    }; 
+                    GridRef = {
+                        GridRefPosition = "User Defined"; 
+                        GridRefX = "0.000000"; 
+                        GridRefY = "0.125000"; 
+                    }; 
+                    KeyedText = <62706c69 73743030 d4010203 04050607 0a592461 72636869 76657258 24766572 73696f6e 5424746f 7058246f 626a6563 74735f10 0f4e534b 65796564 41726368 69766572 12000186 a0d10809 54726f6f 748001af 10110b0c 15191f2b 2c2d2e34 363e3f41 45484b55 246e756c 6cd40d0e 0f101112 13145c4e 53417474 72696275 7465735a 4e534465 6c656761 74655624 636c6173 73584e53 53747269 6e678004 80008010 8002d216 0f171859 4e532e73 7472696e 67516b80 03d21a1b 1c1d5824 636c6173 7365735a 24636c61 73736e61 6d65a31d 101e5f10 0f4e534d 75746162 6c655374 72696e67 584e534f 626a6563 74d32021 0f22262a 5a4e532e 6f626a65 63747357 4e532e6b 657973a3 23242580 08800a80 0da32728 29800580 06800780 0f574e53 436f6c6f 72564e53 466f6e74 5f10104e 53506172 61677261 70685374 796c65d3 2f300f31 3233574e 53576869 74655c4e 53436f6c 6f725370 61636542 30001003 8009d21a 1b352ba2 2b1ed437 380f393a 3b3c3d56 4e535369 7a65564e 534e616d 65584e53 66466c61 67732241 40000080 0b800c10 105c4d69 6e696f6e 50726f2d 4974d21a 1b402ca2 2c1ed242 0f12445a 4e535461 6253746f 70738000 800ed21a 1b4647a3 472d1e5f 10174e53 4d757461 626c6550 61726167 72617068 5374796c 65d21a1b 494aa24a 1e5c4e53 44696374 696f6e61 7279d21a 1b4c4da4 4d4e4f1e 5d4e5354 65787453 746f7261 67655f10 194e534d 75746162 6c654174 74726962 75746564 53747269 6e675f10 124e5341 74747269 62757465 64537472 696e6700 08001100 1b002400 29003200 44004900 4c005100 53006700 6d007600 83008e00 95009e00 a000a200 a400a600 ab00b500 b700b900 be00c700 d200d600 e800f100 f8010301 0b010f01 11011301 15011901 1b011d01 1f012101 29013001 43014a01 52015f01 62016401 66016b01 6e017701 7e018501 8e019301 95019701 9901a601 ab01ae01 b301be01 c001c201 c701cb01 e501ea01 ed01fa01 ff020402 12022e00 00000000 00020100 00000000 00005000 00000000 00000000 00000000 000243>; 
+                    Locked = NO; 
+                    MirrorOfTextContents = {
+                        AttributesForRange = (
+                            {
+                                FontName = "MinionPro-It"; 
+                                PointSize = "12.000000"; 
+                                RangeLength = 1; 
+                                RangeStart = 0; 
+                            }
+                        ); 
+                        TextString = k; 
+                    }; 
+                    TextFontStrokeWidth = "3.000000"; 
+                }, 
+                {
+                    Bounds = "{{99, 47.52}, {18, 16.2}}"; 
+                    Class = DKDTextArea; 
+                    CloakGuidelines = NO; 
+                    CloakVertices = NO; 
+                    GraphicID = 3878A714; 
+                    GraphicName = Text; 
+                    GraphicStyle = {
+                        DrawsFill = NO; 
+                        DrawsLine = NO; 
+                        LineCapStyle = Square; 
+                        LineJoinStyle = Miter; 
+                        LineWidth = "1.000000"; 
+                        MiterLimit = 10; 
+                        StrokePosition = Front; 
+                        WindingRule = "Non-Zero"; 
+                    }; 
+                    GridRef = {
+                        GridRefPosition = "User Defined"; 
+                        GridRefX = "0.000000"; 
+                        GridRefY = "0.400000"; 
+                    }; 
+                    KeyedText = <62706c69 73743030 d4010203 04050607 0a592461 72636869 76657258 24766572 73696f6e 5424746f 7058246f 626a6563 74735f10 0f4e534b 65796564 41726368 69766572 12000186 a0d10809 54726f6f 748001af 10180b0c 171b2127 34353637 383c3f45 474f5052 53566064 686c5524 6e756c6c d50d0e0f 10111213 1415165f 100f4e53 41747472 69627574 65496e66 6f5c4e53 41747472 69627574 65735a4e 5344656c 65676174 65562463 6c617373 584e5353 7472696e 67801580 04800080 178002d2 1810191a 594e532e 73747269 6e675267 278003d2 1c1d1e1f 5824636c 61737365 735a2463 6c617373 6e616d65 a31f1120 5f100f4e 534d7574 61626c65 53747269 6e67584e 534f626a 656374d2 22102326 5a4e532e 6f626a65 637473a2 24258005 80138014 d3222810 292e3357 4e532e6b 657973a4 2a2b2c2d 800a800c 800e8011 a42f3031 32800680 07800880 0980125f 10104e53 50617261 67726170 68537479 6c65574e 53436f6c 6f72564e 53466f6e 74564e53 4b65726e d2391014 3b5a4e53 54616253 746f7073 8000800b d21c1d3d 3ea33e34 205f1017 4e534d75 7461626c 65506172 61677261 70685374 796c65d3 40411042 4344574e 53576869 74655c4e 53436f6c 6f725370 61636542 30001003 800dd21c 1d4635a2 3520d448 49104a4b 4c4d4e56 4e535369 7a65564e 534e616d 65584e53 66466c61 67732241 40000080 0f801010 105c4d69 6e696f6e 50726f2d 4974d21c 1d5136a2 3620223f 23d70ad2 1c1d5455 a255205c 4e534469 6374696f 6e617279 d3222810 575b33a3 2b2c2a80 0c800e80 0aa33031 2f800780 08800680 12d21c1d 6162a362 63205e4e 534d7574 61626c65 41727261 79574e53 41727261 79d26510 6667574e 532e6461 74614401 00010180 16d21c1d 696aa36a 6b205d4e 534d7574 61626c65 44617461 564e5344 617461d2 1c1d6d6e a46e6f70 205d4e53 54657874 53746f72 6167655f 10194e53 4d757461 626c6541 74747269 62757465 64537472 696e675f 10124e53 41747472 69627574 65645374 72696e67 00080011 001b0024 00290032 00440049 004c0051 0053006e 0074007f 0091009e 00a900b0 00b900bb 00bd00bf 00c100c3 00c800d2 00d500d7 00dc00e5 00f000f4 0106010f 0114011f 01220124 01260128 012f0137 013c013e 01400142 01440149 014b014d 014f0151 01530166 016e0175 017c0181 018c018e 01900195 019901b3 01ba01c2 01cf01d2 01d401d6 01db01de 01e701ee 01f501fe 02030205 02070209 0216021b 021e0223 0228022b 0238023f 02430245 02470249 024d024f 02510253 0255025a 025e026d 0275027a 02820287 0289028e 029202a0 02a702ac 02b102bf 02db0000 00000000 02010000 00000000 00710000 00000000 00000000 00000000 02f0>; 
+                    Locked = NO; 
+                    MirrorOfTextContents = {
+                        AttributesForRange = (
+                            {
+                                FontName = "MinionPro-It"; 
+                                PointSize = "12.000000"; 
+                                RangeLength = 1; 
+                                RangeStart = 0; 
+                            }, 
+                            {
+                                FontName = "MinionPro-It"; 
+                                PointSize = "12.000000"; 
+                                RangeLength = 1; 
+                                RangeStart = 1; 
+                            }
+                        ); 
+                        TextString = "g'"; 
+                    }; 
+                    TextFontStrokeWidth = "3.000000"; 
+                }
+            ); 
+            HideDimensions = NO; 
+            LayerColorMod = {
+                DKDOnColorMod = NO; 
+                DKDOpacityColorMod = "0.500000"; 
+                DKDTintColorColorMod = {
+                    ColorSpace = NSCalibratedWhiteColorSpace; 
+                    Opacity = "1.000000"; 
+                    White = "0.500000"; 
+                }; 
+                DKDTintFractionColorMod = "0.500000"; 
+            }; 
+            LayerName = Paper; 
+            LayerState = Active; 
+        }
+    ); 
+    DKDPagesSpec = {
+        DisplayRulers = NO; 
+        NumberAcrossFirst = NO; 
+        PagesAcross = 1; 
+        PagesDown = 1; 
+        PagesSpecBackgroundRGB = {
+            ColorSpace = NSDeviceWhiteColorSpace; 
+            Opacity = "1.000000"; 
+            White = "1.000000"; 
+        }; 
+        PagesSpecPrintBackground = NO; 
+        ShowPageBreaks = NO; 
+    }; 
+    DKDPrintInfo = {
+        BottomMargin = "40.000000"; 
+        Copies = 1; 
+        FallBackPaperSizeHeight = "792.000000"; 
+        FallBackPaperSizeWidth = "612.000000"; 
+        FirstPage = 1; 
+        HorizontalPagination = 2; 
+        HorizontallyCentered = YES; 
+        LastPage = "-1"; 
+        LeftMargin = "18.000000"; 
+        MustCollate = YES; 
+        Orientation = ""; 
+        PaperName = Letter; 
+        PaperSizeHeight = "792.000000"; 
+        PaperSizeWidth = "612.000000"; 
+        PreviewPageNumber = 1; 
+        PrintAllPages = YES; 
+        PrintJobDisposition = NSPrintSpoolJob; 
+        PrintSavePath = ""; 
+        PrintScalingFactor = "1.000000"; 
+        PrinterName = "hp LaserJet 2300L"; 
+        ReversePageOrder = NO; 
+        RightMargin = "18.000000"; 
+        TopMargin = "18.000000"; 
+        VerticalPagination = ""; 
+        VerticallyCentered = YES; 
+        XPrintMirror = NO; 
+        YPrintMirror = NO; 
+    }; 
+    DKDSaveTimeStamp = "2007-03-19 14:25:22 +0000"; 
+    DKDTablet = {PenMax = "25.000000"; PenMin = "0.500000"; PenPressureFactor = "0.500000"; }; 
+    DKDThumbnailPreview = NO; 
+    DKDTimeFormat = {
+        "Field 0 Include" = Weekday; 
+        "Field 0 Type" = Long; 
+        "Field 1 Include" = Year; 
+        "Field 1 Type" = Short; 
+        "Field 2 Include" = Year; 
+        "Field 2 Type" = Number; 
+        "Field 3 Include" = Year; 
+        "Field 3 Type" = Long; 
+        "Include GMT" = NO; 
+        IncludeDate = YES; 
+        IncludeTime = YES; 
+        "Seperator 0" = " - "; 
+        "Seperator 1" = ". "; 
+        "Seperator 2" = ", "; 
+        "Seperator 3" = "  "; 
+        "Time Seperator" = ":"; 
+        TimeAfterDate = YES; 
+        "Twelve Hour Clock" = YES; 
+        "Used Once" = YES; 
+    }; 
+    DKDToolbarSelectedButtonPairs = (
+        "DKDZoomMenuToolbarItemIdentifier_0", 
+        ("-1"), 
+        "ColorFillToolbarItemIdentifier_0", 
+        ("HSB_0000FF"), 
+        "GradientToolbarItemIdentifier_0", 
+        (
+            {
+                BurstPath = (); 
+                BurstRect = "{{0.25, 0.25}, {0.5, 0.5}}"; 
+                EndGradientRGB = {
+                    Blue = "1.000000"; 
+                    ColorSpace = NSCalibratedRGBColorSpace; 
+                    Green = "1.000000"; 
+                    Opacity = "1.000000"; 
+                    Red = "1.000000"; 
+                }; 
+                GradientAngle = "0.000000"; 
+                GradientCompositeOperation = "Source Over"; 
+                GradientFillClass = DKDHorizontalGradientFill; 
+                GradientGradientConvergence = {
+                    FinishGradient = "100.00000"; 
+                    GradientConvergence = Linear; 
+                    StartGradient = "0.00000"; 
+                }; 
+                GradientImagePercent = "1.000000"; 
+                GradientOverlap = "1.000000"; 
+                GradientRadius = "0.000000"; 
+                LevelsOfGradient = 100; 
+                StartGradientRGB = {
+                    Blue = "0.000000"; 
+                    ColorSpace = NSCalibratedRGBColorSpace; 
+                    Green = "0.000000"; 
+                    Opacity = "1.000000"; 
+                    Red = "0.000000"; 
+                }; 
+                SymmetryAngle = "0.000000"; 
+            }
+        ), 
+        "PatternForToolbarItemIdentifier_0", 
+        ("Toolbar_02")
+    ); 
+    DKDWindowState = {
+        DocCenter = "{93.3333, 98.859}"; 
+        DocumentFileName = "/Users/robin/thesis/d-adj/tau.ezdraw"; 
+        GDetailsLayersDrawerEdgePreference = Auto; 
+        GraphicDetailsOpen = NO; 
+        LayerOpen = NO; 
+        LayerSelect = "Active Only"; 
+        LayersDrawerEdgePreference = Auto; 
+        WindowLocation = "104 359 435 482 0 0 1440 938 "; 
+        ZoomPercent = "225.000000"; 
+    }; 
+    DocumentCompression = None; 
+    IndependentLayers = NO; 
+    NumberColorsToListInContextMenu = 12; 
+    NumberPairColorsToListInContextMenu = 6; 
+}

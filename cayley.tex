@@ -1,0 +1,425 @@
+%!TEX TS-program = latex
+\documentclass{robinthesisdraft}
+\usepackage{robincs,thesisdefs,xr}
+
+\title{Cayley's Theorem for Pseudomonoids}
+\begin{document}
+\maketitle
+
+In its traditional form, Cayley's theorem says that every finite group
+is (isomorphic to) a subgroup of one of the symmetric groups. What the
+proof actually shows is that every monoid $M$ is a submonoid of the monoid
+of endofunctions $|M|\to|M|$, via the function that maps the element $x\in M$
+to the function $x\o-$.
+
+A `Cayley Theorem for monoidal categories' has been used by
+\citet[Proposition~1.3]{BTC} to show that every monoidal category
+is monoidally equivalent to a \emph{strict} monoidal category.
+But it turns out that we need the corresponding theorem for
+promonoidal categories; and rather than just prove another special
+case, it seems wise to generalise. So the purpose of this
+chapter is to state and prove a Cayley Theorem for pseudomonoids.
+
+As motivation, we begin by reviewing the one-dimensional case,
+of monoids in a monoidal category.
+
+\section{Cayley's theorem for monoids}
+
+I'm not aware of any literature that specifically addresses the
+question of giving an analogue of Cayley's theorem for monoids
+in a monoidal category, but it is a special case of a standard
+construction. A monoid in the monoidal category $\V$ can be
+regarded as a one-object $\V$-enriched category.\footnote{This
+operation -- reimagining a monoid as a one-object category -- is often
+called \emph{suspension}.} Then we can apply the enriched Yoneda
+Lemmas of \citet[sections~1.9 and~2.4]{KellyEnriched} to this
+$\V$-category. Since it requires some effort to extract the
+specifics of the one-object case from Kelly's constructions,
+we give an overview here.
+
+Let $\V$ be a monoidal category, and let $M$ be a monoid in $\V$,
+with unit $e: I\to M$ and multiplication $m: M\tn M\to M$.
+%
+% In the pseudomonoid case, we shall work in a Gray-monoid and use
+% coherence to transfer the result to an arbitrary monoidal bicategory.
+% Since this process is not entirely trivial, we shall illustrate
+% the process in the one-dimensional case, where the analogous
+% strategy would be to work in a \emph{strict} monoidal category $\V$.
+% Thus we shall assume, for the moment, that $\V$ is strictly
+% associative. (We could also take the unit to be strict, of course,
+% but we do not, since it doesn't particularly help.)
+
+The Cayley-Yoneda theorems are best stated in terms of modules:
+\begin{definition}\label{def-module}
+	A \emph{right $M$-module} consists of an object $X\in\V$ and a map
+	$x: X\tn A\to X$ such that the diagrams
+	\[
+	\begin{diagram}
+		X\tn M\tn M & \rTo^{x\tn M} & X\tn M \\
+		\dTo<{X\tn m} && \dTo>{x} \\
+		X\tn M & \rTo_{x} & X
+	\end{diagram}
+	\quad\mbox{and}\quad
+	\begin{diagram}
+		X &\rTo^{\cong} & X\tn I \\
+		\dTo<1 && \dTo>{X\tn e} \\
+		X & \lTo_{x} & X\tn M
+	\end{diagram}
+	\]
+	commute.
+\end{definition}
+\begin{remark}
+	Note that $(M,m)$ is a right $M$-module.
+\end{remark}
+\begin{definition}\label{def-module-map}
+	Let $(X,x)$ and $(Y,y)$ be right M-modules.
+	A \emph{morphism of modules} from $X$ to $Y$ is
+	a map $f: X\to Y$ for which the diagram
+	\begin{diagram}
+		X\tn M & \rTo^{x} & X \\
+		\dTo<{f\tn M} && \dTo>f \\
+		Y\tn M & \rTo_{y} & Y
+	\end{diagram}
+	commutes. The set of such maps will be denoted
+	$\Mod_{M}(X,Y)$.
+\end{definition}
+Kelly proves two versions of his Yoneda Lemma, which he refers
+to as `weak' and `strong'. We shall call our corresponding theorems
+the `external' and `internal' Cayley Theorem, respectively. The
+internal theorem requires some additional properties of $\V$, but
+the external one is perfectly general.
+
+\subsection{The external Cayley Theorem}
+\begin{thm}[External Cayley]\label{thm-1d-external}
+	For every right $M$-module $X$, the natural transformation
+	\[
+		\phi_{X}: \Mod_{M}(M, X) \to \V(I, X),
+	\]
+	defined as $\phi_{X}(f) = f\cdot e$, is invertible with
+	$\phi_{X}^{-1}(z)$ equal to the composite
+	\[
+		M \rTo^{\cong} I\tn M \rTo^{z\tn M} X\tn M \rTo^{x} X.
+	\]
+\end{thm}
+\begin{proof}
+	Let $f: M\to X$ be a map of modules. We'll first show that
+	$\phi_{X}^{-1}(\phi_{X}(f)) = f$: consider the diagram
+	\begin{diagram}
+		M & \rTo^{\cong} & I\tn M & \rTo^{e\tn M} & M\tn M & \rTo^{f\tn M} & X\tn M \\
+		&&& \rdTo_{\cong} & \dTo>m && \dTo>x \\
+		&&&& M & \rTo_{f} & X
+	\end{diagram}
+	The triangle commutes by the left-unit law for the monoid $M$,
+	and the square because $f$ is a map of modules. The upper edge
+	is $\phi_{X}^{-1}(\phi_{X}(f))$ by definition, and the lower edge is
+	equal to $f$.
+	
+	Now let $z: I\to X$, and consider the diagram
+	\begin{diagram}
+		&&X \\
+		&\ruTo^{z} && \rdTo^{\cong} \\
+		I & \rTo_{\cong} & I\tn I & \rTo_{z\tn I}& X\tn I \\
+		\dTo<e && \dTo<{I\tn e} && \dTo>{X\tn e} \\
+		M & \rTo_{\cong} & I\tn M & \rTo_{z\tn M} & X\tn M & \rTo_{x} & X
+	\end{diagram}
+	The cells commute by naturality and functoriality of tensor,
+	and by the unit condition in the definition of module the upper
+	edge is equal to $z$. The lower edge is $\phi_{X}(\phi_{X}^{-1}(z))$
+	by definition. Thus $\phi_{X}$ and $\phi_{X}^{-1}$ are indeed
+	mutually inverse.
+	
+	We must also show that $\phi_{X}^{-1}(z)$ is a map of modules,
+	so let $z:I\to X$ and consider the diagram
+	\begin{diagram}
+		M\tn M & \rTo^{\cong} & I\tn M\tn M & \rTo^{z\tn M\tn M} & X\tn M\tn M
+			& \rTo^{x\tn M} & X\tn M \\
+		\dTo<m &&\dTo>{I\tn m} && \dTo>{X\tn m} && \dTo>m \\
+		M & \rTo_{\cong} & I\tn M & \rTo_{z\tn M} & X\tn M & \rTo_{x} & X
+	\end{diagram}
+	The squares commute, from left to right, by the naturality of the
+	left-unit isomorphism, the functoriality of tensor, and the fact
+	that $X$ is a module. Thus the outer edge commutes, showing that
+	$\phi_{X}^{-1}(z)$ is a map of modules.
+\end{proof}
+\begin{remark}
+	More can be said about $\phi_{X}$, as follows. Each of the sets
+	$\Mod_{M}(M, X)$ and $\V(I,X)$ is a right $\V(I,M)$-module
+	in a natural way, using the $M$-module structure of $X$.
+	Then $\phi_{X}$ is a map of modules with respect to these
+	module structures. We omit\footnote{An earlier version of
+	this chapter included these details: I removed them, as an
+	unneeded distraction.} the details of this, but they are
+	quite routine.
+\end{remark}
+\begin{remark} % \V(I,M) is a monoid
+	The set $\V(I, M)$ inherits the monoid structure from $M$:
+	its unit is $u:I\to M$, and the product of $a$, $b:I\to M$
+	is the composite
+	\[
+		I \rTo^{\cong} I\tn I \rTo^{a\tn b} M\tn M \rTo^{m} M.
+	\]
+	This is the \emph{underlying ordinary monoid}
+	of the abstract monoid $M$.
+\end{remark}
+
+To relate Theorem~\ref{thm-1d-external} to the ordinary
+Cayley Theorem, take the module $X$ to be $M$ itself.
+Then we have that $\V(I, M)$, the underlying ordinary
+monoid of $M$, is isomorphic to $\Mod_{M}(M,M)$, which
+is a submonoid of $\V(M,M)$.
+%
+We should like to be able to say that this $\phi_{M}$
+is an isomorphism of monoids, i.e.\ that it preserves
+the monoid structure.
+\begin{propn}
+	The isomorphism
+	\[
+		\phi_{M}: \Mod_{M}(M,M) \to \V(I, M)
+	\]
+	is a map of monoids.
+\end{propn}
+\begin{proof}
+	For the unit, $\phi_{M}(1_{M}) = 1_{M}\cdot e = e$.
+	For the multiplication, let $f$, $g: M\to M$ be right
+	module morphisms: we must show that $\phi_{M}(f\cdot g)$:
+	\[
+		I \rTo^{e} M \rTo^{g} M \rTo^{f} M
+	\]
+	is equal to $\phi_{M}(f)\tn\phi_{M}(g)$:
+	\[
+		I \rTo^{\cong} I\tn I \rTo^{(f\cdot e)\tn(g\cdot e)} M\tn M \rTo^{m} M.
+	\]
+	Consider the diagram
+	\begin{diagram}
+		I\tn I & \rTo^{I\tn (g\cdot e)} & I\tn M  & \rTo^{e\tn M} & M\tn M
+			 & \rTo^{f\tn M} & M\tn M \\
+		\uTo<\cong && \uTo<\cong &\rdTo^{\cong} & \dTo>m && \dTo>m \\
+		I  & \rTo_{g\cdot e} & M & \rTo_{1} & M & \rTo_{f} & M
+	\end{diagram}
+	in which the right-hand square commutes because $f$ is a map of right $M$-modules,
+	and the upper triangle by the right-unit law for $M$.
+	By the functoriality of tensor, the top edge is equal to $(f\cdot e)\tn(g\cdot e)$,
+	so the upper outer edge is $\phi_{M}(f)\tn\phi_{M}(g)$ and the lower
+	edge is $\phi_{M}(f\cdot g)$, which are therefore equal as required.
+\end{proof}
+
+% \subsection{Coherence issues}
+% We have shown that the external Cayley Theorem is true for strict
+% monoidal categories, and would like to conclude that it is therefore
+% true for arbitrary monoidal categories. This is, of course, overkill
+% in the present situation, where it would be trivial to modify our
+% proofs to take account of XXXX
+% 
+\subsection{The internal Cayley Theorem}
+The theorem above is external in the sense that it essentially
+concerns $\V(I, M)$, the underlying ordinary monoid of $M$. If
+the monoidal category $\V$ is closed, then we can state an
+internal version, purely in terms of arrows in $\V$ itself.
+%
+So let $\V$ be biclosed, i.e.\ suppose we are given
+functors
+\[\begin{array}{l}
+	\lolli: \V\op\times\V\to\V \\
+	\illol: \V\times\V\op\to\V,
+\end{array}\]
+and natural isomorphisms with components
+\[\begin{array}{l}
+	\curry_{A,B,C}:  \V(A\tn B, C) \cong \V(A, B\lolli C), \\
+	\curry'_{A,B,C}: \V(A\tn B, C) \cong \V(B, C\illol A).
+\end{array}\]
+Then the theorem is:
+\begin{thm}[Internal Cayley]\label{thm-1d-internal}
+	Let $(X,x)$ be a right $M$-module. Then the diagram
+	\begin{diagram}
+		X & \rTo^{\curry_{X,M,X}(x)} & M\lolli X & \pile{\rTo^{h} \\ \rTo_{k}}
+		 & (M\tn M)\lolli X
+	\end{diagram}
+	is a coequaliser diagram, where the maps $h$ and $k$ are defined as
+	follows. The map $h$ is obtained by currying
+	\[
+		(M\lolli X)\tn M\tn M \rTo^{\ev^{M}_{X}\tn M} X\tn M \rTo^{x} X,
+	\]
+	and $k$ is obtained by currying
+	\[
+		(M\lolli X)\tn M\tn M \rTo^{(M\lolli X)\tn m} (M\lolli X)\tn M \rTo^{\ev^{M}_{X}} X.
+	\]
+\end{thm}
+%
+Although the statement of the theorem uses only the right-closed
+structure $\lolli$, the left-closed structure $\illol$ plays a
+crucial role in the proof. We will not give a detailed proof here,
+since this is something of a digression, but explain the outline.
+The idea is that for every object $X\in\C$, the object $X\illol X$
+is a monoid in a canonical way, via the definable `internal unit'
+and `internal composition' operations. Then a right $M$-module is
+precisely a map of monoids $M\to X\illol X$ for some $X$. \foo
+
+
+If the proof is to be organised in a sensible way, we need to call
+upon some elementary properties of (bi)closed monoidal categories
+\citep[Chapter~1]{KellyEnriched}. We shall state these with respect
+to the left internal hom $\illol$, though corresponding things are
+of course also true of the right internal hom. There is an internal
+composition operation
+\[
+	\comp^{B}_{A,C}: (B\illol A)\tn(C\illol B) \to C\illol A
+\]
+obtained by currying the composite
+\[
+	A\tn(B\illol A)\tn(C\illol B) \rTo^{{ev'}^{A}_{B}}
+		B\tn(C\illol B) \rTo^{{ev'}^{B}_{C}} C,
+\]
+and a family of internal unit maps
+\[
+	u_{A}: I \to A\illol A
+\]
+obtained by currying the right-unit isomorphism $A\tn I\rTo^{\cong}A$.
+The internal composition is associative, and the internal units are
+units for internal composition, in the obvious sense.
+%
+In particular the object $A\illol A$ is a monoid
+with multiplication given by internal composition, and unit $u_{A}$.
+Below we shall denote this monoid $A^{A}$ for concision.)
+
+Furthermore, for each object $A\in\V$ there is a natural transformation
+\[
+	t^{A}_{X,Y}: Y\illol X \to (A\tn Y)\illol(A\tn X)
+\]
+obtained by currying the maps
+\[
+	A\tn X\tn(Y\illol X) \rTo^{A\tn{\ev'}}^{X}_{Y} A\tn Y
+\]
+(which is dinatural in $A$, in addition to being natural in $X$ and $Y$).
+We call this the \emph{internal tensor}, and it is preserves internal
+identities and composition.
+
+For each object $A\in\V$ there is a natural transformation
+\[
+	h^{A}_{X,Y}: Y\illol X \to (Y\illol A)\illol(X\illol A)
+\]
+obtained by currying the internal composition, which is again
+dinatural in $A$ and preserves internal identities and composition.
+Also, there is a natural transformation with components
+\[
+	d_{A,B,C}: (C\illol B)\tn A \to (C\tn A)\illol B
+\]
+obtained by currying the map
+\[
+	B\tn(C\illol B)\tn A \rTo^{{\ev'}^{B}_{C}\tn A} C\tn A.
+\]
+
+\begin{lemma}\label{lemma-module-as-monoid-map}
+	A map $x: X\tn M\to X$ makes $(X,x)$ into a right $M$-module
+	if and only if
+	\[
+		\curry'_{X,M,X}(x): M\to X\illol X
+	\]
+	is a map of monoids.
+\end{lemma}
+\begin{proof}
+	Curry the diagrams in Definition~\ref{def-module}.
+\end{proof}
+%
+In conjunction with the observations above, this lemma implies
+that, for every $A\in\V$, if $(X,x)$ is a right $M$-module, there
+is a natural way to make both $A\tn X$ and $X\illol A$ into right
+$M$-modules too. For, since the $t^{A}$ and $H^{A}$ maps preserve
+internal identities and composition, in particular
+\[
+	t^{A}_{X,X}: X\illol X \to (A\tn X)\illol(A\tn X)
+\]
+and
+\[
+	h^{A}_{X,X}: X\illol X \to (X\illol A)\illol(X\illol A)
+\]
+are maps of monoids, which may be composed with $\curry'_{X,M,X}(x)$.
+Explicitly, the module structure of $A\tn X$ is given by the map
+\[
+	A\tn X\tn M \rTo^{A\tn x} A\tn X,
+\]
+and the module structure of $X\illol A$ is given by
+\[
+	(X\illol A)\tn M \rTo^{d_{M,A,X}} (A\tn M)\illol A \rTo^{x\illol A} X\illol A.
+\]
+\begin{lemma}\label{lemma-mod-map-curry}
+	Let $(X,x)$ and $(Y,y)$ be right $M$-modules.
+	If $f:A\tn X\to Y$ is a map of modules, then so is
+	\[
+		\curry'(f): X\to Y\illol A.
+	\]
+\end{lemma}
+\begin{proof}
+	Consider the diagram
+	\begin{diagram}
+		&& (A\tn X\illol A)\tn M & \rTo^{(f\illol A)\tn M} & (Y\illol A)\tn M\\
+		&\ruTo^{{\coev'}^{A}_{X}\tn M} & \dTo>{d_{M,A,A\tn X}}
+			& & \dTo>{d_{M,A,Y}} \\
+		X\tn M & \rTo_{{\coev'}^{A}_{X,M}} & A\tn X\tn M \illol A
+			& \rTo_{f\tn M\illol A} & Y\tn M\illol A \\
+		\dTo<x && \dTo>{A\tn x\illol A} && \dTo>{x\illol A} \\
+		X & \rTo_{{\coev'}^{A}_{X}} & A\tn X\illol A
+			& \rTo_{f\illol A} & Y\illol A
+	\end{diagram}
+	The triangle commutes by definition of $d$, the upper square by
+	naturality of $d$, the lower-left square by naturality of $\coev'$,
+	and the lower-right square since $f$ is a map of modules. Hence
+	the outside commutes, as required.
+\end{proof}
+
+With this background in place, it is easy to deduce the internal Cayley
+Theorem from the external one:
+\begin{proof}[Proof of Theorem~\ref{thm-1d-internal}]
+	Let $A\in\V$, and $g: A\to M\lolli X$ be such that $hg=kg$.
+	If we uncurry $g$, and recurry the resulting $g'$ with respect
+	to the left internal hom, we obtain maps
+	\[\begin{array}{l}
+		g'\phantom{{}'}: A\tn M\to X, \\
+		g'': M\to X\illol A.
+	\end{array}\]
+	The first thing to observe is that $g'$ is a map of modules, for
+	we have \begin{diagram}[midvshaft,hug,w=5em]
+		& & (M\lolli X)\tn M\tn M \\
+		A\tn M\tn M & \ruTo[snake=-1em](2,1)^{f\tn M\tn M}
+			&& \rdTo[snake=1em](2,1)^{\ev^{M}_{X}\tn M}
+			& X\tn M \\
+		& \rdTo[snake=-1em](2,1)_{f\tn M\tn M} & (M\lolli X)\tn M\tn M \\
+		\dTo<{A\tn m} && \dTo>{(M\lolli X)\tn M} && \dTo>x \\
+		A\tn M & \rTo_{f\tn M} & (M\lolli X)\tn M & \rTo_{\ev^{M}_{X}} & X
+	\end{diagram}
+	where the quadrilateral commutes by functoriality of tensor, and the
+	hexagon commutes since $hg=kg$. Thus, by Lemma~\ref{lemma-mod-map-curry},
+	$g''$ is also a map of modules.
+	
+	By the external Cayley Theorem, $g''$ is thus equal to
+	\[
+		M \rTo^{\cong} I\tn M \rTo^{f\tn M} (X\illol A)\tn M
+			\rTo^{d_{M,A,X}} (X\tn M)\illol A \rTo^{x\illol A} X\illol A
+	\]
+	for some unique $f: I \to X\illol A$.
+	%
+	Hence $g'$ is equal to
+	\[
+		A\tn M \rTo^{f'\tn M} X\tn M \rTo^{x} X
+	\]
+	for some unique $f': A\to X$ (obtained by uncurrying $f$).
+	%
+	Thus $g$ is equal to
+	\[
+		A \rTo^{f'} X \rTo^{\curry_{X,M,X}(x)} M\lolli X
+	\]
+	for this unique $f'$, which is precisely the universal property of
+	the equaliser diagram.
+\end{proof}
+\begin{remark}
+	The external theorem can be obtained as a corollary of the internal
+	one, under an additional assumption on $\V$. The additional assumption is
+	that the functor $\V(I,-); \V\to\Set$ should preserve equalisers. In
+	particular, this is always so if $\V$ has small coproducts, because in that
+	case $\V$ is \emph{tensored} \citep[in the sense of][section~2.7]{KellyEnriched}
+	as a $\Set$-category, and so the functor $\V(I,-)$ has a left adjoint.
+	Then we can obtain the external theorem simply by applying the functor
+	$\V(I,-)$ to the equaliser diagram of the internal theorem.
+\end{remark}
+
+\bibliography{cs}
+\end{document}

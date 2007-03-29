@@ -1,0 +1,1097 @@
+%!TEX TS-program = latex
+\documentclass{robinthesisdraft}
+\usepackage{robincs,thesisdefs,xr}
+\externaldocument[Bicats:]{bicats}
+\externaldocument[MonBicats:]{mon-bicats}
+
+\title{Pseudomonoids}
+\begin{document}
+\maketitle
+
+A monoid, in a monoidal category, consists of an object $A$ equipped
+with a unit $u: I\to A$ and a multiplication $m: A\tn A\to A$, satisfying
+the obvious unit and associativity axioms. In a monoidal \emph{bicategory},
+the corresponding notion is that of a pseudomonoid, where the unit and
+associativity laws hold, not on the nose, but up to coherent isomorphism.
+The primeval example is of course that of monoidal categories, which are
+pseudomonoids in the monoidal bicategory $\Cat$; though for present
+purposes we are particularly interested in promonoidal categories,
+which are pseudomonoids in $\Prof$.
+
+Though the notion of pseudomonoid is fairly well known (at least in
+certain circles) no published account goes
+much further than stating the definition \citep{MonBicat}.
+So without further ado, here is the definition.
+
+\begin{definition} % definition of pseudomonoid
+	A pseudomonoid $\C$ in a monoidal bicategory $\B$ is a normal
+	pseudofunctor $1\to\B$. More concretely, it consists of an object $\C$,
+	1-cells
+	\[\begin{array}l
+		J: I\to\C,\\
+		P:\C\tn\C\to\C,
+	\end{array}\]
+	and 2-cells
+	\[\begin{array}{c@{\qquad}c}
+		\multicolumn2c{\begin{diagram}
+			\C\tn(\C\tn\C) && \rTo^{a_{\C,\C,\C}} && (\C\tn\C)\tn\C
+			\\
+			\dTo<{\C\tn P}
+			&& \begin{array}c\To\\[-4pt]\aa\end{array}
+			&& \dTo>{P\tn\C}
+			\\
+			\C\tn\C & \rTo_{P} & \C & \lTo_{P} & \C\tn\C
+		\end{diagram}}
+		\\[6em]
+		\begin{diagram}
+			I\tn\C &\rTo^{J\tn\C}&\C\tn\C\\
+			&\rdTo[snake=-1ex](1,2)<{l_\C}
+				\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\ll\end{array}$}%
+				\ldTo[snake=1ex](1,2)>{P}\\
+			&\C
+		\end{diagram}
+		&
+		\begin{diagram}
+			\C\tn I &\rTo^{\C\tn J}&\C\tn\C\\
+			&\rdTo[snake=-1ex](1,2)<{r_\C}
+				\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\rr\end{array}$}%
+				\ldTo[snake=1ex](1,2)>{P}\\
+			&\C
+		\end{diagram}
+	\end{array}\]
+	subject to the two equations below (stated in the Gray monoid setting).
+	Since the 2-cells are assumed to be invertible, we shall permit ourselves
+	to omit the arrow. Also, here and elsewhere, we write $\C^{2}$ for $\C\tn\C$.
+	\begin{equation}\label{eq-lra}
+	\begin{diagram}
+		\C\tn\I\tn\C\\
+		\dTo<1 &\hbox to0pt{\hss$\C\tn\ll$}\rdTo(2,1)^{\C\tn J\tn\C} & \C\tn\C\tn\C\\
+		\C\tn\C & \ldTo(2,1)_{\C\tn P} &\dTo>{P\tn\C}\\
+		\dTo<P & \raise1.5em\hbox{$\aa$}& \C\tn\C\\
+		\C&\ldTo(2,1)_P
+	\end{diagram}
+	\qquad=\qquad
+	\begin{diagram}
+		\C\tn\I\tn\C\\
+		\dTo<1 &\hbox to0pt{\hss$\rr\tn\C$}\rdTo(2,1)^{\C\tn J\tn\C} & \C\tn\C\tn\C\\
+		\C\tn\C & \ldTo(2,1)_{P\tn\C}\\
+		\dTo<P\\
+		\C
+	\end{diagram}
+	\end{equation}
+	and
+	\begin{equation}\label{eq-aa}
+		\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+			&&\C^3\\
+			&\ruTo^{\C^2\tn P}&\dTo[snake=-5pt]<{P\tn\C}&\rdTo^{\C\tn P}\\
+			\C^4 &\sim& \C^2 &\mathop{\Leftarrow}\limits_{\;\;\;\aa}& \C^2\\
+			\dTo<{P\tn\C^2}&\ruTo_{\C\tn P} && \rdTo_P & \dTo>{P}\\
+			\C^3 && \Arr\Downarrow\aa && \C\\
+			&\rdTo_{P\tn\C}&&\ruTo>{P}\\
+			&&\C^2
+		\end{diagram}
+		\qquad=\qquad
+		\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+			&&\C^3\\
+			&\ruTo^{\C^2\tn P}&&\rdTo^{\C\tn P}\\
+			\C^4 && \Arr\Downarrow{\C\tn \aa} && \C^2\\
+			\dTo<{P\tn\C^2}&\rdTo^{\C\tn P\tn\C} && \ruTo^{\C\tn P} & \dTo>{P}\\
+			\C^3 &\mathop{\Leftarrow}\limits_{\;\;\;\aa\tn\C}& \C^3 &\Arr\Swarrow{\scriptstyle\!\!\!\aa}& \C\\
+			&\rdTo_{P\tn\C}&\dTo[snake=5pt]>{\!\!P\tn\C}&\ruTo>{P}\\
+			&&\C^2
+		\end{diagram}
+	\end{equation}
+	Note that equation (\ref{eq-lra}) is equivalent to
+	\[
+	\begin{diagram}
+		\C\tn\I\tn\C\\
+		\dTo<1 &\hbox to0pt{\hss$\C\tn\ll$}\rdTo(2,1)^{\C\tn J\tn\C} & \C\tn\C\tn\C\\
+		\C\tn\C & \ldTo(2,1)_{\C\tn P}\\
+		\dTo<P\\
+		\C
+	\end{diagram}
+	\qquad=\qquad
+	\begin{diagram}
+		\C\tn\I\tn\C\\
+		\dTo<1 &\hbox to0pt{\hss$\rr\tn\C$}\rdTo(2,1)^{\C\tn J\tn\C} & \C\tn\C\tn\C\\
+		\C\tn\C & \ldTo(2,1)_{P\tn\C} &\dTo>{\C\tn P}\\
+		\dTo<P & \raise1.5em\hbox{$\aa$}& \C\tn\C\\
+		\C&\ldTo(2,1)_P
+	\end{diagram}
+	\]
+	by composing with the inverse of $\aa$. We shall often use it in this form, without
+	further remark. Similar variations of other equations may also be used without
+	drawing attention to the fact.
+\end{definition}
+%
+The first of these equations corresponds to Mac Lane's pentagon
+axiom, and the second corresponds to the triangle axiom relating
+$\alpha$, $\lambda$ and $\rho$.
+
+\section{Some facts about pseudomonoids}
+This section is essentially a translation of \cite{KellyML} into the language
+of general pseudomonoids. In particular, we shall show that the following
+three equations hold of any pseudomonoid $\C$.
+\begin{equation}\label{eq-lla}
+\begin{diagram}
+	\I\tn\C^2 & \rTo^{J\tn\C^2} &\C^3& \rTo^{\C\tn P} & \C^2\\
+	&\rdTo(2,2)<1\raise1em\hbox to0pt{$\ll\tn\C$\hss} & \dTo[snake=.5em]>{P\tn\C} &\aa&\dTo>P\\
+	&&\C^2 &\rTo_P &\C
+\end{diagram}
+\quad=\quad
+\begin{diagram}
+	\I\tn\C^2 &\rTo^{J\tn\C^2} & \C^3\\
+	\dTo<{\I\tn P} &\sim & \dTo>{\C\tn P}\\
+	\I\tn\C &\rTo^{J\tn\C} & \C^2\\
+	&\rdTo(2,2)_1\raise0.5em\hbox to0pt{\hskip0.5em$\ll$\hss} &\dTo>P\\
+	&&\C
+\end{diagram}
+\end{equation}
+\begin{equation}\label{eq-rra}
+\begin{diagram}
+	\C^2\tn\I & \rTo^{\C^2\tn J} &\C^3& \rTo^{P\tn\C} & \C^2\\
+	&\rdTo(2,2)<1\raise1em\hbox to0pt{$\C\tn\rr$\hss} & \dTo[snake=.5em]>{\C\tn P} &\aa&\dTo>P\\
+	&&\C^2 &\rTo_P &\C
+\end{diagram}
+\quad=\quad
+\begin{diagram}
+	\C^2\tn\I &\rTo^{\C^2\tn J} & \C^3\\
+	\dTo<{P\tn\I} &\sim & \dTo>{P\tn\C}\\
+	\C\tn\I &\rTo^{\C\tn J} & \C^2\\
+	&\rdTo(2,2)_1\raise0.5em\hbox to0pt{\hskip0.5em$\rr$\hss} &\dTo>P\\
+	&&\C
+\end{diagram}
+\end{equation}
+\begin{equation}\label{eq-lr}
+\begin{diagram}
+	\I\tn\I\\
+	\dTo<{J\tn\I} & \rdTo(2,1)^{\I\tn J} & \I\tn\C\\
+	\C\tn\I &\raise1em\hbox{$\sim$}&\dTo>{J\tn\C}\\
+	\dTo<1 & \hbox to0pt{\hss$\rr$\hskip0.5em}\rdTo(2,1)^{\C\tn J}& \C\tn\C\\
+	\C&\ldTo(2,1)_P
+\end{diagram}
+\quad=\quad
+\begin{diagram}
+	\I\tn\I\\
+	\dTo<{J\tn\I} & \rdTo(2,1)^{\I\tn J} & \I\tn\C\\
+	\C\tn\I &\ldTo(2,3)^1&\dTo>{J\tn\C}\\
+	\dTo<1 & \raise1em\hbox to0pt{\hskip1em$\ll$\hss}& \C\tn\C\\
+	\C&\ldTo(2,1)_P
+\end{diagram}
+\end{equation}
+%
+% In fact, it turns out that only equation (\ref{eq-lla}) is needed to prove the embedding theorem.
+% For the sake of completeness, however, we shall prove all three.
+%
+\citet[section~3.4]{LackThesis} describes an interesting geometrical way to
+prove these equations, using certain four-dimensional diagrams.\footnote{
+	Lack is working in the slightly more general
+	context of enriched bicategories: a pseudomonoid is an enriched bicategory
+	with one object.}
+Here we give a more down-to-earth version of the argument, where we confine
+our diagrams to the two dimensions of the page. The reader is thereby spared
+the trouble of attempting to visualise a four-dimensional hypercube, at the
+expense of having to follow sometimes lengthy sequences of equations between
+two-dimensional diagrams.
+
+The following lemma will be very useful. It corresponds to the fact that, in a monoidal category,
+the functors $I\tn-$ and $-\tn I$ are faithful.
+\begin{lemma}\label{lemma-faithful}
+	Let $A$ be some object of $\B$, let $f$, $g: A\to\C$
+	and let $\gamma$, $\delta: f\To g$. If
+	\[\hbox{\vrule height 3em depth 2em width 0pt}
+	\begin{diagram}
+		\rnode{CA}{\C\tn A} & \Downarrow{\scriptstyle\C\tn\gamma} & \rnode{CC}{\C\tn\C} &\rTo^P &\C
+		\ncarc{->}{CA}{CC}\Aput{\C\tn f}
+		\ncarc{<-}{CC}{CA}\Aput{\C\tn g}
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+		\rnode{CA}{\C\tn A} & \Downarrow{\scriptstyle\C\tn\delta} & \rnode{CC}{\C\tn\C} &\rTo^P &\C
+		\ncarc{->}{CA}{CC}\Aput{\C\tn f}
+		\ncarc{<-}{CC}{CA}\Aput{\C\tn g}
+	\end{diagram}
+	\]
+	then $\gamma = \delta$.
+	%
+	Dually, if
+	\[\hbox{\vrule height 3em depth 2em width 0pt}
+	\begin{diagram}
+		\rnode{AC}{A\tn\C} & \Downarrow{\scriptstyle\gamma\tn\C} & \rnode{CC}{\C\tn\C} &\rTo^P &\C
+		\ncarc{->}{AC}{CC}\Aput{f\tn\C}
+		\ncarc{<-}{CC}{AC}\Aput{g\tn\C}
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+		\rnode{AC}{A\tn\C} & \Downarrow{\scriptstyle\delta\tn\C} & \rnode{CC}{\C\tn\C} &\rTo^P &\C
+		\ncarc{->}{AC}{CC}\Aput{f\tn\C}
+		\ncarc{<-}{CC}{AC}\Aput{g\tn\C}
+	\end{diagram}
+	\]
+	then $\gamma=\delta$.
+\end{lemma}
+\begin{proof}
+	For the first part, suppose
+	\[\hbox{\vrule height 3em depth 2em width 0pt}
+	\begin{diagram}
+		\rnode{CA}{\C\tn A} & \Downarrow{\scriptstyle\C\tn\gamma} & \rnode{CC}{\C\tn\C} &\rTo^P &\C
+		\ncarc{->}{CA}{CC}\Aput{\C\tn f}
+		\ncarc{<-}{CC}{CA}\Aput{\C\tn g}
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+		\rnode{CA}{\C\tn A} & \Downarrow{\scriptstyle\C\tn\delta} & \rnode{CC}{\C\tn\C} &\rTo^P &\C.
+		\ncarc{->}{CA}{CC}\Aput{\C\tn f}
+		\ncarc{<-}{CC}{CA}\Aput{\C\tn g}
+	\end{diagram}
+	\]
+	Then
+	\[\begin{array}{rcl}
+		\gamma &=&
+			\begin{diagram}
+			&&\rnode{top}{\I\tn\C}\\
+			&&\sim\\
+			\rnode{IA}{\I\tn A} & \rTo^{J\tn A} & \rnode{CA}{\C\tn A}
+				& \Downarrow{\scriptstyle\C\tn\gamma} & \rnode{CC}{\C\tn\C}
+				\raise2em\hbox to0pt{\hskip.5em$\ll$\hss}
+				\raise-2em\hbox to0pt{\hskip.5em$\ll$\hss}
+				&\rTo^P & \rnode{C}{\C}\\
+			&&\sim\\
+			&&\rnode{bot}{\I\tn\C}
+			\ncarc{->}{CA}{CC}\Aput{\C\tn f}
+			\ncarc{<-}{CC}{CA}\Aput{\C\tn g}
+			\ncarc{->}{IA}{top}\Aput{\I\tn f}
+			\ncarc{->}{top}{CC}\aput{-53}(0.6){J\tn\C}
+			\ncarc{->}{top}{C}\Aput{1}
+			\ncarc{<-}{C}{bot}\Aput{1}
+			\ncarc{<-}{CC}{bot}\aput{53}(0.4){J\tn\C}
+			\ncarc{<-}{bot}{IA}\Aput{\I\tn g}
+			\end{diagram}
+		\\[7em]
+		&=&
+			\begin{diagram}
+			&&\rnode{top}{\I\tn\C}\\
+			&&\sim\\
+			\rnode{IA}{\I\tn A} & \rTo^{J\tn A} & \rnode{CA}{\C\tn A}
+				& \Downarrow{\scriptstyle\C\tn\delta} & \rnode{CC}{\C\tn\C}
+				\raise2em\hbox to0pt{\hskip.5em$\ll$\hss}
+				\raise-2em\hbox to0pt{\hskip.5em$\ll$\hss}
+				&\rTo^P & \rnode{C}{\C}\\
+			&&\sim\\
+			&&\rnode{bot}{\I\tn\C}
+			\ncarc{->}{CA}{CC}\Aput{\C\tn f}
+			\ncarc{<-}{CC}{CA}\Aput{\C\tn g}
+			\ncarc{->}{IA}{top}\Aput{\I\tn f}
+			\ncarc{->}{top}{CC}\aput{-53}(0.6){J\tn\C}
+			\ncarc{->}{top}{C}\Aput{1}
+			\ncarc{<-}{C}{bot}\Aput{1}
+			\ncarc{<-}{CC}{bot}\aput{53}(0.4){J\tn\C}
+			\ncarc{<-}{bot}{IA}\Aput{\I\tn g}
+			\end{diagram}
+		\\
+		&=&\delta.
+	\end{array}\]
+	The second part is proved similarly.
+\end{proof}
+%
+\begin{propn} % Equations (\ref{eq-lla}) and (\ref{eq-rra}) hold
+	Equations (\ref{eq-lla}) and (\ref{eq-rra}) hold, of any pseudomonoid $\C$.
+\end{propn}
+\begin{proof}
+	Consider the 2-cell
+	\begin{diagram}
+	\C\tn\I\tn\C^2 & \rTo^{\C\tn J\tn\C^2} &\C^4& \rTo^{\C^2\tn P} & \C^3\\
+	&\rdTo(2,2)<1\raise1em\hbox to0pt{$\C\tn\ll\tn\C$\hss}
+		& \dTo[snake=.8em]>{\C\tn P\tn\C} &\C\tn\aa&\dTo>{\C\tn P}\\
+	&&\C^3 &\rTo_{\C\tn P} &\C^2\\
+	&&\dTo<{P\tn\C} & \aa & \dTo>P\\
+	&&\C^2 & \rTo_P & \C
+	\end{diagram}
+	%
+	By equation (\ref{eq-lra}), this is equal to
+	\begin{diagram}
+	\C\tn\I\tn\C^2 & \rTo^{\C\tn J\tn\C^2} &\C^4& \rTo^{\C^2\tn P} & \C^3\\
+	\dTo<1&\raise1em\hbox to0pt{\hss$\rr\tn\C^2$}\ldTo[hug]_{P\tn\C^2}
+		& \dTo[snake=.8em]>{\C\tn P\tn\C} &\C\tn\aa&\dTo>{\C\tn P}\\
+	\C^3&\aa\tn\C&\C^3 &\rTo_{\C\tn P} &\C^2\\
+	&\rdTo_{P\tn\C}&\dTo<{P\tn\C} & \aa & \dTo>P\\
+	&&\C^2 & \rTo_P & \C
+	\end{diagram}
+	%
+	which, by (\ref{eq-aa}), is equal to
+	\begin{diagram}[tight,w=3.5em]
+	\C\tn\I\tn\C^2 & \rTo^{\C\tn J\tn\C^2} &\C^4& \rTo^{\C^2\tn P} & \C^3\\
+	\dTo<1 &\ldTo(2,2)_{P\tn\C^2}\raise1em\hbox to0pt{\hss$\rr\tn\C^2$}&\sim
+		&\ldTo^{P\tn\C} &\dTo>{\C\tn P}\\
+	\C^3 &\rTo_{\C\tn P} & \C^2 &\aa &\C^2\\
+	&\rdTo_{P\tn\C} &\aa&\rdTo_P&\dTo>P\\
+	&&\C^2 & \rTo_P & \C
+	\end{diagram}
+	%
+	Pasting on a structural 2-cell and its inverse gives
+	\begin{diagram}[tight,w=4em]
+	&&\C^4\\
+	&\ruTo^{\C\tn J\tn\C^2} &\sim&\rdTo^{\C^2\tn P}\\
+	\C\tn\I\tn\C^2&\rTo^{\C\tn\I\tn P} &\C\tn\I\tn\C &\rTo_{\C\tn J\tn\C} &\rnode{x}{\C^3}\\
+	&\rdTo[snake=1em]^{\C\tn J\tn\C^2} &&\sim\\
+	\dTo<1 &\rr&\C^4& \rTo^{\C^2\tn P} & \rnode{y}{\C^3}\\
+	&\ldTo(2,2)_{P\tn\C^2}&\sim
+		&\ldTo^{P\tn\C} &\dTo>{\C\tn P}\\
+	\C^3 &\rTo_{\C\tn P} & \C^2 &\aa &\C^2\\
+	&\rdTo_{P\tn\C} &\aa&\rdTo_P&\dTo>P\\
+	&&\C^2 & \rTo_P & \C
+	\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\end{diagram}
+	which, since the structural 2-cells behave naturally, is equal to
+	\begin{diagram}[tight,w=4em]
+	&&\C^4\\
+	&\ruTo^{\C\tn J\tn\C^2} &\sim&\rdTo^{\C^2\tn P}\\
+	\C\tn\I\tn\C^2&\rTo^{\C\tn\I\tn P} &\C\tn\I\tn\C &\rTo_{\C\tn J\tn\C} &\rnode{x}{\C^3}\\
+	&&&\raise-1em\hbox{$\rr\tn\C$}\\
+	\dTo<1 &&\dTo<1&& \rnode{y}{\C^3}\\
+	&&&\ldTo^{P\tn\C} &\dTo>{\C\tn P}\\
+	\C^3 &\rTo_{\C\tn P} & \C^2 &\aa &\C^2\\
+	&\rdTo_{P\tn\C} &\aa&\rdTo_P&\dTo>P\\
+	&&\C^2 & \rTo_P & \C\hbox{\hskip1pt.\hss}
+	\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\end{diagram}
+	%
+	This diagram can be redrawn as
+	\begin{diagram}
+	&&\rnode{CICC}{\C\tn\I\tn\C^2} &\rTo^{\C\tn J\tn\C^2} &\C^4\\
+	&&\dTo<{\C\tn\I\tn P} &\sim& \dTo>{\C^2\tn P}\\
+	&&\C\tn\I\tn\C &\rTo^{\C\tn J\tn\C} &\rnode{x}{\C^3}\\
+	&&\dTo<1&\rr\tn\C\\
+	\rnode{CCC}{\C^3}&\rTo^{\C\tn P}&\C^2 &\lTo^{P\tn\C} &\rnode{y}{\C^3}\\
+	\dTo<{P\tn\C} &\aa & \dTo>P & \aa & \dTo>{\C\tn P}\\
+	\C^2 &\rTo_P & \C &\lTo_P & \C^2
+	\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\nccurve[angleA=180,angleB=90]{->}{CICC}{CCC}\Bput{1}
+	\end{diagram}
+	%
+	which by equation (\ref{eq-lra}) is equal to
+	\begin{diagram}
+	&&\rnode{CICC}{\C\tn\I\tn\C^2} &\rTo^{\C\tn J\tn\C^2} &\C^4\\
+	&&\dTo<{\C\tn\I\tn P} &\sim& \dTo>{\C^2\tn P}\\
+	&&\C\tn\I\tn\C &\rTo^{\C\tn J\tn\C} &\rnode{x}{\C^3}\\
+	&&\dTo<1&\C\tn\ll\\
+	\rnode{CCC}{\C^3}&\rTo^{\C\tn P}&\C^2 &\lTo^{\C\tn P} &\rnode{y}{\C^3}\\
+	\dTo<{P\tn\C} &\aa & \dTo>P\\
+	\C^2 &\rTo_P & \C\hbox to0pt{\hskip1pt.\hss}
+	\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\nccurve[angleA=180,angleB=90]{->}{CICC}{CCC}\Bput{1}
+	\end{diagram}
+	%
+	Comparing this with the diagram we started with, and cancelling $\aa$, we have
+	\[
+	\begin{diagram}
+	\C\tn\I\tn\C^2 & \rTo^{\C\tn J\tn\C^2} &\C^4& \rTo^{\C^2\tn P} & \C^3\\
+	&\rdTo(2,2)<1\raise1em\hbox to0pt{$\C\tn\ll\tn\C$\hss}
+		& \dTo[snake=.8em]>{\C\tn P\tn\C} &\C\tn\aa&\dTo>{\C\tn P}\\
+	&&\C^3 &\rTo_{\C\tn P} &\C^2\\
+	&&&& \dTo>P\\
+	&&&& \C
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+	\C\tn\I\tn\C^2 &\rTo^{\C\tn J\tn\C^2} &\C^4\\
+	\dTo<{\C\tn\I\tn P} &\sim& \dTo>{\C^2\tn P}\\
+	\C\tn\I\tn\C &\rTo^{\C\tn J\tn\C} &\rnode{x}{\C^3}\\
+	\dTo<1&\C\tn\ll\\
+	\C^2 &\lTo^{\C\tn P} &\rnode{y}{\C^3}\\
+	\dTo>P\\
+	\C
+	\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\end{diagram}
+	\]
+	whence Lemma~\ref{lemma-faithful} allows us to deduce equation (\ref{eq-lla}), as required.
+	Equation (\ref{eq-rra}) follows by symmetry.
+\end{proof}
+%
+The next lemma is the general form of the fact that $I\tn\lambda_A = \lambda_{I\tn A}$
+in a monoidal category.
+\begin{lemma}\label{lemma-lambda}
+The following equation holds of any pseudomonoid $\C$:
+\begin{equation}\label{eq-lambda}
+\hskip-2em
+\begin{diagram}
+	\I\tn\I\tn\C & \rTo^{J\tn\I\tn\C} & \rnode{CIC}{\C\tn\I\tn\C}\\
+	&&\dTo>{\C\tn J\tn\C}\\
+	&\hbox to0pt{\hskip1em$\C\tn\ll$\hss}&\C^3\\
+	&&\dTo>{\C\tn P}\\
+	&&\rnode{CC}{\C^2}\\
+	&&\dTo>P\\
+	&&\C
+	\ncarc[arcangle=-70]{->}{CIC}{CC}\Bput{1}
+\end{diagram}
+=
+\begin{diagram}
+	\I\tn\I\tn\C & \rTo^{J\tn\I\tn\C} & \C\tn\I\tn\C\\
+	\dTo<{\I\tn J\tn\C} & \sim & \dTo>{\hbox to0pt{$\C\tn J\tn\C$\hss}}\\
+	\I\tn\C^2 & \rTo_{J\tn\C^2}& \C^3\\
+	\dTo<{\I\tn P} & \sim & \dTo>{\C\tn P}\\
+	\I\tn\C & \rTo^{J\tn \C} & \C^2\\
+	&\rdTo(2,2)_1\raise1em\hbox to 0pt{$\ll$\hss} & \dTo>P\\
+	&&\C
+\end{diagram}
+\end{equation}
+\end{lemma}
+\begin{proof}
+	Since the structural 2-cells behave naturally,
+	\begin{diagram}
+		\I\tn\I\tn\C & \rTo^{J\tn\I\tn\C} & \rnode{CIC}{\C\tn\I\tn\C}\\
+		&&\dTo>{\C\tn J\tn\C}\\
+		\dTo<1&\hbox to0pt{\hskip1em$\C\tn\ll$\hss}&\C^3\\
+		&&\dTo>{\C\tn P}\\
+		\I\tn\C&\rTo^{J\tn\C}&\rnode{CC}{\C^2}\\
+		&\rdTo(2,2)_1\raise1em\hbox to0pt{\hskip1em$\ll$\hss}&\dTo>P\\
+		&&\C
+		\ncarc[arcangle=-70]{->}{CIC}{CC}\Bput{1}
+	\end{diagram}
+	is equal to
+	\begin{diagram}
+		&\rnode{IIC}{\I\tn\I\tn\C} & \rTo^{J\tn\I\tn\C} & \C\tn\I\tn\C\\
+		&\dTo<{\I\tn J\tn\C} & \sim & \dTo>{\C\tn J\tn\C}\\
+		\ll&\rnode{IC}{\I\tn\C^2} & \rTo_{J\tn\C^2}& \C^3\\
+		&\dTo<{\I\tn P} & \sim & \dTo>{\C\tn P}\\
+		&\rnode{IC}{\I\tn\C} & \rTo^{J\tn \C} & \C^2\\
+		&&\rdTo(2,2)_1\raise1em\hbox to 0pt{\hskip1em$\ll$\hss} & \dTo>P\\
+		&&&\C
+		\ncarc[arcangle=-70,ncurv=1]{->}{IIC}{IC}\Bput{1}
+	\end{diagram}
+	Vertically composing with the inverse of $\ll$ gives the claimed equation.
+\end{proof}
+%
+\begin{propn}
+	Equation (\ref{eq-lr}) holds of any pseudomonoid $\C$.
+\end{propn}
+\begin{proof}
+	\[\begin{array}{rcl}
+	\begin{diagram}
+		&\I\tn\I\tn\C \\
+		&\dTo<{J\tn\I\tn\C} \\
+		&\rnode{CIC}{\C\tn\I\tn\C}\\
+		&\dTo>{\C\tn J\tn\C} \\
+		\rr\tn\C & \C^3 &\rTo^{\C\tn P} & \C^2 \\
+		&\dTo>{P\tn\C} &\aa& \dTo>P \\
+		&\rnode{CC}{\C^2} &\rTo_{P} & \C
+		\ncarc[arcangle=-70,ncurv=1]{->}{CIC}{CC}\Bput{1}
+	\end{diagram}
+	&\quad=\quad&
+	\begin{diagram}
+		&\I\tn\I\tn\C \\
+		&\dTo<{J\tn\I\tn\C} \\
+		&\rnode{CIC}{\C\tn\I\tn\C}\\
+		&\dTo>{\C\tn J\tn\C} \\
+		\C\tn\ll & \C^3 \\
+		&\dTo>{\C\tn P} \\
+		&\rnode{CC}{\C^2} &\rTo_{P} & \C
+		\ncarc[arcangle=-70,ncurv=1]{->}{CIC}{CC}\Bput{1}
+	\end{diagram}
+	\\[11em]
+	&=&
+	\begin{diagram}
+		\I\tn\I\tn\C & \rTo^{J\tn\I\tn\C} & \C\tn\I\tn\C\\
+		\dTo<{\I\tn J\tn\C} & \sim & \dTo>{\C\tn J\tn\C}\\
+		\I\tn\C^2 & \rTo_{J\tn\C^2}& \C^3\\
+		\dTo<{\I\tn P} & \sim & \dTo>{\C\tn P}\\
+		\I\tn\C & \rTo^{J\tn \C} & \C^2\\
+		&\rdTo(2,2)_1\raise1em\hbox to 0pt{$\ll$\hss} & \dTo>P\\
+		&&\C
+	\end{diagram}
+	\\[10em]
+	&=&
+	\begin{diagram}
+		\I\tn\I\tn\C & \rTo^{J\tn\I\tn\C} & \C\tn\I\tn\C\\
+		\dTo<{\I\tn J\tn\C} & \sim & \dTo>{\C\tn J\tn\C} \\
+		\I\tn\C^2 & \rTo^{J\tn\C^2} & \rnode{x}{\C^3}\\
+		\dTo<1 & \ll\tn\C \\
+		\C^2 & \lTo^{P\tn\C} & \rnode{y}{\C^3} \\
+		\dTo<P & \aa & \dTo>{\C\tn P} \\
+		\C & \lTo_P & \C^2
+		\ncline[doubleline=true,doublesep=2pt]{-}xy
+	\end{diagram}
+	\end{array}\]
+	These equalities hold by, respectively, equations (\ref{eq-lra}), (\ref{eq-lambda}), and (\ref{eq-lla}).
+	Now vertically compose with the inverse of $\aa$, and apply Lemma~\ref{lemma-faithful}
+	to deduce the claim.
+\end{proof}
+
+\section{Braided pseudomonoids}
+\begin{definition} % braided pseudomonoid
+	Let $\C$ be a pseudomonoid in the braided monoidal bicategory $\B$.
+	A \defn{braiding} for $\C$ is a 2-cell $\ss$:
+	\begin{diagram}
+		\C\tn\C &\rTo^{s_{{\C,\C}}}&\C\tn\C\\
+		&\rdTo[snake=-1ex](1,2)<{P}
+			\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\ss\end{array}$}%
+			\ldTo[snake=1ex](1,2)>{P}\\
+		&\C
+	\end{diagram}
+	subject to two equations, which (in a Gray monoid) are as follows:
+	\begin{equation}\label{eq-sa-left}
+		\begin{array}{l}
+		\begin{diagram}
+			&&\rnode{tl}{\C^{3}} & \lTo^{s_{\C,\C^{2}}} & \rnode{tr}{\C^{3}} \\
+			&&\dTo<{P\tn \C} & s_{\C,P} & \dTo>{\C\tn P} \\
+			&&\C^{2} & \lTo^{{s_{\C,\C}}} & \C^{2} \\
+			&\aa && \raise 1em\hbox{$\ss$} \rdTo(1,2)_{P} \ldTo(1,2)_{P} && \aa \\
+			\rnode{bl}{\C^{2}} && \rTo_{P} & \C & \lTo_{P} && \rnode{br}{\C^{2}}
+			%
+			\nccurve[angleA=180,angleB=90]{->}{tl}{bl}\Bput{\C\tn P}
+			\nccurve[angleA=0,angleB=90]{->}{tr}{br}\Aput{P\tn \C}
+		\end{diagram}
+		\\
+		\multicolumn 1r{\quad=\quad
+		\begin{diagram}
+			&&\rnode{tl}{\C^{3}} & \lTo^{s_{\C,\C^{2}}} & \rnode{tr}{\C^{3}} \\
+			&&& \raise 1em\hbox{$S_{\C|\C,\C}$}
+				\luTo(1,2)_{\C\tn s_{\C,\C}}
+				\ldTo(1,2)_{s_{\C,\C}\tn\C} \\
+			&\C\tn\ss && \C^{3} && \ss\tn\C \\
+			&&\ldTo(3,2)_{\C\tn P} & \aa & \rdTo(3,2)_{P\tn \C} \\
+			\rnode{bl}{\C^{2}} && \rTo_{P} & \C & \lTo_{P} && \rnode{br}{\C^{2}}
+			%
+			\nccurve[angleA=180,angleB=90]{->}{tl}{bl}\Bput{\C\tn P}
+			\nccurve[angleA=0,angleB=90]{->}{tr}{br}\Aput{P\tn \C}
+		\end{diagram}}
+		\end{array}
+	\end{equation}
+	and
+	\begin{equation}\label{eq-sa-right}
+		\begin{array}{l}
+		\begin{diagram}
+			&&\rnode{tl}{\C^{3}} & \rTo^{s_{\C^{2},\C}} & \rnode{tr}{\C^{3}} \\
+			&&\dTo<{P\tn \C} & s_{P,\C} & \dTo>{\C\tn P} \\
+			&&\C^{2} & \rTo^{{s_{\C,\C}}} & \C^{2} \\
+			&\aa && \raise 1em\hbox{$\ss$} \rdTo(1,2)_{P} \ldTo(1,2)_{P} && \aa \\
+			\rnode{bl}{\C^{2}} && \rTo_{P} & \C & \lTo_{P} && \rnode{br}{\C^{2}}
+			%
+			\nccurve[angleA=180,angleB=90]{->}{tl}{bl}\Bput{\C\tn P}
+			\nccurve[angleA=0,angleB=90]{->}{tr}{br}\Aput{P\tn \C}
+		\end{diagram}
+		\\
+		\multicolumn 1r{\quad=\quad
+		\begin{diagram}
+			&&\rnode{tl}{\C^{3}} & \rTo^{s_{\C^{2},\C}} & \rnode{tr}{\C^{3}} \\
+			&&& \raise 1em\hbox{$S_{\C,\C|\C}$}
+				\rdTo(1,2)_{\C\tn s_{\C,\C}}
+				\ruTo(1,2)_{s_{\C,\C}\tn\C} \\
+			&\C\tn\ss && \C^{3} && \ss\tn\C \\
+			&&\ldTo(3,2)_{\C\tn P} & \aa & \rdTo(3,2)_{P\tn \C} \\
+			\rnode{bl}{\C^{2}} && \rTo_{P} & \C & \lTo_{P} && \rnode{br}{\C^{2}}
+			%
+			\nccurve[angleA=180,angleB=90]{->}{tl}{bl}\Bput{\C\tn P}
+			\nccurve[angleA=0,angleB=90]{->}{tr}{br}\Aput{P\tn \C}
+		\end{diagram}}
+		\end{array}
+	\end{equation}
+\end{definition}
+%
+Observe that, if $\ss$ is a braiding for $\C$ with respect to the
+monoidal bicategory braiding $s$, then the inverse of the right mate of $\ss$,
+with respect to $s_{\C,\C}$ and $1_{\C}$,
+is a braiding with respect to $s^{*}$. We shall denote this dual braiding
+as $\ss^{*}$. (Note that, by Lemma~\chref{Bicats}{lemma-adjeq-twisted},
+$\ss^{*}$ is also the right mate of the inverse of $\ss$.)
+
+\section{Facts about braided pseudomonoids}\label{s-braided-facts}
+This section concerns the equation
+\begin{equation}\label{eq-lrs}
+	\begin{diagram}[s=2.5em,tight]
+		&&\I\tn \C \\
+		&\ldTo^{J\tn \C} && \luTo^{s_{\C,\I}}\\
+		\C^{2} & \hbox to0pt{\hskip 4pt$\ll$\hss} & \dTo>1
+			& \hskip-4pt U_{\C|\I}
+			& \C\tn \I \\
+		&\rdTo_{P} && \ldTo_{1} \\
+		&&\C
+	\end{diagram}
+	\qquad=\qquad
+	\begin{diagram}[s=2.5em,tight]
+		\rnode{CC}{\C^{2}} & \lTo^{J\tn\C}& \I\tn \C &
+			\lTo^{s_{\C,\I}}& \rnode{CI}{\C\tn \I} \\
+		&\luTo_{s_{\C,\C}} &s_{\C,J}& \ldTo_{\C\tn J} \\
+		&&\C^{2} \\
+		&\raise 2em\hbox{$\ss$} &\dTo>P& \raise 2em\hbox{$\rr$} \\
+		&&\rnode{C}{\C}
+		%
+		\ncarc[arcangle=-45]{->}{CC}{C}\Bput{P}
+		\ncarc[arcangle=45]{->}{CI}{C}\Aput{1}
+	\end{diagram}
+\end{equation}
+We'll first show that this equation holds in every braided pseudomonoid,
+and then we'll show that, in the presence of axioms \pref{eq-aa}, \pref{eq-sa-left}
+and \pref{eq-sa-right}, the equations \pref{eq-lla} and \pref{eq-lrs} together
+imply \pref{eq-lra}. This gives a useful alternative axiomatisation of braided
+pseudomonoids.
+
+\begin{remark}
+	Notice that, if we can prove that this equation holds of every braided
+	pseudomonoid, then in particular it holds of the dual braiding $\ss^{*}$,
+	so we have
+	\[
+		\begin{diagram}[s=2.5em,tight]
+			&&\I\tn \C \\
+			&\ldTo^{J\tn \C} && \luTo^{s^{*}_{\C,\I}}\\
+			\C^{2} & \hbox to0pt{\hskip 4pt$\ll$\hss} & \dTo>1
+				& \hskip-4pt U^{*}_{\C|\I}
+				& \C\tn \I \\
+			&\rdTo_{P} && \ldTo_{1} \\
+			&&\C
+		\end{diagram}
+		\qquad=\qquad
+		\begin{diagram}[s=2.5em,tight]
+			\rnode{CC}{\C^{2}} & \lTo^{J\tn\C}& \I\tn \C &
+				\lTo^{s^{*}_{\C,\I}}& \rnode{CI}{\C\tn \I} \\
+			&\luTo_{s^{*}_{\C,\C}} & s^{*}_{\C,J} & \ldTo_{\C\tn J} \\
+			&&\C^{2} \\
+			&\raise 2em\hbox{$\ss^{*}$} &\dTo>P& \raise 2em\hbox{$\rr$} \\
+			&&\rnode{C}{\C}
+			%
+			\ncarc[arcangle=-45]{->}{CC}{C}\Bput{P}
+			\ncarc[arcangle=45]{->}{CI}{C}\Aput{1}
+		\end{diagram}
+	\]
+	Taking mates then gives
+	\begin{equation}\label{eq-lrs'}
+		\begin{diagram}[s=2.5em,tight]
+			&&\I\tn \C \\
+			&\ldTo^{J\tn \C} && \rdTo^{s_{\I,\C}}\\
+			\C^{2} & \hbox to0pt{\hskip 4pt$\ll$\hss} & \dTo>1
+				& \hskip-4pt U_{\I|\C}
+				& \C\tn \I \\
+			&\rdTo_{P} && \ldTo_{1} \\
+			&&\C
+		\end{diagram}
+		\qquad=\qquad
+		\begin{diagram}[s=2.5em,tight]
+			\rnode{CC}{\C^{2}} & \lTo^{J\tn\C}& \I\tn \C &
+				\rTo^{s_{\I,\C}}& \rnode{CI}{\C\tn \I} \\
+			&\rdTo_{s_{\C,\C}} &s_{J,\C}& \ldTo_{\C\tn J} \\
+			&&\C^{2} \\
+			&\raise 2em\hbox{$\ss$} &\dTo>P& \raise 2em\hbox{$\rr$} \\
+			&&\rnode{C}{\C}
+			%
+			\ncarc[arcangle=-45]{->}{CC}{C}\Bput{P}
+			\ncarc[arcangle=45]{->}{CI}{C}\Aput{1}
+		\end{diagram}
+	\end{equation}
+	So a proof of \pref{eq-lrs} will also establish \pref{eq-lrs'}. This is
+	an example of how the duality principle can be used to establish facts
+	about the braiding $\ss$, not only about the dual braiding $\ss^{*}$.
+\end{remark}
+
+These equations generalise the one of \citet[Prop.~2.1, part~1]{BTC},
+and indeed the essence of the lengthy argument here is contained in the
+two-line sketch proof therein. The proof is originally due to \citet{KellyML}
+-- that he considered a symmetry, rather than a braiding, does not affect
+the proof.
+\begin{propn}\label{prop-lrs}
+	Equation~\pref{eq-lrs} holds in any braided pseudomonoid,
+	hence (by the discussion above) so does~\pref{eq-lrs'}.
+\end{propn}
+\begin{proof}
+	\diagramstyle[hug]
+	Consider the 2-cell
+	\begin{diagram}
+		&&\C\tn \I\tn \C && \lTo^{s_{\C,\C\tn \I}} && \C^{2}\tn \I \\
+		&\ldTo^{\C\tn J\tn \C}
+			&& \luTo_{\C\tn s_{\C,\I}}
+			& S_{\C|\C,\I}
+			& \ldTo_{s_{\C,\C}\tn \I} \\
+		\C^{3} & \C\tn\ll & \dTo>1 & \C\tn U_{\C|\I} & \C^{2}\tn \I
+			&& \dTo>1 \\
+		&\rdTo_{\C\tn P} &&\ldTo_{1} \\
+		&& \C^{2} && \lTo^{s_{\C,\C}} && \C^{2} \\
+		&&& \rdTo[nohug]_{P} & \raise 1em\hbox{$\ss$} & \ldTo[nohug]_{P} \\
+		&&&& \C
+	\end{diagram}
+	By Proposition~\chref{MonBicats}{prop-braiding-unit}, this is equal to
+	\begin{diagram}
+		&&\C\tn \I\tn \C && \lTo^{s_{\C,\C\tn \I}} && \C^{2}\tn \I \\
+		&\ldTo^{\C\tn J\tn \C}
+			&&
+			&
+			& \\
+		\C^{3} & \C\tn\ll & \dTo>1 &&
+			&& \dTo>1 \\
+		&\rdTo_{\C\tn P} \\
+		&& \C^{2} && \lTo^{s_{\C,\C}} && \C^{2} \\
+		&&& \rdTo[nohug]_{P} & \raise 1em\hbox{$\ss$} & \ldTo[nohug]_{P} \\
+		&&&& \C
+	\end{diagram}
+ 	which is equal, by equation \pref{eq-lra}, to
+	\begin{diagram}
+		&&\C\tn \I\tn \C && \lTo^{s_{\C,\C\tn \I}} && \C^{2}\tn \I \\
+		&\ldTo^{\C\tn J\tn \C}
+			&&
+			&
+			& \\
+		\C^{3} & \rr\tn\C & \dTo>1 &&
+			&& \dTo>1 \\
+		&\rdTo_{P\tn\C} \\
+		\dTo<{\C\tn P} && \C^{2} && \lTo^{s_{\C,\C}} && \C^{2} \\
+		&\aa && \rdTo[nohug]_{P} & \raise 1em\hbox{$\ss$} & \ldTo[nohug]_{P} \\
+		\C^{2} &&\rTo_{P}&& \C
+	\end{diagram}
+	Since $s$ is pseudo-natural, this is equal to
+	\begin{diagram}
+		&&\C\tn \I\tn \C & \lTo^{s_{\C,\C\tn \I}} & \C^{2}\tn \I \\
+		&\ldTo^{\C\tn J\tn \C}
+			& s_{\C,\C\tn J}
+			& \ldTo^{\C^{2}\tn J}
+			& \\
+		\C^{3} & \lTo^{s_{\C,\C^{2}}} & \C^{3} & \C\tn\rr
+			& \dTo>1 \\
+		&\rdTo_{P\tn\C} & s_{\C,P} & \rdTo_{\C\tn P} \\
+		\dTo<{\C\tn P} && \C^{2} & \lTo^{s_{\C,\C}} & \C^{2} \\
+		&\aa && \rdTo[nohug](1,2)_{P} \raise 1em\hbox{$\ss$} \ldTo[nohug](1,2)_{P} \\
+		\C^{2} &&\rTo_{P}& \C
+	\end{diagram}
+	which, by equation \pref{eq-rra}, equals
+	\begin{diagram}
+		&&&&\C\tn \I\tn \C&\lTo^{s_{\C,\C\tn \I}} & \rnode{CCI}{\C^{2}\tn \I} \\
+		&&&\ldTo^{\C\tn J\tn \C} & s_{\C,\C\tn J} & \ldTo_{\C^{2}\tn J} \\
+		&&\rnode{tl}{\C^{3}} & \lTo^{s_{\C,\C^{2}}} & \rnode{tr}{\C^{3}}
+			&& \hbox to0pt{\quad$\sim$\hss} \\
+		&&\dTo<{P\tn \C} & s_{\C,P} & \dTo>{\C\tn P} \\
+		&&\C^{2} & \lTo^{{s_{\C,\C}}} & \C^{2} &&&& \rnode{CI}{\C\tn \I} \\
+		&\aa && \raise 1em\hbox{$\ss$} \rdTo[nohug](1,2)_{P} \ldTo[nohug](1,2)_{P}
+			&& \aa && \ldTo_{\C\tn J}\\
+		\rnode{bl}{\C^{2}} && \rTo_{P} & \rnode{C}{\C} & \lTo_{P} && \rnode{br}{\C^{2}} \\
+		&&&&&&\rr \\
+		%
+		\nccurve[angleA=180,angleB=90]{->}{tl}{bl}\Bput{\C\tn P}
+		\nccurve[angleA=0,angleB=90]{->}{tr}{br}\Aput{P\tn \C}
+		\nccurve[angleA=-20,angleB=90]{->}{CCI}{CI}\Aput{P\tn \I}
+		\nccurve[angleA=270,angleB=-45,ncurv=1.5]{->}{CI}{C}\Aput{1}
+	\end{diagram}
+	By \pref{eq-sa-left}, this is equal to
+	\begin{diagram}
+		&&&&\C\tn \I\tn \C&\lTo^{s_{\C,\C\tn \I}} & \rnode{CCI}{\C^{2}\tn \I} \\
+		&&&\ldTo^{\C\tn J\tn \C} & s_{\C,\C\tn J} & \ldTo_{\C^{2}\tn J} \\
+		%
+		&&\rnode{tl}{\C^{3}} & \lTo^{s_{\C,\C^{2}}} & \rnode{tr}{\C^{3}}
+			&& \hbox to0pt{\quad$\sim$\hss} \\
+		&&& \raise 1em\hbox{$S_{\C|\C,\C}$}
+			\luTo[nohug](1,2)_{\C\tn s_{\C,\C}}
+			\ldTo[nohug](1,2)_{s_{\C,\C}\tn\C} \\
+		&\C\tn\ss && \C^{3} && \ss\tn\C &&& \rnode{CI}{\C\tn \I} \\
+		&&\ldTo(3,2)_{\C\tn P} & \aa & \rdTo(3,2)_{P\tn \C}
+				&&& \ldTo_{\C\tn J}\\
+		\rnode{bl}{\C^{2}} && \rTo_{P} & \rnode{C}{\C} & \lTo_{P}
+			&& \rnode{br}{\C^{2}} \\
+		&&&&&&\rr \\
+		%
+		\nccurve[angleA=180,angleB=90]{->}{tl}{bl}\Bput{\C\tn P}
+		\nccurve[angleA=0,angleB=90]{->}{tr}{br}\Aput{P\tn \C}
+		\nccurve[angleA=-20,angleB=90]{->}{CCI}{CI}\Aput{P\tn \I}
+		\nccurve[angleA=270,angleB=-45,ncurv=1.5]{->}{CI}{C}\Aput{1}
+	\end{diagram}
+	which, since $\tn$ is a pseudo-functor, is equal to
+	\begin{diagram}
+		&&&&\C\tn \I\tn \C&\lTo^{s_{\C,\C\tn \I}} & \rnode{CCI}{\C^{2}\tn \I} \\
+		&&&\ldTo^{\C\tn J\tn \C} & s_{\C,\C\tn J} & \ldTo_{\C^{2}\tn J}
+		 	& \dTo>{s_{\C,\C}\tn\I} \\
+		%
+		&&\rnode{tl}{\C^{3}} & \lTo^{s_{\C,\C^{2}}} & \rnode{tr}{\C^{3}}
+			& \sim & \C^{2}\tn \I & \ss\tn\I \\
+		&&& \raise 1em\hbox{$S_{\C|\C,\C}$}
+			\luTo[nohug](1,2)_{\C\tn s_{\C,\C}}
+			\ldTo(1,2)_{s_{\C,\C}\tn\C}
+			&& \ldTo(3,2)_{\C^{2}\tn J}
+			&& \rdTo_{P\tn \I} \\
+		&\C\tn\ss && \C^{3} &&& \hbox to 0pt{\hss$\sim$\quad} && \rnode{CI}{\C\tn \I} \\
+		&&\ldTo(3,2)_{\C\tn P} & \aa & \rdTo(3,2)_{P\tn \C}
+				&&& \ldTo_{\C\tn J}\\
+		\rnode{bl}{\C^{2}} && \rTo_{P} & \rnode{C}{\C} & \lTo_{P}
+			&& \rnode{br}{\C^{2}} \\
+		&&&&&&\rr \\
+		%
+		\nccurve[angleA=180,angleB=90]{->}{tl}{bl}\Bput{\C\tn P}
+		\nccurve[angleA=-20,angleB=90]{->}{CCI}{CI}\Aput{P\tn \I}
+		\nccurve[angleA=270,angleB=-45,ncurv=1.5]{->}{CI}{C}\Aput{1}
+	\end{diagram}
+	Since $S$ is a modification, this in turn is equal to
+	\begin{diagram}[s=4em,tight]
+		&& \rnode{CCC}{\C^{3}} & \lTo^{\C\tn J\tn \C} & \C\tn \I\tn \C
+			& \lTo^{s_{\C,\C\tn \I}} & \rnode{CCI}{\C^{2}\tn \I} \\
+		&\raise -1em\rlap{$\C\tn\ss$} & \uTo[snake=-1.5em]>{\C\tn s_{\C,\C}}
+			& \C\tn s_{J,\C}
+			& \uTo[snake=1.5em]<{\C\tn s_{\C,\I}}
+			& \raise1em\llap{$S_{\C|\C,\I}$}\ldTo_{s_{\C,\C}\tn\I} \\
+		\rnode{CC}{\C^{2}} & \lTo_{\C\tn P} & \C^{3} & \lTo_{\C^{2}\tn J}
+			& \C^{2}\tn \I & \ss\tn\I \\
+		\dTo<{P} & \aa & \dTo<{P\tn \C} & \sim & \dTo<{P\tn \I} \\
+		\rnode{C}{\C} & \lTo_{P} & \C^{2} & \lTo_{\C\tn J} & \rnode{CI}{\C\tn \I} \\
+		&&\raise1.6em\hbox{$\rr$}
+		%
+		\ncarc[arcangle=80,ncurv=.7]{->}{CI}{C} \Aput{1}
+		\ncarc[arcangle=-30]{->}{CCC}{CC} \Bput{\C\tn P}
+		\ncarc[arcangle=45]{->}{CCI}{CI} \Aput{P\tn \I}
+	\end{diagram}
+	which by \pref{eq-rra} is equal to
+	\begin{diagram}[s=4em,tight]
+		&& \rnode{CCC}{\C^{3}} & \lTo^{\C\tn J\tn \C} & \C\tn \I\tn \C
+			& \lTo^{s_{\C,\C\tn \I}} & \rnode{CCI}{\C^{2}\tn \I} \\
+		&\raise -1em\rlap{$\C\tn\ss$} & \uTo[snake=-1em]>{\C\tn s_{\C,\C}} & \C\tn s_{J,\C}
+			& \uTo[snake=1em]<{\C\tn s_{\C,\I}}
+			& \raise1em\llap{$S_{\C|\C,\I}$}\ldTo_{s_{\C,\C}\tn\I} \\
+		\rnode{CC}{\C^{2}} & \lTo_{\C\tn P} & \C^{3} & \lTo_{\C^{2}\tn J}
+			& \rnode{mid}{\C^{2}\tn \I} & \ss\tn\I \\
+		\dTo<{P} & & \raise2em\hbox{$\C\tn\rr$} & & \dTo>{P\tn \I} \\
+		\rnode{C}{\C} & & \lTo_{1} & & \rnode{CI}{\C\tn \I} \\
+		%
+		\ncarc[arcangle=80,ncurv=.7,offset=-3pt]{->}{mid}{CC} \aput(0.517){1}
+		\ncarc[arcangle=-30]{->}{CCC}{CC} \Bput{\C\tn P}
+		\ncarc[arcangle=45]{->}{CCI}{CI} \Aput{P\tn \I}
+	\end{diagram}
+	If we compare this with the diagram we began with, and
+	cancel the invertible 2-cells $S_{\C|\C,\I}$ and $\ss=\ss\tn\I$,
+	we have that
+	\[
+	\begin{diagram}[s=3.2em,tight]
+		&&\C\tn \I\tn \C && \C^{2}\tn \I \\
+		&\ldTo^{\C\tn J\tn \C}
+			&& \luTo^{\C\tn s_{\C,\I}}
+			& \dTo_{s_{\C,\C}\tn \I} \\
+		\C^{3} & \C\tn\ll & \dTo>1 & \hbox to 3em{\hss$\C\tn U_{\C|\I}$}
+			& \C^{2}\tn \I \\
+		&\rdTo_{\C\tn P} &&\ldTo[nohug]_{1} \\
+		&& \C^{2} \\
+		&& \dTo[nohug]_{P} \\
+		&& \C
+	\end{diagram}
+	\qquad=\qquad
+	\begin{diagram}
+		&&\C\tn\I\tn \C && \C^{2}\tn \I\\
+		&\ldTo^{\C\tn J\tn \C} && \luTo^{\C\tn s_{\C,\I}} & \dTo>{s_{\C,\C}\tn\I} \\
+		\rnode{CCC}{\C^{3}} && \C\tn s_{\C,J} && \rnode{CCI}{\C^{2}\tn \I} \\
+		&\luTo_{\C\tn s_{\C,\C}} && \ldTo_{\C^{2}\tn J} \\
+		&&\C^{3} \\
+		&\raise 2em\hbox{$\C\tn\ss$} &\dTo>{\C\tn P}& \raise 2em\hbox{$\C\tn\rr$} \\
+		&&\rnode{CC}{\C^{2}} \\
+		&&\dTo>P \\
+		&&\C
+		%
+		\ncarc[arcangle=-45]{->}{CCC}{CC}\Bput{\C\tn P}
+		\ncarc[arcangle=45]{->}{CCI}{CC}\Aput{\C\tn P}
+	\end{diagram}
+	\]
+	and since $s_{\C,\C}$ is an equivalence, it follows that
+	\[
+	\begin{diagram}[s=3.2em,tight]
+		&&\C\tn \I\tn \C \\
+		&\ldTo^{\C\tn J\tn \C}
+			&& \luTo^{\C\tn s_{\C,\I}} \\
+		\C^{3} & \C\tn\ll & \dTo>1 & \hbox to 3em{\hss$\C\tn U_{\C|\I}$}
+			& \C^{2}\tn \I \\
+		&\rdTo_{\C\tn P} &&\ldTo[nohug]_{1} \\
+		&& \C^{2} \\
+		&& \dTo[nohug]_{P} \\
+		&& \C
+	\end{diagram}
+	\qquad=\qquad
+	\begin{diagram}
+		\rnode{CCC}{\C^{3}} &\lTo^{\C\tn J\tn \C}& \C\tn s_{\C,J}
+			& \lTo^{\C\tn s_{\C,\I}} & \rnode{CCI}{\C^{2}\tn \I} \\
+		&\luTo_{\C\tn s_{\C,\C}} & \raise1ex\hbox{$\C\tn s_{\C,J}$}
+			& \ldTo_{\C^{2}\tn J} \\
+		&&\C^{3} \\
+		&\raise 2em\hbox{$\C\tn\ss$} &\dTo>{\C\tn P}& \raise 2em\hbox{$\C\tn\rr$} \\
+		&&\rnode{CC}{\C^{2}} \\
+		&&\dTo>P \\
+		&&\C
+		%
+		\ncarc[arcangle=-45]{->}{CCC}{CC}\Bput{\C\tn P}
+		\ncarc[arcangle=45]{->}{CCI}{CC}\Aput{\C\tn P}
+	\end{diagram}
+	\]
+	Now Lemma~\ref{lemma-faithful} yields the claim.
+\end{proof}
+
+\begin{propn}
+	Let the object $\C$, the 1-cells $P$ and $J$,
+	and the 2-cells $\aa$, $\ll$, $\rr$ and $\ss$ be given, as in
+	the definition of braided pseudomonoid. Suppose that equations \pref{eq-aa},
+	\pref{eq-sa-left}, \pref{eq-sa-right} and \pref{eq-lla} are satisfied.
+	If~\pref{eq-lrs} or~\pref{eq-lrs'}
+	is satisfied then the structure is indeed a braided pseudomonoid.
+	
+	It follows that a braided pseudomonoid may be defined using just
+	the 2-cells $\aa$, $\ll$, and $\ss$, subject to equations
+	\pref{eq-aa}, \pref{eq-sa-left}, \pref{eq-sa-right} and~\pref{eq-lla}.
+	The 2-cell $\rr$ can be defined, if necessary, using equation~\pref{eq-lrs}
+	or~\pref{eq-lrs'}.
+\end{propn}
+\begin{proof}
+	We shall assume equations~\pref{eq-sa-left}, \pref{eq-lla} and~\pref{eq-lrs},
+	and derive equation~\pref{eq-lra}.
+	
+	Consider the 2-cell
+	\begin{diagram}
+		&&\I\tn \C^{2} & \lTo^{s_{\C,\I\tn \C}} & \rnode{CIC}{\C\tn \I\tn \C} \\
+		&&\dTo<{J\tn \C^{2}} & s_{\C,J\tn\C} & \dTo>{\C\tn J\tn \C} \\
+		%
+		&&\rnode{tl}{\C^{3}} & \lTo^{s_{\C,\C^{2}}} & \rnode{tr}{\C^{3}}
+			&& \hbox to 2em{\hss$\rr\tn\C$} \\
+		&&\dTo<{P\tn \C} & s_{\C,P} & \dTo>{\C\tn P} \\
+		&&\C^{2} & \lTo^{{s_{\C,\C}}} & \C^{2} \\
+		&\aa && \raise 1em\hbox{$\ss$} \rdTo[nohug](1,2)_{P} \ldTo[nohug](1,2)_{P}
+			&& \aa\\
+		\rnode{bl}{\C^{2}} && \rTo_{P} & \rnode{C}{\C} & \lTo_{P} && \rnode{br}{\C^{2}} \\
+		%
+		\nccurve[angleA=180,angleB=90]{->}{tl}{bl}\Bput{\C\tn P}
+		\nccurve[angleA=0,angleB=90]{->}{tr}{br}\Aput{P\tn \C}
+		\nccurve[angleA=0,angleB=45,ncurv=1]{->}{CIC}{br}\Aput{1}
+	\end{diagram}
+	By equation~\pref{eq-sa-left}, this is equal to
+	\begin{diagram}
+		&&\I\tn \C^{2} & \lTo^{s_{\C,\I\tn \C}} & \rnode{CIC}{\C\tn \I\tn \C} \\
+		&&\dTo<{J\tn \C^{2}} & s_{\C,J\tn\C} & \dTo>{\C\tn J\tn \C} \\
+		%
+		&&\rnode{tl}{\C^{3}} & \lTo^{s_{\C,\C^{2}}} & \rnode{tr}{\C^{3}}
+			&& \hbox to 2em{\hss$\rr\tn\C$} \\
+		&&& \raise 1em\hbox{$S_{\C|\C,\C}$}
+			\luTo[nohug](1,2)_{\C\tn s_{\C,\C}}
+			\ldTo[nohug](1,2)_{s_{\C,\C}\tn\C} \\
+		&\C\tn\ss && \C^{3} && \ss\tn\C \\
+		&&\ldTo(3,2)_{\C\tn P} & \aa & \rdTo(3,2)_{P\tn \C} \\
+		\rnode{bl}{\C^{2}} && \rTo_{P} & \rnode{C}{\C} & \lTo_{P}
+			&& \rnode{br}{\C^{2}} \\
+		%
+		\nccurve[angleA=180,angleB=90]{->}{tl}{bl}\Bput{\C\tn P}
+		\nccurve[angleA=0,angleB=90]{->}{tr}{br}\Aput{P\tn \C}
+		\nccurve[angleA=0,angleB=45,ncurv=1]{->}{CIC}{br}\Aput{1}
+	\end{diagram}
+	which, since $S$ is a modification, is equal to
+	\begin{diagram}[hug]
+		\I\tn \C^{2} && \lTo^{s_{\C,\I\tn \C}} && \rnode{CIC}{\C\tn \I\tn \C} \\
+		\dTo<{J\tn \C^{2}}&\luTo_{\I\times s_{\C,\C}}
+			& \raise 1em\hbox{$S_{\C|\I,\C}$}
+			& \ldTo_{s_{\C,\I}\tn\C}
+			& \dTo>{\C\tn J\tn \C}\\
+		\C^{3} & \sim & \I\tn \C^{2} & s_{\C,J}\tn\C & \C^{2}\\
+		&\luTo_{\C\tn s_{\C,\C}} & \dTo[snake=1ex]>{J\tn \C^{2}} & \ldTo_{s_{\C,\C}\tn\C}
+			&&\rr\tn\C \\
+		\dTo<{\C\tn P} & \C\tn\ss & \C^{3} & \ss\tn\C & \dTo>{P\tn\C} \\
+		&\ldTo_{\C\tn P} &\aa& \rdTo_{P\tn \C} \\
+		\C^{2} &\rTo_{P}& \C& \lTo_{P}& \rnode{CC}{\C^{2}} \\
+		%
+		\nccurve[angleA=0,angleB=0]{->}{CIC}{CC} \Aput{1}
+	\end{diagram}
+	By equation~\pref{eq-lrs}, this is
+	\begin{diagram}[hug,midvshaft]
+		\I\tn \C^{2} &&  \raise-1em\hbox to0pt{\hskip5em$S_{\C|\I,\C}$\hss} \lTo^{s_{\C,\I\tn \C}}
+			&& \C\tn \I\tn \C \\
+		&\luTo(2,1)_{\I\tn s_{\C,\C}} & \I\tn \C^{2} & \ldTo(2,1)_{s_{\C,\I}\tn\C} 
+			\raise -1em\hbox to 0pt{\hss\quad$U_{\C|\I}\tn\C$\hss} \\
+		\dTo<{J\tn \C^{2}} & \sim & \dTo<{J\tn \C^{2}} & \raise-1em\llap{$\ll\tn\C$}
+			\rdTo[nohug]^{1} & \dTo>{1} \\
+		\C^{3} & \lTo^{\C\tn s_{\C,\C}} & \C^{3} & \rTo_{P\tn \C} & \C^{2} \\
+		& \rdTo[nohug]_{\C\tn P} \raise1em\rlap{$\C\tn\ss$} & \dTo>{\C\tn P} & \aa & \dTo>P \\
+		&& \C^{2} & \rTo_{P} & \C
+	\end{diagram}
+	which, by \pref{eq-lla}, is equal to
+	\begin{diagram}[hug,midvshaft]
+		&&\I\tn \C^{2} &&  \raise-1em\hbox to0pt{\hskip3.5em$S_{\C|\I,\C}$\hss} \lTo^{s_{\C,\I\tn \C}}
+			&& \C\tn \I\tn \C \\
+		&\ldTo(2,3)<{J\tn \C^{2}} & &\luTo(2,1)_{\I\tn s_{\C,\C}} & \I\tn \C^{2} & \ldTo(2,1)_{s_{\C,\I}\tn\C} 
+			\raise -1em\hbox to 0pt{\hss\quad$U_{\C|\I}\tn\C$\hss} \\
+		&& \sim & \ldTo<{J\tn \C^{2}} & \dTo[snake=-1ex]<{\I\tn P}
+			& \rdTo[nohug]_{1} & \dTo>{1} \\
+		\C^{3} & \lTo^{\C\tn s_{\C,\C}} & \C^{3} & \sim & \I\tn \C & & \C^{2} \\
+		& \rdTo[nohug]_{\C\tn P} \raise1em\rlap{$\C\tn\ss$} & \dTo>{\C\tn P}
+			& \ldTo_{J\tn \C} & \raise -1em\hbox{$\ll$} & \rdTo[nohug]_{1} & \dTo>P \\
+		&& \C^{2} && \rTo_{P} && \C
+	\end{diagram}
+	which, since the $\sim$ cells are natural, is equal to
+	\begin{diagram}[hug,midvshaft]
+		&&\rnode{ICC}{\I\tn \C^{2}} &&  \raise-1em\hbox to0pt{\hskip3.5em$S_{\C|\I,\C}$\hss} \lTo^{s_{\C,\I\tn \C}}
+			&& \C\tn \I\tn \C \\
+		&\ldTo(2,3)<{J\tn \C^{2}} & &\luTo(2,1)_{\I\tn s_{\C,\C}}
+			\raise -1.5em\hbox{$\I\tn\ss$}& \I\tn \C^{2} & \ldTo(2,1)_{s_{\C,\I}\tn\C} 
+			\raise -1em\hbox to 0pt{\hss\quad$U_{\C|\I}\tn\C$\hss} \\
+		& & & & \dTo[snake=-1ex]<{\I\tn P}
+			& \rdTo[nohug]_{1} & \dTo>{1} \\
+		\C^{3} & & \sim &  & \rnode{IC}{\I\tn \C} & & \C^{2} \\
+		& \rdTo[nohug]_{\C\tn P} &
+			& \ldTo_{J\tn \C} & \raise -1em\hbox{$\ll$} & \rdTo[nohug]_{1} & \dTo>P \\
+		&& \C^{2} && \rTo_{P} && \C
+		%
+		\ncarc[arcangle=-40,ncurv=.6]{->}{ICC}{IC} \Bput{\I\tn P}
+	\end{diagram}
+	By~\pref{eq-lla}, this is equal to
+	\begin{diagram}[hug,midvshaft]
+		&&\rnode{ICC}{\I\tn \C^{2}} &&  \raise-1em\hbox to0pt{\hskip3.5em$S_{\C|\I,\C}$\hss} \lTo^{s_{\C,\I\tn \C}}
+			&& \C\tn \I\tn \C \\
+		& & &\luTo(2,1)_{\I\tn s_{\C,\C}}
+			\raise -1.5em\hbox{$\I\tn\ss$}& \I\tn \C^{2} & \ldTo(2,1)_{s_{\C,\I}\tn\C} 
+			\raise -1em\hbox to 0pt{\hss\quad$U_{\C|\I}\tn\C$\hss} \\
+		& & & & \dTo[snake=-1ex]<{\I\tn P}
+			& \rdTo[nohug]_{1} & \dTo>{1} \\
+		& \ll\tn\C & \dTo<1 &  & \rnode{IC}{\I\tn \C} & & \C^{2} \\
+		& & & & & \rdTo[nohug]_{1} & \dTo>P \\
+		\rnode{CCC}{\C^{3}} & \rTo^{P\tn \C} & \C^{2} && \rTo_{P} && \C \\
+		& \rdTo[nohug](3,2)_{\C\tn P} && \aa && \ruTo[nohug](3,2)_{P} \\
+		&&& \C^{2}
+		%
+		\ncarc[arcangle=-40,ncurv=.6,offsetA=3pt]{->}{ICC}{IC} \bput{-60}(.65){\I\tn P}
+		\ncarc[arcangle=-30]{->}{ICC}{CCC} \Bput{J\tn \C^{2}}
+	\end{diagram}
+	which equals
+	\begin{diagram}
+		&&& \raise -1em\hbox{$$} &\rnode{CIC}{\C\tn \I\tn \C} \\
+		\rnode{ICC}{\I\tn \C^{2}} & \lTo^{\I\tn s_{\C,\C}} & \I\tn \C^{2}
+			& \ldTo[hug,snake=-6pt](2,1)^{s_{\C,\I}\tn\C}
+			\raise -1em\hbox to2em{$U_{\C|\I}\tn\C$\hss} & \dTo[midvshaft]>1 \\
+		\dTo<{J\tn \C^{2}} & \raise-1em\llap{$\ll\tn\C$} \rdTo^{1} && \rdTo_{1} \\
+		\C^{3} & \rTo_{P\tn \C} & \C^{2} & \lTo^{s_{\C,\C}} & \C^{2} \\
+		\dTo<{\C\tn P} & \rlap{$\aa$} && \rdTo_{P} \raise.8em\rlap{\hskip1.5em$\ss$}
+			& \dTo>P \\
+		\C^{2} && \rTo_{P} && \C
+		%
+		\ncarc[arcangle=-30]{->}{CIC}{ICC} \Bput{s_{\C,\I\tn \C}}
+		 	\Aput{\raise-4pt\hbox{$S_{\C|\I,\C}$}}
+	\end{diagram}
+	By one of the unit axioms in the definition of pseudomonoid, this is
+	\begin{diagram}
+		\rnode{ICC}{\I\tn \C^{2}} & & \lTo^{s_{\C,\I\tn\C}}
+			& & \C\tn \I\tn \C \\
+		\dTo<{J\tn \C^{2}} & \raise-1em\llap{$\ll\tn\C$} \rdTo^{1} &&& \dTo>1 \\
+		\C^{3} & \rTo_{P\tn \C} & \C^{2} & \lTo^{s_{\C,\C}} & \C^{2} \\
+		\dTo<{\C\tn P} & \rlap{$\aa$} && \rdTo_{P} \raise.8em\rlap{\hskip1.5em$\ss$}
+			& \dTo>P \\
+		\C^{2} && \rTo_{P} && \C
+	\end{diagram}
+	which, since $s$ is pseudo-natural, is equal to
+	\begin{diagram}
+		\I\tn \C^{2} &&\lTo^{s_{\C,\I\tn \C}} && \C\tn \I\tn \C \\
+		& s_{\C,J\tn \C} && \ldTo[hug]^{\C\tn J\tn \C} \\
+		\dTo<{J\tn \C^{2}} && \C^{3} & \rlap{$\C\tn\ll$} & \dTo>1 \\
+		&\ldTo[hug]^{s_{\C,\C^{2}}} & s_{\C,P} & \rdTo[hug]^{\C\tn P} \\
+		\C^{3} & \rTo_{P\tn \C} & \C^{2} & \lTo^{s_{\C,\C}} & \C^{2} \\
+		\dTo<{\C\tn P} & \rlap{$\aa$} && \rdTo_{P} \raise.8em\rlap{\hskip1.5em$\ss$}
+			& \dTo>P \\
+		\C^{2} && \rTo_{P} && \C
+	\end{diagram}
+	If we now compare this with the 2-cell we began with, and cancel the common
+	invertible 2-cell
+	\begin{diagram}
+		&&\I\tn \C^{2} & \lTo^{s_{\C,\I\tn \C}} & \rnode{CIC}{\C\tn \I\tn \C} \\
+		&&\dTo<{J\tn \C^{2}} & s_{\C,J\tn\C} & \dTo>{\C\tn J\tn \C} \\
+		%
+		&&\rnode{tl}{\C^{3}} & \lTo^{s_{\C,\C^{2}}} & \rnode{tr}{\C^{3}}\\
+		&&\dTo<{P\tn \C} & s_{\C,P} & \dTo>{\C\tn P} \\
+		&&\C^{2} & \lTo^{{s_{\C,\C}}} & \C^{2} \\
+		&\aa && \raise 1em\hbox{$\ss$} \rdTo[nohug](1,2)_{P} \ldTo[nohug](1,2)_{P} \\
+		\rnode{bl}{\C^{2}} && \rTo_{P} & \rnode{C}{\C} \\
+		%
+		\nccurve[angleA=180,angleB=90]{->}{tl}{bl}\Bput{\C\tn P}
+	\end{diagram}
+	we obtain equation~\pref{eq-lra}, as claimed.
+\end{proof}
+
+\bibliography{cs}
+\end{document}

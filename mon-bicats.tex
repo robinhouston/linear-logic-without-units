@@ -1,0 +1,1202 @@
+%&format-test
+%!TEX TS-program = tex
+%\documentclass{robinthesisdraft}
+%\usepackage{robincs,thesisdefs,xr}
+\externaldocument[Bicats:]{bicats}
+\externaldocument[Psmon:]{pseudomonoids}
+
+\title{Monoidal Bicategories}
+\begin{document}
+\maketitle
+
+\begin{definition}\label{def-monbicat}
+	A monoidal bicategory $\B$ is a bicategory equipped with
+	a unit object $\I\in\B$, a pseudo-functor
+	\[
+		\tn: \B\x\B \to \B,
+	\]
+	pseudo-natural equivalences $a$, $l$ and $r$ with components
+	\[\begin{array}l
+		a_{A,B,C}: A\tn (B\tn C) \to (A\tn B)\tn C,\\
+		l_A: \I\tn A\to A,\\
+		r_A: A\tn \I\to A,
+	\end{array}\]
+	and invertible modifications $\pi$, $\mu$, $L$ and $R$ with components
+	\begin{diagram}
+	  A\tensor \bigl(B\tensor (C\tensor D)\bigr)
+	  &\rTo^{a_{A,B,C\tn D}}&(A\tensor B)\tensor (C\tensor D)
+	  &\rTo^{a_{A\tn B,C,D}} & \bigl((A\tensor B)\tensor C\bigl)\tensor D
+	  \\
+	  &\rdTo[snake=-1em](1,2)<{A\tn a_{B,C,D}}
+	  &\Downarrow\pi_{A,B,C,D}
+	  & \ruTo[snake=1em](1,2)>{a_{A,B,C}\tn D}
+	  \\
+	  & \spleft{A\tensor\big((B\tensor C)\tensor D\big)}
+	  & \rTo_{a_{A,B\tn C,D}}
+	  & \spright{\bigl(A\tensor(B\tensor C)\bigr)\tensor D}
+	\end{diagram}
+%
+	\begin{diagram}
+		A\tn(\I\tn C) &\rTo^{a_{A,\I,C}}&(A\tn \I)\tn C\\
+		&\rdTo[snake=-1ex](1,2)<{A\tn l_C}
+			\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\mu_{A,C}\end{array}$}%
+			\ldTo[snake=1ex](1,2)>{r_A\tn C}\\
+		&A\tn C
+	\end{diagram}
+\[
+	\begin{diagram}
+		\I\tn(B\tn C) &\rTo^{a_{\I,B,C}}&(\I\tn B)\tn C\\
+		&\rdTo[snake=-1ex](1,2)<{l_{B\tn C}}
+			\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]L_{B,C}\end{array}$}%
+			\ldTo[snake=1ex](1,2)>{l_B\tn C}\\
+		&B\tn C
+	\end{diagram}
+%
+	\hskip 3em
+%
+	\begin{diagram}
+		A\tn(B\tn \I) &\rTo^{a_{A,B,\I}}&(A\tn B)\tn \I\\
+		&\rdTo[snake=-1ex](1,2)<{A\tn r_B}
+			\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]R_{A,B}\end{array}$}%
+			\ldTo[snake=1ex](1,2)>{r_{A\tn B}}\\
+		&A\tn B
+	\end{diagram}
+\]
+such that for all $A$, $B$, $C$, $D$ and $E$ in $\B$, the condition
+shown in Fig.~\ref{fig-4coc} holds,
+\begin{sidewaysfigure}
+\begin{diagram}
+	  &&
+	  (A\tn B)\tensor \bigl(C\tensor (D\tensor E)\bigr)
+	  &\rTo[rightshortfall=4.5em]^{a}&\spboth{((A\tn B)\tensor C)\tensor (D\tensor E)}
+	  &\rTo[leftshortfall=4.5em]^{a} & \bigl(((A\tn B)\tensor C)\tensor D\bigl)\tensor E
+	  \\
+	  &\ruTo^a&
+	  &\rdTo[snake=-1em](1,2)<{(A\tn B)\tn a}
+	  &\spboth{\Downarrow\pi_{(A\tn B),C,D,E}}
+	  & \ruTo[snake=1em](1,2)>{a\tn E}
+	  && \spboth{((A\tn(B\tn C))\tn D)\tn E} \luTo[snake=1.5em](1,1)^{(a\tn D)\tn E}
+	  \\
+	  A\tn(B\tn(C\tn(D\tn E)))
+	  && \Downarrow a^{-1}
+	  & {(A\tn B)\tensor\big((C\tensor D)\tensor E\big)}
+	  & \rTo_{a}
+	  &{\bigl((A\tn B)\tensor(C\tensor D)\bigr)\tensor E}
+	  &\begin{array}c\To\\[-4pt]\pi_{A,B,C,D}\tn E\end{array}
+	  & \uTo>{a\tn E}
+	  \\
+	  & \rdTo_{A\tn(B\tn a)}
+	  & \ruTo(1,2)^a
+	  &&\spboth{\Searrow\pi_{A,B,(C\tn D),E}}
+	  &&\luTo(1,2)>{a\tn E}
+	  &\spboth{(A\tn((B\tn C)\tn D))\tn E}
+	  \\
+	  &&{A\tn(B\tn((C\tn D)\tn E))}
+	  & \rTo[rightshortfall=4.5em]_{A\tn a} & \spboth{A\tn((B\tn(C\tn D))\tn E)}
+	  & \rTo[leftshortfall=4.5em]_a & (A\tn(B\tn(C\tn D)))\tn E
+	   \ruTo[snake=1.5em](1,1)_{(A\tn a)\tn E}
+\end{diagram}
+must be equal to
+\begin{diagram}
+	&(A\tn B)\tn(C\tn(D\tn E))
+	& \rTo^a & ((A\tn B)\tn C)\tn(D\tn E)
+	& \rTo^{a} & (((A\tn B)\tn C)\tn D)\tn E
+	\\
+	\ruTo(1,3)^a &&\raise-2em\spleft{\Searrow\pi_{A,B,C,(D\tn E)}}
+	& \uTo<{a\tn(D\tn E)} & \Searrow a
+	& \uTo>{(a\tn D)\tn E}
+	\\
+	&&& (A\tn(B\tn C))\tn(D\tn E) & \rTo^a
+	& ((A\tn(B\tn C))\tn D)\tn E
+	\\
+	A\tn(B\tn(C\tn(D\tn E)))
+	& \rTo[rightshortfall=4.5em]^{A\tn a}
+	& \spboth{A\tn((B\tn C)\tn(D\tn E))} \ruTo[snake=-1.5em](1,1)^a
+	&& \Searrow\pi_{A,(B\tn C),D,E} & \uTo>{a\tn E}
+	\\
+	&\rdTo(1,3)_{A\tn(B\tn a)}
+	&& A\tn(((B\tn C)\tn D)\tn E) \rdTo[snake=-1.5em](1,1)_{A\tn a}
+	& \rTo_a & (A\tn((B\tn C)\tn D))\tn E
+	\\
+	&&\raise2em\spleft{\Downarrow A\tn\pi_{B,C,D,E}}
+	&\uTo>{A\tn(a\tn E)} & \Searrow a & \uTo>{(A\tn a)\tn E}
+	\\
+	& A\tn(B\tn((C\tn D)\tn E)) & \rTo_{A\tn a} & A\tn((B\tn(C\tn D)\tn E)
+	& \rTo_a & (A\tn(B\tn(C\tn D)))\tn E
+\end{diagram}
+\caption{The associativity axiom used in the definition of monoidal bicategory (sometimes
+	called the \textit{non-abelian 4-cocycle condition}).
+}\label{fig-4coc}
+\end{sidewaysfigure}
+and for all $A$, $B$ and $C$, the following two conditions hold:
+\begin{diagram}
+	&&A\tn(B\tn C) & \rTo^{a_{A,B,C}} & (A\tn B)\tn C
+	\\
+	&\ruTo^{A\tn l_{B\tn C}}_{\Searrow \mu_{A,B,C}}
+	&\uTo>{r_A\tn (B\tn C)} && \uTo>{(r_A\tn B)\tn C}<{\Searrow a_{r_A,B,C}\hskip2em}
+	\\
+	A\tensor \bigl(\I\tensor (B\tensor C)\bigr)
+	 &\rTo^{a_{A,\I,B\tn C}}&(A\tensor \I)\tensor (B\tensor C)
+	&\rTo^{a_{A\tn \I,B,C}} & \bigl((A\tensor \I)\tensor B\bigl)\tensor C
+	\\
+	&\rdTo[snake=-1em](1,2)<{A\tn a_{\I,B,C}}
+	&\Downarrow\pi_{A,\I,B,C}
+	& \ruTo[snake=1em](1,2)>{a_{A,\I,B}\tn C}
+	\\
+	& \spleft{A\tensor\big((\I\tensor B)\tensor C\big)}
+	& \rTo_{a_{A,\I\tn B,C}}
+	& \spright{\bigl(A\tensor(\I\tensor B)\bigr)\tensor C}
+\end{diagram}
+is equal to
+\begin{diagram}
+	&&A\tn(B\tn C) & \rTo^{a_{A,B,C}} & (A\tn B)\tn C
+	\\
+	&\ruTo^{A\tn l_{B\tn C}} &&&& \luTo^{(r_A\tn B)\tn C}
+	\\
+	A\tn(\I\tn(B\tn C)) & \spright{\Searrow A\tn L_{B,C}} & \uTo[snake=1.5em]>{A\tn(l_B\tn C)}
+	& \Searrow a_{A,l_B,C} & \uTo[snake=-1.5em]<{(A\tn l_B)\tn C}
+	& \spleft{\begin{array}c\To\\[-4pt]\mu_{A,B}\tn C\end{array}}
+	& ((A\tn \I)\tn B)\tn C
+	\\
+	&\rdTo_{A\tn a_{\I,B,C}}
+	&&&& \ruTo_{a_{A,\I,B}\tn C}
+	\\
+	&&A\tn((\I\tn B)\tn C) & \rTo_{a_{A,\I\tn B,C}} & (A\tn(\I\tn B))\tn C
+\end{diagram}
+and
+\begin{diagram}
+	A\tn(B\tn C) & \rTo^{a_{A,B,C}} & (A\tn B)\tn C
+	\\
+	\uTo<{A\tn (B\tn l_C)}>{\hskip3em\Searrow a_{A,B,l_C}}
+	&& \uTo<{(A\tn B)\tn l_C}>{\quad\begin{array}c\To\\[-4pt]\mu_{(A\tn B),C}\end{array}}
+	& \luTo^{r_{A\tn B}\tn C}
+	\\
+	A\tn (B\tn (\I\tn C))
+	&\rTo^{a_{A,B,\I\tn C}}
+	& (A\tn B)\tn (\I\tn C)
+	&\rTo_{a_{(A\tn B),\I,C}}& ((A\tn B)\tn \I)\tn C
+	\\
+	&\rdTo[snake=-1em](1,2)<{A\tn a_{B,\I,C}}
+	&\Downarrow\pi_{A,\I,B,C}
+	& \ruTo[snake=1em](1,2)>{a_{A,\I,B}\tn C}
+	\\
+	& \spleft{A\tn\big((B\tn \I)\tn C\big)}
+	& \rTo_{a_{A,B\tn \I,C}}
+	& \spright{\bigl(A\tn(B\tn \I)\bigr)\tn C}
+\end{diagram}
+is equal to
+\begin{diagram}
+	&&A\tn(B\tn C) & \rTo^{a_{A,B,C}} & (A\tn B)\tn C
+	\\
+	&\ruTo^{A\tn (B\tn l_C)} &&&& \luTo^{r_{A\tn B}\tn C}
+	\\
+	A\tn(B\tn(\I\tn C)) & \spright{\Searrow A\tn \mu_{B,C}} & \uTo[snake=1.5em]>{A\tn(r_B\tn C)}
+	& \Searrow a_{A,r_B,C} & \uTo[snake=-1.5em]<{(A\tn r_B)\tn C}
+	& \spleft{\begin{array}c\To\\[-4pt]R_{A,B}\tn C\end{array}}
+	& ((A\tn B)\tn \I)\tn C
+	\\
+	&\rdTo_{A\tn a_{B,\I,C}}
+	&&&& \ruTo_{a_{A,B,\I}\tn C}
+	\\
+	&&A\tn((B\tn \I)\tn C) & \rTo_{a_{A,B\tn \I,C}} & (A\tn(B\tn \I))\tn C
+\end{diagram}
+\end{definition}
+This is not \emph{quite} the most general possible definition, since we have
+merely specified an object $\I$ rather than a pseudo-functor $1\to\B$. But since
+every pseudo-functor is equivalent to a normal one, there is no essential loss of
+generality.
+
+When we have occasion to refer explicitly to the equivalence-inverse of
+$a$, $l$ or $r$, we shall denote it as $a'$, $l'$ or $r'$. Furthermore,
+we shall assume where necessary that we have \emph{adjoint} equivalences
+$a\dashv a'$, $l\dashv l'$ etc.
+
+When working in
+a monoidal bicategory, we extend our convention of not explicitly naming
+structural isomorphisms to the isomorphisms representing the pseudo-functoriality
+of tensor. Instead we mark them with the symbol $\sim$. Note that there
+will usually be some implicit structural isomorphisms too:
+for example, given 1-cells $f:A\to B$ and $g: C\to D$, the diagram
+\begin{diagram}
+	A\tn B & \rTo^{A\tn g} & A\tn D\\
+	\dTo<{f\tn B} & \sim & \dTo>{f\tn D}\\
+	C\tn B & \rTo_{C\tn g} & C\tn D
+\end{diagram}
+indicates the 2-cell
+\begin{mspill}
+	(f\tn D)\o(A\tn g) \rTo^{\tn_{(f,1),(1,g)}} (f\o 1)\tn(1\o g) \rTo^{\r_f\tn\l_g}f.g
+		\rTo^{\l_f^{-1}\tn\r_g^{-1}} (1.f)\tn(g.1) \rTo^{\tn_{(1,f),(g,1)}^{-1}} (C\tn g)\o(f\tn B).  
+\end{mspill}
+
+\begin{remark}\label{rem-defining-L} % defining L in terms of the other data
+	Notice that the first unit equation -- since all its cells are invertible -- allows
+	$A\tn L_{B,C}$ to be expressed in terms of $\pi$, $\mu$ and $a$. In particular
+	$\I\tn L_{B,C}$ may be so expressed
+	which, since the pseudofunctor $\I\tn-$ is equivalent, via $l$, to the identity,
+	allows $L_{B,C}$ to be expressed in terms of $\pi$, $\mu$, $a$ and the implicit
+	data that make $l$ an equivalence. Furthermore it is not hard to see that the
+	components $L_{A,B}$ thus defined constitute a modification. Therefore the
+	modification $L$ may be defined in terms of the other data. It is perhaps
+	tempting to conclude that $L$ is redundant, but there
+	is a subtlety: the modification $L$ so defined does not necessarily -- at least as far
+	as I can tell -- satisfy the necessary equation. Thus we \emph{could} suppress $L$
+	(and $R$ too, since its definition is symmetrical to that of $L$) from our
+	definition, but only at the expense of introducing a new and complicated
+	equation involving the other data.
+\end{remark}
+
+\section{Monoidal pseudo-functors and transformations}
+\begin{definition} % monoidal pseudo-functor
+	A \emph{monoidal pseudofunctor} $F: \B\to\BC$,
+	between monoidal bicategories $\B$ and $\BC$, consists of a pseudofunctor
+	equipped with:
+	\begin{itemize}
+	\item a 1-cell $F^\tn_\I: \I\to F\I$,
+	\item a pseudo-natural transformation $F^\tn$ with components
+	\[
+		F^\tn_{A,B}: FA\tn FB \to F(A\tn B)
+	\]
+	\item an invertible modification $F^a$ with components
+	\begin{diagram}
+		FA\tn(FB\tn FC) & \rTo^{a_{FA,FB,FC}} & (FA\tn FB)\tn FC\\
+		\dTo<{FA\tn F^\tn_{B,C}} && \dTo>{F^\tn_{A,B}\tn FC}\\
+		FA\tn F(B\tn C) &\Nearrow F^a_{A,B,C}& F(A\tn B)\tn FC\\
+		\dTo<{F^\tn_{A,B\tn C}} && \dTo>{F^\tn_{A\tn B,C}}\\
+		F(A\tn(B\tn C)) & \rTo_{F(a_{A,B,C})} & F((A\tn B)\tn C)
+	\end{diagram}
+	\end{itemize}
+	\item invertible modifications $F^l$ and $F^r$ with components
+	\[
+	\begin{diagram}
+		\I\tn FA & \rTo^{F^\tn_\I\tn FA} & F\I \tn FA\\
+		\dTo<{l_{FA}} & \begin{array}c\Rightarrow\\F^l_{A}\end{array} & \dTo>{F^\tn_{\I,A}}\\
+		FA & \lTo_{F(l_{A})} & F(\I\tn A)
+	\end{diagram}
+	\qquad
+	\begin{diagram}
+		FA\tn \I & \rTo^{FA\tn F^\tn_\I} & FA \tn F\I\\
+		\dTo<{r_{FA}} & \begin{array}c\Rightarrow\\F^r_{A}\end{array} & \dTo>{F^\tn_{A,\I}}\\
+		FA & \lTo_{F(r_{A})} & F(A\tn \I)
+	\end{diagram}
+	\]
+	\item satisfying the equation shown in Figs.~\ref{fig-monpsf-1}
+		and~\ref{fig-monpsf-2}, and
+	\begin{sidewaysfigure}
+		\begin{diagram}
+			%&&
+			FA\tn(FB\tn(FC\tn FD))
+			& \rTo^{FA\tn(FB\tn F^\tn_{C,D})} & FA\tn(FB\tn F(C\tn D))
+			& \rTo^{FA\tn F^\tn_{B,C\tn D}} & FA\tn F(B\tn(C\tn D))
+			& \rTo^{F^\tn_{A,B\tn(C\tn D)}} & \rnode{t}{F(A\tn(B\tn(C\tn D)))}
+			\\
+			%&%\ldTo(2,4)^{a_{FA,FB,(FC\tn FD)}}
+			%&
+			\dTo<{FA\tn a_{FB,FC,FD}}
+			&& \Swarrow FA\tn F^a_{B,C,D}
+			&& \dTo<{FA\tn F(a_{B,C,D})}
+			& \Swarrow (F^\tn_{A,a_{B,C,D}})^{-1}
+			& \dTo>{F(A\tn a_{B,C,D})}
+			\\
+			%&&
+			FA\tn((FB\tn FC)\tn FD)
+			& \rTo^{FA\tn(F^\tn_{B,C}\tn FD)} & FA\tn(F(B\tn C)\tn FD)
+			& \rTo^{FA\tn F^\tn_{B\tn C, D}} & FA\tn F((B\tn C)\tn D)
+			& \rTo^{F^\tn_{A,(B\tn C)\tn D}} & F(A\tn((B\tn C)\tn D)
+		%	\\
+		%	%&&
+		%	&&&& \dTo>{F^\tn_{A,(B\tn C)\tn D}}
+			\\
+			%\spleft{\rnode{l}{(FA\tn FB)\tn(FC\tn FD)}}
+			%& \spright{\begin{array}c\To\\\pi_{FA,FB,FC,FD}\end{array}}
+			%&
+			\dTo<{a_{FA,FB\tn FC, FD}}
+			& {\Swarrow \a_{FA,F^\tn_{B,C}, FD}}
+			& \dTo>{a_{FA,F(B\tn C), FD}}
+			&& \Swarrow F^a_{A,B\tn C,D}
+			%& F(A\tn((B\tn C)\tn D))
+			&& \dTo<{F(a_{A,B\tn C,D})}
+			& \spleft{\begin{array}c\Leftarrow\\ F(\pi_{A,B,C,D})\end{array}}
+			& \spright{\rnode{r}{F((A\tn B)\tn(C\tn D))}}
+		%	\\
+		%	%&%\rdTo(2,4)_{a_{(FA\tn FB),FC,FD}}
+		%	%&
+		%	&&&& \dTo>{F(a_{A,(B\tn C),D})}
+			\\
+			%&&
+			(FA\tn(FB\tn FC))\tn FD
+			& \rTo_{(FA\tn F^\tn_{B,C})\tn FD} & (FA\tn F(B\tn C))\tn FD
+			& \rTo_{F^\tn_{A,B\tn C}\tn FD} & F(A\tn(B\tn C))\tn FD
+			& \rTo_{F^\tn_{A\tn(B\tn C), D}} & F((A\tn(B\tn C))\tn D)
+			\\
+			%&&
+			\dTo<{a_{FA,FB,FC}\tn FD}
+			&& \Swarrow F^a_{A,B,C}\tn FD
+			&& \dTo<{F(a_{A,B,C})\tn FD}
+			& \Swarrow (F^\tn_{a_{A,B,C},D})^{-1}
+			& \dTo>{F(a_{A,B,C}\tn D)}
+			\\
+			%&&
+			((FA\tn FB)\tn FC)\tn FD
+			& \rTo_{(F^\tn_{A,B}\tn FC)\tn FD} & (F(A\tn B)\tn FC)\tn FD
+			& \rTo_{F^\tn_{A\tn B,C}\tn FD} & F((A\tn B)\tn C)\tn FD
+			& \rTo_{F^\tn_{(A\tn B)\tn C, D}} & \rnode{b}{F(((A\tn B)\tn C)\tn D)}
+			\nccurve[angleA=0,angleB=90]{->}tr\Aput{F(a_{A,B,C\tn D})}
+			\nccurve[angleA=270,angleB=0]{->}rb\Aput{F(a_{A,B,C\tn D})}
+		\end{diagram}
+		\caption{Left-hand side of an equation used in the definition of monoidal pseudo-functor:
+		for all $A$, $B$, $C$, $D\in\B$, this pasting must be equal to the one shown
+		in Fig.~\ref{fig-monpsf-2}.}\label{fig-monpsf-1}
+	\end{sidewaysfigure}
+	\begin{sidewaysfigure}
+		\begin{diagram}
+			&&
+			\rnode{1}{FA\tn(FB\tn(FC\tn FD))}
+			& \rTo^{FA\tn(FB\tn F^\tn_{C,D})} & FA\tn(FB\tn F(C\tn D))
+			& \rTo^{FA\tn F^\tn_{B,C\tn D}} & FA\tn F(B\tn(C\tn D))
+			& \rTo^{F^\tn_{A,B\tn(C\tn D)}} & \rnode{t}{F(A\tn(B\tn(C\tn D)))}
+			\\
+			&&
+			& \Swarrow a_{FA,FB,F(C\tn D)}
+			& \dTo>{a_{FA,FB,F(C\tn D)}}
+			\\
+			\rnode{2}{FA\tn((FB\tn FC)\tn FD)}
+			&& \dTo>{a_{FA,FB,FC\tn FD}}
+			&& (FA\tn FB)\tn F(C\tn D)
+			&& \Swarrow F^a_{A,B,C\tn D}
+			&& \dTo>{F(a_{A,B,C\tn D})}
+			\\
+			&&
+			& \ruTo^{(FA\tn FB)\tn F^\tn_{C,D}}
+			&& \rdTo^{F^\tn_{A,B}\tn F(C\tn D)}
+			\\
+			\dTo<{a_{FA,FB\tn FC, FD}}
+			& \spboth{\begin{array}c\Leftarrow\\\pi_{FA,FB,FC,FD}\end{array}}
+			& \spright{(FA\tn FB)\tn(FC\tn FD)}
+			&& \cong
+			&& F(A\tn B) \tn F(C\tn D)
+			& \rTo^{F^\tn_{A\tn B,C\tn D}}
+			& F((A\tn B)\tn(C\tn D))
+			\\
+			&&
+			& \rdTo_{F^\tn_{A,B}\tn(FC\tn FD)}
+			&& \ruTo_{F(A\tn B)\tn F^\tn_{C,D}}
+			\\
+			\rnode{3}{(FA\tn(FB\tn FC))\tn FD}
+			&& \dTo>{a_{FA\tn FB, FC, FD}}
+			&& F(A\tn B)\tn(FC\tn FD)
+			&& \Swarrow F^a_{A\tn B,C,D}
+			&& \dTo>{F(a_{A\tn B,C,D})}
+			\\
+			&&
+			& \Swarrow a_{F^\tn_{A,B},FC,FD}
+			& \dTo>{a_{F(A\tn B),FC,FD}}
+			\\
+			&&
+			\rnode{4}{((FA\tn FB)\tn FC)\tn FD}
+			& \rTo_{(F^\tn_{A,B}\tn FC)\tn FD} & (F(A\tn B)\tn FC)\tn FD
+			& \rTo_{F^\tn_{A\tn B,C}\tn FD} & F((A\tn B)\tn C)\tn FD
+			& \rTo_{F^\tn_{(A\tn B)\tn C, D}} & \rnode{b}{F(((A\tn B)\tn C)\tn D)}
+			\nccurve[angleA=180,angleB=90]{->}12\Aput{FA\tn a_{FB,FC,FD}}
+			\nccurve[angleA=270,angleB=180]{->}34\Aput{a_{FA,FB,FC}\tn FD}
+		\end{diagram}
+		\caption{Right-hand side of the equation: this pasting must be equal to the one
+		shown in Fig.~\ref{fig-monpsf-1}}\label{fig-monpsf-2}
+	\end{sidewaysfigure}
+	also such that for all $A$, $B\in\B$ the pasting
+	\begin{diagram}
+		&&
+		\rnode{1}{FA\tn(\I\tn FB)}
+		& \rTo^{a_{FA,\I,FB}} & (FA\tn \I)\tn FB
+		\\
+		&&
+		\dTo<{FA\tn(F^\tn_\I\tn FB)}
+		& \Nearrow a_{FA,F^\tn_\I,FB}
+		& \dTo>{(FA\tn F^\tn_\I)\tn FB}
+		\\
+		&&
+		FA\tn(F\I\tn FB)
+		& \rTo_{a_{FA,F\I,FB}} & (FA\tn F\I)\tn FB
+		& \rTo^{F^\tn_{A,\I}\tn FB} & F(A\tn \I)\tn FB
+		\\
+		&\begin{array}c\Rightarrow\\FA\tn F^l_B\end{array}
+		& \dTo>{FA\tn F^\tn_{\I,B}}
+		&& \Nearrow F^a_{A,\I,B}
+		&& \dTo>{F^\tn_{A\tn \I, B}}
+		\\
+		&&
+		FA\tn F(\I\tn B)
+		& \rTo^{F^\tn_{A,\I,B}} & F(A\tn(\I\tn B))
+		& \rTo^{F(a_{A,\I,B})} & F((A\tn \I)\tn B)
+		\\
+		&&\dTo<{FA\tn FB}
+		& \Nearrow F^\tn_{A,l_B}
+		& \dTo<{F(A\tn l_B)}>{\begin{array}c\To\\[-4pt]F(\mu_{A,B})\end{array}}
+		& \ldTo_{F(r_A\tn B)}
+		\\
+		&&
+		\rnode{2}{FA\tn FB}
+		& \rTo_{F^\tn_{A,B}} & F(A\tn B)
+		\nccurve[angle=180,ncurv=1]{->}12\Bput{FA\tn l_{FB}}
+	\end{diagram}
+	is equal to
+	\begin{diagram}
+		FA\tn(\I\tn FB)
+		& \rTo^{a_{FA,\I,FB}} & (FA\tn \I)\tn FB
+		& \rTo^{(FA\tn F^\tn_\I)\tn FB} & (FA\tn F\I)\tn FB
+		\\
+		& \raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\mu_{FA,FB}\end{array}$}
+		\rdTo(1,2)_{FA\tn l_{FB}}
+		\ldTo(1,2)>{r_{FA}\tn FB}
+		&& \begin{array}c\To\\ F^r_A\tn FB\end{array}
+		& \dTo>{F^\tn_{A,\I}\tn FB}
+		\\
+		& FA\tn FB
+		& \lTo_{F(r_A)\tn FB}
+		&& F(A\tn \I)\tn FB
+		\\
+		& \dTo<{F^\tn_{A,B}}
+		&& \Searrow F^\tn_{r_A,B}
+		& \dTo>{F^\tn_{A\tn \I, B}}
+		\\
+		& F(A\tn B)
+		&& \lTo_{F(r_A\tn B)}
+		& F((A\tn \I)\tn B) 
+	\end{diagram}
+\end{definition}
+\begin{definition} % monoidal pseudo-natural transformation
+	A \emph{monoidal pseudo-natural transformation} $\gamma: F\To G: \B\to\BC$
+	between monoidal pseudo-functors $F$ and $G$ is a pseudo-natural transformation
+	equipped with an invertible 2-cell
+	\[
+		\gamma^\tn_\I: \gamma_\I\o F^\tn_\I \To G^\tn_\I
+	\]
+	and an invertible modification with components
+	\begin{diagram}
+		FA\tn FB & \rTo^{F^\tn_{A,B}} & F(A\tn B)
+		\\
+		\dTo<{\gamma_A \tn \gamma_B} & \Swarrow\gamma^\tn_{A,B}
+			& \dTo>{\gamma_{A\tn B}}
+		\\
+		GA\tn GB & \rTo_{G^\tn_{A,B}} & G(A\tn B) 
+	\end{diagram}
+	such that for all $A$, $B$, $C\in\B$, the pasting
+	\begin{diagram}
+		&
+		FA \tn(FB\tn FC)
+		& \rTo^{FA\tn F^\tn_{B,C}} & FA\tn F(B\tn C)
+		& \rTo^{F^\tn_{A,B\tn C}} & F(A\tn(B\tn C))
+		\\
+		&
+		\dTo<{a_{FA,FB,FC}}
+		&& \Swarrow F^a_{A,B,C}
+		&& \dTo>{F(a_{A,B,C})}
+		\\
+		&
+		\rnode{FAFBFC}{(FA\tn FB)\tn FC}
+		& \rTo^{F^\tn_{A,B}\tn FC} & \rnode{FABFC}{F(A\tn B)\tn FC}
+		& \rTo^{F^\tn_{A\tn B,C}} & F((A\tn B)\tn C)
+		\\
+		&
+		\dTo<{(FA\tn FB)\tn\gamma_C}
+		&\hbox to 0pt{\hss$\cong$\qquad}
+		& \dTo<{F(A\tn B)\tn\gamma_C}>{\enskip\cong}
+		\\
+		&
+		(FA\tn FB)\tn GC
+		& \rTo_{F^\tn_{A,B}\tn GC} & F(A\tn B)\tn GC
+		& \raise-1em\spright{\Swarrow \gamma^\tn_{A\tn B,C}}
+		& \dTo>{\gamma_{A\tn B,C}}
+		\\
+		&
+		\dTo<{(\gamma_A\tn\gamma_B)\tn GC}
+		& \raise-.5em\spleft{\Swarrow\gamma^\tn_{A,B}\tn GC}
+		& \dTo[snake=.5em]<{\gamma_{A\tn B}\tn GC}
+		\\
+		&
+		\rnode{GAGBGC}{(GA\tn GB)\tn GC}
+		& \rTo_{G^\tn_{A,B}\tn GC} & \rnode{GABGC}{G(A\tn B)\tn GC}
+		& \rTo_{G^\tn_{A\tn B, C}} & G((A\tn B)\tn C)
+		%
+		\nccurve[angle=180,ncurv=1]{->}{FAFBFC}{GAGBGC}
+			\Bput{\gamma_A\tn(\gamma_B\tn\gamma_C)}
+		\nccurve[angleA=-45,angleB=45,ncurv=.9]{->}{FABFC}{GABGC}
+			\aput(.4){\gamma_{A\tn B}\tn\gamma_C}
+	\end{diagram}
+	is equal to
+	\begin{diagram}
+		&&
+		\rnode{1}{FA\tn(FB\tn FC)}
+		& \rTo^{FA\tn F^\tn_{B,C}} & \rnode{4}{FA\tn F(B\tn C)}
+		& \rTo^{F^\tn_{A,B\tn C}} & \spright{F(A\tn(B\tn C))}
+		\\
+		&&
+		\dTo[snake=.5em]>{FA\tn(\gamma_B\tn\gamma_C)}
+		& \raise-1em\spboth{\Swarrow FA\tn\gamma^\tn_{B,C}}
+		& \dTo<{FA\tn\gamma_{B\tn C}}>{\enskip\cong}
+		&&& \rdTo(2,3)^{F(a_{A,B,C})}
+		\\
+		&&
+		FA\tn(GB\tn GC)
+		& \rTo_{FA\tn G^\tn_{B,C}} & FA\tn G(B\tn C)
+		&& \dTo[snake=-1em]<{\gamma_{A\tn(B\tn C)}}
+		\\
+		&&
+		\dTo[snake=-1em]>{\gamma_A\tn(GB\tn GC)}
+		&\cong& \dTo[snake=1em]<{\gamma_A\tn G(B\tn C)}
+		& \spboth{\Swarrow \gamma^\tn_{A,B\tn C}}
+		&& \begin{array}c\Leftarrow\\[-4pt]\gamma_{\alpha_{A,B,C}}\end{array}
+		& F((A\tn B)\tn C)
+		\\
+		&&
+		\rnode{2}{GA\tn(GB\tn GC)}
+		& \rTo_{GA\tn G^\tn_{B,C}} & \rnode{5}{GA\tn G(B\tn C)}
+		& \rTo_{G^\tn_{A,B\tn C}} & \spright{G(A\tn(B\tn C))}
+		& \ldTo(2,3)_{\gamma_{(A\tn B)\tn C}}
+		\\
+		& \Swarrow a_{\gamma_A,\gamma_B,\gamma_C}
+		& \dTo>{a_{GA,GB,GC}}
+		&& \Swarrow G^a_{A,B,C}
+		&& \dTo<{G(a_{A,B,C})}
+		\\
+		\rnode{3}{(FA\tn FB)\tn FC} & \rTo_{(\gamma_A\tn\gamma_B)\tn\gamma_C}
+		& (GA\tn GB)\tn GC
+		& \rTo_{G^\tn_{A,B}\tn GC} & G(A\tn B)\tn GC
+		& \rTo_{G^\tn_{A\tn B,C}} & \spright{G((A\tn B)\tn C)}
+		%
+		\nccurve[angleA=-170,angleB=170]{->}12
+			\bput{90}{\gamma_A\tn(\gamma_B\tn\gamma_C)}
+			\Aput{\quad\cong}
+		\nccurve[angleA=180,angleB=90]{->}13
+			\aput(.7){a_{FA,FB,FC}}
+		\nccurve[angleA=-45,angleB=45,ncurv=.9]{->}45
+			\aput(.4){\gamma_A\tn\gamma_{B\tn C}}
+	\end{diagram}
+	and for all $A\in\B$, the pasting
+	\begin{diagram}
+		&& \rnode{1}{FA\tn \I}
+		& \rTo^{FA\tn F^\tn_\I} & \rnode{FAFI}{FA\tn F\I}
+		\\
+		&& \dTo<{r_{FA}} & \begin{array}c\To\\F^r_A\end{array}
+		& \dTo>{F^\tn_{A,\I}}
+		\\
+		\rnode{2}{GA\tn \I}
+		& \begin{array}c\To\\[-4pt]r_{\gamma_A}\end{array}
+		& FA & \lTo_{F(r_A)} & F(A\tn \I)
+		& \begin{array}c\To\\[-4pt]\gamma^\tn_{A,\I}\end{array}
+		& \rnode{GAGI}{GA\tn G\I}
+		\\
+		&& \dTo<{\gamma_A}
+		& \Nearrow\gamma_{r_A} & \dTo>{\gamma_{A\tn \I}}
+		\\
+		&& \rnode{3}{GA} & \lTo_{G(r_A)} & \rnode{GAI}{G(A\tn \I)}
+		%
+		\nccurve[angleA=180,angleB=90]{->}12
+			\Bput{\gamma_A\tn \I}
+		\nccurve[angleA=-90,angleB=180]{->}23
+			\Bput{r_{GA}}
+		\nccurve[angleA=0,angleB=90]{->}{FAFI}{GAGI}
+			\Aput{\gamma_A\tn\gamma_\I}
+		\nccurve[angleA=-90,angleB=0]{->}{GAGI}{GAI}
+			\Aput{G^\tn_{A,\I}}
+	\end{diagram}
+	is equal to
+	\begin{diagram}
+		FA\tn \I & \rTo^{FA\tn F^\tn_\I} & FA\tn F\I
+		\\
+		\dTo<{\gamma_A\tn \I}
+		& \cong & \dTo<{\gamma_A\tn F\I}>{\quad\cong}
+		& \rdTo^{\gamma_A\tn\gamma_\I}
+		\\
+		\rnode{GAI}{GA\tn \I}
+		& \rTo_{GA\tn F^\tn_\I} & GA\tn F\I
+		& \rTo_{GA\tn\gamma_\I} & \rnode{GAGI}{GA\tn G\I}
+		\\
+		&& \raise1.5em\spboth{\Uparrow GA\tn\gamma^\tn_\I}
+		\\
+		\dTo[snake=1.5em]<{r_{GA}}
+		&& \begin{array}c\To\\[-4pt]G^r_A\end{array}
+		&& \dTo[snake=1.5em]>{G^\tn_{A,\I}}
+		\\
+		GA && \lTo_{G(r_A)} && G(A\tn \I)
+		\ncarc[arcangle=-35]{->}{GAI}{GAGI}\Bput{GA\tn G^\tn_\I}
+	\end{diagram}
+	and
+	\begin{diagram}
+		&& \rnode{1}{\I\tn FA}
+		& \rTo^{F^\tn_\I\tn FA} & \rnode{FIFA}{F\I\tn FA}
+		\\
+		&& \dTo<{l_{FA}} & \begin{array}c\To\\F^l_A\end{array}
+		& \dTo>{F^\tn_{\I,A}}
+		\\
+		\rnode{2}{\I\tn GA}
+		& \begin{array}c\To\\[-4pt]l_{\gamma_A}\end{array}
+		& FA & \lTo_{F(l_A)} & F(\I\tn A)
+		& \begin{array}c\To\\[-4pt]\gamma^\tn_{\I,A}\end{array}
+		& \rnode{GIGA}{G\I\tn GA}
+		\\
+		&& \dTo<{\gamma_A}
+		& \Nearrow\gamma_{l_A} & \dTo>{\gamma_{\I\tn A}}
+		\\
+		&& \rnode{3}{GA} & \lTo_{G(l_A)} & \rnode{GIA}{G(\I\tn A)}
+		%
+		\nccurve[angleA=180,angleB=90]{->}12
+			\Bput{\I\tn \gamma_A}
+		\nccurve[angleA=-90,angleB=180]{->}23
+			\Bput{l_{GA}}
+		\nccurve[angleA=0,angleB=90]{->}{FIFA}{GIGA}
+			\Aput{\gamma_\I\tn\gamma_A}
+		\nccurve[angleA=-90,angleB=0]{->}{GIGA}{GIA}
+			\Aput{G^\tn_{\I,A}}
+	\end{diagram}
+	is equal to
+	\begin{diagram}
+		\I\tn FA & \rTo^{F^\tn_\I\tn FA} & F\I\tn FA
+		\\
+		\dTo<{\I\tn\gamma_A}
+		& \cong & \dTo<{F\I\tn\gamma_A}>{\quad\cong}
+		& \rdTo^{\gamma_I\tn\gamma_A}
+		\\
+		\rnode{IGA}{\I\tn GA}
+		& \rTo_{F^\tn_\I\tn GA} & F\I\tn GA
+		& \rTo_{\gamma_\I\tn GA} & \rnode{GIGA}{G\I\tn GA}
+		\\
+		&& \raise1.5em\spboth{\Uparrow\gamma^\tn_\I\tn GA}
+		\\
+		\dTo[snake=1.5em]<{l_{GA}}
+		&& \begin{array}c\To\\[-4pt]G^l_A\end{array}
+		&& \dTo[snake=1.5em]>{G^\tn_{\I,A}}
+		\\
+		GA && \lTo_{G(l_A)} && G(\I\tn A)
+		\ncarc[arcangle=-35]{->}{IGA}{GIGA}\Bput{G^\tn_\I\tn GA}
+	\end{diagram}
+\end{definition}
+\begin{definition} % monoidal modification
+	A \emph{monoidal modification} $m:\gamma\Tto\delta: F\To G$, between monoidal
+	pseudo-natural transformations $F$ and $G$, is a modification with the property that
+	\[
+		\begin{diagram}[h=2em]
+			&& \rnode{FI}{F\I}
+			\\
+			& \ruTo^{F^\tn_\I}
+			\\
+			\I & \Swarrow\delta^\tn_\I & \dTo<{\delta_\I}
+			\\
+			& \rdTo_{G^\tn_\I}
+			\\
+			&& \rnode{GI}{G\I}
+			\nccurve[angle=0]{->}{FI}{GI}\Aput{\gamma_\I}
+			\Bput{\begin{array}c\Leftarrow\\[-4pt]m_\I\end{array}}
+		\end{diagram}
+		\hskip 5em=\quad
+		\gamma^\tn_\I
+	\]
+	and
+	\[
+	\begin{diagram}
+		& \rnode{FAFB}{FA\tn FB} & \rTo^{F^\tn_{A,B}} & F(A\tn B)
+		\\
+		\spright{\mkern-12mu\begin{array}c\Leftarrow\\[-4pt]m_A\tn m_B\end{array}}
+		& \dTo[snake=-1em]>{\gamma_A\tn\gamma_B}
+		& \raise1em\spboth{\Swarrow\gamma^\tn_{A,B}}
+		& \dTo>{\gamma_{A\tn B}}
+		\\
+		& \rnode{GAGB}{GA\tn GB}
+		& \rTo_{G^\tn_{A,B}}
+		& G(A\tn B)
+		%
+		\nccurve[angle=180,ncurv=1]{->}{FAFB}{GAGB}
+			\Bput{\delta_A\tn\delta_B}
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+		FA\tn FB & \rTo^{F^\tn_{A,B}} & \rnode{FAB}{F(A\tn B)}
+		\\
+		\dTo<{\delta_A\tn\delta_B}
+		& \raise-1em\spboth{\Swarrow\delta^\tn_{A,B}}
+		& \dTo[snake=1em]<{\delta_{A\tn B}}
+		& \spleft{\begin{array}c\Leftarrow\\[-4pt]m_{A\tn B}\end{array}}
+		\\
+		\rnode{GAGB}{GA\tn GB}
+		& \rTo_{G^\tn_{A,B}}
+		& \rnode{GAB}{G(A\tn B)}
+		%
+		\nccurve[angle=0,ncurv=1]{->}{FAB}{GAB}
+			\Aput{\gamma_{A\tn B}}
+	\end{diagram}
+	\]
+\end{definition}
+
+\section{On coherence}\label{s-coherence}
+The coherence theorem of \citet{GPS} implies that every monoidal bicategory
+is monoidally biequivalent to a Gray monoid:
+\begin{definition}
+A \emph{Gray monoid} is a monoidal
+bicategory $\B$ in which:
+\begin{itemize}
+\item the underlying bicategory $\B$ is a 2-category,
+\item given composable pairs $f$, $g$ and $h$, $k$ of 1-cells,
+	if either $f$ or $k$ is an identity then the structural 2-cell
+	\[
+		(f\tn h)\o(g\tn k) \To (f\o g)\tn(h\o k)
+	\]
+	is an identity,
+\item the structural equivalences $a$, $l$ and $r$ are identities.
+\end{itemize}
+\end{definition}
+%
+The second condition here is the most mysterious. It means that
+for every object $A\in\B$, the pseudofunctors $A\tn-$ and $-\tn A$
+are 2-functors, and that furthermore the tensor product $f\tn g$ of
+1-cells $f:A\to C$ and $g:B\to D$ is equal to the composite
+\[
+	A\tn B \rTo^{f\tn B} C\tn B \rTo^{C\tn g} C\tn D.
+\]
+When working in a Gray monoid, it will often be convenient to decompose
+tensor products of 1-cells in this way. Then the only structural
+2-cells are of the form
+\begin{diagram}
+	A\tn B & \rTo^{f\tn B} & C\tn B \\
+	\dTo<{A\tn g} & \sim & \dTo>{C\tn g} \\
+	A\tn D & \rTo_{f\tn D} & C\tn D,
+\end{diagram}
+or composites thereof. We shall label them merely with the symbol
+$\sim$ (as above), since there is no possible ambiguity.
+
+Furthermore, \citet{GurskiThesis} shows that every \emph{free} monoidal bicategory
+is monoidally biequivalent to a free Gray monoid on the same generators.
+In particular, Gurski shows that the \emph{canonical} monoidal pseudofunctor
+from the free monoidal bicategory to the free Gray monoid is a monoidal
+biequivalence.
+%
+These theorems mean that it is often possible to prove a theorem
+about monoidal bicategories in two stages:
+\begin{enumerate}
+	\item Prove the theorem for Gray monoids,
+	\item Use a coherence theorem to deduce that the result
+		holds for all monoidal bicategories.
+\end{enumerate}
+%
+Gurski's theorem is especially
+useful here, because it gives a general argument for the second stage
+that applies in an important class of cases. In particular it applies
+to problems of the following form: some data (objects, 1-cells,
+2-cells) are given, subject to axioms that take the form of
+equations between 2-cells. New structures are constructed in terms
+of the given data, and it's desired to show that some equations
+must hold between constructed 2-cells. (The chapter on pseudomonoids
+contains several theorems that follow this pattern, since a pseudomonoid
+is defined in terms of data and axioms as outlined above.) This kind of
+question is 
+essentially a question about the free monoidal bicategory generated
+by the data and axioms, since an equation holds in every such monoidal
+bicategory if and only if it holds in the free one. Now, if the equations
+can be proved for Gray monoids, then in particular they hold in the
+appropriate free Gray monoid. Gurski's theorem then implies that they
+hold in the free monoidal bicategory, hence in every monoidal bicategory.
+
+Sadly there are other cases in which it's desirable to work in a Gray
+monoid to keep the diagrams manageable, to which this argument does
+not apply. The external version of Cayley's theorem for pseudomonoids
+(chapter~\chCayley) is such a case; there we'll have to work a little harder
+to establish the second stage of the argument.
+
+Gurski's theorem also justifies the labour-saving device of \emph{stating}
+equations (between 2-cells) in the Gray monoid setting: since the monoidal
+pseudofunctor from the free monoidal bicategory to the free Gray monoid is
+a monoidal biequivalence, it has a biequi\-valence-inverse that has the effect
+of inserting structural equivalences and 2-cells where necessary. This
+inverse is not uniquely determined -- it's unique only up to pseudonatural
+equivalence -- but of course any such choice will preserve equality
+of 2-cells. So, if an equation is stated and proved in the Gray monoid
+setting then:
+\begin{enumerate}
+	\item it's always possible to insert structural equivalences and
+		2-cells to reinterpret the equation in the general setting,
+	\item however this is done, the reinterpreted equation holds.
+\end{enumerate}
+
+So much for theorems. A practice adopted by many authors
+\citep[e.g.][]{MonBicat,HDA1} is to state \emph{definitions} for
+Gray monoids rather than general monoidal bicategories. This has
+the undeniable advantage that it makes the definitions simpler
+to state and use. The disadvantage is that there isn't generally a \emph{unique}
+way to reinterpret such a definition for general monoidal bicategories.
+To be sure, all such reinterpretations will be interconvertible, but
+there is nevertheless an unfortunate ambiguity. We shall avoid this
+problem by adopting a hybrid strategy: we'll describe the \emph{data}
+(pseudonatural transformations, modifications) in the general setting,
+but state our \emph{axioms} for Gray monoids. As explained above, there is
+never any ambiguity in stating an equation between 2-cells in the Gray monoid
+setting.
+
+\section{Braided monoidal bicategories}\label{s-braiding}
+The history of attempts to define the concept of braided monoidal bicategory highlights
+the difficulties inherent in even finding the correct definition. The
+first definition was given by \citet{KV}, with some errors and omissions.
+The errors and some omissions were pointed out by \citet{CarmodyThesis}
+and \citet{HDA1} -- presumably independently, since neither cites the
+other -- though \citeauthor{HDA1} go further than \citeauthor{CarmodyThesis}
+and give their own definition of braiding for a Gray monoid. This
+definition includes an additional axiom (our third axiom below), which they
+attribute to \citet{Breen-ator}.
+%
+\Citet{HDA1} do not give any axioms relating the unit object to the
+braiding. This is mentioned in their Section~5(1) as an issue that
+remains to be resolved. Subsequently \citet{GeneralizedCenters}
+noticed that this omission causes an error in \citeauthor{HDA1}'s
+`center' construction, and showed how it could be fixed by adding
+six axioms for the unit. \Citet{MonBicat} also gave a definition of
+braiding with just one axiom for the unit, and despite the superficial
+differences this axiomatisation is equivalent to
+\citeauthor{GeneralizedCenters}'s. (It turns out that four of Crans's
+six unit axioms are redundant.)
+
+These definitions both take the unit to be strict -- in terms of
+our definition below, they take the 1-cells $s_{A,\I}$ and $s_{\I,A}$
+and the 2-cells $U_{A|\I}$ and $U_{\I|A}$ to be \emph{identities}.
+The justification for such a restriction is presumably the reasonable
+expectation that a coherence theorem for tetracategories would
+show every braided monoidal bicategory to be suitably equivalent
+to one with such a strict unit. Since an expectation, however
+reasonable, is not a proof, we have opted to eschew the modest
+simplification that such a restriction brings.
+%
+Thus the definition below is conceivably the first that
+includes all the structure known to be necessary at its natural level
+of strictness, though we do not claim that any new insight was needed
+to formulate it. (It is not unimaginable that further axioms should yet
+be found wanting, though this does not seem especially likely.)
+%
+\begin{definition}\label{def-braiding}
+	A \defn{braiding} for a monoidal bicategory $\B$
+	consists of a pseudo-natural equivalence $s$ with 1-cell components
+	\[
+		s_{A,B}: A\tn B \to B\tn A,
+	\]
+	invertible modifications $S_{-|-,-}$ and $S_{-,-|-}$ with components
+	\begin{diagram}
+		 A\tn (B\tn C) &\rTo^{a} & (A\tn B)\tn C
+		   & \rTo^{s_{A\tn B,C}} & C\tn(A\tn B) \\
+		 \dTo<{A\tn s_{B,C}} && \Arr\Swarrow{S_{A,B|C}} && \dTo>{a}\\
+		 A\tn(C\tn B) & \rTo_{a} & (A\tn C)\tn B
+		   & \rTo_{s_{A,C}\tn B} & (C\tn A)\tn B,
+	\end{diagram}
+	%
+	\begin{diagram}
+		 (A\tn B)\tn C &\rTo^{a'} & A\tn(B\tn C)
+		   & \rTo^{s_{A,B\tn C}} & (B\tn C)\tn A \\
+		 \dTo<{s_{A,B}\tn C} && \Arr\Nearrow{S_{A|B,C}} && \dTo>{a'}\\
+		 (B\tn A)\tn C & \rTo_{a'} & B\tn(A\tn C)
+		   & \rTo_{B\tn s_{A,C}} & B\tn(C\tn A),
+	\end{diagram}
+	and invertible modifications $U_{\I|-}$ and $U_{-|\I}$ with components
+	\[
+	\begin{diagram}[h=2em]
+		\I\tn A & \rTo^{s_{\I,A}} & A\tn \I \\
+		&\raise 1em\hbox{$\mathop\Leftarrow\limits_{U_{\I|A}}$} \rdTo(1,2)_{l_A} \ldTo(1,2)_{r_A}\\
+		&A
+	\end{diagram}
+	\hskip 3em
+	\begin{diagram}[h=2em]
+		A\tn \I & \rTo^{s_{A,\I}} & \I\tn A \\
+		&\raise 1em\hbox{$\mathop\Rightarrow\limits_{U_{A|\I}}$} \rdTo(1,2)_{r_A} \ldTo(1,2)_{l_A}\\
+		&A,
+	\end{diagram}
+	\]
+	subject to various axioms. As explained in section~\ref{s-coherence},
+	we state the axioms in the Gray monoid setting. There are four axioms
+	that relate the $S$ modifications to each other:
+	\[
+	\hskip-1em
+	\begin{diagram}[h=4em,labelstyle=\scriptstyle]
+		A\tn B\tn C\tn D & \rTo^{s_{A\tn B\tn C,D}} & D\tn A\tn B\tn C \\
+		\dTo<{A\tn B\tn s_{C,D}} & \rdTo(2,2)[hug]_{A\tn s_{B\tn C,D}}
+			\raise 1.5em\hbox to 0pt{$\Downarrow\scriptstyle S_{A,B\tn C|D}$\hss}
+			\raise-2em\hbox to 0pt{\hss$\Swarrow\scriptstyle A\tn S_{B,C|D}$}
+			& \uTo>{s_{A,D}\tn B\tn C} \\
+		A\tn B\tn D\tn C &\rTo_{A\tn s_{B,D}\tn C} & A\tn D\tn B\tn C
+	\end{diagram}
+	=
+	\begin{diagram}[h=4em,labelstyle=\scriptstyle]
+		A\tn B\tn C\tn D & \rTo^{s_{A\tn B\tn C,D}} & D\tn A\tn B\tn C \\
+		\dTo<{A\tn B\tn s_{C,D}} & \ruTo(2,2)[hug]_{s_{A\tn B,D}\tn C}
+			\raise 1.5em\hbox to 0pt{\hss$\Downarrow\scriptstyle S_{A\tn B,C|D}$}
+			\raise-2em\hbox to 0pt{$\Searrow\scriptstyle S_{A,B|D}\tn C$\hss}
+			& \uTo>{s_{A,D}\tn B\tn C} \\
+		A\tn B\tn D\tn C &\rTo_{A\tn s_{B,D}\tn C} & A\tn D\tn B\tn C
+	\end{diagram}
+	\]
+	\[
+	\hskip-1em
+	\begin{diagram}[h=4em,labelstyle=\scriptstyle]
+		A\tn B\tn C\tn D & \rTo^{s_{A\,B\tn C\tn D}} & B\tn C\tn D\tn A \\
+		\dTo<{s_{A,B}\tn C\tn D} & \rdTo(2,2)[hug]_{s_{A,B\tn C}\tn D}
+			\raise 1.5em\hbox to 0pt{$\Uparrow\scriptstyle S_{A|B\tn C,D}$\hss}
+			\raise-2em\hbox to 0pt{\hss$\Nearrow\scriptstyle S_{A|B,C}\tn D$}
+			& \uTo>{B\tn C\tn s_{A,D}} \\
+		B\tn A\tn C\tn D &\rTo_{B\tn s_{A,C}\tn D} & B\tn C\tn A\tn D
+	\end{diagram}
+	=
+	\begin{diagram}[h=4em,labelstyle=\scriptstyle]
+		A\tn B\tn C\tn D & \rTo^{s_{A\,B\tn C\tn D}} & B\tn C\tn D\tn A \\
+		\dTo<{s_{A,B}\tn C\tn D} & \ruTo(2,2)[hug]_{B\tn s_{A,C\tn D}}
+			\raise 1.5em\hbox to 0pt{\hss$\Uparrow\scriptstyle S_{A|B,C\tn D}$}
+			\raise-2em\hbox to 0pt{$\Nwarrow\scriptstyle B\tn S_{A|C,D}$\hss}
+			& \uTo>{B\tn C\tn s_{A,D}} \\
+		B\tn A\tn C\tn D &\rTo_{B\tn s_{A,C}\tn D} & B\tn C\tn A\tn D
+	\end{diagram}
+	\]
+	\[\hskip-1em\begin{array}{l}
+	\hskip-2em
+	\begin{diagram}[hug,labelstyle=\scriptstyle,w=4em,tight]
+		A\tn B\tn C\tn D &&& \rTo^{\displaystyle A\tn s_{B,C\tn D}}
+			&&& A\tn C\tn D\tn B \\
+		&\rdTo^{A\tn s_{B,C}\tn D} && \Uparrow{\scriptstyle A\tn S_{B|C,D}}
+			&& \ruTo(4,2)^{A\tn C\tn s_{B,D}} \ldTo(2,2)_{s_{A,C}\tn B\tn D} \\
+		\dTo<{\displaystyle s_{A\tn B,C}\tn D}
+			& \hbox to 0pt{\hss$\mathop\Rightarrow\limits_{S_{A,B|C}\tn D}$}
+			& A\tn C\tn B\tn D & \sim & C\tn A\tn D\tn B
+			& \hbox to 0pt{$\mathop\Rightarrow\limits_{S_{A|C,D}\tn B}$\hss}
+			& \dTo>{\displaystyle s_{A,C\tn D}\tn B} \\
+		&\ldTo_{s_{A,C}\tn B\tn D} && \ruTo(4,2)_{C\tn A\tn s_{B,D}}
+			& \Uparrow{\scriptstyle C \tn S_{A,B|D}}
+			& \rdTo^{C \tn s_{A,D}\tn B} \\
+		C\tn A\tn B\tn D &&& \rTo_{C \tn s_{A\tn B,D}} &&& C\tn D\tn A\tn B
+	\end{diagram}
+	\\[8em]
+	\multicolumn 1r{
+	= \qquad \begin{diagram}[h=4em]
+		A\tn B\tn C\tn D & \rTo^{A\tn s_{B,C\tn D}} & A\tn C\tn D\tn B \\
+		\dTo<{s_{A\tn B,C}\tn D}
+			& \rdTo(2,2)[hug]_{s_{A\tn B,C\tn D}}
+			\raise 1.5em\hbox to 0pt{$\Nearrow\scriptstyle S_{A,B|C\tn D}$\hss}
+			\raise-2em\hbox to 0pt{\hss$\Nearrow\scriptstyle S_{A\tn B|C,D}$}
+			& \dTo>{s_{A,C\tn D}\tn B} \\
+			C\tn A\tn B\tn D & \rTo_{C \tn s_{A\tn B,D}} & C\tn D\tn A\tn B
+	\end{diagram}
+	}
+	\end{array}\]
+	\[
+		\begin{diagram}[hug,s=2.5em,tight]
+			A\tn B\tn C && \rTo^{s_{A\tn B,C}} && C\tn A\tn B \\
+			& \rdTo_{A\tn s_{B,C}}
+				&\raise 1em\hbox{$\Arr\Downarrow{\scriptstyle S_{A,B|C}}$}
+				& \ruTo_{s_{A,C}\tn B} \\
+			\dTo<{s_{A,B\tn C}} && A\tn C\tn B & \Arr\Swarrow{\scriptstyle S_{A|C,B}}
+				& \dTo>{C\tn s_{A,B}} \\
+			&\Arr\Swarrow{s_{A,s_{B,C}}} && \rdTo_{s_{A,C\tn B}} \\
+			B\tn C\tn A&&\rTo_{s_{B,C}\tn A} && C\tn B\tn A
+		\end{diagram}
+		\quad=\quad
+		\begin{diagram}[hug,s=2.5em,tight]
+			A\tn B\tn C && \rTo^{s_{A\tn B,C}} && C\tn A\tn B \\
+			& \rdTo_{s_{A,B}\tn C} &&\Swarrow{s_{s_{A,B},C}^{-1}} \\
+			\dTo<{s_{A,B\tn C}}
+				&\hbox to 0pt{\hss$\mathop\Leftarrow\limits_{S_{A|B,C}}$}
+				& B\tn A\tn C && \dTo>{C\tn s_{A,B}} \\
+			&\ldTo^{B\tn s_{A,C}}
+				&\mathop\Leftarrow\limits_{S_{B,A|C}}
+				& \rdTo_{s_{B\tn A,C}} \\
+			B\tn C\tn A&&\rTo_{s_{B,C}\tn A} && C\tn B\tn A
+		\end{diagram}
+	\]
+	and two axioms that relate the $U$ and $S$ modifications:
+	the 2-cells pictured below should each be equal to the identity on $s_{A,B}$:
+	\[\begin{array}{c@{\hskip4em}c}
+		\begin{diagram}[hug,s=2.5em]
+			A\tn \I\tn B && \rTo^{s_{A\tn \I,B}} && B\tn A\tn \I \\
+			&\rdTo_{A\tn s_{\I,B}} & \Downarrow{\scriptstyle S_{A,\I|B}}
+				& \ruTo_{s_{A,B}\tn \I} \\
+			\dTo<1 & \hbox to 0pt{\hss$\mathop\Leftarrow\limits_{A\tn U_{\I|B}}$}
+				& A\tn B\tn \I && \dTo>1 \\
+			&\ldTo_{1} \\
+			A\tn B && \rTo_{s_{A,B}} && B\tn A
+		\end{diagram}
+		&
+		\begin{diagram}[hug,s=2.5em]
+			A\tn \I\tn B && \rTo^{s_{A,\I\tn B}} && \I\tn B\tn A \\
+			&\rdTo_{s_{A,\I}\tn B} & \Uparrow{\scriptstyle S_{A|\I,B}}
+				& \ruTo_{\I\tn s_{A,B}} \\
+			\dTo<1 & \hbox to 0pt{\hss$\mathop\Rightarrow\limits_{U_{A|\I}\tn B}$}
+				& \I\tn A\tn B && \dTo>1 \\
+			&\ldTo_{1} \\
+			A\tn B && \rTo_{s_{A,B}} && B\tn A
+		\end{diagram}
+	\end{array}\]
+\end{definition}
+
+\subsection{The duality of the definition}
+Since $s$ is a pseudo-natural equivalence, it has an adjoint
+equivalence-inverse $s'$. We shall assume that such an $s'$
+has been chosen: by definition it has 1-cell components
+\[
+	s'_{A,B}: B\tn A \to A\tn B,
+\]
+and by Prop.~\chref{Bicats}{prop-adj-1} each 2-cell component $s'_{f,g}$
+is the inverse of the mate of $s_{f,g}$. Now we may define
+a pseudo-natural equivalence $s^*$ with 1-cell components
+$s^*_{A,B} = s'_{A,B}$ and 2-cell components $s^{*}_{f,g} = s'_{g,f}$.
+The duality is expressed by the following:
+\begin{propn}
+	The pseudo-natural transformation $s^{*}$ can be made into
+	a braiding in the following way.
+	\begin{itemize}
+		\item $S^{*}_{A|B,C}$ is defined to be the mate of $S_{B,C|A}$
+			with respect to the adjoint equivalences
+			$(s_{A,C}\tn B)\o a\o(A\tn s_{B,C})$
+			and $a\o(s_{A\tn B,C})\o a$,
+		\item $S^{*}_{A,B|C}$ is defined to be the mate of $S_{C|A,B}$
+			with respect to the adjoint equivalences
+			$a'\o(s_{A,B\tn C})\o a'$ and $(B\tn s_{A,C})\o a'\o (s_{A,B}\tn C)$;
+			%
+			Note that, by Prop.~\chref{Bicats}{prop-adjeq-mate-dual}, the
+			left and right mates are equal in this case and the previous one.
+		\item $U^{*}_{\I|A}$ is defined to be the right mate of $U_{A|\I}$
+			with respect to the adjoint equivalences $s_{A,\I}$ and $1_{A}$,
+		\item $U^{*}_{A|\I}$ is defined to be the left mate of $U_{\I|A}$
+			with respect to the adjoint equivalences $s_{\I,A}$ and $1_{A}$.
+	\end{itemize}
+\end{propn}
+\begin{proof}
+	The first two axioms for $S$ are duals of each other: taking mates in
+	one of them yields the other for $S^{*}$. The third axiom is self-dual,
+	in that taking mates gives the corresponding equation for $S^{*}$.
+	The fourth axiom is also self-dual, using the fact that the mate of
+	$s_{A,s_{B,C}}$ is the inverse of ${s^*_{s^*_{C,B},A}}$. Finally, the
+	two unit axioms are duals of each other.
+\end{proof}
+
+This symmetry can sometimes spare us a certain amount of repetition,
+in Section~\chref{Psmon}{s-braided-facts}, for example.
+
+\subsection{The unit axioms}
+The first thing to say about the unit axioms is that we have here
+another instance of the phenomenon discussed in Remark~\ref{rem-defining-L}:
+the unit axioms show that the 2-cells $U_{\I|A}$ and $U_{A,\I}$ are
+definable in terms of the other data. However, the $U$ cells defined
+in this way do not themselves necessarily satisfy the unit axioms!
+So these cells are redundant data in a sense, but if we were to
+eliminate them, we should instead have to impose rather unnatural-looking
+axioms involving $S_{A,\I|B}$ and $S_{A|\I,B}$.
+
+One could write down several other natural conditions on the unit
+cells. These turn out to be derivable from the two conditions we
+have. In particular:
+\begin{propn}\label{prop-braiding-unit}
+	In any braided Gray monoid, the 2-cells
+	\[
+		\begin{diagram}[hug,s=4em]
+			\I\tn A\tn B & \rTo^{\I\tn s_{A,B}} & \I\tn B\tn A \\
+			\dTo<{s_{\I\tn A,B}} & \ldTo_{s_{\I,B}\tn A}
+				\raise 2em\hbox to 0pt{\hss$\mathop\Rightarrow\limits_{S_{\I,A|B}}$}
+				\raise-2em\hbox to 0pt{$\mathop\Rightarrow\limits_{U_{\I|B}\tn A}$\hss}
+				& \dTo>{1}\\
+			B\tn \I\tn A & \rTo_{1} & B\tn A
+		\end{diagram}
+		\qquad\mbox{and}\qquad
+		\begin{diagram}[hug,s=4em]
+			A\tn B\tn \I & \rTo^{s_{A,B}\tn \I} & B\tn A\tn \I \\
+			\dTo<{s_{A,B\tn \I}} & \ldTo_{B\tn s_{A,\I}}
+				\raise 2em\hbox to 0pt{\hss$\mathop\Leftarrow\limits_{S_{A|B,\I}}$}
+				\raise-2em\hbox to 0pt{$\mathop\Leftarrow\limits_{B\tn U_{A|\I}}$\hss}
+				& \dTo>{1}\\
+			B\tn \I\tn A & \rTo_{1} & B\tn A
+		\end{diagram}
+	\]
+	are both identities.
+\end{propn}
+\begin{proof}
+	By duality, it suffices to prove one of the two: we'll prove
+	the second one.
+	If we set $B=\I$ in our first axiom for $S$, we obtain
+	\[
+	\hskip-1em
+	\begin{diagram}[h=4em,labelstyle=\scriptstyle]
+		A\tn \I\tn C\tn D & \rTo^{s_{A\tn \I\tn C,D}} & D\tn A\tn \I\tn C \\
+		\dTo<{A\tn \I\tn s_{C,D}} & \rdTo(2,2)[hug]_{A\tn s_{\I\tn C,D}}
+			\raise 1.5em\hbox to 0pt{$\Downarrow\scriptstyle S_{A,\I\tn C|D}$\hss}
+			\raise-2em\hbox to 0pt{\hss$\Swarrow\scriptstyle A\tn S_{\I,C|D}$}
+			& \uTo>{s_{A,D}\tn \I\tn C} \\
+		A\tn \I\tn D\tn C &\rTo_{A\tn s_{\I,D}\tn C} & A\tn D\tn \I\tn C
+	\end{diagram}
+	=
+	\begin{diagram}[h=4em,labelstyle=\scriptstyle]
+		A\tn \I\tn C\tn D & \rTo^{s_{A\tn \I\tn C,D}} & D\tn A\tn \I\tn C \\
+		\dTo<{A\tn \I\tn s_{C,D}} & \ruTo(2,2)[hug]_{s_{A\tn \I,D}\tn C}
+			\raise 1.5em\hbox to 0pt{\hss$\Downarrow\scriptstyle S_{A\tn \I,C|D}$}
+			\raise-2em\hbox to 0pt{$\Searrow\scriptstyle S_{A,\I|D}\tn C$\hss}
+			& \uTo>{s_{A,D}\tn \I\tn C} \\
+		A\tn \I\tn D\tn C &\rTo_{A\tn s_{\I,D}\tn C} & A\tn D\tn \I\tn C
+	\end{diagram}
+	\]
+	Cancelling the invertible 2-cell $S_{A,C|D}$, we have
+	\[
+	\hskip-1em
+	\begin{diagram}[w=5em,labelstyle=\scriptstyle,tight]]
+		A\tn \I\tn C\tn D & & D\tn A\tn \I\tn C \\
+		\dTo<{A\tn \I\tn s_{C,D}} & \rdTo(2,2)[hug]^{A\tn s_{\I\tn C,D}}
+			\raise-2em\hbox to 0pt{\hss$\Swarrow\scriptstyle A\tn S_{\I,C|D}$}
+			& \uTo>{s_{A,D}\tn \I\tn C} \\
+		A\tn \I\tn D\tn C &\rTo_{A\tn s_{\I,D}\tn C} & A\tn D\tn \I\tn C
+	\end{diagram}
+	=
+	\begin{diagram}[w=5em,labelstyle=\scriptstyle,tight]]
+		A\tn \I\tn C\tn D && D\tn A\tn \I\tn C \\
+		\dTo<{A\tn \I\tn s_{C,D}} & \ruTo(2,2)[hug]^{s_{A\tn \I,D}\tn C}
+			\raise-2em\hbox to 0pt{$\Searrow\scriptstyle S_{A,\I|D}\tn C$\hss}
+			& \uTo>{s_{A,D}\tn \I\tn C} \\
+		A\tn \I\tn D\tn C &\rTo_{A\tn s_{\I,D}\tn C} & A\tn D\tn \I\tn C
+	\end{diagram}
+	\]
+	Thus
+	\begin{diagram}[w=5em,labelstyle=\scriptstyle,tight]
+		A\tn \I\tn C\tn D & & D\tn A\tn \I\tn C \\
+		\dTo<{A\tn \I\tn s_{C,D}} & \rdTo(2,2)[hug]^{A\tn s_{\I\tn C,D}}
+			\raise-1em\hbox to 0pt{\hss$\Swarrow\scriptstyle A\tn S_{\I,C|D}$}
+			& \uTo[snake=1em]<{s_{A,D}\tn \I\tn C}
+			%%
+			&\rdTo^{1}
+			%%
+			\\
+		A\tn \I\tn D\tn C &\rTo_{A\tn s_{\I,D}\tn C} & A\tn D\tn \I\tn C
+		%%
+		& & D\tn A\tn C \\
+		& \rdTo_{1} \raise1em\rlap{$\Swarrow\scriptstyle  A\tn U_{\I|D}\tn C$}
+			& \dTo>1 & \ruTo_{s_{A,D}\tn C} \\
+		& & A\tn D\tn C
+	\end{diagram}
+	is equal to
+	\begin{diagram}[w=5em,labelstyle=\scriptstyle,tight]
+		A\tn \I\tn C\tn D && D\tn A\tn \I\tn C \\
+		\dTo<{A\tn \I\tn s_{C,D}} & \ruTo(2,2)[hug]^{s_{A\tn \I,D}\tn C}
+			\raise-1.5em\hbox to 0pt{$\Searrow\scriptstyle S_{A,\I|D}\tn C$\hss}
+			& \uTo<{s_{A,D}\tn \I\tn C}
+			%%
+			&\rdTo^{1}
+			%%
+			\\
+		A\tn \I\tn D\tn C &\rTo_{A\tn s_{\I,D}\tn C} & A\tn D\tn \I\tn C
+		%%
+		& & D\tn A\tn C \\
+		& \rdTo_{1} \raise1em\rlap{$\Swarrow\scriptstyle  A\tn U_{\I|D}\tn C$}
+			& \dTo>1 & \ruTo_{s_{A,D}\tn C} \\
+		& & A\tn D\tn C
+	\end{diagram}
+	which, by our first unit axiom, is the identity.
+	Cancelling the equivalence $s_{A,D}\tn C$, we find that
+	\begin{diagram}[h=3.5em,labelstyle=\scriptstyle]
+		A\tn \I\tn C\tn D \\
+		\dTo<{A\tn \I\tn s_{C,D}} & \rdTo(2,2)[hug]^{A\tn s_{\I\tn C,D}}
+			\raise-1.5em\hbox to 0pt{\hss$\Swarrow\scriptstyle A\tn S_{\I,C|D}$}
+			\\
+		A\tn \I\tn D\tn C &\rTo_{A\tn s_{\I,D}\tn C} & A\tn D\tn \I\tn C \\
+		%%
+		& \rdTo_{1} \raise1em\rlap{$\Swarrow\scriptstyle A\tn U_{\I|D}\tn C$}
+			& \dTo>1 \\
+		& & A\tn D\tn C
+	\end{diagram}
+	is the identity, and setting $A=\I$ yields the claim. XYZ
+\end{proof}
+
+\bibliography{cs}
+\end{document}

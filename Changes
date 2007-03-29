@@ -1,0 +1,68 @@
+A record of changes, by day, starting 15th March (when I had the idea of keeping such a log).
+
+Thursday 2007-03-15
+	- Split Monoidal Bicategories into two: Bicategories & Monoidal Bicategories.
+	- Changes to Bicategories:
+		o Say more about pasting diagrams
+		o Add a section on mates
+	
+	(Motivation: I want to talk about the duality in the definition of
+	braiding for a monoidal bicategory, which is easier to do if the
+	language of mates is available.)
+
+Friday 2007-03-16
+	- minor corrections to Bicategories
+	- add a verification that $\psi$ is a functor to the proof of Yoneda.
+	- consistently write horizontal composition as \o.
+	- rewrite the section on adjoint pseudo-nats in the language of mates.
+	- expand the proof of the general characterisation of adjunctions
+	  (because I had trouble understanding it when I reread it, and I
+	  wrote it!)
+* Backup 2007-03-16 taken at this point *
+    - a few more minor corrections, largely to Prop. 26, which characterises
+	  adjunctions in a bicategory.
+
+Saturday 2007-03-17
+	- in the definition of braiding for monoidal bicategory, remove four
+	  redundant unit axioms. Indicate how they can be derived from the
+	  others.
+	- add discussion of duality (in terms of mates) to definition of
+	  braided monoidal bicategory.
+	- mention duality in definition of braided pseudomonoid.
+	- Pseudomonoids =~ s/S(_\{[^|}]*\})/s$1/g
+	
+Sunday 2007-03-18
+	- Insert some discussion of string diagrams,
+	- Describe adjunctions and mates in string diagram terms,
+	
+	(I need the next point for the duality of braiding, and the string
+	diagrams are needed to give a comprehensible proof of it!)
+
+Monday 2007-03-19
+	- Prove that, for an invertible 2-cell f => f' with f and f' equivalences,
+	  the left and right mates coincide.
+	- Implemement external (i.e. inter-chapter) references.
+	- Flesh out the discussion of braiding duality, using the new tools.
+
+Tuesday 2007-03-20
+	- Complete Pseudomonoids chapter (at last!)
+
+Wednesday 2007-03-21
+	- Start on Cayley's theorem: explain how it works for monoids.
+		o Internal Cayley Theorem
+		o start on External Cayley Theorem
+
+Thursday2007-03-22
+	- Remove some irrelevant material (on $phi_X$ itself being a map of modules),
+	  and replace with a short remark to that effect.
+	- Remove some (hopefully) unneeded remarks about coherence.
+	- Explain necessary background for external theorem.
+
+Friday 2007-03-23
+	(Travelling to Nice today. Not so much time to work on the computer: constrained
+	by battery life!)
+	- Finish proof of External Cayley in the monoid case.
+
+[ In Nice attending PSSL 85 - away from thesis - and then reassembling thoughts
+  and thinking about the semi SMCC chapter ]
+

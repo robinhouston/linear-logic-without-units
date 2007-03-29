@@ -1,0 +1,1325 @@
+%&latex
+\documentclass{robincs}
+\usepackage{prooftree,rotating,amsbsy}
+\bibliographystyle{plainnat}
+
+\makeatletter
+
+%% Patch up a minor bug in the 'rotating' package:
+\let\orig@end@rotfloat = \end@rotfloat
+\def\end@rotfloat{\orig@end@rotfloat\ignorespacesafterend}
+\let\endsidewaysfigure\end@rotfloat
+\let\endsidewaystable\end@rotfloat
+
+%% Just emphasise definitions, don't do any fancy stuff.
+\let\defn = \emph
+
+%% Replace the \using command in prooftree.sty with a slightly more
+%  helpful version. For example, \using \tn r for the `tensor right' rule.
+\let\origusing\proofusing\def\proofusing#1#2{\origusing{\mathord{#1}\mkern.5mu\textsc{#2}}}
+
+%% This allows you to write $\alfa ABC$ rather than $\alpha_{A,B,C}$,
+%  which saves typing and makes the code more readable.
+\newcommand\alfa[3]{\alpha_{#1,#2,#3}}
+
+%% Use small integral signs, even in displayed equations:
+\let\origint = \int
+\def\int{{\textstyle\origint}}
+
+%% Curry
+\newcommand\curry{\mathrm{curry}}
+
+%% Lin	(Should we do something fancy to make $\Lin_\D$ DTRT?)
+\newcommand\Lin[1][\C]{\mathrm{Lin}_{#1}}
+
+%% Proposition 1.2, etc.
+\renewcommand\thepropn{\thesection.\arabic{propn}}
+\@addtoreset{propn}{section}
+
+%% Parenthesised reference.
+\newcommand\pref[1]{\textup(\ref{#1}\textup)}
+
+%% For labelling diagrams.
+%  (The two-part definition of \dnum means that the first token
+%  of its expansion is \hbox, so \raise1em\dnum will work.)
+\newcommand\dlabel[2][]{\def\arg{#1}%
+  \ifx\arg\@empty
+    \refstepcounter{equation}%
+	\global\let\robin@dnum = \theequation
+  \else
+    \def\@currentlabel{#1}%
+	\gdef\robin@dnum{#1}%
+  \fi
+  \label{#2}}
+\newcommand\dnum{\hbox\bgroup\morednum}
+\newcommand\morednum[1][]{\def\arg{#1}\textup(%
+	\ifx\arg\@empty%
+		\robin@dnum%
+	\else
+		\ref{#1}%
+	\fi
+	\textup)\egroup}
+
+%% For making diagrams with overlapping columns.
+%  (used in (pentagon))
+\def\spleft#1{\hbox to 2em{\hss$#1$}}
+\def\spright#1{\hbox to 2em{$#1$\hss}}
+
+%% Centred math environment, spilling into the margins if needed
+\newenvironment{mspill}{%
+	\vskip\abovedisplayskip\hbox to \textwidth\bgroup\hss%
+	\hbox\bgroup$\displaystyle
+}{%
+	$\egroup\hss\egroup\vskip\belowdisplayskip\noindent\ignorespacesafterend
+}
+
+%% Set off an important fact
+\newenvironment{setoff}{\@startsection{paragraph}{4}{\z@}%
+		{1ex}%
+		{-.5em}%
+		{\normalfont\normalsize\bfseries}*}
+	{\vskip1ex\noindent\ignorespacesafterend}
+
+\makeatother
+
+%% Custom hyphenation for obscure words :-)
+\hyphenation{pro-mon-oid-al aut-on-om-ous}
+
+%% Should we show incomplete sections?
+\newif\ifincomplete
+% (not for now)
+\incompletefalse
+
+%% Changeable terminology:
+\newcommand\sm    {semi monoidal\xspace}
+\newcommand\smc   {semi monoidal category\xspace}
+\newcommand\smcs  {semi monoidal categories\xspace}
+\newcommand\ssm   {symmetric semi monoidal\xspace}
+\newcommand\ssmc  {symmetric semi monoidal category\xspace}
+\newcommand\ssmcs {symmetric semi monoidal categories\xspace}
+\newcommand\Ssmcs {Symmetric Semi Monoidal Categories\xspace}
+\newcommand\ssmcc {symmetric semi monoidal closed category\xspace}
+\newcommand\ssmccs{symmetric semi monoidal closed categories\xspace}
+\newcommand\Ssmccs{Symmetric Semi Monoidal Closed Categories\xspace}
+
+\newcommand\SEC  {\textsc{ssmc}\xspace}
+\newcommand\SECC {\textsc{ssmcc}\xspace}
+\newcommand\SECCs{\textsc{ssmcc}s\xspace}
+% Preamble ends.
+%%
+
+\author{Robin Houston, Dominic Hughes and Andrea Schalk}
+\title{Modelling Linear Logic without Units\\(Preliminary Results)}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}\label{intro}
+There is a well known correspondence between particular kinds of
+category and particular logical systems, e.g.
+\vskip\abovedisplayskip\noindent
+\begin{tabular}{l@{\qquad}l}
+	\qquad\emph{category}&\qquad\emph{logic}\\[1ex]
+	Cartesian closed & Intuitionistic logic\\
+	Symmetric monoidal closed & Multiplicative intuitionistic linear logic\\
+	Star-autonomous & Multiplicative linear logic (MLL)
+\end{tabular}
+\vskip\belowdisplayskip
+
+The unit-free fragment of MLL is well understood from the logical
+point of view, and it admits a particularly simple notion of proof net.
+The purpose of this note is to describe the corresponding categories.
+
+The first thing to observe is that there is a non-trivial problem to be solved.
+Consider the unit-free fragment of multiplicative intuitionistic
+linear logic (MILL${\!}^-$) and its corresponding sequent calculus.
+%
+We cannot simply drop the units from our category altogether:
+although the logic has no unit, there are still valid proofs
+that involve sequents of the form ${}\vdash A$, whose left-hand side
+is empty. Such a sequent would ordinarily be represented by an arrow
+$I\to A$ in the category. Moreover, these sequents are essential for
+certain proofs: for example, not only does the proof
+\[\begin{prooftree}
+	p\vdash p \quad \[
+		q\vdash q
+		\justifies {}\vdash q\lolli q
+		\using\lolli r
+	\]
+	\justifies
+	p\vdash p\tn(q\lolli q)
+	\using\tn r
+\end{prooftree}\]
+use such a sequent, but \emph{every} proof of this conclusion
+must use such a sequent.
+
+On the other hand, if the categorical tensor product does
+have a unit~$I$, then there is a functor taking $X$ to
+$X\lolli I$; this does not correspond to anything in the logic.
+Hence we can neither allow the unit to remain, nor remove it
+altogether. A middle way is needed.
+
+The solution lies in the use of \defn{promonoidal}\footnote{
+	The original paper on the subject \citep{DayPro}
+	uses the term `premonoidal'. To add to the confusion,
+	the word premonoidal is now used to mean something
+	quite different.
+} categories.
+(As so often, the solution long predates the problem.) A promonoidal
+category is a kind of generalised monoidal category. Rather than
+having a functor \[\tn:\C\times\C\to\C\] and a unit object $I\in\C$,
+a promonoidal category has functors
+\[\begin{array}{c}
+	P: \C\op\times\C\op\times\C\to\Set,\\
+	J: \C \to \Set.
+\end{array}\]
+Each ordinary monoidal category $\C$ has a natural promonoidal structure
+with $P(A,B,C) = \C(A\tn B,C)$ and $J(A) = \C(I, A)$. This brings us
+to our primary definition:
+
+\begin{setoff}{Main Definition:}
+	A semi monoidal category $\C$ is a promonoidal category in which
+	$P(A,B,C) = \C(A\tn B,C)$ for some functor $\tn:\C\times\C\to\C$.
+\end{setoff}
+%
+We then consider \expandafter\emph{\ssmccs} (\SECCs)
+as the natural notion of model for unit-free MILL, and give a simple
+concrete description. [Dominic is going to make this part sound
+much better and more convincing.]
+
+The note is organised as follows. Section~\ref{s-summary} gives two
+different (but equivalent) elementary definitions of \SECC.
+Most of the remainder of the note is devoted to the showing that these
+are equivalent to the conceptual definition outlined above.
+
+Section~\ref{s-bg} describes the background needed to understand the
+subsequent development, in what is intended to be a clear and gentle (but
+not rigorous) way. In particular, the definitions of \emph{end}, \emph{coend}
+and \emph{promonoidal category} are explained.
+%
+Section~\ref{s-sec} describes \ssmcs, using
+Appendix~\ref{app-ax} (which gives a simple but
+non-standard axiomatisation of symmetric monoidal categories).
+Section~\ref{s-secc} shows that the conditions of \S\ref{s-summ-1}
+are necessary and sufficient.
+
+Section~\ref{s-uniq} XXXXXXXXX
+
+Finally section~\ref{s-related} discusses the relationship between
+our definitions and the related recent proposals of \citet{LSFreeBool}
+and \citet{ProofNetCats}.
+
+Many thanks to Richard Garner and Martin Hyland for their penetrating
+advice about an earlier version of this work. We are also grateful
+to Lutz Stra\ss burger for useful discussion by email.
+We acknowledge use of Paul Taylor's diagrams package.
+
+% Plus star-autonomous stuff
+
+\section{Summary of Results}\label{s-summary}
+\subsection{First Description}\label{s-summ-1}
+%Symmetric E-monoidal closed categories admit the following
+%elementary description.
+\begin{propn}\label{prop-1}
+	A \ssmcc can be described
+	by the following data:
+	\begin{itemize}
+	\item A category $\C$,
+	\item Functors $\tn: \C\times\C\to\C$ and $\lolli:\C\op\times\C\to\C$,
+	\item Natural isomorphisms $\alpha$, $\sigma$ and $\psi$ with
+		components
+		\[\begin{array}{r@{\;}l}
+			\alpha_{A,B,C}:& (A\tn B)\tn C\to A\tn(B\tn C),\\
+			\sigma_{A,B}:  & A\tn B\to B\tn A,\\
+			\psi_{A,B,C}:  & (A\tn B)\lolli C \to A\lolli(B\lolli C),
+		\end{array}\]
+		such that
+		\begin{starredequation}[$\boldsymbol\sigma$]\label{sigma}
+		  \sigma_{A,B} = \sigma_{B,A}^{-1}
+		\end{starredequation}
+		  and the
+		following coherence diagrams commute for all $A$,$B$,$C$,
+		$D\in\C$,
+		\begin{diagram}\dlabel[$\boldsymbol\alpha$]{pentagon}
+		  \bigl((A\tensor B)\tensor C\bigl)\tensor D
+		  &\rTo^{\alpha_{A\tn B,C,D}}&(A\tensor B)\tensor (C\tensor D)
+		  &\rTo^{\alpha_{A,B,C\tn D}} & A\tensor \bigl(B\tensor (C\tensor D)\bigr)
+		  \\
+		  &\rdTo[snake=-1em](1,2)<{\alpha_{A,B,C}\tn D} &\dnum
+		  & \ruTo[snake=1em](1,2)>{A\tn\alpha_{B,C,D}}
+		  \\
+		  & \spleft{\bigl(A\tensor(B\tensor C)\bigr)\tensor D}
+		  & \rTo_{\alpha_{A,B\tn C,D}}
+		  & \spright{A\tensor\big((B\tensor C)\tensor D\big),}
+		\end{diagram}
+%
+		\begin{diagram}\dlabel[$\boldsymbol{\alpha\sigma}$]{hexagon}
+		  (A\tn B)\tn C &\rTo^{\alfa ABC} & A\tn(B\tn C)
+		    & \rTo^{\sigma_{A,B\tn C}} & (B\tn C)\tn A \\
+		  \dTo<{\sigma_{A,B}\tn C} &&\dnum&& \dTo>{\alfa BCA}\\
+		  (B\tn A)\tn C & \rTo_{\alpha_{B,A,C}} & B\tn(A\tn C)
+		    & \rTo_{B\tn\sigma_{A,C}} & B\tn(C\tn A)
+		\end{diagram}
+%
+		\begin{diagram}[h=1.5em]\dlabel[$\boldsymbol\psi$]{psicoh}
+		\bigl(A\tn(B\tn C)\bigr)\lolli D &\rTo^{\alpha_{A,B,C}\lolli D}
+			&\bigl((A\tn B)\tn C\bigr)\lolli D\\
+		&&\dTo>{\psi_{A\tn B,C,D}}\\
+		\dTo<{\psi_{A,B\tn C,D}}&\dnum&(A\tn B)\lolli(C\lolli D)\\
+		&&\dTo>{\psi_{A,B,C\lolli D}}\\
+		A\lolli\bigl((B\tn C)\lolli D\bigr)&\rTo_{A\lolli\psi_{B,C,D}}
+			&A\lolli\bigl(B\lolli(C\lolli D)\bigr)
+		\end{diagram}
+	\item A functor $J:\C\to\Set$ and a natural isomorphism $e$
+		with components $e_{A,B}: J(A\lolli B) \to \C(A,B)$.
+	\end{itemize}
+\end{propn}
+%
+This proposition is proved in section~\ref{s-secc} below.
+
+\subsection{Second Description}\label{s-summ-2}
+In fact there is a canonical choice for $J$ and $e$; in order to
+state what it is, we need a few definitions:
+\begin{definition}
+  A \defn{category with tensor} is a category $\C$
+  equipped with a functor $\tn:\C\times\C\to\C$ and
+  a natural isomorphism $\alpha$ satisfying condition~\pref{pentagon}.
+
+  A \defn{category with symmetric tensor} is a category $\C$
+  with tensor, together with a natural isomorphism $\sigma$
+  such that conditions \pref{sigma} and \pref{hexagon} hold.
+\end{definition}
+\begin{definition}\label{def-le}
+	Let $\C$ be a category with tensor.
+	A \defn{linear element} $a$ of the object $A\in\C$ is a natural transformation
+	with components
+	\[
+		a_X: X \to A\tn X
+	\]
+	such that
+	\begin{diagram}%\dlabel{triangle}
+	  X\tensor Y & \rTo^{a_X\tn Y} & (A\tn X)\tn Y\\
+	  &\rdTo[snake=-1ex]_{a_{X\tn Y}} & \dTo>{\alpha_{A,X,Y}}\\
+	  && A\tn (X\tn Y)
+	\end{diagram}
+	commutes for all $X$,$Y\in\C$.
+\end{definition}
+%
+\begin{definition}\label{def-Lin}
+	Given a category $\C$ with tensor, define a functor
+	\[
+		\Lin: \C\to\Set
+	\]
+	as follows. For $A\in\C$, let $\Lin(A)$ be the set of linear
+	elements of $A$. For $f:A\to B$ and $a\in\Lin(A)$, let
+	$\Lin(f)(a)$ be the linear element of $B$ with components
+	\[
+		X \rTo^{a_X} A\tn X \rTo^{f\tn X}B\tn X.
+	\]
+\end{definition}
+It turns out that, in the situation of Prop.~\ref{prop-1}, there is a
+canonical natural isomorphism between $J$ and $\Lin$. Furthermore, it
+happens that this natural isomorphism takes $e$ to a particular natural
+transformation $l$, which is defined as follows. 
+\begin{definition}\label{def-l}
+	Suppose we have $(\C,\tn,\alpha)$ as above, together with a functor
+	\(
+		\lolli: \C\op\times\C\to\C
+	\)
+	and a natural isomorphism
+	\[
+		\curry_{A,B,C}: \C(A\tn B,C) \to \C(A, B\lolli C)
+	\]
+	with counit (i.e.\ evaluation map) $\e^A_B:(A\lolli B)\tn A\to B$.
+	
+	Define the natural transformation $l_{A,B}: \Lin(A\lolli B) \to \C(A,B)$
+	as follows: for each $x\in\Lin(A\lolli B)$, let $l_{A,B}(x)$ be the
+	composite
+	\[
+		A \rTo^{x_{A}} (A\lolli B)\tn A  \rTo^{\e^A_B} B.
+	\]
+\end{definition}
+Our first description (Prop.~\ref{prop-1}) is equivalent to the following.   
+\begin{propn}\label{prop-2}
+	An \SECC can be described by:
+	\begin{itemize}
+	\item A category $\C$ with symmetric tensor,
+	\item A functor $\lolli:\C\op\times\C\to\C$ with a natural isomorphism
+		\[
+			\curry_{A,B,C}:\C(A\tn B,C) \to \C(A, B\lolli C)
+		\]
+	\end{itemize}
+	such that the natural transformation
+	$l$ of Def.~\ref{def-l}
+	%$l_{A,B}:\Lin(A\lolli B)\to\C(A,B)$
+	is invertible.
+\end{propn}
+
+\section{Technical Background}\label{s-bg}
+This section gives an informal introduction to coends, ends and
+promonoidal categories.
+\subsection{Coends}\label{s-coends}
+The definition of promonoidal category involves coends, so we
+need to understand them to some extent. Fortunately they are
+quite simple: a coend is just a slightly more general version
+of a colimit.
+
+Recall that a colimit of a functor $J: \D\to\C$ is a universal natural
+transformation from $J$ to some object $X\in\C$. Coends just
+extend this idea to mixed-variance functors $J: \D\times \D\op\to\C$:
+a coend of $J$ is a universal \emph{dinatural}\footnote{
+	The dinatural transformations we need to consider are
+	of the special kind called \emph{extraordinary natural
+	transformations}. The distinction is important in
+	enriched category theory, where extraordinary natural
+	transformations can be defined but dinatural transformations
+	can not in general.
+}
+transformation from $J$ to an object $X\in\C$.
+
+A dinatural transformation $\gamma: J\To X$ is a family
+of arrows
+\[
+	\gamma_A: J(A,A) \to X
+\]
+indexed by the objects $A\in \D$, such that for every
+$f:A\to B$ in $\D$ the diagram
+\begin{diagram}
+	J(A,B) & \rTo^{J(A,f)}& J(A,A)\\
+	\dTo<{J(f,B)}&&\dTo>{\gamma_A}\\
+	J(B,B) & \rTo_{\gamma_B}& X
+\end{diagram}
+commutes. Such a dinatural transformation is universal if, for every
+object $Y$ and dinatural transformation $\delta: J\To Y$,
+there is a unique fill-in morphism $g: X\to Y$ such that
+\begin{diagram}[h=1.5em]
+	&&X\\
+	&\ruTo^{\gamma_A}\\
+	J(A,A)&&\dTo>g\\
+	&\rdTo_{\delta_A}\\
+	&&Y
+\end{diagram}
+commutes for every $A\in\D$. 
+
+It is conventional, and very handy, to write coends using
+integral notation. The coend of $J$ is written $\int^{A\in\D} J(A,A)$;
+we usually omit the `$\in\D$' part when it is obvious from the context.
+
+In the rest of this note, we only need to use coends in $\Set$ or in
+functor categories of the form $[\C,\Set]$ for some $\C$. These categories
+have all (small) coends, so we shall never have to worry about whether
+or not a particular coend exists.
+
+Here are some important properties of coends.
+We use them heavily in the sequel, often without remark.
+\begin{itemize}
+	\item Left adjoints preserve coends. In particular, in a cartesian
+		closed category $\C$ we have
+		\[
+			A\times\int^{X\in\D} J(X,X) \cong \int^{X\in\D} A\times J(X,X)
+		\]
+		for every $A\in\C$;
+	\item The `Fubini theorem': if $\int^{Y\in\D_2}J(X,X',Y,Y)$ exists for
+			all $X$, $X'\in\D_1$ then
+	\[
+		\int^{X\in\D_1}\int^{Y\in\D_2} J(X,X,Y,Y) \cong
+			\int^{(X,Y)\in\D_1\times\D_2}J(X,X,Y,Y)
+	\]
+	for $J: \D_1\times\D_1\op\times\D_2\times\D_2\op\to\C$;
+	\item For every $F:\C\to\Set$ and $Y\in\C$,
+	\[
+		FY \cong \int^{X\in\C} FX\times\C(X,Y)
+	\]
+	and the coend on the right exists;
+	\item The dual of the above: for every $F: \C\op\to\Set$ and $X\in\C$,
+	\[
+		FX \cong \int^{Y\in\C} FY\times\C(X,Y).
+	\]
+\end{itemize}
+The latter two isomorphisms can be regarded as versions of the
+Yoneda lemma. For proofs of all these facts, and a generally very
+nice tutorial introduction to coends, see the lecture notes by
+\citet{CatNotes}.
+%
+%One special case deserves remark: for every $A$,$B$,$C\in\C$
+%we have
+%\[
+%	\C(A,C) \cong \int^B\C(A,B)\times\C(B,C).
+%\]
+
+\subsection{Promonoidal Categories}\label{s-promon}
+As mentioned in the introduction, a promonoidal category is a
+category $\C$ together with functors
+\[\begin{array}{c}
+	P: \C\op\times\C\op\times\C\to\Set,\\
+	J: \C \to \Set.
+\end{array}\]
+and natural isomorphisms $\alpha$, $\lambda$ and $\rho$
+satisfying conditions analogous\footnote{
+	In fact this is no mere analogy: monoidal and promonoidal
+	categories are both instances of the general notion of
+	\emph{pseudomonoid} in a monoidal bicategory \citep{MonBicat}.
+	A promonoidal category is a pseudomonoid in the bicategory
+	whose objects are categories and whose 1-cells are modules
+	(aka profunctors or distributors).
+} to those in the definition of a monoidal category.
+
+In order to understand what these conditions are, we develop
+an informal procedure for translating the language
+of monoidal categories into the language of promonoidal categories.
+In a monoidal category $\C$ we can form various functors
+$\C^n\to\C$ for some natural number $n$, using the tensor
+product and unit object. For example we have the functor
+$F:\C^2\to\C$ defined as
+\[
+	F(A_1, A_2) = (A_1 \tn I) \tn (A_2 \tn A_1).
+\]
+In general, such a functor is described by an expression
+formed from variables $A_1, \dots, A_n$ and the constant $I$
+using the binary operation $\tn$. These expressions
+can be thought of as denoting the objects of the free monoidal category
+on a countably infinite set of generators.
+
+\def\qq#1{\raise1pt\hbox{$\ulcorner$}\!#1\!\raise1pt\hbox{$\urcorner$}}%
+Given such an expression $S$ and promonoidal category $\C$, we can
+define a corresponding expression $\qq{S}$, representing a
+functor $(\C\op)^n\to[\C,\Set]$, recursively as follows:
+\[\begin{array}{r@{{}={}}l}
+	\qq{I}     & J,\\
+	\qq{A_i}   & \C(A_i, -),\\
+	\qq{S\tn T}& \int^{X,Y} \qq S(X) \times \qq T(Y) \times P(X,Y,-).
+\end{array}\]
+(We assume that bound variables are renamed where necessary.)
+
+For example, we have
+\[\begin{array}{r@{\;}c@{\;}l}
+	\qq{A_1\tn A_2} &=& \int^{X,Y} \qq{A_1}(X)\times\qq{A_2}(Y)\times P(X,Y,-)\\
+		&=&     \int^{X,Y} \C(A_1,X)\times \C(A_2,Y)\times P(X,Y,-)\\
+		&\cong& \int^{X} \bigl(\C(A_1,X)\times \int^Y \C(A_2,Y)\times P(X,Y,-)\bigr)\\
+		&\cong& \int^{X} \C(A_1,X)\times P(X,A_2,-)\\
+		&\cong& P(A_1,A_2,-)
+\end{array}\]
+and
+\[\begin{array}{r@{\;}c@{\;}l}
+	\qq{A_1\tn I} &=& \int^{X,Y} \qq{A_1}(X)\times\qq{I}(Y)\times P(X,Y,-)\\
+		&=&     \int^{X,Y} \C(A_1,X)\times J(Y)\times P(X,Y,-)\\
+		&\cong& \int^Y J(Y)\times P(A_1,Y,-).
+\end{array}\]
+Similarly we have
+\[\begin{array}{r@{{}\protect\cong{}}l}
+	\qq{I\tn A_1} & \int^X J(X)\times P(X,A_1,-),\\
+	\qq{(A_1\tn A_2)\tn A_3} & \int^X P(A_1,A_2,X)\times P(X,A_3,-),\\
+	\qq{A_1\tn (A_2\tn A_3)} & \int^X P(A_1,X,-)\times P(A_2,A_3,X).
+\end{array}\]
+%
+Now we can say what the types of $\alpha$, $\lambda$ and $\rho$
+should be. They should have components
+\[\begin{array}{r@{\;}l}
+	\alfa ABC:& \int^X P(A,B,X)\times P(X,C,-) \to \int^X P(A,X,-)\times P(B,C,X)\\
+	\lambda_A:& \int^X J(X)\times P(X,A,-) \to \C(A,-)\\
+	\rho_A:& \int^Y J(Y)\times P(A,Y,-) \to \C(A,-)
+\end{array}\]
+Each component here is \emph{itself} a natural transformation, so
+we can add an extra variable and ask for natural isomorphisms
+\[\begin{array}{r@{\;}l}
+	\alpha_{A,B,C,Z}:& \int^X P(A,B,X)\times P(X,C,Z) \to \int^X P(A,X,Z)\times P(B,C,X)\\
+	\lambda_{A,Z}:& \int^X J(X)\times P(X,A,Z) \to \C(A,Z)\\
+	\rho_{A,Z}:& \int^Y J(Y)\times P(A,Y,Z) \to \C(A,Z)
+\end{array}\]
+between functors to $\Set$.
+
+We impose the usual coherence conditions, as described for monoidal
+categories in the appendix and elaborated below in the \sm
+case.
+
+\subsection{Ends}\label{s-ends}
+The notion of \defn{end} is dual to that of coend, and they enjoy
+similar properties. (We use ends in \S\ref{s-uniq} below.) A
+dinatural transformation from the object $X\in\C$ to the functor
+$J:\D\times\D\op\to\D$ is a family of maps $\gamma_A: X\to J(A,A)$
+such that for every $f:A\to B$ in $\C$, the diagram
+\begin{diagram}
+	X & \rTo^{\gamma_A}& J(A,A)\\
+	\dTo<{\gamma_B} && \dTo>{J(f,A)}\\
+	J(B,B) & \rTo_{J(B,f)}&J(B,A)
+\end{diagram}
+commutes.
+
+The \defn{end of $J$} is a universal dinatural transformation
+$X\To J$; if the end exists, we write this object $X$ as
+$\int_{X\in\D} J(X,X)$.
+
+Some important (and easily verified) properties of ends are:
+\begin{itemize}
+	\item The set of natural transformations $F\To G:\D\to\C$ is
+		isomorphic to $\int_X\C(FX,GX)$;
+	\item For a functor $F:\C\to\Set$, the Yoneda lemma
+		gives a natural isomorphism $FA\cong \int_X\C(A,X)\To FX$,
+		and the end on the right exists;
+	\item The Fubini theorem for ends: given a functor
+	  \[J: \D_1\times\D_1\op\times\D_2\times\D_2\op\to\C,\]
+		if $\int_{Y\in\D_2}J(X,X',Y,Y)$ exists for
+			all $X$, $X'\in\D_1$ then
+	\[
+		\int_{X\in\D_1}\int_{Y\in\D_2} J(X,X,Y,Y) \cong
+			\int_{(X,Y)\in\D_1\times\D_2}J(X,X,Y,Y).
+	\]
+%	for $J: \D_1\times\D_1\op\times\D_2\times\D_2\op\to\C$.
+\end{itemize}
+
+\subsection{Notation for Diagrams}
+In a diagram containing several cells which are known to commute,
+we often label each such cell with the reason that it commutes,
+removing the need for separate explanations that must be
+cross-referenced with the diagram.
+The symbol $\natural$ is used to indicate that a cell commutes
+by naturality of some natural transformation.
+
+\section{\Ssmcs}\label{s-sec}
+We consider the special case of a \defn{\smc},
+i.e.\ a promonoidal category $\C$ whose $P$ is represented by
+a functor $\tn:\C\times\C\to\C$.
+Therefore suppose we have such a functor $\tn$, and that
+$P(A,B,X) = \C(A\tn B,X)$. Now we have
+\[\begin{array}{r@{\;}c@{\;}l}
+	\qq{(A_1\tn A_2)\tn A_3}  &\cong& \int^X \qq{A_1\tn A_2}(X)\times\C(X\tn A_3,-)\\
+		&\cong& \int^X \C(A_1\tn A_2, X)\times\C(X\tn A_3,-)\\
+		&\cong& \C((A_1\tn A_2)\tn A_3, -)
+\end{array}\]
+and similarly
+\[
+	\qq{A_1\tn(A_2\tn A_3)} \cong \C(A_1\tn (A_2\tn A_3), -).
+\]
+Thus, by Yoneda, the associativity isomorphism may be represented
+by a natural isomorphism $\alpha$ with components
+\[
+	\alpha_{A,B,C}: (A\tn B)\tn C \to A\tn(B\tn C),
+\]
+just as in an ordinary monoidal category, subject to the
+usual pentagon condition~\pref{pentagon}.
+
+We are really interested in \emph{symmetric} \smcs, so suppose
+that there is also a symmetry
+$\sigma$ with components $\sigma_{A,B}: A\tn B \to B\tn A$
+such that $\sigma_{A,B} = \sigma_{B,A}^{-1}$ for all $A$,$B\in\C$,
+and satisfying the hexagon condition~\pref{hexagon}.
+
+By the argument in the appendix -- more precisely, by reinterpreting
+that argument in the promonoidal setting -- we have a \ssmc
+just when there is a natural isomorphism
+$\lambda$ with components
+\[
+	\lambda_{A,Z}: \int^X J(X)\times \C(X\tn A,Z) \to \C(A,Z)
+\]
+such that the diagram
+\begin{diagram}\dlabel{bigone}
+	\int^X J(X)\times\C((X\tn B)\tn C, Z) & \rTo^{\int^X J(X)\times\C(\alfa XBC, Z)}
+		& \int^X J(X)\times\C(X\tn (B\tn C), Z)
+	\\
+	\dTo<{\cong}
+	\\
+	\int^{X,Y} J(X)\times\C(X\tn B, Y)\times \C(Y\tn C, Z)&\dnum
+		&\dTo>{\lambda_{B\tn C,Z}}
+	\\
+	\dTo<{\int^Y\lambda_{B,Y}\times\C(Y\tn C,Z)}
+	\\
+	\int^Y\C(B,Y)\times\C(Y\tn C,Z) &\rTo_\cong&\C(B\tn C,Z)
+\end{diagram}
+commutes for all $B$,$C$,$Z\in\C$.
+
+\section{\Ssmccs}\label{s-secc}
+%There is a general notion of symmetric promonoidal closed
+%category, where the closed structure is descibed by a functor
+%	\[
+%		L: \C\times\C\op\times\C\to\Set.
+%	\]
+%We will not go into the general definition here -- the interested
+%reader could consult \citet{MonBicat}. We are interested in
+%the following special case:
+Generally speaking, a promonoidal category $\C$ is \defn{left closed}
+if it has a functor $\lolli:\C\op\times\C\to\C$ with a natural
+isomorphism
+\[
+    P(A,B,C) \cong \C(A, B\lolli C).
+\]
+In the case of
+present interest, we have:
+\begin{definition}\label{def-secc}
+	A \defn{\ssmcc} (\defn{\SECC})
+	is a \ssmc $\C$ together with a functor
+	\[
+		\lolli:\C\op\times\C\to\C
+	\]
+	and a natural isomorphism with components
+	\[
+		\curry_{A,B,C}:\C(A\tn B, C)\to\C(A, B\lolli C).
+	\]
+\end{definition}
+%
+%For the remainder of this section, we work in a symmetric E-monoidal
+%closed category $\C$.
+%
+Recall the characterisation claimed in Prop.~\ref{prop-1}.
+This differs from Def.~\ref{def-secc} in the following ways:
+%\begin{itemize}
+instead of $\lambda$ we have $e$;
+instead of $\curry$ we have $\psi$; and
+instead of \pref{bigone} we have \pref{psicoh}.
+%\end{itemize}
+(Note that no conditions are imposed explicitly on $J$ or $e$.)
+The rest of the section is devoted to proving Prop.~\ref{prop-1}
+
+\begin{lemma}\label{lemma-1}
+	For each object $A$ in an \SECC,
+	$\qq{I\tn A} \cong J(A\lolli -)$.
+\end{lemma}
+\begin{proof}
+We have the chain of isomorphisms
+\[\begin{array}{r@{\;}c@{\;}l}
+	\qq{I\tn A} &=& \int^X J(X)\times \C(X\tn A,-)\\
+		&\cong& \int^X J(X)\times \C(X,A\lolli -)\\
+		&\cong& J(A\lolli -);
+\end{array}\]
+\vskip -\belowdisplayskip
+\vskip -\baselinestretch\baselineskip
+\end{proof}
+%
+\newcommand\JX{\mathchoice{\int^X JX\times}{\int^X JX\times}%
+	{\int^X\!\!JX\times}{\int^X\!\! JX\times}}%
+\newcommand\JXY{\mathchoice{\int^{X,Y} JX\times}{\int^{X,Y} JX\times}%
+	{\int^{X,Y}\!JX\times}{\int^{X,Y}\! JX\times}}%
+%
+\begin{lemma}\label{lemma-2}
+	To give a natural isomorphism $\lambda_A: \qq{I\tn A}\To\qq{A}$
+	such that \pref{bigone} commutes
+	is to give a natural isomorphism
+	\[
+		e_{A,Z}: J(A\lolli Z) \to \C(A, Z).
+	\]
+	such that the diagram
+%% 	\begin{diagram}[h=1.5em,labelstyle=\scriptstyle]
+%% 							\dlabel{diag-e}
+%% 		\C(X\tn(B\tn C),Z) &\rTo^{\C(\alpha_{X,B,C}, Z)}	& \C((X\tn B)\tn C,Z)\\
+%% 			&						& \dTo>{\curry_{X\tn B,C,Z}}\\
+%% 		\dTo<{\curry_{X,B\tn C,Z}}&	& \C(X\tn B,C\lolli Z)\\
+%% 			&						& \dTo>{\curry_{X,B,C\lolli Z}}\\
+%% 		\C(X,(B\tn C)\lolli Z)&\dnum& \C(X,B\lolli(C\lolli Z))\\
+%% 		\dTo<{J(-)(x)}&				& \dTo>{J(-)(x)}\\
+%% 		J((B\tn C)\lolli Z) &		& J(B\lolli(C\lolli Z))\\
+%% 		\dTo<{e_{B\tn C,Z}}&		& \dTo>{e_{B, C\lolli Z}}\\
+%% 		\C(B\tn C,Z)&\rTo_{\curry_{B,C,Z}}& \C(B,C\lolli Z)
+%% 	\end{diagram}
+	\begin{diagram}[h=1.5em,labelstyle=\scriptstyle]\dlabel{diag-e}
+		\JX\C(X\tn(B\tn C),Z) &\rTo^{\JX\C(\alpha_{X,B,C}, Z)} & \JX\C((X\tn B)\tn C,Z)\\
+		&								& \dTo>{\JX\curry_{X\tn B,C,Z}}\\
+		\dTo<{\JX\curry_{X,B\tn C,Z}}&	& \JX\C(X\tn B,C\lolli Z)\\
+		 &								& \dTo>{\JX\curry_{X,B,C\lolli Z}}\\
+		\JX\C(X,(B\tn C)\lolli Z)&\dnum	& \JX\C(X,B\lolli(C\lolli Z))\\
+		\dTo<{\cong}&					& \dTo>{\cong}\\
+		J((B\tn C)\lolli Z) &			& J(B\lolli(C\lolli Z))\\
+		\dTo<{e_{B\tn C,Z}}&			& \dTo>{e_{B, C\lolli Z}}\\
+		\C(B\tn C,Z)&\rTo_{\curry_{B,C,Z}}& \C(B,C\lolli Z)
+	\end{diagram}
+	commutes for all $B$,$C$,$Z\in\C$.% ($X$) and $x\in JX$.
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lemma-1} we can derive $e$ from $\lambda$ and
+vice versa, and the translations are mutually inverse. So it
+makes no difference whether we are given $e$ or $\lambda$,
+since each can be derived from the other in a canonical way.
+
+It remains to show that \pref{bigone} is equivalent to
+\pref{diag-e}.
+\begin{sidewaysfigure}
+\begin{diagram}[labelstyle=\scriptstyle]
+	 \JX\C((X\tn B)\tn C,Z) &\rTo^{\JX\curry_{X\tn B,C,Z}}& \JX\C(X\tn B,C\lolli Z)
+	\\
+	 \dTo<\cong&&\dTo<\cong&\rdTo^{\JX\curry_{X,B,C\lolli Z}}
+	\\
+	 \rnode{a}{\JXY\C(X\tn B,Y)\times\C(Y\tn C,Z)}
+		&\rTo_{\JXY\C(X\tn B,Y)\times\curry_{Y,C,Z}}
+		& \JXY\C(X\tn B,Y)\times\C(Y,C\lolli Z)
+		&\qquad&\JX\C(X,B\lolli(C\lolli Z))
+	\\
+	 \dTo>{\JXY\curry_{X,B,Y}\times\C(Y\tn C,Z)}&
+	 	&\dTo<{\JXY\curry_{X,B,Y}\times\C(Y, C\lolli Z)}&\ldTo_\cong
+	\\
+	 \JXY\C(X,B\lolli Y)\times\C(Y\tn C,Z)
+	 	&\rTo_{\JXY\C(X,B\lolli Y)\times\curry_{Y,C,Z}}
+		&\JXY\C(X,B\lolli Y)\times\C(Y,C\lolli Z)
+	\\
+	 \dTo<\cong && \dTo<\cong && \dTo>\cong
+	\\
+	 \int^YJ(B\lolli Y)\times\C(Y\tn C,Z)
+		&\rTo_{\int^Y\!\!J(B\lolli Y)\times\curry_{Y,C,Z}}
+		&\int^YJ(B\lolli Y)\times\C(Y,C\lolli Z)
+	\\
+	 \dTo>{\int^Y\!\!e_{B,Y}\times\C(Y\tn C,Z)} &
+		& \dTo<{\int^Y\!\!e_{B,Y}\times\C(Y,C\lolli Z)}
+		&\luTo[leftshortfall=1.5em,crab+]^\cong
+		\rdTo[rightshortfall=2em,crab-]_\cong
+	\\
+	 \rnode{b}{\int^Y\C(B,Y)\times\C(Y\tn C,Z)}
+		&\rTo_{\int^Y\!\!\C(B,Y)\times\curry_{Y,C,Z}}
+		&\int^Y\C(B,Y)\times\C(Y,C\lolli Z) && J(B\lolli(C\lolli Z))
+	\\
+	 \dTo<\cong && \dTo<\cong &\ldTo_{e_{B,C\lolli Z}}
+	\\
+	 \C(B\tn C,Z) &\lTo_{\curry^{-1}_{B,C,Z}}& \C(B, C\lolli Z)
+	%
+	\nccurve[angle=180]{->}ab\Aput{\scriptstyle \int^Y\!\!\lambda_{B,Y}\times\C(Y\tn C,Z)}
+\end{diagram}
+\caption{Diagram used in the proof of Lemma~\ref{lemma-2}}\label{fig-1}
+\end{sidewaysfigure}
+Consider the diagram in Fig.~\ref{fig-1}. All the arrows are
+canonical isomorphisms, and all the cells commute by naturality
+or functoriality of the coend.
+The left edge of this diagram is equal to the left and lower edge
+of \pref{bigone}. Therefore condition~\pref{bigone} is
+equivalent to the condition in the statement.
+\end{proof}
+%
+We are still working in an \SECC as originally defined, so we have
+a $\curry$ isomorphism. We construct a natural isomorphism $\psi'$ as
+follows.
+\begin{definition}
+	Given a natural isomorphism
+	\[
+		\curry_{A,B,C}: \C(A\tn B,C)\to\C(A, B\lolli C)
+	\]
+	we define the natural isomorphism
+	\[
+		\psi'_{A,B,C}: (A\tn B)\lolli C\to A\lolli(B\lolli C)
+	\]
+	to be the unique such natural transformation for which
+	\begin{diagram}[h=1.5em]\dlabel{def-psi}
+		\C(A,(X\tn Y)\lolli Z) &\rTo^{\C(A,\psi')}& \C(A,X\lolli(Y\lolli Z))\\
+		\dTo<{\curry_{A,X\tn Y,Z}^{-1}}\\
+		\C(A\tn(X\tn Y),Z)&\dnum&\uTo>{\curry_{A,X,Y\lolli Z}}\\
+		\dTo<{\C(\alpha_{A,X,Y},Z)}\\
+		\C((A\tn X)\tn Y, Z)&\rTo_{\curry_{A\tn X,Y,Z}}&\C(A\tn X,Y\lolli Z)
+	\end{diagram}
+	commutes for all $A$,$X$,$Y$,$Z\in\C$.
+	(Uniqueness is a consequence of the Yoneda lemma.)
+\end{definition}
+Using this, we can recast condition~\pref{bigone} very simply.
+\begin{lemma}\label{lemma-3}
+	In an \SECC, condition~\pref{bigone} holds iff
+	\begin{diagram}\dlabel{psi}
+		J((A\tn B)\lolli C) &\rTo^{J(\psi'_{A,B,C})}&J(A\lolli(B\lolli C))\\
+		\dTo<{e_{A\tn B,C}}&\dnum&\dTo>{e_{A,B\lolli C}}\\
+		\C(A\tn B,C)&\rTo_{\curry_{A,B,C}}	&\C(A,B\lolli C)
+	\end{diagram}
+	commutes for all $A$,$B$,$C\in\C$.
+\end{lemma}
+\begin{proof}
+	By Lemma~\ref{lemma-2} we know that \pref{bigone} is equivalent
+	to \pref{diag-e}. Now we have
+	\begin{diagram}[h=1.5em,labelstyle=\scriptstyle]
+		\C(X\tn(B\tn C),Z) &\rTo^{\C(\alpha_{X,B,C}, Z)}	& \C((X\tn B)\tn C,Z)\\
+			&						& \dTo>{\curry_{X\tn B,C,Z}}\\
+		\dTo<{\curry_{X,B\tn C,Z}}&\mbox{\pref{def-psi}}& \C(X\tn B,C\lolli Z)\\
+			&						& \dTo>{\curry_{X,B,C\lolli Z}}\\
+		\C(X,(B\tn C)\lolli Z)&\rTo^{\C(X,\psi'_{B,C,Z})}& \C(X,B\lolli(C\lolli Z))\\
+		\dTo<{J(-)(x)}&		\natural& \dTo>{J(-)(x)}\\
+		J((B\tn C)\lolli Z) &\rTo_{J(\psi'_{B,C,Z})}& J(B\lolli(C\lolli Z))\\
+		\dTo<{e_{B\tn C,Z}}&		& \dTo>{e_{B, C\lolli Z}}\\
+		\C(B\tn C,Z)&\rTo_{\curry_{B,C,Z}}& \C(B,C\lolli Z)
+	\end{diagram}
+	The upper two regions commute for the reasons marked, and all the
+	arrows are invertible, therefore the outside \pref{diag-e}
+	commutes iff the lower cell \pref{psi} does. 
+\end{proof}
+\begin{lemma}\label{lemma-4}
+	In every \SECC, diagram \pref{psicoh} commutes
+	for $\psi'$ in place of $\psi$.
+\end{lemma}
+\begin{sidewaysfigure}
+	\begin{diagram}[labelstyle=\scriptstyle]
+		 \rnode{tl}{\C(X, (A\tn(B\tn C))\lolli D)}
+			&\rTo^{\C(X,\alpha_{A,B,C}\lolli D)}
+			&\rnode{tr}{\C(X,((A\tn B)\tn C)\lolli D))}
+		\\
+		 \uTo<{\curry_{X,A\tn(B\tn C),D}}&\natural
+			&\uTo>{\curry_{X, (A\tn B)\tn C,D}}
+		\\
+		 \C(X\tn(A\tn(B\tn C)),D)
+		 	&\rTo^{\C(X\tn\alpha_{A,B,C},D)}
+			&\C(X\tn((A\tn B)\tn C),D)
+		\\
+		 \dTo<{\C(\alpha_{X,A,B\tn C}, D)}&
+		 	\raise-1em\hbox{\pref{pentagon}}
+		 	&\dTo>{\C(\alpha_{X,A\tn B,C}, D)}
+			&\hbox{\pref{def-psi}}
+		\\
+		 \C((X\tn A)\tn(B\tn C), D)&
+		 	&\C((X\tn(A\tn B))\tn C,D)
+		\\
+		 &\rdTo(1,2)^{\C(\alpha_{X\tn A,B,C},D)}
+		 	\ldTo(1,2)^{\C(\alpha_{X,A,B}\tn C,D)}
+		 	&\dTo>{\curry_{X\tn(A\tn B),C,D}}
+		\\
+		 &\hbox to 10em{\hss$\C(((X\tn A)\tn B)\tn C,D)$}
+		 	\hbox to 2em{\hss$\natural$\enskip}
+		 	&\C(X\tn(A\tn B), C\lolli D)
+			&\pile{
+				\rTo^{\curry_{X,A\tn B,C\lolli D}}\\
+				\lTo_{\curry_{X,A\tn B,C\lolli D}^{-1}}}
+			&\rnode{r}{\C(X, (A\tn B)\lolli(C\lolli D))}
+		\\
+		 \dTo>{\curry_{X\tn A, B\tn C,D}}&
+		 	&\rdTo(1,2)_{\curry_{(X\tn A)\tn B,C,D}}
+		 	\dTo>{\C(\alpha_{X,A,B}, C\lolli D)}
+		\\
+		 &&\C((X\tn A)\tn B, C\lolli D)
+		\\
+		 &\raise 2em\hbox{\pref{def-psi}}&\dTo>{\curry_{X\tn A,B,C\lolli D}}
+		 &\hbox{\pref{def-psi}}
+		\\
+		 \C(X\tn A, (B\tn C)\lolli D)
+		 	&\rTo_{\C(X\tn A,\psi'_{B,C,D})}
+			&\C(X\tn A, B\lolli(C\lolli D))
+		\\
+		 \dTo<{\curry_{X,A,(B\tn C)\lolli D}}&
+		 	\natural
+		 	&\dTo>{\curry_{X,A,B\lolli(C\lolli D)}}
+		\\
+		 \rnode{bl}{\C(X,A\lolli((B\tn C)\lolli D))}
+		 	&\rTo_{\C(X,A\lolli\psi'_{B,C,D})}
+			&\rnode{br}{\C(X,A\lolli(B\lolli(C\lolli D)))}
+		%
+		\psset{linearc=.5}
+		\ncangle[angle=180,arm=30pt]{->}{tl}{bl}
+			\Bput{\scriptstyle \C(X,\psi'_{A,B\tn C,D})}
+			\Aput{\hskip 3em\hbox{\pref{def-psi}}}
+		\nccurve[angleA=0,angleB=90]{->}{tr}r
+			\Aput{\scriptstyle \C(X,\psi'_{A\tn B,C,D})}
+		\nccurve[angleA=-90,angleB=0]{->}r{br}
+			\Aput{\scriptstyle \C(X,\psi'_{A,B,C\lolli D})}
+	\end{diagram}
+	\caption{Diagram used in the proof of Lemma~\ref{lemma-4}}
+	\label{fig-2}
+\end{sidewaysfigure}
+\begin{proof}
+	Consider the diagram in Fig.~\ref{fig-2}. All the regions
+	commute for the reasons marked, thus the outside commutes.
+	By Yoneda, it follows that \pref{psicoh} commutes as required.
+\end{proof}
+%
+\begin{lemma}
+	Suppose we have a natural isomorphism $\psi$ with
+	components
+	\[
+		\psi_{A,B,C}: (A\tn B)\lolli C \to A\lolli(B\lolli C)
+	\]
+	such that
+	\begin{diagram}\dlabel{psi-lemma}
+		J((A\tn B)\lolli C) &\rTo^{J(\psi_{A,B,C})}&J(A\lolli(B\lolli C))\\
+		\dTo<{e_{A\tn B,C}}&\dnum&\dTo>{e_{A,B\lolli C}}\\
+		\C(A\tn B,C)&\rTo_{\curry_{A,B,C}}	&\C(A,B\lolli C)
+	\end{diagram}
+	commutes for all $A$,$B$,$C\in\C$.
+	If $\psi$ satisfies condition~\pref{psicoh} then $\psi=\psi'$.
+\end{lemma}
+\begin{proof}
+	Suppose $\psi$ satisfies condition~\pref{psicoh}.
+	Then we have
+	\begin{mspill}
+	\begin{diagram}[h=1.5em,w=2em,labelstyle=\scriptstyle]
+		\C(A\tn(B\tn C), D)&&&\rTo^{\C(\alpha_{A,B,C},D)}&&&\C((A\tn B)\tn C,D)\\
+		&\rdTo[snake=1em]^{e^{-1}}&&\raise3pt\hbox{$\natural$}
+			&&\ruTo[crab+,leftshortfall=-.7em,rightshortfall=1.5em,snake=-1em]^{e}
+			\ldTo[crab-,leftshortfall=2em,rightshortfall=-.7em,snake=1em]_{e^{-1}}\\
+		&& J(\bigl(A\tn(B\tn C)\bigr)\lolli D) &\rTo^{J(\alpha\lolli D)}
+			&J(\bigl((A\tn B)\tn C\bigr)\lolli D)
+			&&\dTo>{\curry_{A\tn B,C,D}}\\
+		&& &&\dTo>{J(\psi_{A\tn B,C,D})}&\raise1em\hbox to 0pt{\quad\pref{psi-lemma}\hss}\\
+		\dTo<{\curry_{A,B\tn C,D}}>{\mbox{\quad\enskip\pref{psi-lemma}}}&&
+				\dTo<{J(\psi_{A,B\tn C,D})}&\hbox{\pref{psicoh}}&J((A\tn B)\lolli(C\lolli D))
+				&\pile{\rTo\\\lTo}&\C(A\tn B,C\lolli D)\\
+		&& &&\dTo>{J(\psi_{A,B,C\lolli D})}&\raise-1em\hbox to 0pt{\quad\pref{psi-lemma}\hss}\\
+		&& J(A\lolli\bigl((B\tn C)\lolli D\bigr))&\rTo_{J(A\lolli\psi)}
+			&J(A\lolli\bigl(B\lolli(C\lolli D)\bigr))
+			&&\dTo>{\curry_{A,B,C\lolli D}}\\
+		&\ldTo[crab+,leftshortfall=-.7em,rightshortfall=1.5em,snake=-1em]^{e}
+			\ruTo[crab-,rightshortfall=-.7em,leftshortfall=1.5em,snake=2em]_{e^{-1}}
+			&&\raise-3pt\hbox{$\natural$}&&
+			\luTo[crab+,rightshortfall=-.7em,leftshortfall=1.5em,snake=1em]^{e^{-1}}
+			\rdTo[crab-,leftshortfall=-.7em,rightshortfall=2.5em,snake=-2.5em]_{e}
+		\\
+		\rnode{bl}{\C(A, (B\tn C)\lolli D)}&&
+			&\rTo_{\C(A,\psi_{B,C,D})}&&
+			&\rnode{br}{\C(A,B\lolli(C\lolli D))}\\
+		\ncarc[arcangle=-30]{->}{bl}{br}\Bput{\scriptstyle \C(A,\psi'_{B,C,D})}
+	\end{diagram}\end{mspill}\vskip 5em\noindent
+	The marked cells commute for the reasons indicated,
+	and the outer edge by assumption.
+	Since all arrows are invertible, it follows that the
+	lower cell also commutes; hence $\psi=\psi'$ by Yoneda.
+\end{proof}
+%
+In other words, if we are given a $\psi$ satisfying \pref{psicoh},
+we can use \pref{psi-lemma} to construct a $\curry$
+isomorphism such that \pref{diag-e} holds.
+%
+(We have already proved that, given a $\curry$ isomorphism
+satisfying \pref{diag-e}, we can use \pref{def-psi} to construct
+a natural isomorphism $\psi'$ such that \pref{psicoh} holds.)
+%
+This completes the proof of Prop.~\ref{prop-1}.
+
+\section{The Second Characterisation}\label{s-uniq}
+It is not difficult to verify Prop.~\ref{prop-2} directly;
+but such an approach leaves one with very little idea \emph{why}
+such a thing should be true. Even the notion of `linear element'
+remains mysterious and apparently ad hoc.
+In this section we shall describe how Prop.~\ref{prop-2} follows
+from the general ideas of enriched category theory.
+
+In order to appreciate the general discussion, some
+familiarity with enriched categories \citep[][ch.~1--2]{KellyEnriched}
+is required; however, we give a self-contained proof of
+Prop.~\ref{prop-2}.
+
+Before getting down to details, let us sketch the story.
+\newcommand\V{\mathcal{V}}%
+It is known (at least as folklore, and presumably attributable
+to the Australian school) that it is possible to define categories
+enriched over a promonoidal category~$\V$. If $\V$ is \sm closed,
+then $\V$ itself has the structure of a $\V$-category with hom-objects
+given by $\lolli$.
+
+Essentially all of the results that hold for symmetric monoidal
+closed $\V$ continue to hold in the \ssm closed
+case. In particular, $\V\times\V$ has the structure of a $\V$-%
+category and $\tn:\V\times\V\to\V$ is a $\V$-functor in a natural
+way.
+%
+Similarly $\V\op\times\V$ is a $\V$-category and $\lolli$ is
+a $\V$-functor.
+%
+A linear element $a$ of $A\in\V$, as defined in Def.~\ref{def-le},
+is exactly a $\V$-natural transformation $\mathord- \To A\tn\mathord-$.
+
+The unit of the $\curry$ adjunction,\[
+	\eta^A_B: B \to A\lolli(B\tn A),
+\]
+is $\V$-dinatural in $A$ for each $B$.\footnote{
+	More than this, the $\curry$ adjunction extends to a $\V$-adjunction.
+}
+In fact it is the \emph{universal}
+such $\V$-dinatural transformation, exhibiting $B$ as the \emph{$\V$-enriched
+end} of $\mathord-\lolli(B\tn\mathord-)$. Let us use the symbol
+$\oint_X FX$ for the $\V$-enriched end of a $\V$-functor $F$, thereby
+distinguishing it from the ordinary end $\int_X FX$ of the ordinary
+functor underlying $F$. Thus $\eta$ determines an isomorphism
+$B\cong\oint_AA\lolli(B\tn A)$.
+
+Given $\V$-functors $F$,$G:\V\to\V$, if the end $\oint_XFX\lolli GX$
+exists then $J\oint_XFX\lolli GX$ is naturally isomorphic to the
+set of $\V$-natural transformations $F\To G$. 
+(This is a consequence of the enriched analogue of the characterisation
+of natural transformations mentioned in \S\ref{s-ends}.)
+Hence, by the previous paragraph, $JB$ is naturally isomorphic to the
+set of linear elements of $B$.
+
+This is the core of the argument. In more detail\dots
+
+[TO BE CONTINUED]
+
+\ifincomplete
+\section{\SEC Functors and Natural Transformations}\label{s-fandnt}
+There are general definitions of \emph{lax promonoidal functor}
+\citep{DayMonoidalMonads} and \emph{strong promonoidal functor}
+\citep{PromonKan}.
+
+\begin{definition}
+	Let there be given \SECCs $\C$ and $\D$. A \defn{lax \ssm functor}
+	$F:\C\to\D$ is given by a functor $F:\C\to\D$ together
+	with natural transformations
+	\[\begin{array}{r@{\;}l}
+		i_A:& JA \to JFA,\\
+		m_{A,B}:& FA\tn FB \to F(B\tn C),
+	\end{array}\]
+	such that the following diagrams
+	commute for all $A$,$B$,$C\in\C$:
+	\begin{diagram}
+		(FA\tn FB)\tn FC &\rTo^{\alpha}& FA\tn(FB\tn FC)\\
+		\dTo<{m_{A,B}\tn FC} && \dTo>{FA\tn m_{B,C}}\\
+		F(A\tn B)\tn FC && FA\tn F(B\tn C)\\
+		\dTo<{m_{A\tn B,C}} && \dTo>{m_{A,B\tn C}}\\
+		F\bigl((A\tn B)\tn C\bigr) &\rTo_{F\alpha}& F\bigl(A\tn(B\tn C)\bigr)
+	\end{diagram}
+	\begin{diagram}
+		FA \tn FB &\rTo^\sigma & FB \tn FA\\
+		\dTo<{m_{A,B}} && \dTo>{m_{B,A}}\\
+		F(A\tn B) &\rTo_{F\sigma}& F(B\tn A)
+	\end{diagram}
+	\begin{diagram}
+		J(A\lolli B) &\rTo^{i_{A\lolli B}}&JF(A\lolli B)\\
+		&&\dTo>{Jn_{A,B}}\\
+		\dTo<{e_{A,B}} && J(FA \lolli FB)\\
+		&&\dTo>{e_{FA,FB}}\\
+		\C(A,B) &\rTo_{F} & \D(FA,FB)
+	\end{diagram}
+	where $n_{A,B}$ is the natural transformation
+	\[
+		F(A\lolli B) \to FA\lolli FB
+	\]
+	obtained from $m$.
+\end{definition}
+\begin{remark}
+	We are using the fact that natural transformations
+	$m_{A,B}: FA\tn FB \to F(A\tn B)$ are in bijective
+	correspondence with natural transformations
+	$n_{A,B}: F(A\lolli B) \to FA \lolli FB$.
+	There is a concise proof using the calculus of ends, viz:
+	\[\begin{array}{r@{{}\protect\cong{}}l}
+		\int_{A,B}\D(FA\tn FB,F(A\tn B))
+			& \int_{A,B}\D(FA, FB\lolli F(A\tn B)\\
+			& \int_{A,B}\int_C \D(A\tn B,C)\To\D(FA, FB\lolli FC)\\
+			& \int_{B,C}\int_A\D(A, B\lolli C) \To\D(FA, FB\lolli FC)\\
+			& \int_{B,C}\D(F(B\lolli C), FB\lolli FC).
+	\end{array}\]
+\end{remark}
+
+\section{The Star-autonomous Case}
+\fi % incomplete
+
+\section{Related Work}\label{s-related}
+\subsection{The Lamarche-Stra{\ss}burger Definition}\label{s-ls}
+[This section needs to be reworded more politely.]
+
+\citet{LSFreeBool} define what they call \emph{(unitless) autonomous
+categories}, motivated (like us) by the desire to model unitless
+fragments of MLL.
+
+Using our notation, a Lamarche-Stra\ss burger `autonomous
+category' consists of:
+\begin{itemize}
+	\item a category $\C$,
+	\item functors $\tn:\C\times\C\to\C$ and $\lolli:\C\op\times\C\to\C$
+		with a natural isomorphism
+		\(
+		\curry_{A,B,C}: \C(A\tn B,C) \rTo^\cong \C(A, B\lolli C),
+		\)
+	\item natural isomorphisms $\alpha$ and $\sigma$ such that
+		$\sigma_{A,B} = \sigma_{B,A}^{-1}$,
+		satisfying conditions \pref{pentagon} and \pref{hexagon},
+	\item a functor $J:\C\to\Set$, with a natural isomorphism
+		\[
+		e_{A,B}: J(A\lolli B) \rTo^\cong \C(A,B),
+		\]
+		subject to the condition obtained by translating \pref{II}
+		into the promonoidal style.
+\end{itemize}
+%
+It is clear that every \SECC is a Lamarche-Stra\ss burger category,
+but the converse appears to be false. Moreover this definition
+appears not to have all the properties claimed for it. In
+particular, it is claimed (p.~3 of op. cit.) that the canonical
+natural transformation $JA\times JB \to J(A\tn B)$ `agrees well
+with associativity'. This claim does not seem to be provable using
+the axioms provided.
+
+The definition of `autonomous functor' (their Def.~2.1.4) is also
+inadequate. It is too weak in that it does not demand (nor imply) that
+the functor preserves the $\curry$ isomorphism; also it is too strong,
+in that it demands a natural \emph{isomorphism} $J\cong JF$. (This latter
+condition is not satisfied, for example, by the unique functor
+$\Set\to\mathbf1$.)
+
+The authors have been made aware of these deficiencies,
+which will presumably be corrected in a future version of their
+paper, resulting in a definition equivalent to ours.
+
+\subsection{The Do{\v s}en-Petri{\'c} Definition}\label{s-dp}
+\citet{ProofNetCats} define what they call a \defn{proof-net category}
+to be a unitless linearly distributive category in which each object
+has a dual in a suitable sense. This is a reasonable definition
+(which in fact we had already considered prior to the appearance
+of \emph{op. cit.}) and appears to be closely related to our
+definition.
+
+\subsection{Eilenberg and Kelly}\label{s-ek}
+The pioneering work of \citet{EKClosed} -- in which closed
+categories are defined for the first time -- also deserves to be
+mentioned here. The authors define `symmetric monoidal closed
+category' using a large number of axioms with a great deal
+of redundancy. (Our diagram \pref{psicoh} is one of them.)
+It seems reasonable to conjecture that, if one were to delete
+the unit and the axioms involving it from this original
+definition, the structures satisfying the remaining axioms
+would be just the \SECCs.
+
+\section{Ongoing Work}
+There are general definitions of \emph{lax promonoidal functor}
+\citep{DayMonoidalMonads} and \emph{strong promonoidal functor}
+\citep{PromonKan}. These need to be specialised to \SECCs
+in a sensible way.
+
+In the near future we shall extend this analysis to the unitless
+fragment of MLL, giving a definition of \defn{\sm star-autonomous
+category} by specialising the
+general notion of pro\-mon\-oid\-al star-aut\-on\-om\-ous category
+\citep[][\S7]{DSQuantum} to the \sm case.
+We expect this will result in a definition that is equivalent to
+\citeauthor{ProofNetCats}'s proof-net categories -- see \S\ref{s-dp}.
+
+Furthermore we hope to show that the proof-net category of \citet{MallNets}
+is the free star-autonomous \smc with finite products.
+(The desire to address this question was our initial motivation for
+the work reported here.)
+
+\appendix
+\section{Axioms for Monoidal Categories}\label{app-ax}
+\renewcommand\theequation{\thesection.\arabic{equation}}
+\setcounter{equation}{0}
+This appendix describes some axioms for a
+symmetric monoidal category, and shows that this axiomatisation
+is equivalent to the usual one.\footnote{
+	There is every chance that this axiomatisation is somewhere
+	in the literature. I don't know a reference for it though.
+}
+%
+(Of course we are really interested in promonoidal categories:
+the arguments here can readily be transferred to the more
+general setting.)
+
+A monoidal category is a category $\C$ equipped with a functor
+\[
+	\tn:\C\times\C \to\C
+\]
+and an object $I\in\C$, together with natural isomorphisms
+$\alpha$, $\lambda$ and $\rho$ having components
+\[\begin{array}{r@{{}\to{}}l}
+	\alfa ABC: (A\tn B)\tn C & A\tn(B\tn C)\\
+	\lambda_A: I\tn A & A\\
+	\rho_A: A\tn I & A
+\end{array}\]
+such that the following diagrams commute for all $A$,$B$,$C$,$D\in\C$:
+
+\begin{mspill}\begin{diagram}%\dlabel{pentagon}
+  \bigl((A\tensor B)\tensor C\bigl)\tensor D
+  &\rTo^{\alpha_{A\tn B,C,D}}&(A\tensor B)\tensor (C\tensor D)
+  &\rTo^{\alpha_{A,B,C\tn D}} & A\tensor \bigl(B\tensor (C\tensor D)\bigr)
+  \\
+  &\rdTo[snake=-1em](1,2)<{\alpha_{A,B,C}\tn D} &\dnum[pentagon]
+  & \ruTo[snake=1em](1,2)>{A\tn\alpha_{B,C,D}}
+  \\
+  & \spleft{\bigl(A\tensor(B\tensor C)\bigr)\tensor D}
+  & \rTo_{\alpha_{A,B\tn C,D}}
+  & \spright{A\tensor\big((B\tensor C)\tensor D\big)}
+\end{diagram}\end{mspill}
+
+\begin{diagram}\dlabel{AIC}
+	(A\tn I)\tn C &\rTo^{\alpha_{A,I,C}}&A\tn(I\tn C)\\
+	&\rdTo[snake=-1ex](1,2)<{\rho_A\tn C}\raise1ex\dnum\ldTo[snake=1ex](1,2)>{A\tn\lambda_C}\\
+	&A\tn C
+\end{diagram}
+These axioms have many interesting consequences. Most importantly,
+it follows that the following three diagrams commute for all
+$A$,$B$,$C\in\C$:
+\[\begin{array}{c@{\qquad}c}
+	\begin{diagram}\dlabel{IBC}
+		(I\tn B)\tn C &\rTo^{\alfa IBC}&I\tn(B\tn C)\\
+		&\rdTo[snake=-1ex](1,2)_{\lambda_B\tn C}\raise1ex\dnum
+			\ldTo[snake=1ex](1,2)_{\lambda_{B\tn C}}\\
+		&B\tn C
+	\end{diagram}
+	&
+	\begin{diagram}\dlabel{ABI}
+		(A\tn B)\tn I &\rTo^{\alfa ABI}&A\tn(B\tn I)\\
+		&\rdTo[snake=-1ex](1,2)_{\rho_{A\tn B}}\raise1ex\hbox{(\theequation)}\ldTo[snake=1ex](1,2)_{A\tn\rho_B}\\
+		&A\tn B
+	\end{diagram}
+	\\
+	\multicolumn 2c{
+	\begin{diagram}\dlabel{II}
+		\rnode{II}{I\tn I} &\dnum& \rnode{I}{I}\\
+		\nccurve[angleA=60,  angleB=120] {->}{II}{I}\Aput{\lambda_I}
+		\nccurve[angleA=-60, angleB=-120]{->}{II}{I}\Bput{\rho_I}
+	\end{diagram}}
+\end{array}\]
+\citet{BTC} give a simple and elegant proof.
+There are other possible axiomatisations: for example, conditions
+\pref{pentagon}, \pref{IBC} and \pref{II} are also collectively
+sufficient.\footnote{This can be proved by the technique of \citet{BTC}.}
+
+A \emph{symmetric} monoidal category is a monoidal category $\C$
+equipped with a natural isomorphism $\sigma$ having components
+\[
+	\sigma_{A,B}: A\tn B \to B\tn A,
+\]
+such that $\sigma_{A,B} = \sigma_{B,A}^{-1}$ and the following
+commutes for all $A$,$B$,$C\in\C$:
+\begin{diagram}%\dlabel{hexagon}
+  (A\tn B)\tn C &\rTo^{\alfa ABC} & A\tn(B\tn C)
+    & \rTo^{\sigma_{A,B\tn C}} & (B\tn C)\tn A \\
+  \dTo<{\sigma_{A,B}\tn C} &&\dnum[hexagon]&& \dTo>{\alfa BCA}\\
+  (B\tn A)\tn C & \rTo_{\alpha_{B,A,C}} & B\tn(A\tn C)
+    & \rTo_{B\tn\sigma_{A,C}} & B\tn(C\tn A)
+\end{diagram}
+It then follows that
+\begin{diagram}[w=4em]\dlabel{IA}
+	I\tn A &\rTo^{\sigma_{I,A}}&A\tn I\\
+	&\rdTo[snake=-1ex](1,2)_{\lambda_A}
+	\raise1ex\dnum
+	\ldTo[snake=1ex](1,2)_{\rho_A}\\
+	&A
+\end{diagram}
+commutes for every $A\in\C$; again, see \citet{BTC} for a proof.
+
+Conditions \pref{pentagon} and \pref{hexagon} are indispensable;
+the usual definition of symmetric monoidal category requires \pref{AIC}
+in addition. However, it is sometimes convenient to eliminate the
+$\rho$ isomorphism from the data: that is permissible, since
+\pref{IA} shows that $\rho$ may be defined in terms of $\lambda$
+and $\sigma$. It turns out that, in this situation, we may require
+\pref{IBC} in place of \pref{AIC}. Specifically:
+\begin{propn}\label{prop-A1}
+	If \pref{IBC}, \pref{hexagon} and\pref{IA} hold then so does \pref{AIC}.
+\end{propn}
+\begin{proof}
+Consider the diagram
+%\newcommand\nat{\hbox{($\natural$)}}%
+\let\nat = \natural%
+\begin{diagram}[labelstyle=\scriptstyle]
+  &&(I\tn A)\tn C &\rput(0,-.5){\hbox{\pref{IBC}}}\rTo^{\alfa IAC}&I\tn(A\tn C)
+ \\
+  &\ruTo^{\sigma_{A,I}\tn C}&\dTo>{\lambda_A\tn C}
+  &\ldTo_{\lambda_{A\tn C}}&\nat&\rdTo^{I\tn\sigma_{A,C}}
+ \\
+  (A\tn I)\tn C)&\rTo_{\rho_A\tn C}&\rput(-.4,.9){\hbox{\pref{IA}}}A\tn C
+  &\rTo_{\sigma_{A,C}}&C\tn A\rput(.5,-.6){\hbox{\pref{IBC}}}
+  &\lTo^{\lambda_{C\tn A}}&I\tn(C\tn A)
+ \\
+  &\rdTo_{\alfa AIC}&\uTo>{A\tn\lambda_C}&\nat&\uTo<{\lambda_C\tn A}&\ruTo_{\alfa ICA}
+ \\
+  &&A\tn(I\tn C)&\rTo_{\sigma_{A,I\tn C}}&(I\tn C)\tn A
+\end{diagram}
+The outside is an instance of \pref{hexagon}, and the labelled
+regions commute for the reasons marked.
+Since all the morphisms are invertible, it follows that the
+unlabelled region at lower left commutes. This region is just \pref{AIC}.
+\end{proof}
+%
+In summary, we may define a symmetric monoidal category to be
+a category $\C$ with a functor $\tn$ and a unit object $I$,
+together with natural isomorphisms $\alpha$, $\lambda$ and
+$\sigma$ such that $\sigma_{A,B} = \sigma_{B,A}^{-1}$ and
+diagrams \pref{pentagon}, \pref{hexagon} and \pref{IBC} commute.
+
+\begin{remark}
+Although the above is expressed in terms of objects and arrows
+in a monoidal category, the argument can be transferred to
+pseudomonoids in a sylleptic monoidal bicategory, as
+defined by \citet{MonBicat}.
+
+In particular it applies to promonoidal categories (i.e.
+pseudomonoids in the symmetric monoidal bicategory $\cat{Mod}\op$),
+which are our immediate concern.
+\end{remark}
+
+\bibliography{cs}
+\end{document}

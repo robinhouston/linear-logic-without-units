@@ -1,0 +1,105 @@
+	Suppose first that $\gamma$ is an equivalence in $\Bicat(\B,\BC)$.
+	Then there is a pseudo-natural transformation $\delta: G\To F$ and
+	invertible modifications
+	\[
+		e: 1_G \Tto \gamma\delta
+	\]
+	and
+	\[
+		f: \delta\gamma \Tto 1_F.
+	\]
+	Thus for every $A\in\B$, there is a 1-cell $\delta_A: GA\to FA$
+	together with invertible 2-cells $e_A: 1_{GA} \To \gamma_A\delta_A$
+	and $f_A: \delta_A\gamma_A\To 1_{FA}$, exhibiting $\gamma_A$
+	as an equivalence.
+	
+	Conversely, suppose that for every $A\in\B$ there is a 1-cell
+	$\delta_A: GA\to FA$ and invertible 2-cells $e_A: 1_{GA} \To \gamma_A\delta_A$
+	and $f_A: \delta_A\gamma_A\To 1_{FA}$. By Prop.~XXXX we may assume,
+	without loss of generality, that these constitute an adjoint equivalence.	We claim that $\delta$ may be extended to a pseudo-natural transformation
+	in such a way that $e$ and $f$ are (invertible) modifications. For every
+	$h:A\to B$ in $\B$, we define $\delta_h$ to be the pasting
+	\begin{diagram}
+		\rnode{GA}{GA} & \rTo^{\delta_A}& \rnode{FA}{FA} \\
+		\dTo<1>{\raise1.5em\hbox to 0pt{$\mkern6mu\Rightarrow e_A$\hss}}
+			& \ldTo_{\gamma_A} & \dTo>{Fh}\\
+		GA &\Rightarrow\gamma_h^{-1}& FB\\
+		\dTo<{Gh} & \ldTo^{\gamma_A}
+			& \dTo>1<{\raise-1em\hbox to 0pt{\hss$\Rightarrow f_B\mkern6mu$}}\\
+		\rnode{GB}{GB} & \rTo_{\delta_B}& \rnode{FB}{FB}
+		\nccurve[angle=180]{->}{GA}{GB}\Bput{Gh}\Aput{\mkern20mu\cong}
+		\nccurve[angle=0]{->}{FA}{FB}\Aput{Fh}\Bput{\cong\mkern20mu}
+	\end{diagram}
+	which is natural in $f$, since $\gamma$ is and the unit isomorphisms are.
+	
+	Now we verify that $\delta$ satisfies the other conditions in the definition of
+	pseudo-natural transformation.
+	For the identity condition, we have the sequence of equations
+	\[\begin{array}{ll}
+	&\begin{diagram}
+		\rnode{GA}{GA} & \rTo^{\delta_A}& \rnode{FA}{FA} \\
+		\dTo<1>{\raise1.5em\hbox to 0pt{$\mkern6mu\Rightarrow e_A$\hss}}
+			& \ldTo_{\gamma_A} & \dTo>{F(1)}\\
+		GA &\Rightarrow\gamma_{1}^{-1}& FA\\
+		\dTo<{G(1)} & \ldTo^{\gamma_A}
+			& \dTo>1<{\raise-1em\hbox to 0pt{\hss$\Rightarrow f_B\mkern6mu$}}\\
+		\rnode{GB}{GA} & \rTo_{\delta_B}& \rnode{FB}{FA}
+		\nccurve[angleA=190,angleB=170]{->}{GA}{GB}\Bput{G(1)}\Aput{\mkern20mu\cong}
+		\nccurve[ncurv=2,angle=180]{->}{GA}{GB}\Bput{1}
+			\Aput{\mkern20mu\begin{array}{c}\Rightarrow\\[-4pt]G_A\end{array}}
+		\nccurve[angle=0]{->}{FA}{FB}\Aput{F(1)}\Bput{\cong\mkern20mu}
+	\end{diagram}
+	\\[8em]
+	=\hskip6em&\begin{diagram}
+		\rnode{GA}{GA} & \rTo^{\delta_A}& \rnode{FA}{FA} \\
+		\dTo<1>{\raise1.5em\hbox to 0pt{$\mkern6mu\Rightarrow e_A$\hss}}
+			& \ldTo_{\gamma_A} & \dTo>{F(1)}\\
+		\rnode{1}{GA} &\Rightarrow\gamma_{1}^{-1}& FA\\
+		\dTo[snake=2pt]>{G(1)} & \ldTo[snake=1em]^{\gamma_A}
+			& \dTo>1<{\raise-1em\hbox to 0pt{\hss$\Rightarrow f_B\mkern6mu$}}\\
+		\rnode{GB}{GA} & \rTo_{\delta_B}& \rnode{FB}{FA}
+		\nccurve[ncurv=1,angleA=190,angleB=170]{->}{GA}{GB}\Bput{1}\Aput{\mkern20mu\cong}
+		\nccurve[angle=0]{->}{FA}{FB}\Aput{1}\Bput{\cong\mkern20mu}
+		\ncarc[arcangle=-60]{->}{1}{GB}\Bput{1}
+			\Aput{\mkern-8mu\begin{array}c\Rightarrow\\[-4pt]G_A\end{array}}
+	\end{diagram}
+	\\[8em]
+	=\hskip6em&\hskip1.5em\begin{diagram}
+		\rnode{GA}{GA} & \rTo^{\delta_A}& \rnode{FA}{FA} \\
+		\dTo<1>{\raise1.5em\hbox to 0pt{$\mkern6mu\Rightarrow e_A$\hss}}
+			& \ldTo_{\gamma_A} & \dTo<{1}\\
+		GA &\cong& \rnode{2}{FA}\\
+		\dTo<{1} & \ldTo[snake=1em]^{\gamma_A}
+			& \dTo>1<{\raise-1em\hbox to 0pt{\hss$\Rightarrow f_B\mkern6mu$}}\\
+		\rnode{GB}{GA} & \rTo_{\delta_B}& \rnode{FB}{FA}
+		\nccurve[ncurv=1,angleA=190,angleB=170]{->}{GA}{GB}\Bput{1}\Aput{\mkern20mu\cong}
+		\nccurve[ncurv=1,angle=0]{->}{FA}{FB}\Aput{1}\Bput{\cong\mkern20mu}
+		\ncarc[arcangle=60]{->}{FA}{2}\Aput{F(1)}
+			\Bput{\begin{array}c\Rightarrow\\[-4pt]F_A\end{array}\mkern-6mu}
+	\end{diagram}
+	\\[8em]
+	=\hskip6em&\hskip1.5em\begin{diagram}
+		\rnode{GA}{GA} & \rTo^{\delta_A}& \rnode{FA}{FA} \\
+		\dTo<1>{\raise1.5em\hbox to 0pt{$\mkern6mu\Rightarrow e_A$\hss}}
+			& \ldTo_{\gamma_A} & \dTo<{1}\\
+		GA &\cong& FA\\
+		\dTo<{1} & \ldTo[snake=1em]^{\gamma_A}
+			& \dTo>1<{\raise-1em\hbox to 0pt{\hss$\Rightarrow f_B\mkern6mu$}}\\
+		\rnode{GB}{GA} & \rTo_{\delta_B}& \rnode{FB}{FA}
+		\nccurve[ncurv=1,angleA=190,angleB=170]{->}{GA}{GB}\Bput{1}\Aput{\mkern20mu\cong}
+		\nccurve[angleA=-20,angleB=20]{->}{FA}{FB}\Bput{1}\Bput{\cong\mkern25mu}
+		\nccurve[angle=0,ncurv=1.5]{->}{FA}{FB}\Aput{F(1)}
+			\Bput{\begin{array}c\Rightarrow\\[-4pt]F_A\end{array}\mkern10mu}
+	\end{diagram}
+	\end{array}\]
+	\[\begin{array}{ll}
+		=\hskip6em&\begin{diagram}
+		GA & \rTo^{\delta_A} & \rnode{1}{FA}\\
+		\dTo<1 & \cong\\
+		GA & \rTo_{\delta_A}& \rnode{2}{FA}
+		\ncarc{->}12\Aput{F(1)}
+		\ncarc{<-}21\Aput{1}\Bput{\mkern-6mu\begin{array}c\Rightarrow\\[-4pt]F_A\end{array}}
+	\end{diagram}
+	\end{array}\]
+	The last step uses the fact that $e_A$ and $f_A$ constitute an adjunction.
+ 
