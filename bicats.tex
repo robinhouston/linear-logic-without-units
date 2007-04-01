@@ -1,7 +1,6 @@
-%&format-test
 %!TEX TS-program = latex
-%\documentclass{robinthesisdraft}
-%\usepackage{robincs,thesisdefs}
+\documentclass{robinthesisdraft}
+\usepackage{robincs,thesisdefs}
 
 % In a few places, I used := to define things. Andrea pointed out that
 % I didn't do so consistently, so I've changed the instances of := to
@@ -89,7 +88,8 @@ but reasonably thorough account of the bicategory theory that we need.
 	\end{diagram}
 	commutes in $\B(A,E)$.
 \end{definition}
-
+We shall often omit the subscript on identity 1-cells, writing just $1$
+rather than $1_{A}$, when the object can be easily determined from the context.
 \begin{remark} % on coherence
 	A bicategory with just one object may be regarded as a monoidal
 	category: the definition simply reduces to the usual definition
@@ -335,6 +335,20 @@ but reasonably thorough account of the bicategory theory that we need.
 	commutes in the category $\BC(FA,FD)$.
 	A pseudo-functor is also known as a \emph{homomorphism of bicategories}.
 \end{definition}
+\begin{remark}
+	This definition has some redundancy, since either of the two unit
+	conditions implies the other. We have chosen to retain the redundancy
+	rather than introduce an artificial asymmetry.
+\end{remark}
+\begin{remark}
+	There is also a notion of \emph{lax functor} between bicategories,
+	defined as above, except that the 2-cells that appear in the
+	definition need not be invertible. Lax functors have their uses
+	-- for example, a lax functor $1\to\B$ is the same as a monad
+	in $\B$ -- but we have no need of them. (We note in passing that
+	the preceding remark does not apply to the lax case, where the two
+	unit conditions are independent.)
+\end{remark}
 
 \begin{definition}\label{def-psnat} % pseudo-natural transformation
 	Given pseudo-functors $F$, $G:\B\to\BC$, a \emph{pseudo-natural
@@ -414,108 +428,82 @@ but reasonably thorough account of the bicategory theory that we need.
 		\]
 	\end{itemize} 
 \end{definition}
-
-Recall that, given a commutative diagram in an ordinary category,
-if one of the arrows is replaced by its inverse in such a way that the resulting diagram
-still has a single source and a single target object,
-then this resulting diagram also commutes.
-%
-This fact has a two-dimensional analogue, as follows: a pasting equation may be viewed
-as a polyhedron, by gluing the two pasting diagrams together along their (common)
-boundary. If, in this polyhedron, one of the cells (faces) is replaced by its
-inverse in such a way that there is still a unique way to decompose the
-resulting polyhedron as a pair of pasting diagrams, then this resulting pasting
-equation also holds.
-%
-On the whole we shall take this for granted and use it implicitly; by way of
-illustration, we give a detailed proof of one simple case:
-\begin{lemma}\label{l-psnat}
-	The unit condition of Definition~\ref{def-psnat} is equivalent to the
-	following: for any pseudo-natural transformation $\gamma: F\To G: \B\to\BC$
-	and object $A\in\B$, we have
+This definition of pseudo-natural transformation is the conventional
+one. However, the unit condition is in fact redundant:
+\begin{propn}
+	Given pseudo-functors $F$, $G:\B\to\BC$ and the data of
+	Definition~\ref{def-psnat}, the composition condition
+	implies the unit condition.
+\end{propn}
+\begin{proof}
+	Let $\gamma$ be given as in Definition~\ref{def-psnat},
+	and suppose it to satisfy the composition condition.
+	Given a 1-cell $f:FA\to FB$ in $\BC$, let us write $\r^{F}_{f}$
+	for the composite
 	\[
-		\hskip-1em
-		\begin{diagram}[size=4em]
-			FA & \rTo^{\gamma_A} & \rnode{GA}{GA}\\
-			\dTo<{F(1_{A})} & \llap{$\Nearrow\gamma_{1_A}\mkern4mu$}
-				& \begin{array}{c}\Rightarrow\\G_A^{-1}\end{array}\\
-			FA & \rTo_{\gamma_A} & \rnode{GB}{GA}
-			\ncarc{->}{GA}{GB}\Aput{1_{GA}}
-			\ncarc{<-}{GB}{GA}\Aput{G(1_A)}
+		f\o F(1_{A}) \rTo^{f\o F_{A}^{-1}} f\o 1_{FA}
+			\rTo^{\r_{f}} f,
+	\]
+	and $\l^{F}_{f}$ for
+	\[
+			F(1_{A})\o f \rTo^{F_{A}^{-1}\o f} 1_{FA}\o f
+			\rTo^{\l_{f}} f.
+	\]
+	Observe that $\r^{F}$ and $\l^{F}$ inherit the coherence of
+	$\r$ and $\l$, so that in particular the diagrams
+	\[
+		\begin{diagram}
+			h\o (k\o F1) & \rTo^{\a} & (h\o k)\o F1 \\
+			&\rdTo(1,2)<{h\o\r^{F}_{k}}\ldTo(1,2)>{\r^{F}_{h\o k}} \\
+			&h\o k
 		\end{diagram}
-		%
-		\hskip2em=\hskip4em
-		%
-		\begin{diagram}[size=4em]
-			\rnode{FA}{FA} & \rTo^{\gamma_A} & GA\\
-			\begin{array}{c}\Rightarrow\\F_A^{-1}\end{array}
-				& \hbox to 0pt{$\mkern4mu\cong$} & \dTo>{1_{GA}}\\
-			\rnode{FB}{FA} & \rTo_{\gamma_A} & \rnode{GA}{GA}
-			\ncarc{->}{FA}{FB}\Aput{1_{FA}}
-			\ncarc{<-}{FB}{FA}\Aput{F(1_A)}
-			%\nccurve{->}{FA}{GA} \Bput{\gamma_A}
+		and
+		\begin{diagram}
+			h\o (F1\o k) & \rTo^{\a} & (h\o F1)\o k \\
+			&\rdTo(1,2)<{h\o\l^{F}_{k}}\ldTo(1,2)>{\r^{F}_{h}\o k} \\
+			&h\o k
 		\end{diagram}
 	\]
-\end{lemma}
-\begin{proof}
-	We shall just prove one implication, since the other relies on
-	essentially the same argument. Assuming the unit condition, we
-	have the sequence of equations
-	\[\begin{array}{lcl}
-		\begin{diagram}[size=4em]
-			FA & \rTo^{\gamma_A} & \rnode{GA}{GA}\\
-			\dTo<{F(1_{A})} & \llap{$\Nearrow\gamma_{1_A}\mkern4mu$}
-				& \begin{array}{c}\Rightarrow\\G_A^{-1}\end{array}\\
-			FA & \rTo_{\gamma_A} & \rnode{GB}{GA}
-			\ncarc{->}{GA}{GB}\Aput{1_{GA}}
-			\ncarc{<-}{GB}{GA}\Aput{G(1_A)}
-		\end{diagram}
-		& \hskip2em=\hskip4em &
-		\begin{diagram}[size=4em]
-			\rnode{1}{FA} & \rTo^{\gamma_A} & \rnode{GA}{GA}\\
-			\dTo[snake=1em]<{1_{FA}} & \Nearrow\gamma_{1_A}
-				& \begin{array}{c}\Rightarrow\\G_A^{-1}\end{array}\\
-			\rnode{2}{FA} & \rTo_{\gamma_A} & \rnode{GB}{GA}
-			\ncarc{->}{GA}{GB}\Aput{1_{GA}}
-			\ncarc{<-}{GB}{GA}\aput(.3){G(1_A)}
-			%
-			\psset{arcangle=60}
-			\ncarc{->}12\aput(.3){F(1_A)}
-			\bput(.6){\mkern-10mu\begin{array}{c}\Rightarrow\\[-4pt]F_A\end{array}}
-			\ncarc{<-}21\Aput{F(1_A)}
-			\bput(.4){\mkern-10mu\begin{array}{c}\Rightarrow\\[-4pt]F_A^{-1}\end{array}}
-		\end{diagram}
-		\\[6em]
-		& \hskip2em=\hskip4em &
-		\begin{diagram}[size=4em]
-			\rnode{1}{FA} & \rTo^{\gamma_A} & \rnode{GA}{GA}\\
-			\dTo>{1_{FA}} & \llap{$\cong$\hskip6pt}
-				& \dTo[snake=-1em]>{G(1_A)}\\
-			\rnode{2}{FA} & \rTo_{\gamma_A} & \rnode{GB}{GA}
-			%
-			\psset{arcangle=80}
-			\ncarc{->}{GA}{GB}\Aput{1_{GA}}
-			\bput(.4){\mkern4mu\begin{array}{c}\Rightarrow\\[-4pt]G_A^{-1}\end{array}}
-			\ncarc{<-}{GB}{GA}\aput(.4){1_{GA}}
-			\bput(.6){\begin{array}{c}\Rightarrow\\[-4pt]G_A\end{array}\mkern4mu}
-			%
-			\psset{arcangle=60}
-			\ncarc{<-}21\Aput{F(1_A)}
-			\bput(.4){\mkern-10mu\begin{array}{c}\Rightarrow\\[-4pt]F_A^{-1}\end{array}}
-		\end{diagram}
-		\\[6em]
-		& \hskip2em=\hskip4em &
-		\begin{diagram}[size=4em]
-			\rnode{FA}{FA} & \rTo^{\gamma_A} & GA\\
-			\begin{array}{c}\Rightarrow\\F_A^{-1}\end{array}
-				& \hbox to 0pt{$\mkern4mu\cong$} & \dTo>{1_{GA}}\\
-			\rnode{FB}{FA} & \rTo_{\gamma_A} & \rnode{GA}{GA}
-			\ncarc{->}{FA}{FB}\Aput{1_{FA}}
-			\ncarc{<-}{FB}{FA}\Aput{F(1_A)}
-			%\nccurve{->}{FA}{GA} \Bput{\gamma_A}
-		\end{diagram}
-
-	\end{array}\]
+	for all suitably-typed 1-cells $h$ and $k$.
+	
+	Now, for every $f: A\to B$ in $\B$, we have the following
+	diagram of 1-cells and 2-cells (with associativities left
+	implicit):
+	\begin{diagram}
+		&&\gamma_{B}\o Ff\o F1 & \rTo^{\gamma_{f}\o F1}
+			& Gf\o \gamma_{A}\o F1 \\
+		&\ldTo^{\gamma_{B}\o F_{f,1}} \raise-1em\rlap{$\gamma_{B}\o\cFr$}
+			& \dTo>{\r^{F}} & \natural & \dTo<{\r^{F}}
+			& \rdTo^{Gf\o\gamma_{1}} \\
+		\rnode{l}{\gamma_{B}\o F(f\o 1)} & \rTo_{\gamma_{B}\o F(\r_{f})}
+			& \gamma_{B}\o Ff & \rTo_{\gamma_{f}}
+			& Gf\o\gamma_{A} & \lTo_{\r^{G}\o\gamma_{A}}
+			& \rnode{r}{Gf\o G1\o\gamma_{A}} \\
+		& & \natural
+			& \ruTo[snake=-1em](1,2)<{G(\r_{f})\o\gamma_{A}}
+			& & \llap{$\cFr\o\gamma_{A}$} \\
+		& & & \rnode{b}{G(f\o 1)\o\gamma_{A}}
+		%
+		\nccurve[angleA=290,angleB=180,ncurv=.5]{->}{l}{b} \Bput{\gamma_{f\o 1}}
+		\nccurve[angleA=250,angleB=0,ncurv=.5]{->}{r}{b} \Aput{G_{f,1}\o\gamma_{A}}
+	\end{diagram}
+	The marked cells commute for the reasons shown, and the outside
+	commutes by the composition condition. Since $\gamma_{f}\o F1$ is
+	invertible, it follows that the unlabelled triangle commutes. By
+	the observation above, about coherence of $r^{F}$ and $\l^{F}$,
+	this triangle is equivalent to
+	\begin{diagram}
+		Gf\o\gamma_{A}\o F1 & \rTo^{Gf\o \gamma_{1}} & Gf \o G1 \o \gamma_{A} \\
+		&\rdTo(1,2)<{Gf\o\r^{F_{\gamma_{A}}}} \ldTo(1,2)>{Gf\o\l^{F}_{\gamma_{A}}}\\
+		&Gf\o\gamma_{A}
+	\end{diagram}
+	so, by letting $f=1$, we conclude that
+	\begin{diagram}
+		\gamma_{A}\o F1 & \rTo^{\gamma_{1}} & G1 \o \gamma_{A} \\
+		&\rdTo(1,2)<{\r^{F_{\gamma_{A}}}} \ldTo(1,2)>{\l^{F}_{\gamma_{A}}}\\
+		&\gamma_{A}
+	\end{diagram}
+	commutes, which is equivalent to the unit condition.
 \end{proof}
 
 \begin{definition} % modification
@@ -542,6 +530,24 @@ illustration, we give a detailed proof of one simple case:
 	\]
 \end{definition}
 
+\begin{remark}
+	Recall that, given a commutative diagram in an ordinary category,
+	if one of the arrows is invertible, and is replaced by its inverse in such
+	a way that the resulting diagram still has a single source and a single
+	target object, then this resulting diagram also commutes.
+	%
+	This fact has a two-dimensional analogue, as follows: a pasting equation may be
+	viewed as a polyhedron, by gluing the two pasting diagrams together along their
+	(common) boundary. If, in this polyhedron, one of the cells (faces) is
+	invertible and is replaced
+	by its inverse in such a way that there is still a unique way to decompose the
+	resulting polyhedron as a pair of pasting diagrams, then this resulting pasting
+	equation also holds.
+	%
+	We shall sometimes use this implicitly, when it is more convenient to use
+	such a variant of some equation.
+\end{remark}
+
 The usual 2-categorical notions of adjunction, equivalence, monad, etc.\ may
 also be defined in a bicategory in the obvious way: a little of the theory of adjunctions
 is developed below. There is also an obvious
@@ -561,7 +567,8 @@ $\Bicat(\B,\BC)$ is also a 2-category.
 
 A pseudo-functor $F:\B\to\BC$ is said to be a \emph{biequivalence}
 if it is a local equivalence and \emph{biessentially surjective} -- i.e.\ every
-object of $\BC$ is equivalent\footnote{The definition of equivalence is given in section~\ref{s-equiv} below}
+object of $\BC$ is equivalent\footnote{The definition of equivalence is
+given in Section~\ref{s-equiv} below}
 to one of the form $FA$. If there is such a
 biequivalence then we say that $\B$ is \emph{biequivalent} to $\BC$.
 (There is a lot more that could be said about biequivalence, of course\dots)
@@ -1472,7 +1479,8 @@ i.e.\ adjunctions in a pseudo-functor bicategory.
 	to be the inverse of the mate of $\phi_{f}$.
 	%
 	We shall show that these data constitute a pseudo-natural
-	transformation $\gamma$, checking the three conditions
+	transformation $\gamma$, checking the naturality and composition
+	conditions
 	of Definition~\ref{def-psnat}. This is essentially a
 	matter of writing down the corresponding conditions for
 	$\phi$ and taking mates.
@@ -1521,55 +1529,55 @@ i.e.\ adjunctions in a pseudo-functor bicategory.
 		\end{diagram}
 		\]
 		which may be rearranged into the naturality condition for $\gamma$.
-	\item The unit condition for $\phi$ states that
-		\[
-		\hskip-1em
-			\begin{diagram}[size=4em]
-				\rnode{FA}{FA} & \rTo^{\phi_A} & GA\\
-				\begin{array}{c}\Rightarrow\\F_A\end{array}
-					& \hbox to 0pt{$\mkern4mu\Nearrow \phi_{1_A}$} & \dTo>{G(1_A)}\\
-				\rnode{FB}{FA} & \rTo_{\phi_A} & \rnode{GA}{GA}
-				\ncarc{->}{FA}{FB}\Aput{F(1_A)}
-				\ncarc{<-}{FB}{FA}\Aput{1_{FA}}
-				%\nccurve{->}{FA}{GA} \Bput{\phi_A}
-			\end{diagram}
-			%
-			\hskip3em=\hskip3em
-			%
-			\begin{diagram}[size=4em]
-				FA & \rTo^{\phi_A} & \rnode{GA}{GA}\\
-				\dTo<{1_{FA}} & \llap{$\cong\mkern4mu$}
-					& \begin{array}{c}\Rightarrow\\G_A\end{array}\\
-				FA & \rTo_{\phi_A} & \rnode{GB}{GA}
-				\ncarc{->}{GA}{GB}\Aput{G(1_A)}
-				\ncarc{<-}{GB}{GA}\Aput{1_{GA}}
-			\end{diagram}
-		\]
-		Taking mates, and using Prop.~\ref{prop-mates}(\ref{mate-natural}, \ref{mate-structural}), gives
-		\[
-		\hskip-1em
-			\begin{diagram}[size=4em]
-				\rnode{FA}{FA} & \lTo^{\gamma_A} & GA\\
-				\begin{array}{c}\Rightarrow\\F_A\end{array}
-					& \hbox to 0pt{$\mkern4mu\Nearrow \gamma_{1_A}^{-1}$} & \dTo>{G(1_A)}\\
-				\rnode{FB}{FA} & \lTo_{\gamma_A} & \rnode{GA}{GA}
-				\ncarc{->}{FA}{FB}\Aput{F(1_A)}
-				\ncarc{<-}{FB}{FA}\Aput{1_{FA}}
-				%\nccurve{->}{FA}{GA} \Bput{\gamma_A}
-			\end{diagram}
-			%
-			\hskip3em=\hskip3em
-			%
-			\begin{diagram}[size=4em]
-				FA & \lTo^{\gamma_A} & \rnode{GA}{GA}\\
-				\dTo<{1_{FA}} & \llap{$\cong\mkern4mu$}
-					& \begin{array}{c}\Rightarrow\\G_A\end{array}\\
-				FA & \lTo_{\gamma_A} & \rnode{GB}{GA}
-				\ncarc{->}{GA}{GB}\Aput{G(1_A)}
-				\ncarc{<-}{GB}{GA}\Aput{1_{GA}}
-			\end{diagram}
-		\]
-		which may be rearranged into the unit condition for $\gamma$.
+	% \item The unit condition for $\phi$ states that
+	% 	\[
+	% 	\hskip-1em
+	% 		\begin{diagram}[size=4em]
+	% 			\rnode{FA}{FA} & \rTo^{\phi_A} & GA\\
+	% 			\begin{array}{c}\Rightarrow\\F_A\end{array}
+	% 				& \hbox to 0pt{$\mkern4mu\Nearrow \phi_{1_A}$} & \dTo>{G(1_A)}\\
+	% 			\rnode{FB}{FA} & \rTo_{\phi_A} & \rnode{GA}{GA}
+	% 			\ncarc{->}{FA}{FB}\Aput{F(1_A)}
+	% 			\ncarc{<-}{FB}{FA}\Aput{1_{FA}}
+	% 			%\nccurve{->}{FA}{GA} \Bput{\phi_A}
+	% 		\end{diagram}
+	% 		%
+	% 		\hskip3em=\hskip3em
+	% 		%
+	% 		\begin{diagram}[size=4em]
+	% 			FA & \rTo^{\phi_A} & \rnode{GA}{GA}\\
+	% 			\dTo<{1_{FA}} & \llap{$\cong\mkern4mu$}
+	% 				& \begin{array}{c}\Rightarrow\\G_A\end{array}\\
+	% 			FA & \rTo_{\phi_A} & \rnode{GB}{GA}
+	% 			\ncarc{->}{GA}{GB}\Aput{G(1_A)}
+	% 			\ncarc{<-}{GB}{GA}\Aput{1_{GA}}
+	% 		\end{diagram}
+	% 	\]
+	% 	Taking mates, and using Prop.~\ref{prop-mates}(\ref{mate-natural}, \ref{mate-structural}), gives
+	% 	\[
+	% 	\hskip-1em
+	% 		\begin{diagram}[size=4em]
+	% 			\rnode{FA}{FA} & \lTo^{\gamma_A} & GA\\
+	% 			\begin{array}{c}\Rightarrow\\F_A\end{array}
+	% 				& \hbox to 0pt{$\mkern4mu\Nearrow \gamma_{1_A}^{-1}$} & \dTo>{G(1_A)}\\
+	% 			\rnode{FB}{FA} & \lTo_{\gamma_A} & \rnode{GA}{GA}
+	% 			\ncarc{->}{FA}{FB}\Aput{F(1_A)}
+	% 			\ncarc{<-}{FB}{FA}\Aput{1_{FA}}
+	% 			%\nccurve{->}{FA}{GA} \Bput{\gamma_A}
+	% 		\end{diagram}
+	% 		%
+	% 		\hskip3em=\hskip3em
+	% 		%
+	% 		\begin{diagram}[size=4em]
+	% 			FA & \lTo^{\gamma_A} & \rnode{GA}{GA}\\
+	% 			\dTo<{1_{FA}} & \llap{$\cong\mkern4mu$}
+	% 				& \begin{array}{c}\Rightarrow\\G_A\end{array}\\
+	% 			FA & \lTo_{\gamma_A} & \rnode{GB}{GA}
+	% 			\ncarc{->}{GA}{GB}\Aput{G(1_A)}
+	% 			\ncarc{<-}{GB}{GA}\Aput{1_{GA}}
+	% 		\end{diagram}
+	% 	\]
+	% 	which may be rearranged into the unit condition for $\gamma$.
 	\item The composition condition for $\phi$ states that
 		\[
 		\begin{diagram}[h=2em]
