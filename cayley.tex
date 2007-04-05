@@ -52,7 +52,7 @@ with unit $e: I\to M$ and multiplication $m: M\tn M\to M$.
 The Cayley-Yoneda theorems are best stated in terms of modules:
 \begin{definition}\label{def-module}
 	A \emph{right $M$-module} consists of an object $X\in\V$ and a map
-	$x: X\tn A\to X$ such that the diagrams
+	$x: X\tn M\to X$ such that the diagrams
 	\[
 	\begin{diagram}
 		X\tn M\tn M & \rTo^{x\tn M} & X\tn M \\
@@ -241,185 +241,255 @@ Then the theorem is:
 	\]
 	and $k$ is obtained by currying
 	\[
-		(M\lolli X)\tn M\tn M \rTo^{(M\lolli X)\tn m} (M\lolli X)\tn M \rTo^{\ev^{M}_{X}} X.
+		(M\lolli X)\tn M\tn M \rTo^{(M\lolli X)\tn m} (M\lolli X)\tn M \rTo^{\ev^{M}_{X}} X,
 	\]
+	where the map $\ev^{M}_{X}$ is the result of uncurrying the identity
+	on $M\lolli X$.
 \end{thm}
 %
 Although the statement of the theorem uses only the right-closed
 structure $\lolli$, the left-closed structure $\illol$ plays a
-crucial role in the proof. We will not give a detailed proof here,
+crucial role in the proof. We will not give a detailed proof here%
+\footnote{Again, I did type out a detailed proof. So this is not
+	just an excuse for laziness!},
 since this is something of a digression, but explain the outline.
-The idea is that for every object $X\in\C$, the object $X\illol X$
-is a monoid in a canonical way, via the definable `internal unit'
-and `internal composition' operations. Then a right $M$-module is
-precisely a map of monoids $M\to X\illol X$ for some $X$. \foo
-
-
-If the proof is to be organised in a sensible way, we need to call
-upon some elementary properties of (bi)closed monoidal categories
-\citep[Chapter~1]{KellyEnriched}. We shall state these with respect
-to the left internal hom $\illol$, though corresponding things are
-of course also true of the right internal hom. There is an internal
-composition operation
-\[
-	\comp^{B}_{A,C}: (B\illol A)\tn(C\illol B) \to C\illol A
-\]
-obtained by currying the composite
-\[
-	A\tn(B\illol A)\tn(C\illol B) \rTo^{{ev'}^{A}_{B}}
-		B\tn(C\illol B) \rTo^{{ev'}^{B}_{C}} C,
-\]
-and a family of internal unit maps
-\[
-	u_{A}: I \to A\illol A
-\]
-obtained by currying the right-unit isomorphism $A\tn I\rTo^{\cong}A$.
-The internal composition is associative, and the internal units are
-units for internal composition, in the obvious sense.
-%
-In particular the object $A\illol A$ is a monoid
-with multiplication given by internal composition, and unit $u_{A}$.
-Below we shall denote this monoid $A^{A}$ for concision.)
-
-Furthermore, for each object $A\in\V$ there is a natural transformation
-\[
-	t^{A}_{X,Y}: Y\illol X \to (A\tn Y)\illol(A\tn X)
-\]
-obtained by currying the maps
-\[
-	A\tn X\tn(Y\illol X) \rTo^{A\tn{\ev'}}^{X}_{Y} A\tn Y
-\]
-(which is dinatural in $A$, in addition to being natural in $X$ and $Y$).
-We call this the \emph{internal tensor}, and it is preserves internal
-identities and composition.
-
-For each object $A\in\V$ there is a natural transformation
-\[
-	h^{A}_{X,Y}: Y\illol X \to (Y\illol A)\illol(X\illol A)
-\]
-obtained by currying the internal composition, which is again
-dinatural in $A$ and preserves internal identities and composition.
-Also, there is a natural transformation with components
-\[
-	d_{A,B,C}: (C\illol B)\tn A \to (C\tn A)\illol B
-\]
-obtained by currying the map
-\[
-	B\tn(C\illol B)\tn A \rTo^{{\ev'}^{B}_{C}\tn A} C\tn A.
-\]
-
-\begin{lemma}\label{lemma-module-as-monoid-map}
-	A map $x: X\tn M\to X$ makes $(X,x)$ into a right $M$-module
-	if and only if
-	\[
-		\curry'_{X,M,X}(x): M\to X\illol X
-	\]
-	is a map of monoids.
-\end{lemma}
-\begin{proof}
-	Curry the diagrams in Definition~\ref{def-module}.
-\end{proof}
-%
-In conjunction with the observations above, this lemma implies
-that, for every $A\in\V$, if $(X,x)$ is a right $M$-module, there
-is a natural way to make both $A\tn X$ and $X\illol A$ into right
-$M$-modules too. For, since the $t^{A}$ and $H^{A}$ maps preserve
-internal identities and composition, in particular
-\[
-	t^{A}_{X,X}: X\illol X \to (A\tn X)\illol(A\tn X)
-\]
-and
-\[
-	h^{A}_{X,X}: X\illol X \to (X\illol A)\illol(X\illol A)
-\]
-are maps of monoids, which may be composed with $\curry'_{X,M,X}(x)$.
-Explicitly, the module structure of $A\tn X$ is given by the map
-\[
-	A\tn X\tn M \rTo^{A\tn x} A\tn X,
-\]
-and the module structure of $X\illol A$ is given by
-\[
-	(X\illol A)\tn M \rTo^{d_{M,A,X}} (A\tn M)\illol A \rTo^{x\illol A} X\illol A.
-\]
-\begin{lemma}\label{lemma-mod-map-curry}
-	Let $(X,x)$ and $(Y,y)$ be right $M$-modules.
-	If $f:A\tn X\to Y$ is a map of modules, then so is
-	\[
-		\curry'(f): X\to Y\illol A.
-	\]
-\end{lemma}
-\begin{proof}
-	Consider the diagram
-	\begin{diagram}
-		&& (A\tn X\illol A)\tn M & \rTo^{(f\illol A)\tn M} & (Y\illol A)\tn M\\
-		&\ruTo^{{\coev'}^{A}_{X}\tn M} & \dTo>{d_{M,A,A\tn X}}
-			& & \dTo>{d_{M,A,Y}} \\
-		X\tn M & \rTo_{{\coev'}^{A}_{X,M}} & A\tn X\tn M \illol A
-			& \rTo_{f\tn M\illol A} & Y\tn M\illol A \\
-		\dTo<x && \dTo>{A\tn x\illol A} && \dTo>{x\illol A} \\
-		X & \rTo_{{\coev'}^{A}_{X}} & A\tn X\illol A
-			& \rTo_{f\illol A} & Y\illol A
-	\end{diagram}
-	The triangle commutes by definition of $d$, the upper square by
-	naturality of $d$, the lower-left square by naturality of $\coev'$,
-	and the lower-right square since $f$ is a map of modules. Hence
-	the outside commutes, as required.
-\end{proof}
-
-With this background in place, it is easy to deduce the internal Cayley
-Theorem from the external one:
-\begin{proof}[Proof of Theorem~\ref{thm-1d-internal}]
-	Let $A\in\V$, and $g: A\to M\lolli X$ be such that $hg=kg$.
-	If we uncurry $g$, and recurry the resulting $g'$ with respect
-	to the left internal hom, we obtain maps
+The preliminary observations are that:
+\begin{enumerate}
+	\item For every object $X\in\C$, the object $X\illol X$
+	is a monoid in a canonical way, via the definable `internal unit'
+	and `internal composition' maps:
 	\[\begin{array}{l}
-		g'\phantom{{}'}: A\tn M\to X, \\
-		g'': M\to X\illol A.
+		u: I \to X\illol X, \\
+		m: (X\illol X)\tn(X\illol X) \to X \illol X.
 	\end{array}\]
-	The first thing to observe is that $g'$ is a map of modules, for
-	we have \begin{diagram}[midvshaft,hug,w=5em]
-		& & (M\lolli X)\tn M\tn M \\
-		A\tn M\tn M & \ruTo[snake=-1em](2,1)^{f\tn M\tn M}
-			&& \rdTo[snake=1em](2,1)^{\ev^{M}_{X}\tn M}
-			& X\tn M \\
-		& \rdTo[snake=-1em](2,1)_{f\tn M\tn M} & (M\lolli X)\tn M\tn M \\
-		\dTo<{A\tn m} && \dTo>{(M\lolli X)\tn M} && \dTo>x \\
-		A\tn M & \rTo_{f\tn M} & (M\lolli X)\tn M & \rTo_{\ev^{M}_{X}} & X
-	\end{diagram}
-	where the quadrilateral commutes by functoriality of tensor, and the
-	hexagon commutes since $hg=kg$. Thus, by Lemma~\ref{lemma-mod-map-curry},
-	$g''$ is also a map of modules.
-	
-	By the external Cayley Theorem, $g''$ is thus equal to
+	\item A right $M$-module is
+	precisely a map of monoids $M\to X\illol X$ for some $X$.
+	\item It follows
+	from this that a right $M$-module structure on $X$ induces a canonical
+	right $M$-module structure on $A\tn X$ for each object $A\in \V$, because
+	there is an `internal tensor' map
 	\[
-		M \rTo^{\cong} I\tn M \rTo^{f\tn M} (X\illol A)\tn M
-			\rTo^{d_{M,A,X}} (X\tn M)\illol A \rTo^{x\illol A} X\illol A
+		X\illol X \rTo (A\tn X)\illol(A\tn X),
 	\]
-	for some unique $f: I \to X\illol A$.
-	%
-	Hence $g'$ is equal to
-	\[
-		A\tn M \rTo^{f'\tn M} X\tn M \rTo^{x} X
-	\]
-	for some unique $f': A\to X$ (obtained by uncurrying $f$).
-	%
-	Thus $g$ is equal to
-	\[
-		A \rTo^{f'} X \rTo^{\curry_{X,M,X}(x)} M\lolli X
-	\]
-	for this unique $f'$, which is precisely the universal property of
-	the equaliser diagram.
-\end{proof}
+	which is compatible with the internal unit and compositions.
+	\item In a similar
+	way, a right $M$-module structure on $X$ induces a canonical
+	right $M$-module structure on $X\illol A$, for each object $A$.
+\end{enumerate}
+Our second observation is trivial to prove: simply curry the diagrams
+in Definition~\ref{def-module}. The others are proved in \citet[Section~1.6]{KellyEnriched}.
+%
+Now for the proof itself: suppose we are given an object $A\in\V$ and
+a map $g: A\to M\lolli X$ such that $hg=kg$. We can curry $g$ to get a map
+\[
+	g': A\tn M \to X,
+\]
+and it is not hard to check that, since $hg=kg$, this $g'$ is a
+map of modules from $A\tn M$ to $X$; where the module structure on
+$A\tn M$ is obtained from that of $M$ by point (3) above. Then we
+curry $g'$ with respect to the left-closure, to obtain a map
+\[
+	g'': M \to X\illol A,
+\]
+which is a map of modules with respect to the module
+structure on $X\illol A$ obtained from (4). By the
+external Cayley Theorem, $g''$ is thus equal to
+\[
+	M \rTo^{\cong} I\tn M \rTo^{f\tn M} (X\illol A)\tn M
+		\rTo X\illol A
+\]
+for some unique $f: I \to X\illol A$, where the unlabelled
+arrow above comes from the $M$-module structure on $X\illol A$.
+From this it can be deduced that $g'$ is equal to
+\[
+	A\tn M \rTo^{f'\tn M} X\tn M \rTo^{x} X
+\]
+for some unique $f': A\to X$ (obtained by uncurrying $f$).
+%
+Thus $g$ is equal to
+\[
+	A \rTo^{f'} X \rTo^{\curry_{X,M,X}(x)} M\lolli X
+\]
+for this unique $f'$, which is precisely the universal property of
+the equaliser diagram.
 \begin{remark}
-	The external theorem can be obtained as a corollary of the internal
+	Above we have deduced the internal theorem from the external one.
+	Conversely, the external theorem can be obtained as a corollary of the internal
 	one, under an additional assumption on $\V$. The additional assumption is
 	that the functor $\V(I,-); \V\to\Set$ should preserve equalisers. In
 	particular, this is always so if $\V$ has small coproducts, because in that
-	case $\V$ is \emph{tensored} \citep[in the sense of][section~2.7]{KellyEnriched}
+	case $\V$ is \emph{tensored} \citep[in the sense of][Section~2.7]{KellyEnriched}
 	as a $\Set$-category, and so the functor $\V(I,-)$ has a left adjoint.
 	Then we can obtain the external theorem simply by applying the functor
 	$\V(I,-)$ to the equaliser diagram of the internal theorem.
 \end{remark}
+
+\section{Cayley's Theorem for Pseudomonoids}
+Both these theorems, internal and external, admit generalisation to
+the higher-dimensional setting. But since it is sufficient for our
+applications, we shall largely confine ourselves to the external version,
+with just some brief remarks about the internal one.
+
+\subsection{Modules for pseudomonoids}
+First we must give a suitable definition of $\C$-module, where $\C$ is
+a pseudomonoid. In fact, we want to define a bicategory $\Mod_{\C}$ of
+right $\C$-modules.
+\begin{definition} % Right \C-module
+	A \emph{right $\C$-module} $(X,x)$ for the pseudomonoid $\C$
+	consists of a 1-cell $x: X\tn\C\to X$ together with invertible
+	2-cells
+	\begin{diagram}[h=2em]
+		&&X\tn\C\\
+		&\ruTo^{X\tn J}\\
+		X\tn\I & \Arr\Nearrow{\chi^{J}_{X}} & \dTo>x \\
+		&\rdTo_{r_{X}} \\
+		&&X
+	\end{diagram}
+	and
+	\begin{diagram}
+		X\tn(\C\tn\C) & \rTo^{a_{X,\C,\C}} & (X\tn\C)\tn\C
+			& \rTo^{x\tn\C} & X\tn\C \\
+		\dTo<{X\tn P} && \Nearrow{\chi^{P}_{X}} && \dTo>x\\
+		X\tn\C && \rTo_{x} && X
+	\end{diagram}
+	such that the following two equations hold:
+	\[
+		\begin{diagram}[tight,vtrianglewidth=1.7em,labelstyle=\scriptstyle]
+			&&X\tn\C^{3} && \rTo^{x\tn\C^{2}} && X\tn\C^{2} \\
+			&\ldTo^{X\tn\C\tn P} && \rdTo^{X\tn P\tn\C}
+			 	&&\Arr\Nearrow{\scriptstyle\chi^{P}_{X}\tn\C} && \rdTo^{x\tn\C} \\
+			X\tn\C^{2} && \Right_{\displaystyle X\tn\aa} && X\tn\C^{2}
+				&& \rTo^{x\tn\C} && X\tn\C \\
+			&\rdTo_{X\tn P} && \ldTo_{X\tn P}
+				&& \Arr\Nearrow{\chi^{P}_{X}} && \ldTo_{x} \\
+			&&X\tn\C && \rTo_{x} && X
+		\end{diagram}
+		=
+		\begin{diagram}[tight,vtrianglewidth=1.7em,labelstyle=\scriptstyle]
+			&&X\tn\C^{3} && \rTo^{x\tn\C^{2}} && X\tn\C^{2} \\
+			& \ldTo^{X\tn\C\tn P} &&\sim&&\ldTo^{X\tn P}
+				&& \rdTo^{x\tn\C} \\
+			X\tn\C^{2} && \rTo^{x\tn\C} && X\tn\C
+				&& \Right_{\displaystyle\chi^{P}_{X}} && X\tn\C \\
+			&\rdTo_{X\tn P} && \Arr\Nearrow{\chi^{P}_{X}}
+				&& \rdTo_{x} && \ldTo_{x} \\
+			&&X\tn\C && \rTo_{x} && X
+		\end{diagram}
+	\]
+	and
+	\[
+		\begin{diagram}[w=4em]
+			X\tn \I\tn \C & \rTo^{X\tn J\tn \C} & X\tn \C^{2}
+				& \rTo^{x\tn \C} & X\tn \C \\
+			&\rdTo_{1}\raise 1em\hbox to1em{$\Arr\Nearrow{X\tn\ll}$\hss}
+				& \dTo>{X\tn P} & \Arr\Nearrow{\chi^{P}_{X}} & \dTo>x \\
+			&&X\tn \C & \rTo_{x} & X
+		\end{diagram}
+		=
+		\begin{diagram}[w=4em]
+			X\tn \I\tn \C & \rTo^{X\tn J\tn \C} & X\tn \C^{2} \\
+			&\rdTo_{1} \raise 1em\hbox to 1em{$\Arr\Nearrow{\chi^{J}_{X}\tn\C}$\hss}
+				& \dTo>{x\tn \C} \\
+			&&X\tn \C\\
+			&&\dTo>x \\
+			&&X
+		\end{diagram}
+	\]
+\end{definition}
+\begin{definition} % Map of modules
+	Given right $\C$-modules $(X,x)$ and $(Y,y)$, a
+	\emph{map of $\C$-modules} from $X$ to $Y$ consists
+	of a 1-cell $f: X\to Y$ together with an invertible 2-cell
+	\begin{diagram}
+		X\tn \C & \rTo^{f\tn \C} & Y\tn \C \\
+		\dTo<x & \Arr\Nearrow{\phi^{f}} & \dTo>y \\
+		X & \rTo_{f} & Y
+	\end{diagram}
+	such that
+	\[
+		\begin{diagram}[tight,vtrianglewidth=1.7em,labelstyle=\scriptstyle]
+			&&X\tn\C^{2} && \rTo^{f\tn\C^{2}} && Y\tn\C^{2} \\
+			&\ldTo^{X\tn P} && \rdTo^{X\tn\C}
+			 	&&\Arr\Nearrow{\scriptstyle\phi^{f}\tn\C} && \rdTo^{y\tn\C} \\
+			X\tn\C && \Right_{\displaystyle \chi^{P}_{X}} && X\tn\C
+				&& \rTo^{f\tn\C} && Y\tn\C \\
+			&\rdTo_{x} && \ldTo_{x}
+				&& \Arr\Nearrow{\phi^{f}} && \ldTo_{y} \\
+			&&X && \rTo_{f} && X
+		\end{diagram}
+		=
+		\begin{diagram}[tight,vtrianglewidth=1.7em,labelstyle=\scriptstyle]
+			&&X\tn\C^{2} && \rTo^{f\tn\C^{2}} && Y\tn\C^{2} \\
+			& \ldTo^{X\tn P} &&\sim&&\ldTo^{Y\tn P}
+				&& \rdTo^{y\tn\C} \\
+			X\tn\C && \rTo^{f\tn\C} && Y\tn\C
+				&& \Right_{\displaystyle\chi^{P}_{Y}} && X\tn\C \\
+			&\rdTo_{x} && \Arr\Nearrow{\phi^{f}}
+				&& \rdTo_{y} && \ldTo_{y} \\
+			&&X && \rTo_{f} && Y
+		\end{diagram}
+	\]
+	and
+	\[
+		\begin{diagram}[h=2em]
+			&\rnode{XI}{X\tn \I} & \rTo^{f\tn\I} & Y\tn \I \\
+			&\dTo<{X\tn J} & \sim & \dTo>{Y\tn J} \\
+			\Right_{\chi^{J}_{X}} & X\tn \C & \rTo^{f\tn \C} & Y\tn \C \\
+			&\dTo<x & \Arr\Nearrow{\phi^{f}} & \dTo>y \\
+			&\rnode{X}{X} & \rTo_{f} & Y
+			%
+			\ncarc[arcangle=-90,ncurv=1.3]{->}{XI}{X}\Bput{1}
+		\end{diagram}
+		=
+		\begin{diagram}[h=2em]
+			X\tn \I & \rTo^{f\tn \I} & Y\tn \I \\
+			&&&\rdTo^{Y\tn J} \\
+			\dTo<1 & & \dTo<1 & \Right_{\chi^{J}_{Y}} & Y\tn \C \\
+			&&&\ldTo_{y} \\
+			X &\rTo_{f} & Y
+		\end{diagram}
+	\]
+\end{definition}
+\begin{definition} % The bicategory Mod_\C
+	The bicategory $\Mod_{\C}$ of right $\C$-modules is defined
+	as follows. An object is a right $\C$-module, a 1-cell is a
+	map of right $\C$-modules, and a 2-cell $\gamma: f\To g: X\to Y$
+	is a 2-cell $f\To g$ in $\B$ such that
+	\[
+		\begin{diagram}[w=4em]
+			& \raise -2em\hbox to 0pt{\hss$\Arr\Uparrow{\gamma\tn\C}$} \\
+			\rnode{XC}{X\tn \C} & \rTo_{f\tn\C} & \rnode{YC}{Y\tn \C} \\
+			\dTo<x & \Arr\Nearrow{\phi^{f}} & \dTo>y \\
+			X & \rTo_{f} & Y \\
+			%
+			\ncarc[arcangle=50]{->}{XC}{YC}\Aput{g\tn\C}
+		\end{diagram}
+		\qquad=\qquad
+		\begin{diagram}[w=4em]
+			\\
+			\rnode{XC}{X\tn \C} & \rTo^{g\tn\C} & \rnode{YC}{Y\tn \C} \\
+			\dTo<x & \Arr\Nearrow{\phi^{g}} & \dTo>y \\
+			\rnode{X}{X} & \rTo^{g} & \rnode{Y}{Y} \\
+			& \raise 2em\hbox{$\Arr\Uparrow{\gamma}$}
+			%
+			\ncarc[arcangle=-60]{->}{X}{Y}\Bput{f\tn\C}
+		\end{diagram}
+	\]
+	Composition is defined as in $\B$, and given $f: X\to Y$
+	and $g: Y\to Z$, the 2-cell $\phi^{gf}$ is the pasting
+	\begin{diagram}
+		X\tn \C & \rTo^{f\tn \C} & Y\tn \C
+			& \rTo^{g\tn \C} & Z\tn \C\\
+		\dTo<x & \Arr\Nearrow{\phi^{f}} & \dTo>y 
+			& \Arr\Nearrow{\phi^{g}} & \dTo>z \\
+		X & \rTo_{f} & Y & \rTo_{g} & Z
+	\end{diagram}
+	which is easily verified to satisfy the necessary equations.
+\end{definition}
+
+\subsection{Remarks on the unit conditions}\label{s-unit-remarks}
+The definitions above are conventional in style. However, just
+as the unit condition in the definition of pseudo-natural transformation is redundant, so (Proposition~\chref{Bicats}{prop-psnat-redundant})
 
 \bibliography{cs}
 \end{document}
