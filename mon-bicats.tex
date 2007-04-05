@@ -1,7 +1,6 @@
-%&format-test
-%!TEX TS-program = tex
-%\documentclass{robinthesisdraft}
-%\usepackage{robincs,thesisdefs,xr}
+%!TEX TS-program = latex
+\documentclass{robinthesisdraft}
+\usepackage{robincs,thesisdefs,xr}
 \externaldocument[Bicats:]{bicats}
 \externaldocument[Psmon:]{pseudomonoids}
 
@@ -1129,10 +1128,10 @@ have. In particular:
 		A\tn \I\tn D\tn C &\rTo_{A\tn s_{\I,D}\tn C} & A\tn D\tn \I\tn C
 	\end{diagram}
 	\]
-	Cancelling the invertible 2-cell $S_{A,C|D}$, we have
+	Cancelling the invertible 2-cell $S_{A,\I\tn C|D}=S_{A\tn\I,C|D}$, we have
 	\[
 	\hskip-1em
-	\begin{diagram}[w=5em,labelstyle=\scriptstyle,tight]]
+	\begin{diagram}[w=5em,labelstyle=\scriptstyle,tight]
 		A\tn \I\tn C\tn D & & D\tn A\tn \I\tn C \\
 		\dTo<{A\tn \I\tn s_{C,D}} & \rdTo(2,2)[hug]^{A\tn s_{\I\tn C,D}}
 			\raise-2em\hbox to 0pt{\hss$\Swarrow\scriptstyle A\tn S_{\I,C|D}$}
@@ -1140,7 +1139,7 @@ have. In particular:
 		A\tn \I\tn D\tn C &\rTo_{A\tn s_{\I,D}\tn C} & A\tn D\tn \I\tn C
 	\end{diagram}
 	=
-	\begin{diagram}[w=5em,labelstyle=\scriptstyle,tight]]
+	\begin{diagram}[w=5em,labelstyle=\scriptstyle,tight]
 		A\tn \I\tn C\tn D && D\tn A\tn \I\tn C \\
 		\dTo<{A\tn \I\tn s_{C,D}} & \ruTo(2,2)[hug]^{s_{A\tn \I,D}\tn C}
 			\raise-2em\hbox to 0pt{$\Searrow\scriptstyle S_{A,\I|D}\tn C$\hss}
