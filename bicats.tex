@@ -27,10 +27,14 @@ Also \citet{MonBicat} and \citet{HDA1} have given explicit definitions for
 the important special case of Gray-categories. However there is no explicit,
 published account of the general notion.
 
-Even the literature on plain bicategories is rather scanty, and many
-fundamental results have no published proof. Neither is notation
+Even the literature on plain bicategories is rather scanty, and although
+the situation is improving \citep[see][for example]{LackCompanion} many
+fundamental results have no published proof, and there is still a
+substantial gap between what is known to the experts and what has been
+written down. Neither is notation
 yet standardised. For these reasons, we give in this chapter a rapid
-but reasonably thorough account of the bicategory theory that we need.
+but reasonably thorough account of the bicategory theory that we need,
+with the occasional digression.
 
 \section{Bicategories: basic definitions}
 \begin{definition} % bicategory
@@ -90,6 +94,8 @@ but reasonably thorough account of the bicategory theory that we need.
 \end{definition}
 We shall often omit the subscript on identity 1-cells, writing just $1$
 rather than $1_{A}$, when the object can be easily determined from the context.
+We also omit the 1-cell subscripts of $\a$, $\l$ and $\r$ from time
+to time.
 \begin{remark} % on coherence
 	A bicategory with just one object may be regarded as a monoidal
 	category: the definition simply reduces to the usual definition
@@ -295,7 +301,7 @@ rather than $1_{A}$, when the object can be easily determined from the context.
 	way to the product of three of more bicategories.
 \end{definition}
 
-\begin{definition} % pseudo-functor
+\begin{definition}\label{def-psfun} % pseudo-functor
 	Given bicategories $\B$ and $\BC$, a \emph{pseudo-functor}
 	$F:\B\to\BC$ consists of:
 	\begin{itemize}
@@ -335,11 +341,6 @@ rather than $1_{A}$, when the object can be easily determined from the context.
 	commutes in the category $\BC(FA,FD)$.
 	A pseudo-functor is also known as a \emph{homomorphism of bicategories}.
 \end{definition}
-\begin{remark}
-	This definition has some redundancy, since either of the two unit
-	conditions implies the other. We have chosen to retain the redundancy
-	rather than introduce an artificial asymmetry.
-\end{remark}
 \begin{remark}
 	There is also a notion of \emph{lax functor} between bicategories,
 	defined as above, except that the 2-cells that appear in the
@@ -428,84 +429,21 @@ rather than $1_{A}$, when the object can be easily determined from the context.
 		\]
 	\end{itemize} 
 \end{definition}
-This definition of pseudo-natural transformation is the conventional
-one. However, the unit condition is in fact redundant:
-\begin{propn}
-	Given pseudo-functors $F$, $G:\B\to\BC$ and the data of
-	Definition~\ref{def-psnat}, the composition condition
-	implies the unit condition.
-\end{propn}
-\begin{proof}
-	Let $\gamma$ be given as in Definition~\ref{def-psnat},
-	and suppose it to satisfy the composition condition.
-	Given a 1-cell $f:FA\to FB$ in $\BC$, let us write $\r^{F}_{f}$
-	for the composite
-	\[
-		f\o F(1_{A}) \rTo^{f\o F_{A}^{-1}} f\o 1_{FA}
-			\rTo^{\r_{f}} f,
-	\]
-	and $\l^{F}_{f}$ for
-	\[
-			F(1_{A})\o f \rTo^{F_{A}^{-1}\o f} 1_{FA}\o f
-			\rTo^{\l_{f}} f.
-	\]
-	Observe that $\r^{F}$ and $\l^{F}$ inherit the coherence of
-	$\r$ and $\l$, so that in particular the diagrams
-	\[
-		\begin{diagram}
-			h\o (k\o F1) & \rTo^{\a} & (h\o k)\o F1 \\
-			&\rdTo(1,2)<{h\o\r^{F}_{k}}\ldTo(1,2)>{\r^{F}_{h\o k}} \\
-			&h\o k
-		\end{diagram}
-		and
-		\begin{diagram}
-			h\o (F1\o k) & \rTo^{\a} & (h\o F1)\o k \\
-			&\rdTo(1,2)<{h\o\l^{F}_{k}}\ldTo(1,2)>{\r^{F}_{h}\o k} \\
-			&h\o k
-		\end{diagram}
-	\]
-	for all suitably-typed 1-cells $h$ and $k$.
-	
-	Now, for every $f: A\to B$ in $\B$, we have the following
-	diagram of 1-cells and 2-cells (with associativities left
-	implicit):
-	\begin{diagram}
-		&&\gamma_{B}\o Ff\o F1 & \rTo^{\gamma_{f}\o F1}
-			& Gf\o \gamma_{A}\o F1 \\
-		&\ldTo^{\gamma_{B}\o F_{f,1}} \raise-1em\rlap{$\gamma_{B}\o\cFr$}
-			& \dTo>{\r^{F}} & \natural & \dTo<{\r^{F}}
-			& \rdTo^{Gf\o\gamma_{1}} \\
-		\rnode{l}{\gamma_{B}\o F(f\o 1)} & \rTo_{\gamma_{B}\o F(\r_{f})}
-			& \gamma_{B}\o Ff & \rTo_{\gamma_{f}}
-			& Gf\o\gamma_{A} & \lTo_{\r^{G}\o\gamma_{A}}
-			& \rnode{r}{Gf\o G1\o\gamma_{A}} \\
-		& & \natural
-			& \ruTo[snake=-1em](1,2)<{G(\r_{f})\o\gamma_{A}}
-			& & \llap{$\cFr\o\gamma_{A}$} \\
-		& & & \rnode{b}{G(f\o 1)\o\gamma_{A}}
-		%
-		\nccurve[angleA=290,angleB=180,ncurv=.5]{->}{l}{b} \Bput{\gamma_{f\o 1}}
-		\nccurve[angleA=250,angleB=0,ncurv=.5]{->}{r}{b} \Aput{G_{f,1}\o\gamma_{A}}
-	\end{diagram}
-	The marked cells commute for the reasons shown, and the outside
-	commutes by the composition condition. Since $\gamma_{f}\o F1$ is
-	invertible, it follows that the unlabelled triangle commutes. By
-	the observation above, about coherence of $r^{F}$ and $\l^{F}$,
-	this triangle is equivalent to
-	\begin{diagram}
-		Gf\o\gamma_{A}\o F1 & \rTo^{Gf\o \gamma_{1}} & Gf \o G1 \o \gamma_{A} \\
-		&\rdTo(1,2)<{Gf\o\r^{F_{\gamma_{A}}}} \ldTo(1,2)>{Gf\o\l^{F}_{\gamma_{A}}}\\
-		&Gf\o\gamma_{A}
-	\end{diagram}
-	so, by letting $f=1$, we conclude that
-	\begin{diagram}
-		\gamma_{A}\o F1 & \rTo^{\gamma_{1}} & G1 \o \gamma_{A} \\
-		&\rdTo(1,2)<{\r^{F_{\gamma_{A}}}} \ldTo(1,2)>{\l^{F}_{\gamma_{A}}}\\
-		&\gamma_{A}
-	\end{diagram}
-	commutes, which is equivalent to the unit condition.
-\end{proof}
-
+\begin{remark}
+	Of course there is such a thing as a lax natural transformation,
+	where the 2-cells $\gamma_{f}$ need not be invertible. (In
+	Bénabou's original terminology, this would actually be an
+	oplax transformation -- his 2-cells point the other way --
+	but the direction we use seems to be a more natural and
+	useful choice: see \citet[Section~5.7]{LackCompanion} for
+	one piece of technical evidence for this assertion.)
+	However, it should be noted that the collection of
+	lax functors $\B\to\BC$, lax transformations between them,
+	and modifications (for which see below) between those does
+	\emph{not} form a bicategory, which shows that one must be careful
+	what one laxifies. In any case, pseudo-functors and pseudo-natural
+	transformations are all that we shall need.
+\end{remark}
 \begin{definition} % modification
 	Given pseudo-natural transformations $\gamma$, $\delta: F\To G:\B\to\BC$,
 	a \emph{modification} $m: \gamma\Tto\delta$ consists of: for every
@@ -549,8 +487,17 @@ one. However, the unit condition is in fact redundant:
 \end{remark}
 
 The usual 2-categorical notions of adjunction, equivalence, monad, etc.\ may
-also be defined in a bicategory in the obvious way: a little of the theory of adjunctions
-is developed below. There is also an obvious
+also be defined in a bicategory in the obvious way: a little of the theory
+of adjunctions is developed below. Since it will be useful almost
+immediately, we give here the definition of equivalence:
+\begin{definition}\label{def-equivalence} % equivalence
+	An \emph{equivalence} from $A$ to $B$ in a bicategory consists of a pair of 1-cells
+	$f: A\to B$ and $g:B\to A$, and a pair of invertible 2-cells $e: 1_A\To g\o f$
+	and $e': 1_B\To f\o g$. We also say that the arrow $f$ is an equivalence
+	just when there exist $g$, $e$, $e'$ as above.
+\end{definition}
+In particular, every identity arrow $1_{A}$ is an equivalence, as is any
+1-cell isomorphic to an identity. There is also an obvious
 notion of isomorphism, but it is not very useful in general. In particular, identity
 arrows in a bicategory are generally only equivalences and not isomorphisms,
 and an object of a bicategory need not even be isomorphic to itself.
@@ -567,9 +514,7 @@ $\Bicat(\B,\BC)$ is also a 2-category.
 
 A pseudo-functor $F:\B\to\BC$ is said to be a \emph{biequivalence}
 if it is a local equivalence and \emph{biessentially surjective} -- i.e.\ every
-object of $\BC$ is equivalent\footnote{The definition of equivalence is
-given in Section~\ref{s-equiv} below}
-to one of the form $FA$. If there is such a
+object of $\BC$ is equivalent to one of the form $FA$. If there is such a
 biequivalence then we say that $\B$ is \emph{biequivalent} to $\BC$.
 (There is a lot more that could be said about biequivalence, of course\dots)
 
@@ -587,13 +532,279 @@ defined in the natural way.
 % natural transformation, and define $\gamma': F'\To G'$ to have
 % $\gamma'_A = 
 
-Below we shall often write
-% the composite $g\o f$ just as $gf$, and
-%  !! No we won't !! Fix any such uses !!
-an identity arrow $1_A$ just as $1$ when its type is clear from the context.
-% (Occasionally there may be a potential ambiguity between vertical composition --
-% i.e.\ the composition of 2-cells within a hom-category -- and horizontal composition.
-% In such situations we are careful to write horizontal composition as $\o$.)
+\section{On the identities}
+It is a trivial observation that, say, a semigroup may have at
+most one unit: if $i$ and $j$ are both units then $ij=i$ -- because
+$j$ is a unit -- and also $ij=j$ because $i$ is a unit. So $i=j$.
+Thus the existence of a unit is a property of a semigroup, rather
+than being real additional structure. In higher dimensions, this
+phenomenon persists: for example, let
+$A$ be an object of the bicategory $\B$, and let $1^\bullet: A\to A$
+be equipped with natural isomorphisms $\l^{\bullet}$ and $\r^{\bullet}$
+making $1^{\bullet}$ act as an identity. Then there is an isomorphism
+\[
+	1^{\bullet} \rTo^{(\r^{\bullet}_{1_{A}})^{-1}} 1_{A}\o 1^{\bullet}
+		\rTo^{\l_{1^{\bullet}}} 1_{A},
+\]
+so identities in a bicategory are unique up to isomorphism, which
+is as much as one could reasonably expect in the circumstances.
+
+An important, if partially-submerged, theme of the present work
+is that the property-likeness of units has some interesting consequences.
+One consequence of this has been studied in detail by
+\citet{KockUnits,JoyalKockUnits,KockWeakIdentityArrows};
+a different aspect is visible in the present work, especially in
+Section~XXXX, where we
+find that a braided promonoidal category has a \emph{canonical} unit,
+and identify a simple property that holds just when this unit exists.
+This principle also underpins the results of Section~\chref{Cayley}{s-unit-remarks},
+which are crucial for the material of Chapter~XXXX.
+
+In the immediate context, we can illustrate some of the phenomena as
+follows: the unit conditions in the
+definitions of pseudo-functor and pseudo-natural transformation
+are, in a sense, redundant. (This is not the case where lax functors
+or lax natural transformations are concerned -- the invertibility of
+our 2-cells is essential to the argument.)
+%
+Although there is, to my knowledge, no written account available
+of the material of this section, in view of its elementary nature
+it is reasonable to suppose that it is known to experts in the
+field. (The expert whom I asked declined to comment on the question
+of how well-known these results are: make of that what you will.)
+
+It will be convenient to introduce some temporary notation,
+that we use only in this section. Let $F:\B\to\BC$ be a
+pseudo-functor.
+Then given a 1-cell $f:FA\to FB$ in $\BC$, let us write $\r^{F}_{f}$
+for the composite
+\[
+	f\o F(1_{A}) \rTo^{f\o F_{A}^{-1}} f\o 1_{FA}
+		\rTo^{\r_{f}} f,
+\]
+and $\l^{F}_{f}$ for
+\[
+		F(1_{A})\o f \rTo^{F_{A}^{-1}\o f} 1_{FA}\o f
+		\rTo^{\l_{f}} f.
+\]
+Observe that $\r^{F}$ and $\l^{F}$ inherit the coherence of
+$\r$ and $\l$, so that in particular the diagrams
+\[
+	\begin{diagram}[vtriangleheight=3em]
+		h\o (k\o F1) && \rTo^{\a} && (h\o k)\o F1 \\
+		&\rdTo[snake=-1ex]<{h\o\r^{F}_{k}} && \ldTo[snake=1ex]>{\r^{F}_{h\o k}} \\
+		&&h\o k
+	\end{diagram}
+	and
+	\begin{diagram}[vtriangleheight=3em]
+		h\o (F1\o k) && \rTo^{\a} && (h\o F1)\o k \\
+		& \rdTo[snake=-1ex]<{h\o\l^{F}_{k}} && \ldTo[snake=1ex]>{\r^{F}_{h}\o k} \\
+		&& h\o k
+	\end{diagram}
+\]
+commute for all suitably-typed 1-cells $h$ and $k$.
+
+Now we can demonstrate the promised redundancy.
+We shall start with the pseudo-natural transformations, since
+the situation there is very simple: the unit condition is quite
+redundant:
+\begin{propn}\label{prop-psnat-redundant}
+	Given pseudo-functors $F$, $G:\B\to\BC$ and the data of
+	Definition~\ref{def-psnat}, the composition condition
+	implies the unit condition.
+\end{propn}
+\begin{proof}
+	Let $\gamma$ be given as in Definition~\ref{def-psnat},
+	and suppose it to satisfy the composition condition.
+	%
+	Now, for every $f: A\to B$ in $\B$, we have the following
+	diagram of 1-cells and 2-cells (with associativities left
+	implicit):
+	\begin{diagram}
+		&&\gamma_{B}\o Ff\o F1 & \rTo^{\gamma_{f}\o F1}
+			& Gf\o \gamma_{A}\o F1 \\
+		&\ldTo^{\gamma_{B}\o F_{f,1}} \raise-1em\rlap{$\gamma_{B}\o\cFr$}
+			& \dTo>{\r^{F}} & \natural & \dTo<{\r^{F}}
+			& \rdTo^{Gf\o\gamma_{1}} \\
+		\rnode{l}{\gamma_{B}\o F(f\o 1)} & \rTo_{\gamma_{B}\o F(\r_{f})}
+			& \gamma_{B}\o Ff & \rTo_{\gamma_{f}}
+			& Gf\o\gamma_{A} & \lTo_{\r^{G}\o\gamma_{A}}
+			& \rnode{r}{Gf\o G1\o\gamma_{A}} \\
+		& & \natural
+			& \ruTo[snake=-1em](1,2)<{G(\r_{f})\o\gamma_{A}}
+			& & \llap{$\cFr\o\gamma_{A}$} \\
+		& & & \rnode{b}{G(f\o 1)\o\gamma_{A}}
+		%
+		\nccurve[angleA=290,angleB=180,ncurv=.5]{->}{l}{b} \Bput{\gamma_{f\o 1}}
+		\nccurve[angleA=250,angleB=0,ncurv=.5]{->}{r}{b} \Aput{G_{f,1}\o\gamma_{A}}
+	\end{diagram}
+	The marked cells commute for the reasons shown, and the outside
+	commutes by the composition condition. Since $\gamma_{f}\o F1$ is
+	invertible, it follows that the unlabelled triangle commutes. By
+	the observation above, about coherence of $r^{F}$ and $\l^{F}$,
+	this triangle is equivalent to
+	\begin{diagram}[htrianglewidth=4em,tight]
+		Gf\o\gamma_{A}\o F1 & \rTo^{Gf\o \gamma_{1}} & Gf \o G1 \o \gamma_{A} \\
+		&\rdTo(1,2)<{Gf\o\r^{F_{\gamma_{A}}}} \ldTo(1,2)>{Gf\o\l^{F}_{\gamma_{A}}}\\
+		&Gf\o\gamma_{A}
+	\end{diagram}
+	so, by letting $f=1$, we conclude that
+	\begin{diagram}[htrianglewidth=4em,tight]
+		\gamma_{A}\o F1 & \rTo^{\gamma_{1}} & G1 \o \gamma_{A} \\
+		&\rdTo(1,2)<{\r^{F}_{\gamma_{A}}} \ldTo(1,2)>{\l^{F}_{\gamma_{A}}}\\
+		&\gamma_{A}
+	\end{diagram}
+	commutes, which is equivalent to the unit condition.
+\end{proof}
+%
+For pseudo-functors, the situation is a little more subtle.
+The following notion will be useful, both here
+and later in Chapter~\chCayley.
+\begin{definition}\label{def-fully-faithful}
+	A 1-cell $f: A\to B$ is \emph{(representably) fully-faithful}
+	if, for every object $X$, the functor
+	$\B(X, f): \B(X, A)\to \B(X, B)$ is fully faithful.
+	%
+	Concretely, this means that, for every pair of arrows
+	$h$, $k: X\to A$, every 2-cell
+	\begin{diagram}[w=2em,h=1em,tight]
+		&& A \\
+		&\ruTo^{h} && \rdTo^{f} \\
+		X && \Downarrow && B \\
+		&\rdTo_{k} && \ruTo_{f} \\
+		&& A
+	\end{diagram}
+	is equal to
+	\begin{diagram}
+		\\
+		\rnode{X}{X} &\Downarrow\gamma& \rnode{A}{A} & \rTo^{f} & B \\
+		%
+		\ncarc[arcangle=50,ncurv=1]{->}{X}{A}  \Aput{h}
+		\ncarc[arcangle=-50,ncurv=1]{->}{X}{A} \Bput{k}
+	\end{diagram}
+	for some unique $\gamma$.
+	
+	Dually, $f$ is \emph{co-fully-faithful} if, for every object $X$,
+	the functor $\B(f, X): \B(B, X)\to \B(A, X)$ is fully faithful.
+\end{definition}
+\begin{remark} % remarks on the definition
+	Some remarks on the definition:
+	\begin{itemize}
+	\item It's easy to check that the fully-faithful 1-cells in
+		$\Cat$ are precisely the full and faithful functors. On
+		the other hand, the analogous property does not generally
+		hold for enriched categories: the $\V$-fully-faithful
+		functors do not always coincide with those 1-cells of
+		$\V-\Cat$ that are representably fully-faithful.
+	\item The co-fully-faithful 1-cells of $\Cat$ are characterised
+	by \citet{LaxEpis}, who call them `lax epimorphisms'.
+	%
+	\item Every equivalence is both fully-faithful and
+	co-fully-faithful.
+\end{itemize}
+\end{remark}
+\begin{lemma}\label{lemma-psnat-unit-only-one}
+	The conditions $\cFl$ and $\cFr$ of Definition~\ref{def-psfun}
+	are redundant, in the sense that each implies the other.
+\end{lemma}
+\begin{proof}
+	Let $F:\B\to\BC$ be a pseudo-functor, and let
+	\[
+		A \rTo^{f} B \rTo^{g} C
+	\]
+	be 1-cells in $\B$. Consider the following diagram
+	in $\BC(FA, FC)$:
+	\begin{diagram}[w=4em,h=2em,tight,hug]
+		Fg\o(F1\o Ff) && \rTo^{\a} && (Fg\o F1)\o Ff \\
+		& \rdTo_{Fg\o\l^{F}} && \ldTo_{\r^{F}\o Ff} \\
+		\dTo<{Fg\o F_{1,f}} &\hskip-2em \raise -1ex\hbox{$Fg\o\cFl$}& Fg\o Ff
+			& \hskip2em \raise -1ex\hbox{$\cFr\o Ff$} & \dTo>{F_{g,1}\o Ff} \\
+		& \ruTo_{Fg\o F(\l)} && \luTo_{F(\r)\o Ff} \\
+		Fg\o F(1\o f) && \dTo>{F_{g,f}} && F(g\o 1)\o Ff \\
+		& \natural && \natural \\
+		\dTo<{F_{g,1\o f}} && F(g\o f) && \dTo>{F_{g\o 1, f}} \\
+		&\ruTo^{F(g\o\l)} && \luTo^{F(\r\o f)} \\
+		F(g\o(1\o f)) && \rTo_{F(\a)} && F((g\o 1)\o f)
+	\end{diagram}
+	The upper and lower triangles commute, as does the outside edge.
+	Since all the 2-cells in the diagram are invertible, if $\cFl$
+	holds then so does $\cFr\o Ff$. Taking $f=1$ and using the fact
+	that $F1$ is co-fully-faithful, we conclude that $\cFr$ holds.
+	In the other direction, if $\cFr$ holds then so does $Fg\o\cFl$,
+	whence taking $g=1$ and using the fact that $F1$ is fully-faithful,
+	we conclude that $\cFl$ holds.
+\end{proof}
+\begin{lemma}\label{lemma-psnat-unit-uq}
+	The invertible 2-cells $F_{A}: 1_{FA}\to F(1_{A})$
+	of Definition~\ref{def-psfun} are uniquely determined
+	by the other data.
+\end{lemma}
+\begin{proof}
+	Let $F: \B\to\BC$ be a pseudo-functor. Condition~$\cFl$
+	implies that, for every object $A\in\B$, the 2-cell $F_{A}\o F(1_{A})$
+	is equal to
+	\[
+		1_{FA}\o F(1_{A}) \rTo^{\l_{F(f)}} F(1_{A})
+			\rTo^{F(\lambda_{1_{A}}^{-1})} F(1_{A}\o 1_{A})
+			\rTo^{F_{1_{A},1_{A}}^{-1}} F(1_{A})\o F(1_{A})
+	\]
+	(just by taking $f=1_{A}$). Since $F(1_{A})$ is fully-faithful,
+	this equation uniquely determines $F_{A}$.
+\end{proof}
+\begin{propn}
+	Let $F: \B\to\BC$ be as in the definition of
+	pseudo-functor, though without the 2-cells $F_{A}$.
+	These data may be augmented to give a pseudo-functor $F$,
+	in a unique way, if and only if $F(1_{A})$ is both
+	fully-faithful and co-fully-faithful for each object $A\in\B$,
+	if and only if $F(1_{A})$ is \emph{either}
+	fully-faithful \emph{or} co-fully-faithful for each object $A\in\B$.
+\end{propn}
+\begin{proof}
+	If we have invertible 2-cells $F_{A}$, then each $F(1_{A})$ is
+	isomorphic to the identity, hence an equivalence, so in particular
+	is fully-faithful and co-fully-faithful. For the converse,
+	take an object $A\in\B$, and suppose that $F(1_{A})$ is co-fully-%
+	faithful. Let $F_{A}: 1_{FA}\To F(1_{A})$ be the unique
+	2-cell for which $F_{A}\o F(1_{A})$ is equal to the composite
+	\[
+		1_{FA}\o F(1_{A}) \rTo^{\l} F(1_{A})
+			\rTo^{F(\l^{-1})} F(1_{A}\o 1_{A})
+			\rTo^{F_{1_{A},1_{A}}^{-1}} F(1_{A})\o F(1_{A}).
+	\]
+	Since this $F_{A}$ is invertible, $F(1_{A})$ is isomorphic to
+	the identity, hence also fully-faithful.
+	For any $f: A\to B$,
+	we have the following diagram in $\B(FA, FB)$ (with associativities
+	left implicit):
+	\begin{diagram}
+		Ff\o 1\o F1 & \rTo^{Ff\o\l} & \rnode{FfF1}{Ff\o F1}
+			& \rTo^{Ff\o F(\l^{-1})} & Ff\o F(1\o 1)
+			& \rTo^{Ff\o F_{1,1}^{-1}} & Ff\o F1\o F1 \\
+		&& && \dTo<{F_{f,f\o 1}} &\cFa& \dTo>{F_{f,1}\o F1} \\
+		&& &\raise 1em\hbox{$\natural$}& F(f\o 1\o 1) & \rTo_{F_{f\o 1,1}^{-1}}
+			& F(f\o 1)\o F1 \\
+		&& && \dTo<{\begin{array}{r}F(f\o\l)\\=F(\r\o 1)\end{array}}
+			&\natural& \dTo>{F(\r)\o F1} \\
+		&& && \rnode{Ff1}{F(f\o 1)} & \rTo_{F_{f,1}^{-1}} & Ff\o F1
+		%
+		\nccurve[angleA=270,angleB=180,ncurv=1]{->}{FfF1}{Ff1} \Bput{F_{f,1}}
+	\end{diagram}
+	The top row is equal to $Ff\o F_{A}\o F1$ by definition, hence
+	this diagram is equivalent to
+	\begin{diagram}
+		Ff\o 1\o F1 & \rTo^{Ff\o F_{A}\o F1} & Ff\o F1\o F1 \\
+		\dTo<{Ff\o\l_{F1}} && \dTo>{F_{f,1}\o F1} \\
+		Ff\o F1 & \lTo_{F(\r_{f})\o F1} & F(f\o 1)\o F1
+	\end{diagram}
+	and since $F1$ is co-fully-faithful, it follows that $\cFl$ holds.
+	By Lemma~\ref{lemma-psnat-unit-only-one}, it follows that condition
+	$\cFr$ holds too.
+	
+	If we start instead with the assumption that $F(1_{A})$ is
+	fully-faithful, the dual argument applies.
+	Finally, the uniqueness is a consequence of Lemma~\ref{lemma-psnat-unit-uq}.
+\end{proof}
 
 \section{The bicategorical Yoneda lemma}
 \begin{definition} % representable pseudofunctors
@@ -1849,12 +2060,7 @@ as the next proposition shows.
 \end{remark}
 
 \section{On equivalence}\label{s-equiv}
-\begin{definition} % equivalence
-	An \emph{equivalence} from $A$ to $B$ in a bicategory consists of a pair of 1-cells
-	$f: A\to B$ and $g:B\to A$, and a pair of invertible 2-cells $e: 1_A\To g\o f$
-	and $e': 1_B\To f\o g$. We also say that the arrow $f$ is an equivalence
-	just when there exist $g$, $e$, $e'$ as above.
-\end{definition}
+Recall the definition of equivalence (Definition\ref{def-equivalence}).
 \begin{definition} % adjoint equivalence
 	An \emph{adjoint equivalence} is an adjunction whose unit and
 	counit are invertible.
