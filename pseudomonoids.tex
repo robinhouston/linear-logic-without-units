@@ -28,7 +28,7 @@ So without further ado, here is the definition.
 	pseudofunctor $1\to\B$. More concretely, it consists of an object $\C$,
 	1-cells
 	\[\begin{array}l
-		J: I\to\C,\\
+		J: \I\to\C,\\
 		P:\C\tn\C\to\C,
 	\end{array}\]
 	and 2-cells
@@ -43,20 +43,20 @@ So without further ado, here is the definition.
 			\C\tn\C & \rTo_{P} & \C & \lTo_{P} & \C\tn\C
 		\end{diagram}}
 		\\[6em]
-		\begin{diagram}
-			I\tn\C &\rTo^{J\tn\C}&\C\tn\C\\
-			&\rdTo[snake=-1ex](1,2)<{l_\C}
-				\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\ll\end{array}$}%
-				\ldTo[snake=1ex](1,2)>{P}\\
-			&\C
+		\begin{diagram}[vtrianglewidth=1.5em,tight]
+			\I\tn\C &&\rTo^{J\tn\C}&&\C\tn\C\\
+			&\rdTo[snake=-1ex]<{l_\C}
+				&\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\ll\end{array}$}%
+				&\ldTo[snake=1ex]>{P}\\
+			&&\C
 		\end{diagram}
 		&
-		\begin{diagram}
-			\C\tn I &\rTo^{\C\tn J}&\C\tn\C\\
-			&\rdTo[snake=-1ex](1,2)<{r_\C}
-				\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\rr\end{array}$}%
-				\ldTo[snake=1ex](1,2)>{P}\\
-			&\C
+		\begin{diagram}[vtrianglewidth=1.5em,tight]
+			\C\tn \I &&\rTo^{\C\tn J} && \C\tn\C\\
+			&\rdTo[snake=-1ex]<{r_\C}
+				&\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\rr\end{array}$}%
+				&\ldTo[snake=1ex]>{P}\\
+			&&\C
 		\end{diagram}
 	\end{array}\]
 	subject to the two equations below (stated in the Gray monoid setting).
@@ -131,7 +131,7 @@ $\alpha$, $\lambda$ and $\rho$.
 \section{Some facts about pseudomonoids}
 This section is essentially a translation of \cite{KellyML} into the language
 of general pseudomonoids. In particular, we shall show that the following
-three equations hold of any pseudomonoid $\C$.
+three equations hold for any pseudomonoid $\C$.
 \begin{equation}\label{eq-lla}
 \begin{diagram}
 	\I\tn\C^2 & \rTo^{J\tn\C^2} &\C^3& \rTo^{\C\tn P} & \C^2\\
@@ -295,7 +295,7 @@ the functors $I\tn-$ and $-\tn I$ are faithful.
 \end{proof}
 %
 \begin{propn} % Equations (\ref{eq-lla}) and (\ref{eq-rra}) hold
-	Equations (\ref{eq-lla}) and (\ref{eq-rra}) hold, of any pseudomonoid $\C$.
+	Equations (\ref{eq-lla}) and (\ref{eq-rra}) hold, for any pseudomonoid $\C$.
 \end{propn}
 \begin{proof}
 	Consider the 2-cell
@@ -370,21 +370,22 @@ the functors $I\tn-$ and $-\tn I$ are faithful.
 	\end{diagram}
 	%
 	which by equation (\ref{eq-lra}) is equal to
-	\begin{diagram}
+	\begin{diagram}[s=3.5em,tight]
 	&&\rnode{CICC}{\C\tn\I\tn\C^2} &\rTo^{\C\tn J\tn\C^2} &\C^4\\
 	&&\dTo<{\C\tn\I\tn P} &\sim& \dTo>{\C^2\tn P}\\
 	&&\C\tn\I\tn\C &\rTo^{\C\tn J\tn\C} &\rnode{x}{\C^3}\\
 	&&\dTo<1&\C\tn\ll\\
-	\rnode{CCC}{\C^3}&\rTo^{\C\tn P}&\C^2 &\lTo^{\C\tn P} &\rnode{y}{\C^3}\\
+	\rnode{CCC}{\C^3}&\rTo^{\C\tn P}&\C^2 &\lTo_{\C\tn P} &\rnode{y}{\C^3}\\
 	\dTo<{P\tn\C} &\aa & \dTo>P\\
 	\C^2 &\rTo_P & \C\hbox to0pt{\hskip1pt.\hss}
+	%
 	\ncline[doubleline=true,doublesep=2pt]{-}xy
 	\nccurve[angleA=180,angleB=90]{->}{CICC}{CCC}\Bput{1}
 	\end{diagram}
 	%
 	Comparing this with the diagram we started with, and cancelling $\aa$, we have
 	\[
-	\begin{diagram}
+	\begin{diagram}[h=3.5em,w=4em,tight]
 	\C\tn\I\tn\C^2 & \rTo^{\C\tn J\tn\C^2} &\C^4& \rTo^{\C^2\tn P} & \C^3\\
 	&\rdTo(2,2)<1\raise1em\hbox to0pt{$\C\tn\ll\tn\C$\hss}
 		& \dTo[snake=.8em]>{\C\tn P\tn\C} &\C\tn\aa&\dTo>{\C\tn P}\\
@@ -393,13 +394,13 @@ the functors $I\tn-$ and $-\tn I$ are faithful.
 	&&&& \C
 	\end{diagram}
 	\quad=\quad
-	\begin{diagram}
+	\begin{diagram}[s=3.5em,tight]
 	\C\tn\I\tn\C^2 &\rTo^{\C\tn J\tn\C^2} &\C^4\\
 	\dTo<{\C\tn\I\tn P} &\sim& \dTo>{\C^2\tn P}\\
 	\C\tn\I\tn\C &\rTo^{\C\tn J\tn\C} &\rnode{x}{\C^3}\\
 	\dTo<1&\C\tn\ll\\
-	\C^2 &\lTo^{\C\tn P} &\rnode{y}{\C^3}\\
-	\dTo>P\\
+	\C^2 &\lTo_{\C\tn P} &\rnode{y}{\C^3}\\
+	\dTo<P\\
 	\C
 	\ncline[doubleline=true,doublesep=2pt]{-}xy
 	\end{diagram}
@@ -411,7 +412,7 @@ the functors $I\tn-$ and $-\tn I$ are faithful.
 The next lemma is the general form of the fact that $I\tn\lambda_A = \lambda_{I\tn A}$
 in a monoidal category.
 \begin{lemma}\label{lemma-lambda}
-The following equation holds of any pseudomonoid $\C$:
+The following equation holds for any pseudomonoid $\C$:
 \begin{equation}\label{eq-lambda}
 \hskip-2em
 \begin{diagram}
@@ -425,7 +426,7 @@ The following equation holds of any pseudomonoid $\C$:
 	\ncarc[arcangle=-70]{->}{CIC}{CC}\Bput{1}
 \end{diagram}
 =
-\begin{diagram}
+\begin{diagram}[s=4em,tight]
 	\I\tn\I\tn\C & \rTo^{J\tn\I\tn\C} & \C\tn\I\tn\C\\
 	\dTo<{\I\tn J\tn\C} & \sim & \dTo>{\hbox to0pt{$\C\tn J\tn\C$\hss}}\\
 	\I\tn\C^2 & \rTo_{J\tn\C^2}& \C^3\\
@@ -434,6 +435,7 @@ The following equation holds of any pseudomonoid $\C$:
 	&\rdTo(2,2)_1\raise1em\hbox to 0pt{$\ll$\hss} & \dTo>P\\
 	&&\C
 \end{diagram}
+\hskip-2em
 \end{equation}
 \end{lemma}
 \begin{proof}
@@ -463,7 +465,7 @@ The following equation holds of any pseudomonoid $\C$:
 \end{proof}
 %
 \begin{propn}
-	Equation (\ref{eq-lr}) holds of any pseudomonoid $\C$.
+	Equation (\ref{eq-lr}) holds for any pseudomonoid $\C$.
 \end{propn}
 \begin{proof}
 	\[\begin{array}{rcl}
@@ -518,6 +520,22 @@ The following equation holds of any pseudomonoid $\C$:
 \end{proof}
 
 \section{Braided pseudomonoids}
+In the context of a braided monoidal bicategory $\B$, we can define
+what it means to have a braiding on a pseudomonoid in $\B$. Observe
+that it is not possible to define \emph{symmetric} pseudomonoids
+in this setting: there is simply no way to express the desired
+equation. To define symmetric pseudomonoids in general, one needs
+some additional structure on the braiding of the monoidal bicategory:
+this additional structure is called a \emph{syllepsis}, and consists
+of an invertible modification between the identity transformation
+on the tensor pseudofunctor and the transformation with components
+\[
+	A\tn B \rTo^{s_{A,B}} B\tn A \rTo^{s_{B,A}} A\tn B,
+\]
+subject to coherence conditions. However, all the general facts
+that we need concerning symmetric promonoidal categories are true
+more generally in the braided case, hence we have no need to
+consider symmetry explicitly in the abstract setting. 
 \begin{definition} % braided pseudomonoid
 	Let $\C$ be a pseudomonoid in the braided monoidal bicategory $\B$.
 	A \defn{braiding} for $\C$ is a 2-cell $\ss$:
@@ -587,6 +605,10 @@ The following equation holds of any pseudomonoid $\C$:
 		\end{array}
 	\end{equation}
 \end{definition}
+\begin{definition}
+	A \emph{braided pseudomonoid} is a pseudomonoid
+	equipped with a braiding.
+\end{definition}
 %
 Observe that, if $\ss$ is a braiding for $\C$ with respect to the
 monoidal bicategory braiding $s$, then the inverse of the right mate of $\ss$,
@@ -595,7 +617,7 @@ is a braiding with respect to $s^{*}$. We shall denote this dual braiding
 as $\ss^{*}$. (Note that, by Lemma~\chref{Bicats}{lemma-adjeq-twisted},
 $\ss^{*}$ is also the right mate of the inverse of $\ss$.)
 
-\section{Facts about braided pseudomonoids}\label{s-braided-facts}
+\section{Another approach to braided pseudomonoids}\label{s-braided-facts}
 This section concerns the equation
 \begin{equation}\label{eq-lrs}
 	\begin{diagram}[s=2.5em,tight]
@@ -625,6 +647,26 @@ and then we'll show that, in the presence of axioms \pref{eq-aa}, \pref{eq-sa-le
 and \pref{eq-sa-right}, the equations \pref{eq-lla} and \pref{eq-lrs} together
 imply \pref{eq-lra}. This gives a useful alternative axiomatisation of braided
 pseudomonoids.
+
+In the case of ordinary braided monoidal categories, this equation corresponds
+to the triangle:
+\begin{diagram}[vtrianglewidth=1em]
+	I\tn A && \rTo^{\sigma_{I,A}} && A\tn I \\
+	&\rdTo_{\lambda_{A}} && \ldTo_{\rho_{A}} \\
+	&&A
+\end{diagram}
+and the alternative axiomatisation consists of the ordinary pentagon
+and hexagon equations together with this triangle and the triangle
+\begin{diagram}[vtrianglewidth=1em]
+	I\tn(A\tn B) && \rTo^{\alpha} && (I\tn A)\tn B \\
+	&\rdTo[snake=-1ex]_{\lambda_{A\tn B}}
+		&& \ldTo[snake=1ex]_{\lambda_{A}\tn B} \\
+	&&A\tn B
+\end{diagram}
+The advantage of this axiomatisation, in the general case just
+as in the case of ordinary monoidal categories, is that $\rho$ appears
+just once; hence it may be eliminated from the data and defined
+in terms of $\sigma$ and $\lambda$.
 
 \begin{remark}
 	Notice that, if we can prove that this equation holds of every braided
@@ -694,43 +736,43 @@ the proof.
 \begin{proof}
 	\diagramstyle[hug]
 	Consider the 2-cell
-	\begin{diagram}
+	\begin{diagram}[hug,s=3em,tight]
 		&&\C\tn \I\tn \C && \lTo^{s_{\C,\C\tn \I}} && \C^{2}\tn \I \\
-		&\ldTo^{\C\tn J\tn \C}
+		&\ldTo[nohug,snake=-1ex]^{\C\tn J\tn \C}
 			&& \luTo_{\C\tn s_{\C,\I}}
 			& S_{\C|\C,\I}
 			& \ldTo_{s_{\C,\C}\tn \I} \\
-		\C^{3} & \C\tn\ll & \dTo>1 & \C\tn U_{\C|\I} & \C^{2}\tn \I
+		\C^{3} & \C\tn\ll & \dTo<1 & \hskip-1em\C\tn U_{\C|\I} & \C^{2}\tn \I
 			&& \dTo>1 \\
-		&\rdTo_{\C\tn P} &&\ldTo_{1} \\
+		&\rdTo[nohug,snake=-1ex]_{\C\tn P} &&\ldTo_{1} \\
 		&& \C^{2} && \lTo^{s_{\C,\C}} && \C^{2} \\
 		&&& \rdTo[nohug]_{P} & \raise 1em\hbox{$\ss$} & \ldTo[nohug]_{P} \\
 		&&&& \C
 	\end{diagram}
 	By Proposition~\chref{MonBicats}{prop-braiding-unit}, this is equal to
-	\begin{diagram}
+	\begin{diagram}[nohug,s=2em,tight]
 		&&\C\tn \I\tn \C && \lTo^{s_{\C,\C\tn \I}} && \C^{2}\tn \I \\
-		&\ldTo^{\C\tn J\tn \C}
+		&\ldTo[snake=-1ex]^{\C\tn J\tn \C}
 			&&
 			&
 			& \\
 		\C^{3} & \C\tn\ll & \dTo>1 &&
 			&& \dTo>1 \\
-		&\rdTo_{\C\tn P} \\
+		&\rdTo[snake=-1ex]_{\C\tn P} \\
 		&& \C^{2} && \lTo^{s_{\C,\C}} && \C^{2} \\
 		&&& \rdTo[nohug]_{P} & \raise 1em\hbox{$\ss$} & \ldTo[nohug]_{P} \\
 		&&&& \C
 	\end{diagram}
  	which is equal, by equation \pref{eq-lra}, to
-	\begin{diagram}
+	\begin{diagram}[nohug,s=2em,tight]
 		&&\C\tn \I\tn \C && \lTo^{s_{\C,\C\tn \I}} && \C^{2}\tn \I \\
-		&\ldTo^{\C\tn J\tn \C}
+		&\ldTo[snake=-1ex]^{\C\tn J\tn \C}
 			&&
 			&
 			& \\
 		\C^{3} & \rr\tn\C & \dTo>1 &&
 			&& \dTo>1 \\
-		&\rdTo_{P\tn\C} \\
+		&\rdTo[hug]_{P\tn\C} \\
 		\dTo<{\C\tn P} && \C^{2} && \lTo^{s_{\C,\C}} && \C^{2} \\
 		&\aa && \rdTo[nohug]_{P} & \raise 1em\hbox{$\ss$} & \ldTo[nohug]_{P} \\
 		\C^{2} &&\rTo_{P}&& \C
@@ -1055,7 +1097,8 @@ the proof.
 		\ncarc[arcangle=-30]{->}{CIC}{ICC} \Bput{s_{\C,\I\tn \C}}
 		 	\Aput{\raise-4pt\hbox{$S_{\C|\I,\C}$}}
 	\end{diagram}
-	By one of the unit axioms in the definition of pseudomonoid, this is
+	By one of the unit axioms in the definition of braiding for
+	a monoidal bicategory, this is
 	\begin{diagram}
 		\rnode{ICC}{\I\tn \C^{2}} & & \lTo^{s_{\C,\I\tn\C}}
 			& & \C\tn \I\tn \C \\
