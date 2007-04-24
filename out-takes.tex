@@ -738,4 +738,96 @@ Theorem from the external one:
 \end{remark}
 \end{snippet}
 
+\begin{snippet}{equivalent version of unit condition for pseudo-nat}
+\begin{lemma}\label{l-psnat}
+	The unit condition of Definition~\ref{def-psnat} is equivalent to the
+	following: for any pseudo-natural transformation $\gamma: F\To G: \B\to\BC$
+	and object $A\in\B$, we have
+	\[
+		\hskip-1em
+		\begin{diagram}[size=4em]
+			FA & \rTo^{\gamma_A} & \rnode{GA}{GA}\\
+			\dTo<{F(1_{A})} & \llap{$\Nearrow\gamma_{1_A}\mkern4mu$}
+				& \begin{array}{c}\Rightarrow\\G_A^{-1}\end{array}\\
+			FA & \rTo_{\gamma_A} & \rnode{GB}{GA}
+			\ncarc{->}{GA}{GB}\Aput{1_{GA}}
+			\ncarc{<-}{GB}{GA}\Aput{G(1_A)}
+		\end{diagram}
+		%
+		\hskip2em=\hskip4em
+		%
+		\begin{diagram}[size=4em]
+			\rnode{FA}{FA} & \rTo^{\gamma_A} & GA\\
+			\begin{array}{c}\Rightarrow\\F_A^{-1}\end{array}
+				& \hbox to 0pt{$\mkern4mu\cong$} & \dTo>{1_{GA}}\\
+			\rnode{FB}{FA} & \rTo_{\gamma_A} & \rnode{GA}{GA}
+			\ncarc{->}{FA}{FB}\Aput{1_{FA}}
+			\ncarc{<-}{FB}{FA}\Aput{F(1_A)}
+			%\nccurve{->}{FA}{GA} \Bput{\gamma_A}
+		\end{diagram}
+	\]
+\end{lemma}
+\begin{proof}
+	We shall just prove one implication, since the other relies on
+	essentially the same argument. Assuming the unit condition, we
+	have the sequence of equations
+	\[\begin{array}{lcl}
+		\begin{diagram}[size=4em]
+			FA & \rTo^{\gamma_A} & \rnode{GA}{GA}\\
+			\dTo<{F(1_{A})} & \llap{$\Nearrow\gamma_{1_A}\mkern4mu$}
+				& \begin{array}{c}\Rightarrow\\G_A^{-1}\end{array}\\
+			FA & \rTo_{\gamma_A} & \rnode{GB}{GA}
+			\ncarc{->}{GA}{GB}\Aput{1_{GA}}
+			\ncarc{<-}{GB}{GA}\Aput{G(1_A)}
+		\end{diagram}
+		& \hskip2em=\hskip4em &
+		\begin{diagram}[size=4em]
+			\rnode{1}{FA} & \rTo^{\gamma_A} & \rnode{GA}{GA}\\
+			\dTo[snake=1em]<{1_{FA}} & \Nearrow\gamma_{1_A}
+				& \begin{array}{c}\Rightarrow\\G_A^{-1}\end{array}\\
+			\rnode{2}{FA} & \rTo_{\gamma_A} & \rnode{GB}{GA}
+			\ncarc{->}{GA}{GB}\Aput{1_{GA}}
+			\ncarc{<-}{GB}{GA}\aput(.3){G(1_A)}
+			%
+			\psset{arcangle=60}
+			\ncarc{->}12\aput(.3){F(1_A)}
+			\bput(.6){\mkern-10mu\begin{array}{c}\Rightarrow\\[-4pt]F_A\end{array}}
+			\ncarc{<-}21\Aput{F(1_A)}
+			\bput(.4){\mkern-10mu\begin{array}{c}\Rightarrow\\[-4pt]F_A^{-1}\end{array}}
+		\end{diagram}
+		\\[6em]
+		& \hskip2em=\hskip4em &
+		\begin{diagram}[size=4em]
+			\rnode{1}{FA} & \rTo^{\gamma_A} & \rnode{GA}{GA}\\
+			\dTo>{1_{FA}} & \llap{$\cong$\hskip6pt}
+				& \dTo[snake=-1em]>{G(1_A)}\\
+			\rnode{2}{FA} & \rTo_{\gamma_A} & \rnode{GB}{GA}
+			%
+			\psset{arcangle=80}
+			\ncarc{->}{GA}{GB}\Aput{1_{GA}}
+			\bput(.4){\mkern4mu\begin{array}{c}\Rightarrow\\[-4pt]G_A^{-1}\end{array}}
+			\ncarc{<-}{GB}{GA}\aput(.4){1_{GA}}
+			\bput(.6){\begin{array}{c}\Rightarrow\\[-4pt]G_A\end{array}\mkern4mu}
+			%
+			\psset{arcangle=60}
+			\ncarc{<-}21\Aput{F(1_A)}
+			\bput(.4){\mkern-10mu\begin{array}{c}\Rightarrow\\[-4pt]F_A^{-1}\end{array}}
+		\end{diagram}
+		\\[6em]
+		& \hskip2em=\hskip4em &
+		\begin{diagram}[size=4em]
+			\rnode{FA}{FA} & \rTo^{\gamma_A} & GA\\
+			\begin{array}{c}\Rightarrow\\F_A^{-1}\end{array}
+				& \hbox to 0pt{$\mkern4mu\cong$} & \dTo>{1_{GA}}\\
+			\rnode{FB}{FA} & \rTo_{\gamma_A} & \rnode{GA}{GA}
+			\ncarc{->}{FA}{FB}\Aput{1_{FA}}
+			\ncarc{<-}{FB}{FA}\Aput{F(1_A)}
+			%\nccurve{->}{FA}{GA} \Bput{\gamma_A}
+		\end{diagram}
+
+	\end{array}\]
+\end{proof}
+
+\end{snippet}
+
 \end{document}
