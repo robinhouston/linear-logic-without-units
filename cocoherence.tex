@@ -1,0 +1,187 @@
+%!TEX TS-program = latex
+\documentclass{robinthesisdraft}
+\usepackage{robincs,thesisdefs}
+
+\newarrow{Into} {boldhook}--->
+
+\title{Co-coherence}
+
+\begin{document}
+	\maketitle
+	
+	\section{Saavedra's Observation}
+	\noindent
+	%
+	A monoidal category is a category $\C$ equipped with a tensor
+	product $\tn: \C\times\C\to \C$, a unit object $I\in\C$, and
+	natural isomorphisms
+	\[\begin{array}{l}
+		\alpha_{A,B,C}: A\tn(B\tn C)\to (A\tn B)\tn C \\
+		\lambda_{A}: I\tn A\to A \\
+		\rho_{A}: A\tn I\to A
+	\end{array}\]
+	subject to the following two coherence conditions:
+	\begin{mspill}\begin{diagram}\dlabel{pentagon}
+	  A\tn\bigl(B\tn(C\tn D)\bigr)
+		  &\rTo^{\alpha_{A,B\tn C,D}}&(A\tn B)\tn (C\tn D)
+		  &\rTo^{\alpha_{A\tn B,C,D}} & \bigl((A\tn B)\tn C\bigr)\tn D
+	  \\
+	  &\rdTo[snake=-1em](1,2)<{A\tn\alpha_{B,C,D}} &\dnum[pentagon]
+		  & \ruTo[snake=1em](1,2)>{\alpha_{A,B,C}\tn D}
+	  \\
+	  & \spleft{A\tn\big((B\tn C)\tn D\big)}
+		  & \rTo_{\alpha_{A,B\tn C,D}}
+		  & \spright{\bigl(A\tn(B\tn C)\bigr)\tn D}
+	\end{diagram}\end{mspill}
+
+	\begin{diagram}\dlabel{AIC}
+        A\tn(I\tn C) &\rTo^{\alpha_{A,I,C}}&(A\tn I)\tn C\\
+        &\rdTo[snake=-1ex](1,2)<{A\tn\lambda_C}
+			\raise1ex\dnum\ldTo[snake=1ex](1,2)>{\rho_A\tn C}\\
+        &A\tn C
+	\end{diagram}
+	which we shall call the \emph{pentagon} and the \emph{triangle},
+	for obvious reasons.
+	%
+	It is a famous fact
+	that these conditions are sufficient to ensure that every diagram
+	of this sort commutes. In particular,
+	\[
+		\lambda_{I}=\rho_{I}: I\tn I\to I.
+	\]
+	In fact this equation was taken as an axiom by \citet{MLCoh}
+	in his original definition, and shortly thereafter \citet{KellyML}
+	showed how to prove it from the two axioms above.
+	%
+	Rather less famous, but much easier to prove, is
+	\begin{lemma}\label{lemma-lr-uq}
+		The natural isomorphisms $\lambda$ and $\rho$ are uniquely
+		determined by the single isomorphism $\lambda_{I}=\rho_{I}$.
+	\end{lemma}
+	\begin{proof}
+		Since the functors $I\tn-$ and $-\tn I$ are each isomorphic to
+		the identity, they are equivalences, so in particular are
+		faithful. Considering the triangle condition with $A=I$ shows
+		that $I\tn\lambda_{C}$ is equal to $(\rho_{I}\tn C)\cdot\alpha_{I,I,C}$,
+		and since $I\tn-$ is faithful, there is a unique such map $\lambda_{C}$.
+		%
+		Similarly, considering the triangle condition with $C=I$ shows
+		that $\rho_{A}\tn I$ is equal to $(A\tn\lambda_{I})\cdot\alpha_{A,I,I}^{-1}$,
+		and since $-\tn I$ is faithful, there is a unique such map $\rho_{A}$.
+	\end{proof}
+	Furthermore, there is a kind of converse:
+	\begin{lemma}\label{lemma-lr-exist}
+		If we are given just $\C$, $\tn$, $I$ and $\alpha$, such that
+		the pentagon condition holds and the functors $I\tn-$ and $-\tn I$
+		are fully faithful, then for every isomorphism $u:I\tn I\to I$
+		there exist natural isomorphisms $\lambda$ and $\rho$, satisfying
+		the triangle condition, such that $\lambda_{I} = u = \rho_{I}$.
+	\end{lemma}
+	\begin{proof}
+		Define $\lambda_{C}$ to be the unique map such that
+		$I\tn\lambda_{C} = (u\tn C)\cdot\alpha_{I,I,C}^{-1}$,
+		and define $\rho_{A}$ to be the unique map such that
+		$\rho_{A}\tn I = (A\tn u)\cdot\alpha_{A,I,I}$.
+		%
+		Since $I\tn\lambda_{C}$ is natural in $C$ by construction
+		and $I\tn-$ is faithful, it follows that $\lambda$ is indeed
+		a natural transformation. Similarly $\rho$ is natural.
+		%
+		By construction, we know that the diagrams
+		\[
+		\begin{diagram}
+	        I\tn(I\tn C)&\rTo^{\alpha_{I,I,C}}& (I\tn I)\tn C\\
+	        &\rdTo[snake=-1ex](1,2)<{I\tn\lambda_C}
+				\ldTo[snake=1ex](1,2)>{u\tn C}\\
+	        &I\tn C
+		\end{diagram}
+		\mbox{\qquad and\qquad}
+		\begin{diagram}
+	        I\tn(I\tn C)&\rTo^{\alpha_{I,I,C}}& (I\tn I)\tn C\\
+	        &\rdTo[snake=-1ex](1,2)<{A\tn u}
+				\ldTo[snake=1ex](1,2)>{\rho_A\tn I}\\
+	        &A\tn I
+		\end{diagram}
+		\]
+		commute. We shall show that these imply the
+		triangle condition. The first observation we need is that,
+		since $\lambda$ and $\rho$ are natural by the above, in
+		particular the squares
+		\[
+			\begin{diagram}
+				I\tn(I\tn A) & \rTo^{\lambda_{I\tn A}} & I\tn A \\
+				\dTo<{I\tn\lambda_A} && \dTo>{\lambda_{A}} \\
+				I\tn A &\rTo_{\lambda_{A}} & A
+			\end{diagram}
+			\mbox{\enskip and\qquad}
+			\begin{diagram}
+				(A\tn I)\tn I &\rTo^{\rho_{A\tn I}} & A\tn I \\
+				\dTo<{\rho_{A}\tn I} && \dTo>{\rho_{A}} \\
+				A\tn I & \rTo_{\rho_{A}} & A
+			\end{diagram}
+		\]
+		commute. Since $\lambda_{A}$ and $\rho_{A}$ are invertible,
+		they are certainly monic, hence $\lambda_{I\tn A}=I\tn\lambda_{A}$
+		and $\rho_{A\tn I}=\rho_{A}\tn I$.
+		Now, consider the diagram
+		\begin{mspill}\begin{diagram}[w=7em,tight]\dlabel{pentagon}
+		  A\tn\bigl(I\tn(I\tn B)\bigr)
+			  &\rTo^{\alpha_{A,I\tn I,B}}&(A\tn I)\tn (I\tn B)
+			  &\rTo^{\alpha_{A\tn I,I,B}} & \bigl((A\tn I)\tn I\bigr)\tn B
+		  \\
+		  & \rdTo[snake=-1em,crab=-1em,rightshortfall=.85em,leftshortfall=-.6em]%
+				(1,4)<{A\tn\alpha_{I,I,B}}
+			\rdTo[snake=0.3em](1,2)>{A\tn\lambda_{I\tn B}}
+			\rdTo[snake=2em](1,2)>{=A\tn(I\tn\lambda_{B})}
+			& & \rdTo[snake=-2em](1,2)<{(A\tn I)\tn\lambda_{B}}
+			\ruTo[snake=1em,crab=-1em,leftshortfall=.85em,rightshortfall=-.6em]%
+				(1,4)>{\alpha_{A,I,I}\tn B}
+			\ldTo(1,2)[snake=0em]<{(\rho_{A}\tn I)\tn B}
+			\ldTo(1,2)[snake=-1.5em]<{=\rho_{A\tn I}\tn B}
+		  \\
+		  &	A\tn(I\tn B) & \rTo_{\alpha_{A,I,B}}
+			& (A\tn I)\tn B 
+		  \\
+		  & \uTo>{A\tn(u\tn B)} & & \uTo<{(A\tn u)\tn B}
+		  \\
+		  & {A\tn\big((I\tn I)\tn B\big)}
+			  & \rTo_{\alpha_{A,I\tn I,B}}
+			  & {\bigl(A\tn(I\tn I)\bigr)\tn B}
+		\end{diagram}\end{mspill}
+		The two quadrilaterals commute by naturality of $\alpha$,
+		and the two lower triangles commute by construction. The outside
+		commutes by the pentagon condition. Because
+		$\alpha_{A,I\tn I,B}$ is invertible, hence epic, it follows
+		that the upper triangle must commute, and so the triangle
+		condition is established.
+		
+		All that remains is to show $\lambda_{I}=u=\rho_{I}$. By the
+		triangle condition and the definition of $\lambda$, we know that
+		$u\tn C=\rho_{I}\tn C$ for all objects $C$. Letting $C=I$,
+		the faithfulness of $-\tn I$ gives $u=\rho_{I}$. For
+		$\lambda_{I}$, we can either apply a similar argument to the
+		definition of $\rho$, or simply note that $\lambda_{I}=\rho_{I}$
+		by coherence.
+	\end{proof}
+	\begin{remark}
+		This observation is originally due to \citet{Saavedra}. Some
+		of its implications are studied in detail by \citet{KockUnits},
+		who emphasises the fact that the assumptions of Lemma~\ref{lemma-lr-exist}
+		constitute an alternative axiomatisation of the notion
+		of monoidal category. This axiomatisation has the interesting
+		property that the definition of the unit structure does not involve
+		the associator.
+		It is non-algebraic -- the condition on the functors $I\tn-$ and
+		$-\tn I$ is not an equational one -- but of course there is an
+		\emph{equivalent} algebraic presentation, namely the usual one!
+	\end{remark}
+	
+	\section{Co-coherence}
+	Our purpose here is to show that Saavedra's observation implies a
+	result that is in a sense the \emph{dual} of a coherence theorem:
+	\begin{propn}[Co-coherence of units]
+		The inclusion $\mathbf{MonCat} \rInto \mathbf{MonCat}^{-}$
+		has a right adjoint whose unit is the identity.
+	\end{propn}
+	\bibliography{cs}
+\end{document}
