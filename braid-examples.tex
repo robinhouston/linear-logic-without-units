@@ -1,0 +1,16 @@
+\documentclass{article}
+\usepackage{braids}
+
+\newcommand\s{ss}
+\begin{document}
+	\tikzstyle{every path} = [draw=white,double=black,ultra thick]
+	\begin{braid}[ABCD]
+		\c[2] \s(1,1)	\\
+		\c \s(1,1) \c	\\
+		\s(1,3)			\\
+		\c\c\f\c		\\
+		\s(3,1)
+	\end{braid}
+	
+	Ballyhoo! \s
+\end{document}
