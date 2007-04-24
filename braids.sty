@@ -1,0 +1,100 @@
+\NeedsTeXFormat{LaTeX2e}[1994/12/01]
+\ProvidesPackage{braids}
+\RequirePackage{tikz}
+
+\def\braids@over{draw=white,double=black,very thick}
+\newcount\braids@i
+\newcount\braids@x\newcount\braids@xa\newcount\braids@xb
+\newcount\braids@y\newcount\braids@iy\newcount\braids@ny
+\newtoks\braids@name
+\def\braids@unshift{
+	\edef\doit{\noexpand\braids@unsh@ft\the\braids@name\relax}
+	\doit}
+\def\braids@unsh@ft#1#2\relax{\global\braids@name={#2}#1}
+\def\braids@drawstrand{
+	\edef\names{\the\braids@name}\ifx\names\@empty
+	\draw
+		(\braids@xa,\braids@y)
+		..
+		controls (\braids@xa,\braids@iy)
+		and (\braids@xb,\braids@iy)
+		..
+		(\braids@xb,\braids@ny) ;
+	\else
+	\draw
+		(\braids@xa,\braids@y)
+		node[fill=white] {$\braids@unshift$}
+		..
+		controls (\braids@xa,\braids@iy)
+		and (\braids@xb,\braids@iy)
+		..
+		(\braids@xb,\braids@ny) ;
+	\fi
+	\advance\braids@xa by 1
+	\advance\braids@xb by 1
+}
+\newenvironment{braid}[1][]
+	{\braids@name = {#1}
+	\begin{tikzpicture}[xscale=0.4,yscale=-.75]
+		\braids@x  = 0
+		\braids@y  = 0
+		\braids@iy = 1
+		\braids@ny = 2
+		\renewcommand\c[1][1]{
+			\braids@i=0\loop\ifnum\braids@i<##1
+				\advance\braids@i by 1
+				\edef\names{\the\braids@name}\ifx\names\@empty
+					\draw (\braids@x,\braids@y) -- (\braids@x,\braids@ny) ;
+				\else
+					\draw (\braids@x,\braids@y)
+					node[fill=white] {$\braids@unshift$}
+					-- (\braids@x,\braids@ny) ;
+				\fi
+				\advance \braids@x by 1
+			\repeat 
+		}
+		\def\f{
+			\edef\names{\the\braids@name}\ifx\names\@empty
+				\draw (\braids@x,\braids@y)
+				-- node[circle,draw=black,fill=white,thick] {}
+				(\braids@x,\braids@ny) ;
+			\else
+				\draw (\braids@x,\braids@y)
+				node[fill=white] {$\braids@unshift$}
+				-- node[circle,,draw=black,fill=white,thick] {}
+				(\braids@x,\braids@ny) ;
+			\fi
+			\advance \braids@x by 1
+		}
+		\def\s(##1,##2){ 
+			\braids@xa = \braids@x
+			\braids@xb = \braids@x
+			\advance\braids@xb by ##2
+			\braids@i=0\loop\ifnum\braids@i<##1
+				\advance\braids@i by 1
+				\braids@drawstrand
+			\repeat
+			%
+			\braids@xa = \braids@x
+			\braids@xb = \braids@x
+			\advance\braids@xa by ##1
+			\braids@i=0\loop\ifnum\braids@i<##2
+				\advance\braids@i by 1
+				\braids@drawstrand
+			\repeat
+			%
+			\advance\braids@x by ##1
+			\advance\braids@x by ##2
+		}
+		\def\\{
+			\edef\names{\the\braids@name}\ifx\names\@empty\else
+				\@latex@error{Too many strand names specified}
+				\braids@name = {}
+			\fi
+			\advance\braids@y  by 2
+			\advance\braids@iy by 2
+			\advance\braids@ny by 2
+			\braids@x = 0
+		}
+	}
+	{\end{tikzpicture}\ignorespacesafterend}
