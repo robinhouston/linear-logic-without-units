@@ -334,7 +334,7 @@ with just some brief remarks about the internal one.
 First we must give a suitable definition of $\C$-module, where $\C$ is
 a pseudomonoid. In fact, we want to define a bicategory $\Mod_{\C}$ of
 right $\C$-modules.
-\begin{definition} % Right \C-module
+\begin{definition}\label{def-psmod} % Right \C-module
 	A \emph{right $\C$-module} $(X,x)$ for the pseudomonoid $\C$
 	consists of a 1-cell $x: X\tn\C\to X$ together with invertible
 	2-cells
@@ -396,7 +396,7 @@ right $\C$-modules.
 		\end{diagram}
 	\]
 \end{definition}
-\begin{definition} % Map of modules
+\begin{definition}\label{def-psmod-map} % Map of modules
 	Given right $\C$-modules $(X,x)$ and $(Y,y)$, a
 	\emph{map of $\C$-modules} from $X$ to $Y$ consists
 	of a 1-cell $f: X\to Y$ together with an invertible 2-cell
@@ -450,7 +450,7 @@ right $\C$-modules.
 		\end{diagram}
 	\]
 \end{definition}
-\begin{definition} % The bicategory Mod_\C
+\begin{definition}\label{def-psmod-bicat} % The bicategory Mod_\C
 	The bicategory $\Mod_{\C}$ of right $\C$-modules is defined
 	as follows. An object is a right $\C$-module, a 1-cell is a
 	map of right $\C$-modules, and a 2-cell $\gamma: f\To g: X\to Y$
@@ -487,9 +487,108 @@ right $\C$-modules.
 	which is easily verified to satisfy the necessary equations.
 \end{definition}
 
+\subsection{The case $\B=\Cat$}
+Since these higher modules are perhaps unfamiliar, we shall
+unpack the definitions in the familiar case $\B=\Cat$.
+Let $\C$ be a monoidal category; then a right $\C$-module
+is a category $\X$ together with a functor
+\[
+	\bullet: \X\times\C\to\X,
+\]
+and natural isomorphisms
+\[
+	\alpha^{\bullet}_{X,A,B}: X\bullet(A\tn B) \to (X\bullet A)\bullet B
+\]
+and
+\[
+	\rho^{\bullet}_{X}: X\bullet I \to X
+\]
+where we take $X$ to be a (generic) element of $\X$,
+and $A$, $B$ to be elements of $\C$.
+%
+The coherence conditions say that the diagrams
+\begin{diagram}
+	X\bullet(A\tn(B\tn C))
+		& \rTo^{\alpha^{\bullet}} & (X\bullet A)\bullet(B\tn C)
+		& \rTo^{\alpha^{\bullet}} & ((X\bullet A)\bullet B)\bullet C \\
+	\dTo<{X\bullet\alpha} &&&& \uTo>{\alpha^{\bullet}\bullet C} \\
+	X\bullet((A\tn B)\tn C) && \rTo_{\alpha^{\bullet}}
+		&& (X\bullet(A\tn B))\bullet C
+\end{diagram}
+and
+\begin{diagram}[vtriangleheight=3em]
+	X\bullet(I\tn A) && \rTo^{\alpha^{\bullet}} && (X\bullet I)\bullet A \\
+	& \rdTo[snake=-1ex]_{X\bullet\lambda_{A}}
+		&& \ldTo[snake=1ex]_{\rho^{\bullet}_{X}\bullet A} \\
+	&& X\bullet A
+\end{diagram}
+must commute, for all $X\in\X$ and $A$, $B$, $C\in\C$.
+%
+It is clear that, in particular, $\C$ itself is a right
+$\C$-module, when equipped in the obvious way; a fact which
+is furthermore easily seen to be true in the general setting.
+
+Now, if we have two right $\C$-modules $\X$ and $\Y$, a
+map of modules $F: \X\to\Y$ is a functor $F$ equipped with
+a natural isomorphism
+\[
+	F^{\bullet}_{X,A}: F(X\bullet A)\to FX\bullet A
+\]
+such that the diagrams
+\begin{diagram}
+	F(X\bullet(A\tn B)) && \rTo^{F^{\bullet}_{X,A\tn B}}
+		&& FX\bullet(A\tn B) \\
+	\dTo<{F(\alpha^{\bullet}_{X,A,B})}
+		&&&& \dTo>{\alpha^{\bullet}_{FX,A,B}} \\
+	F((X\bullet A)\bullet B) & \rTo_{F^{\bullet}_{X\bullet A,B}}
+		& F(X\bullet A)\bullet B & \rTo_{F^{\bullet}_{X,A}\bullet B}
+		& (FX\bullet A)\bullet B
+\end{diagram}
+and
+\begin{diagram}[vtriangleheight=2.5em]
+	F(X\bullet I) && \rTo^{F^{\bullet}_{X,I}} && FX\bullet I\\
+	&\rdTo[snake=-1ex]_{F(\rho^{\bullet}_{X})}
+		&& \ldTo[snake=1ex]_{\rho^{\bullet}_{FX}} \\
+	&&FX
+\end{diagram}
+commute.
+
 \subsection{Remarks on the unit conditions}\label{s-unit-remarks}
-The definitions above are conventional in style. However, just
-as the unit condition in the definition of pseudo-natural transformation is redundant, so (Proposition~\chref{Bicats}{prop-psnat-redundant})
+The definitions above are conventional in style. However,
+we have the same sort of redundancy that we saw, for pseudofunctors
+and pseudonatural transformations, in Section~\chref{Bicats}{s-identities}.
+This time, the redundancy turns out to be essential to some of our later
+results.
+
+For a start, we have:
+\begin{propn}
+	The unit condition of Definition~\ref{def-psmod-map}
+	is redundant.
+\end{propn}
+\begin{proof}
+	In the situation $\B=\Cat$, the proof is via the diagram
+	\begin{diagram}
+	F(X\bullet(I\tn A)) && \rTo^{F^{\bullet}_{X,I\tn A}}
+		&& FX\bullet(I\tn A) \\
+	& \rdTo(0,4)<{F(\alpha^{\bullet}_{X,I,A})}
+		\rdTo[snake=1em](1,2)^{F(X\bullet\lambda_{A})}
+		& & \ldTo[snake=-1em](1,2)^{FX\bullet\lambda_{A}}
+		\ruTo(0,4)<{\alpha^{\bullet}_{FX,I,A}} \\
+		& F(X\bullet A) & \rTo^{F^{\bullet}_{X,A}} & FX\bullet A \\
+	 \ruTo[snake=.5em](1,2)_{F(\rho^{\bullet}_{X}\bullet A)}
+		&& \ruTo[snake=-.5em](1,2)<{F(\rho^{\bullet}_{X})\bullet A}
+		&& \luTo(1,2)<{\rho^{\bullet}_{FX}\bullet A} \\
+	F((X\bullet I)\bullet A) & \rTo_{F^{\bullet}_{X\bullet I,A}}
+		& F(X\bullet I)\bullet A & \rTo_{F^{\bullet}_{X,I}\bullet A}
+		& (FX\bullet I)\bullet A
+	\end{diagram}
+	We observe that, since the outside commutes and all the
+	other cells commute, and since the arrows are all invertible,
+	the lower triangle must also commute. Then let $A=I$ and use
+	the fact that the functor $-\bullet I$ is full and faithful.
+	
+	The same proof works in the general setting: 
+\end{proof}
 
 \bibliography{cs}
 \end{document}
