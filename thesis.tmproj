@@ -3,20 +3,20 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>cayley.tex</string>
+	<string>internal-language.tex</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
 			<string>../Library/texmf/tex/latex/robin/thesisdefs.sty</string>
 			<key>lastUsed</key>
-			<date>2007-03-28T19:15:57Z</date>
+			<date>2007-04-13T20:45:53Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
-			<string>../creations/cs.bib</string>
+			<string>cs.bib</string>
 			<key>lastUsed</key>
-			<date>2007-03-22T14:30:09Z</date>
+			<date>2007-04-13T20:25:19Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -35,29 +35,39 @@
 			<array>
 				<dict>
 					<key>filename</key>
+					<string>cocoherence.tex</string>
+				</dict>
+				<dict>
+					<key>filename</key>
+					<string>internal-language.tex</string>
+					<key>lastUsed</key>
+					<date>2007-04-23T13:39:59Z</date>
+					<key>selected</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>filename</key>
 					<string>bicats.tex</string>
 					<key>lastUsed</key>
-					<date>2007-03-28T19:00:35Z</date>
+					<date>2007-04-13T20:06:37Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>mon-bicats.tex</string>
 					<key>lastUsed</key>
-					<date>2007-03-28T15:04:27Z</date>
+					<date>2007-04-02T17:00:50Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>pseudomonoids.tex</string>
 					<key>lastUsed</key>
-					<date>2007-03-20T22:51:27Z</date>
+					<date>2007-04-16T14:33:30Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>cayley.tex</string>
 					<key>lastUsed</key>
-					<date>2007-03-29T07:50:46Z</date>
-					<key>selected</key>
-					<true/>
+					<date>2007-04-04T22:53:40Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
@@ -81,13 +91,13 @@
 			<key>filename</key>
 			<string>promonoidal-units.tex</string>
 			<key>lastUsed</key>
-			<date>2007-03-22T18:20:22Z</date>
+			<date>2007-03-30T12:29:38Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>out-takes.tex</string>
 			<key>lastUsed</key>
-			<date>2007-03-22T13:38:22Z</date>
+			<date>2007-04-02T10:34:55Z</date>
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
@@ -99,116 +109,72 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
 				<integer>20</integer>
+				<key>line</key>
+				<integer>81</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>111</integer>
-		</dict>
-		<key>../creations/cs.bib</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>11</integer>
-				<key>line</key>
-				<integer>1018</integer>
-			</dict>
-			<key>columnSelection</key>
-			<false/>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>998</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>6</integer>
-				<key>line</key>
-				<integer>1018</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>11</integer>
-				<key>line</key>
-				<integer>1018</integer>
-			</dict>
+			<integer>65</integer>
 		</dict>
 		<key>bicats.tex</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>15</integer>
+				<integer>44</integer>
 				<key>line</key>
-				<integer>1340</integer>
+				<integer>42</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>1320</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>13</integer>
-				<key>line</key>
-				<integer>1340</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>17</integer>
-				<key>line</key>
-				<integer>1340</integer>
-			</dict>
+			<integer>3</integer>
 		</dict>
 		<key>cayley.tex</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>23</integer>
+				<integer>64</integer>
 				<key>line</key>
-				<integer>12</integer>
+				<integer>489</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>331</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>50</integer>
+				<key>line</key>
+				<integer>489</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>64</integer>
+				<key>line</key>
+				<integer>489</integer>
+			</dict>
 		</dict>
-		<key>mon-bicats.tex</key>
+		<key>internal-language.tex</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>48</integer>
+				<integer>39</integer>
 				<key>line</key>
-				<integer>832</integer>
+				<integer>58</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>812</integer>
-		</dict>
-		<key>out-takes.tex</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>25</integer>
-				<key>line</key>
-				<integer>136</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>30</integer>
 		</dict>
 		<key>promonoidal-units.tex</key>
 		<dict>
@@ -222,7 +188,21 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>29</integer>
+			<integer>0</integer>
+		</dict>
+		<key>pseudomonoids.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>619</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>631</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
@@ -230,13 +210,13 @@
 		<string>promonoidal-units.tex</string>
 		<string>cayley.tex</string>
 		<string>bicats.tex</string>
-		<string>mon-bicats.tex</string>
+		<string>internal-language.tex</string>
+		<string>pseudomonoids.tex</string>
 		<string>../Library/texmf/tex/latex/robin/thesisdefs.sty</string>
-		<string>../creations/cs.bib</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{18, 138}, {692, 761}}</string>
+	<string>{{283, 122}, {689, 816}}</string>
 </dict>
 </plist>
