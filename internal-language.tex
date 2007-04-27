@@ -94,15 +94,16 @@ of objects, (multi-)1-cells, 2-cells and equations between 2-cells.
 A \emph{theory} $\T$ consists of:
 \begin{itemize}
 	\item A set $\T_{0}$ of \emph{objects},
-	\item For every non-empty sequence $A_{1}, \ldots, A_{n}, B$ of
+	\item For every non-empty sequence $\A_{1}, \ldots, \A_{n}, \CB$ of
 		elements of $T_{0}$,
-		a set $\T(A_{1},\ldots,A_{n};B)$
-		of \emph{1-cells} $(A_{1}, \dots, A_{n})\to B$.
+		a set $\T(\A_{1},\ldots,\A_{n};\CB)$
+		of \emph{1-cells} $(\A_{1}, \dots, \A_{n})\to \CB$.
 	\item Sets of 2-cells and equations, as described below.
 \end{itemize}
 Before we attempt a formal description of the 2-cells and equations,
 we shall introduce the part of the language that describes 1-cells.
 
+\subsection{1-cells}
 A 1-cell will be described by a \emph{1-cell sequent}: suppose
 we are considering a theory with objects $\A, \CB, \C$ and
 1-cells $f: (\A,\CB)\to\C$ and $g:\C\to\C$. Then the arrow
@@ -160,6 +161,7 @@ So a 1-cell sequent is simply a formal composite of formal 1-cells.
 It is clear by induction that every derivable 1-cell sequent has a unique
 derivation.
 
+\subsection{2-cells}
 Now we can define the 2-cells of $\T$. In addition to the
 objects and 1-cells, we have:
 for every pair $\Gamma\proves\alpha\in\A$, $\Gamma\proves\beta\in\CB$
@@ -173,23 +175,13 @@ so if $\sigma$ is a permutation of the set of names then we require
 A 2-cell sequent is of the form $\Gamma\proves \phi: \alpha\to\beta \in\C$.
 The derivation rules for 2-cell sequents are:
 \begin{itemize}
-% \item The identity rule:
-% 	\[\begin{prooftree}
-% 		\Gamma\proves \alpha\in\A
-% 		\justifies
-% 		\Gamma\proves 1_{\alpha}: \alpha\to\alpha\in\A
-% 		\using 1
-% 	\end{prooftree}\]
-% 	(Actually we won't ever need the identity rule, but
-% 	it's a perfectly good rule, so we include it anyway.)
-\item The axiom rule: for every $t\in \T^{\Gamma}_{\A}[\alpha,\beta]$,
+\item The identity rule:
 	\[\begin{prooftree}
+		\Gamma\proves \alpha\in\A
 		\justifies
-		\Gamma\proves t_{[\Gamma]}: \alpha\to\beta\in\A
-		\using (t)
+		\Gamma\proves 1_{\alpha}: \alpha\to\alpha\in\A
+		\using 1
 	\end{prooftree}\]
-	where $[\Gamma]$ denotes the list of names from the
-	environment $\Gamma$.
 \item The composition rule:
 \[\begin{prooftree}
 	\Gamma\proves \phi: \beta\to\gamma \in\A
@@ -198,14 +190,35 @@ The derivation rules for 2-cell sequents are:
 	\justifies
 	\Gamma\proves \phi\cdot\psi: \alpha\to\gamma \in\A
 \end{prooftree}\]
-\item The 1-cell application rule: for every
-	
+\item The axiom rule: for every $t\in \T^{\Gamma}_{\CB}[\alpha,\beta]$,
+	with $\Gamma = (A_{1}\in\A_{1}, \dots, A_{n}\in\A_{n})$,
+	\[\begin{prooftree}
+		\Gamma_{1}\proves\theta_{1}\in\A_{1}
+		\quad \cdots \quad
+		\Gamma_{n}\proves\theta_{n}\in\A_{n}
+		\justifies
+		\Gamma_{1},\cdots,\Gamma_{n}\proves t_{\theta_{1},\dots,\theta_{n}}
+			: \alpha[A_{i}:=\theta_{i}]\to\beta[A_{i}:=\theta_{i}]
+			\in \A
+		\using t_{\bullet}
+	\end{prooftree}\]
+	where $[A_{i}:=\theta_{i}]$ denotes the multiple substitution
+	$[A_{1}:=\theta_{1}, \dots, A_{n}:=\theta_{n}]$. The names in the
+	$\Gamma_{i}$ are required to be pairwise disjoint.
+\item The 1-cell application rule: for every $f\in\T(\A_{1},\dots,\A_{n};\CB)$,
+	\[\begin{prooftree}
+		\Gamma_{1}\proves \tau_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}
+		\quad \cdots \quad
+		\Gamma_{n}\proves \tau_{n} : \alpha_{n}\to\beta_{n} \in \A_{n}
+		\justifies
+		\Gamma_{1},\cdots,\Gamma_{n}\proves f(\tau_{1},\dots,\tau_{n})
+			: f(\alpha_{1},\dots,\alpha_{n}) \to f(\beta_{1},\dots,\beta_{n})
+			\in\CB
+	\end{prooftree}\]
+	The names in the $\Gamma_{i}$ are again required to be pairwise disjoint.
 \end{itemize}
-We could also include a rule allowing the introduction of
-identity arrows. Since we don't need such a rule, and
-including one would require some additional equations below,
-we have chosen to omit it here.
 
+\subsection{Equations}
 The final ingredient that we need to complete our description
 of $\T$ is a set $\T_{=}$ of equations between 2-cells.
 Formally, we could declare that $\T_{=}$ is a set of tuples
@@ -217,12 +230,12 @@ $\Gamma\proves\psi:\alpha\to\beta\in\A$ are derivable
 We must of course require $\T_{=}$ to be invariant under renaming,
 again.
 
-The derivation rules for equations are:
+The derivation rules for equations are as follows.
+There are three rules expressing
+the fact that any equality worth the name should be
+reflexive, symmetric, and transitive:
 \begin{itemize}
-	\item There are three rules expressing
-	the fact that any equality worth the name should be
-	reflexive, symmetric, and transitive. In detail: for
-	every derivable 2-cell sequent
+	\item For every derivable 2-cell sequent
 	$\Gamma\proves\phi:\alpha\to\beta\in\A$, we have
 	reflexivity:
 	\[\begin{prooftree}
@@ -230,14 +243,14 @@ The derivation rules for equations are:
 		\phi=\phi:\alpha\to\beta\in\A
 		\using=_{r}
 	\end{prooftree}\]
-	symmetry:
+	\item symmetry:
 	\[\begin{prooftree}
 		\phi=\psi:\alpha\to\beta\in\A
 		\justifies
 		\psi=\phi:\alpha\to\beta\in\A
 		\using=_{s}
 	\end{prooftree}\]
-	and transitivity:
+	\item and transitivity:
 	\[\begin{prooftree}
 		\psi=\gamma:\alpha\to\beta\in\A
 		\quad
@@ -246,19 +259,40 @@ The derivation rules for equations are:
 		\phi=\gamma:\alpha\to\beta\in\A
 		\using=_{t}
 	\end{prooftree}\]
-	\item The axiom rule: for every
-	$(\Gamma,\alpha,\beta,\phi,\psi)\in\T_{=}$, we have
+\end{itemize}
+There is an axiom rule for equations:
+\begin{itemize}
+	\item For every $(\Gamma,\alpha,\beta,\phi,\psi)\in\T_{=}$,
 	\[\begin{prooftree}
 		\justifies
-		\Gamma\proves\phi=\psi: \alpha\to\beta
-		\using\phi=\psi
+		\Gamma\proves \phi=\psi: \alpha\to\beta
+		\using \phi=\psi
 	\end{prooftree}\]
-	\item The naturality rule:
-	XXXX this one is the hardest to express!
-	\item The functoriality rule:
-	
-	\item And the composition rule:
 \end{itemize}
+The next two rules express the idea that the 2-cell construction rules
+should preserve equality:
+\begin{itemize}
+\item The composition rule preserves equality:
+\[\begin{prooftree}
+	\Gamma\proves \phi=\phi': \beta\to\gamma \in\A
+	\quad
+	\Gamma\proves \psi=\psi': \alpha\to\beta \in\A
+	\justifies
+	\Gamma\proves \phi\cdot\psi = \phi'\cdot\psi': \alpha\to\gamma \in\A
+\end{prooftree}\]
+\item The 1-cell application rule: for every $f\in\T(\A_{1},\dots,\A_{n};\CB)$,
+	\[\begin{prooftree}
+		\Gamma_{1}\proves \tau_{1} = \tau'_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}
+		\quad \cdots \quad
+		\Gamma_{n}\proves \tau_{n} = \tau'_{n} : \alpha_{n}\to\beta_{n} \in \A_{n}
+		\justifies
+		\Gamma_{1},\cdots,\Gamma_{n}\proves
+			f(\tau_{1},\dots,\tau_{n}) = f(\tau'_{1},\dots,\tau'_{n})
+			: f(\alpha_{1},\dots,\alpha_{n}) \to f(\beta_{1},\dots,\beta_{n})
+			\in\CB
+	\end{prooftree}\]
+	The names in the $\Gamma_{i}$ are again required to be pairwise disjoint.
+
 
 
 \section{Interpretation}
@@ -274,6 +308,7 @@ $v:\T\to\B$ consists of:
 	in $\B$.
 \end{itemize}
 %
+\subsection{Interpretation of 1-cells}
 The semantic interpretation $\llbracket-\rrbracket_{v}$ of a 1-cell
 sequent is defined by induction over its derivation:
 \begin{itemize}
@@ -298,6 +333,26 @@ sequent is defined by induction over its derivation:
 	\end{prooftree}\Big\rrbracket_{v}
 	\Bigr)$.
 \end{itemize}
+
+\section{Derivation-independence of the interpretation}
+As one would hope, the interpretation of a derivation depends only on
+the conclusion of that derivation, and not on the structure of the
+derivation itself. (This property of an interpretation
+is called \emph{coherence} by some authors: we prefer to call it
+derivation-independence, to avoid confusion, since it is not really
+a coherence property in the ordinary sense.)
+
+The issue does not arise for 1-cell sequents, since the whole
+derivation is uniquely determined by the conclusion. For 2-cell
+sequents, there is some work to be done.
+\begin{propn}
+	If $D$ and $D'$ are two derivations of the 2-cell sequent
+	$\Gamma \proves \phi: \alpha \to \beta$, then $\llbracket D\rrbracket
+	= \llbracket D' \rrbracket$.
+\end{propn}
+\begin{proof}
+	
+\end{proof}
 
 \section{Soundness}
 
