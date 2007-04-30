@@ -15,21 +15,35 @@ Primary technical chapters, in order
 			o On higher cats: Bénabou, 'review of elts', Baez-Neuchl, Day-Street series.
 	- Overview
 
- 3. Bicategories
+Part I - Background
 
- 4. Monoidal bicategories
+ 2. Bicategories
 
- 5. Pseudomonoids
+ 3. Monoidal bicategories
 
- 6. Cayley's theorem for pseudomonoids
+ 4. Pseudomonoids
 
- 7. Semi SMCCs
+Part II - Tools
 
- 8. Semi compact closed categories
+ 5. Coherence of positive braidings
 
- 9. Semi star-autonomous categories
+ 6. A language for Gray monoids
 
- 10. Comparison with Dosen-Petric
+ 7. Loose presentation
+
+ 8. Cayley's theorem for pseudomonoids
+
+Part III - Models
+
+ 9. Semi SMCCs
+
+ 10. Semi compact closed categories
+
+ 11. Semi star-autonomous categories
+
+ 12. Comparison with Dosen-Petric
+
+ 13. Embedding
 
 
 Don't forget to grep for /xxxx/i, to find places that need fixing
