@@ -4,7 +4,7 @@
 \externaldocument[Bicats:]{bicats}
 \externaldocument[MonBicats:]{mon-bicats}
 
-\title{A Language for Gray Monoids}
+\title{A Language for Monoidal Bicategories}
 \begin{document}
 \maketitle
 %
@@ -32,61 +32,51 @@ for example.
 %
 The more usual alternative is to use a sequence of equations
 between string or pasting diagrams. As well as using a lot
-of paper, such proofs are often difficult to follow. (We do
-find ourselves obliged to resort to this technique in some
+of paper, such proofs are often difficult to follow.
+% XXXX - is the following still true??
+(We do find ourselves obliged to resort to this technique in some
 places where the techniques of this chapter do not apply.)
 
 The purpose of this chapter is to show how these notational
 difficulties may, in some cases, be overcome by using a formal
 language to specify 1-cells, 2-cells, and equations between 2-cells
-in a Gray monoid. The syntax of the language is designed in such
-a way that a proof using the language closely resembles a proof
+in a monoidal bicategory. The syntax of the language is designed in such
+a way that a proof using the language closely resembles -- typically,
+is formally identical to -- a proof
 using categories, functors and natural transformations in the usual
 way. In other words, provided that one uses only admissible techniques,
-a proof in the Gray monoid $\Cat$ may be reinterpreted
-as a general proof that applies to any Gray monoid. In particular,
+a proof in the 2-monoidal 2-category $\Cat$ may be reinterpreted
+as a general proof that applies to any monoidal bicategory. In particular,
 we shall be able to prove various general facts about pseudomonoids
 simply by reusing the usual proof of the corresponding fact for
-monoidal categories.
+monoidal categories. The language could be regarded as a higher-dimensional analogue
+of the formal language developed \citet{JayLanguages} for monoidal
+categories.
 
-The formal language is not completely general. The fundamental
+This formal language is not completely general. The fundamental
 restriction is that it may only be used to talk about theories
 whose 1-cells are of the form
 \[
 	A_{1}\tn\cdots\tn A_{n} \to B.
 \]
 In particular, the braiding on a braided Gray monoid is not of this
-form, and we will be unable to use this language to prove facts about
+form, and we will need an extension of the language to prove facts about
 structures that interact with the braiding, such as the braiding of
-a braided pseudomonoid. So we are really describing an internal
-language for category-enriched multicategories, rather than for
-general Gray monoids. It is, however, more than adequate for the
-purpose of describing and proving results about pseudomonoids.
-%
-This restriction is not, strictly speaking, essential; but it
-significantly simplifies the language. In particular, it
-insulates us from the inconvenient fact that the interchange
-law of a Gray monoid does not hold on the nose.
+a braided pseudomonoid. This extended language is developed later in
+the chapter.
+% %
+% This restriction could probably be weakened to some extent, but
+% only by compromising the simplicity of the language.
 
-The language itself is rather trivial, and its formal description
-is entirely routine. That is the point, in a way. The obvious%
-\footnote{Of course, they seem obvious only as a result of decades
-	of work on logic and type theory!}
-definitions do indeed work, and nothing surprising happens,
-the end result of which is a convenient language for expressing proofs.
+Most of the formal development is fairly routine. The interpretation of
+a theory is defined first for Gray monoids, and then extended to arbitrary
+monoidal bicategories using coherence. The only technically difficult part
+is to account for the non-strictness of the interchange law in a Gray monoid,
+which requires one moderately hairy proof (XXXX).
 
 \section{The language}
 The language is used to prove equations between 2-cells that hold in
-every model of a given theory. As
-suggested above, we think of a model of a theory as being a category-enriched
-multicategory. 
-% Since this perspective is used only to provide
-% intuition, and not in any technical capacity, we shall not pause
-% to give a formal definition of enriched multicategories: the
-% interested reader could consult \citet[][p.~39 and Example~6.8.3]{LeinsterBook}.
-In fact we only define the interpretation in a Gray monoid, since
-to formally introduce enriched multicategories here would be a
-needless distraction.
+every model of a given theory.
 %
 We require the theory to be presented as a collection
 of objects, (multi-)1-cells, 2-cells and equations between 2-cells.
@@ -136,13 +126,13 @@ by upper-case italic letters.)
 Formally, the derivation rules for 1-cell sequents are
 as follows:
 \begin{itemize}
-\item For every $\C\in\T_{0}$,
+\item The axiom rule: for every $\C\in\T_{0}$,
 \[
 	\begin{prooftree}
 		\justifies A\in\C \proves A\in\C \using (\C)
 	\end{prooftree}
 \]
-\item For every $f\in\T(\A_{1},\dots,\A_{n}; \CB)$,
+\item The application rule: for every $f\in\T(\A_{1},\dots,\A_{n}; \CB)$,
 \[
 	\begin{prooftree}
 		\Gamma_{1}\proves \alpha_{1}\in \A_{1}
@@ -151,28 +141,82 @@ as follows:
 		\quad
 		\Gamma_{n}\proves \alpha_{n}\in \A_{n}
 		\justifies
-		\Gamma_{1},\dots,\Gamma_{n} \proves f(\A_{1},\dots,\A_{n})\in\CB
+		\Gamma_{1},\dots,\Gamma_{n} \proves f(\alpha_{1},\dots,\alpha_{n})\in\CB
 		\using f(\bullet)
 	\end{prooftree}
 \]
 where the names in the $\Gamma_{i}$ are assumed pairwise disjoint.
 \end{itemize}
 So a 1-cell sequent is simply a formal composite of formal 1-cells.
-It is clear by induction that every derivable 1-cell sequent has a unique
-derivation.
+It is clear (and easily proved by induction) that every derivable 1-cell
+sequent has a unique derivation. Also:
+\begin{definition}
+	Let $A_{1}\in\A_{1}, \cdots, A_{n}\in\A_{n}\proves \beta\in\CB$
+	be a derivable 1-cell sequent; and for every $1\leq i\leq n$, let
+	$\Gamma_{i} \proves \alpha_{i}\in\A_{i}$ be a derivable 1-cell sequent.
+	Then we write $[A_{i} := \alpha_{i}]_{i=1}^{n}$ to denote the multiple
+	substitution
+	\[
+		[A_{1} := \alpha_{1}, \cdots, A_{n}:= \alpha_{n}].
+	\]
+	On occasion this may be abbreviated to $[A_{i} := \alpha_{i}]_{i}$,
+	where the value of $n$ is apparent from the context.
+	
+	Later, we sometimes need to use nested sequences: if
+	\[
+		(A^{1}_{1}, \cdots, A^{1}_{n_{i}}),
+		\dots,
+		(A^{n}_{1}, \cdots, A^{n}_{n_{n}})
+	\]
+	is a nested sequence of objects, with $\alpha^{i}_{j}$ being
+	a similarly-numbered nested sequence of 1-cell expressions, then
+	\[
+		[[A^{i}_{j} := \alpha^{i}_{j}]_{j=1}^{n_{i}}]_{i=1}^{n}
+	\]
+	denotes the substitution
+	\[
+		[A^{1}_{1} := \alpha^{1}_{1}, \cdots, A^{1}_{n_{1}}:= \alpha^{1}_{n_{1}},
+		\enskip\cdots,\enskip
+		A^{n}_{1} := \alpha^{n}_{1}, \cdots, A^{n}_{n_{n}}:= \alpha^{n}_{n_{n}}
+		].
+	\]
+\end{definition}
+\begin{lemma}[1-cell substitution]
+	If $A_{1}\in\A_{1}, \cdots, A_{n}\in\A_{n}\proves \beta\in\CB$
+	is a derivable 1-cell sequent, and for every $1\leq i\leq n$,
+	$\Gamma_{i} \proves \alpha_{i}\in\A_{i}$ is a derivable 1-cell sequent,
+	with the names in the $\Gamma_{i}$ pairwise disjoint, then
+	\[
+		\Gamma_{i},\cdots,\Gamma_{n}\proves \beta[A_{i} := \alpha_{i}]_{i=1}^{n}
+	\]
+	is a derivable 1-cell sequent,
+\end{lemma}
+\begin{proof}
+	Consider a derivation of $\beta$, and make the substitution
+	throughout the derivation, as follows. For each sequent
+	$\Gamma\proves \gamma\in\C$ in the derivation, replace $\gamma$
+	by $\gamma[A_{i} := \alpha_{i}]_{i}$, and replace each name
+	$A_{i}\in\A_{i}$ of $\Gamma$ by $\Gamma_{i}$.
+	%
+	Each application rule is thus transformed
+	into another instance of that application rule, and each axiom
+	$A_{i}\in\A_{i} \proves A_{i}\in\A_{i}$
+	is transformed into $\Gamma_{i}\proves \alpha_{i}\in\A_{i}$, which is
+	derivable by assumption.
+\end{proof}
 
 \subsection{2-cells}
 Now we can define the 2-cells of $\T$. In addition to the
 objects and 1-cells, we have:
-for every pair $\Gamma\proves\alpha\in\A$, $\Gamma\proves\beta\in\CB$
-of derivable 1-cell sequents, a set $\T^{\Gamma}_{\A}[\alpha,\beta]$
+for every pair $\Gamma\proves\alpha\in\CB$, $\Gamma\proves\beta\in\CB$
+of derivable 1-cell sequents, a set $\T^{\Gamma}_{\CB}[\alpha,\beta]$
 of 2-cells. Of course, we take these to be invariant under renaming,
 so if $\sigma$ is a permutation of the set of names then we require
 \[
-	\T^{\Gamma^{\sigma}}_{\A}[\alpha^{\sigma},\beta^{\sigma}] = \T^{\Gamma}_{\A}[\alpha,\beta].
+	\T^{\Gamma^{\sigma}}_{\CB}[\alpha^{\sigma},\beta^{\sigma}] = \T^{\Gamma}_{\CB}[\alpha,\beta].
 \]
 %
-A 2-cell sequent is of the form $\Gamma\proves \phi: \alpha\to\beta \in\C$.
+A 2-cell sequent is of the form $\Gamma\proves \phi: \alpha\to\beta \in\CB$.
 The derivation rules for 2-cell sequents are:
 \begin{itemize}
 \item The identity rule:
@@ -182,6 +226,20 @@ The derivation rules for 2-cell sequents are:
 		\Gamma\proves 1_{\alpha}: \alpha\to\alpha\in\A
 		\using 1
 	\end{prooftree}\]
+\item The axiom rule: for every $t\in \T^{\Gamma}_{\CB}[\alpha,\beta]$,
+	with $\Gamma = (A_{1}\in\A_{1}, \dots, A_{n}\in\A_{n})$,
+	\[\begin{prooftree}
+		\Gamma_{1}\proves\gamma_{1}\in\A_{1}
+		\quad\cdots\quad
+		\Gamma_{n}\proves\gamma_{n}\in\A_{n}
+		\justifies
+		\Gamma_{1}\cdots\Gamma_{n} \proves t_{\gamma_{1},\dots, \gamma_{n}}
+			: \alpha[A_{i} := \gamma_{i}]_{i}
+			\to\beta[A_{i} := \gamma_{i}]_{i}
+			\in \CB
+		\using t_{\bullet} 
+	\end{prooftree}\]
+	where the sets of names in the $\Gamma_{i}$ are pairwise disjoint.
 \item The composition rule:
 \[\begin{prooftree}
 	\Gamma\proves \phi: \beta\to\gamma \in\A
@@ -189,46 +247,133 @@ The derivation rules for 2-cell sequents are:
 	\Gamma\proves \psi: \alpha\to\beta \in\A
 	\justifies
 	\Gamma\proves \phi\cdot\psi: \alpha\to\gamma \in\A
+	\using \mathrm{comp}
 \end{prooftree}\]
-\item The axiom rule: for every $t\in \T^{\Gamma}_{\CB}[\alpha,\beta]$,
-	with $\Gamma = (A_{1}\in\A_{1}, \dots, A_{n}\in\A_{n})$,
-	\[\begin{prooftree}
-		\Gamma_{1}\proves\theta_{1}\in\A_{1}
-		\quad \cdots \quad
-		\Gamma_{n}\proves\theta_{n}\in\A_{n}
-		\justifies
-		\Gamma_{1},\cdots,\Gamma_{n}\proves t_{\theta_{1},\dots,\theta_{n}}
-			: \alpha[A_{i}:=\theta_{i}]\to\beta[A_{i}:=\theta_{i}]
-			\in \A
-		\using t_{\bullet}
-	\end{prooftree}\]
-	where $[A_{i}:=\theta_{i}]$ denotes the multiple substitution
-	$[A_{1}:=\theta_{1}, \dots, A_{n}:=\theta_{n}]$. The names in the
-	$\Gamma_{i}$ are required to be pairwise disjoint.
 \item The 1-cell application rule: for every $f\in\T(\A_{1},\dots,\A_{n};\CB)$,
 	\[\begin{prooftree}
-		\Gamma_{1}\proves \tau_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}
+		\Gamma_{1}\proves \phi_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}
 		\quad \cdots \quad
-		\Gamma_{n}\proves \tau_{n} : \alpha_{n}\to\beta_{n} \in \A_{n}
+		\Gamma_{n}\proves \phi_{n} : \alpha_{n}\to\beta_{n} \in \A_{n}
 		\justifies
-		\Gamma_{1},\cdots,\Gamma_{n}\proves f(\tau_{1},\dots,\tau_{n})
+		\Gamma_{1},\cdots,\Gamma_{n}\proves f(\phi_{1},\dots,\phi_{n})
 			: f(\alpha_{1},\dots,\alpha_{n}) \to f(\beta_{1},\dots,\beta_{n})
 			\in\CB
+		\using f(\to)
 	\end{prooftree}\]
 	The names in the $\Gamma_{i}$ are again required to be pairwise disjoint.
 \end{itemize}
+Since the conclusion of each rule has a distinct syntactic form, each derivable
+2-cell sequent has a unique derivation.
+Notice that, if $\Gamma\proves \phi:\alpha\to\beta\in\CB$ is a derivable
+2-cell sequent, then $\Gamma\proves\alpha\in\CB$ and $\Gamma\proves\beta\in\CB$
+are derivable 1-cell sequents.
+%
+We also observe that substituting a 1-cell expression in a 2-cell expression,
+or vice versa, results in a derivable 2-cell sequent:
+\begin{lemma}[1-in-2 substitution]\label{lemma-1in2}
+	Let \( \Delta \proves \phi:\alpha\to\beta \in\C \)
+	be a derivable 2-cell sequent, with
+	\[
+		\Delta = B_{1}\in\CB_{1}, \cdots, B_{n}\in\CB_{n}.
+	\]
+	For each $1\leq i\leq n$, let
+	\[
+		\Gamma_{i} \proves \gamma_{i}\in\CB_{i}
+	\]
+	be a derivable 1-cell sequent. Then the 2-cell sequent
+	\[ \Gamma_{1}, \cdots, \Gamma_{n}
+		\proves \phi[B_{i}:=\gamma_{i}]_{i}
+		: \alpha[B_{i}:=\gamma_{i}]_{i}\to\beta[B_{i}:=\gamma_{i}]_{i}
+		\in \C, \]
+	is also derivable,
+	assuming that the sets of names in the $\Gamma_{i}$ and $\Delta$
+	are pairwise disjoint.
+\end{lemma}
+\begin{proof}
+	Consider a derivation of \( \Delta \proves \phi:\alpha\to\beta \in\C \),
+	and make the substitution throughout the derivation. In detail: for
+	every sequent in the derivation, in the context replace each $B_{i}\in\CB_{i}$
+	by $\Gamma_{i}$ and in the expression replace each $B_{i}$ by $\gamma_{i}$.
+	For each derivation rule, this
+	substitution results in another instance of the same rule, and the
+	1-cell substitution lemma ensures that every 1-cell sequent in the
+	derivation remains derivable. The conclusion of this new derivation
+	is
+	\[ \Gamma_{1}, \cdots, \Gamma_{n}
+		\proves \phi[B_{i}:=\gamma_{i}]_{i}
+		: \alpha[B_{i}:=\gamma_{i}]_{i}\to\beta[B_{i}:=\gamma_{i}]_{i}
+		\in \C, \]
+	which is therefore derivable.
+\end{proof}
+\begin{lemma}[2-in-1 substitution]\label{lemma-2in1}
+	Let $\Gamma\proves\gamma\in\CB$ be a derivable 1-cell sequent, for
+	some \[ \Gamma = (A_{1}\in\A_{1},\dots, A_{n}\in\A_{n}). \]
+	If the 2-cell sequents
+	\[
+	\Delta_{1}\proves \phi_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}
+	\quad \cdots \quad
+	\Delta_{n}\proves \phi_{n} : \alpha_{n}\to\beta_{n} \in \A_{n}
+	\]
+	are all derivable, then so is
+	\[
+	\Delta_{1},\cdots,\Delta_{n}\proves \gamma[A_{i} := \phi_{i}]_{i}
+		: \gamma[A_{i} := \alpha_{i}]_{i} \to \gamma[A_{i} := \beta_{i}]_{i}
+		\in\CB.
+	\]
+	The names in the $\Delta_{i}$ must be pairwise disjoint, of course.
+\end{lemma}
+\begin{proof}
+	This is simply a matter of repeatedly applying the 1-cell application
+	rule. Formally,
+	the proof is by induction on the number of 1-cell symbols in $\gamma$.
+	If there are none, then $\Gamma$ is the singleton $B\in\CB$ and $\gamma$
+	is just $B$, so the conclusion is equal	to the hypothesis and the claim
+	is trivial. Suppose, then, that $\gamma$ contains $k>0$ 1-cell symbols
+	and that the claim is true for all $\gamma$ containing fewer. Then
+	$\gamma$ is equal to $f(\delta_{1}, \dots, \delta_{m})$ for some
+	$m\in\N$, 1-cell symbol $f\in\T(\A_{1}, \dots, \A_{m}; \CB)$ and
+	1-cell expressions $\delta_{i}$. The context $\Gamma$ is equal to
+	$(\Gamma_{1}, \cdots, \Gamma_{m})$, where each $\Gamma_{i}$ contains
+	the names used in $\delta_{i}$.
+	%
+	For each $0\leq j\leq m$, let $c_{j}$ be the number of names in
+	$(\Gamma_{1},\cdots,\Gamma_{j})$. Thus
+	$\Gamma_{j} = (A_{c_{j-1}+1}\in\A_{c_{j-1}+1}, \cdots, A_{c_{j}}\in\A_{c_{j}})$.
+	%
+	The inductive hypothesis implies that, for each $1\leq i\leq m$, the
+	2-cell sequent
+	\[
+	\Delta_{c_{j-1}+1},\cdots,\Delta_{c_{j}}\proves \gamma_{j}[A_{i} := \phi_{i}]_{i}
+		: \gamma_{j}[A_{i} := \alpha_{i}]_{i} \to \gamma_{j}[A_{i} := \beta_{i}]_{i}
+		\in\CB.
+	\]
+	is derivable. Now apply the 1-cell application rule to these sequents and
+	the 1-cell symbol $f$, and the conclusion follows.
+\end{proof}
 
 \subsection{Equations}
 The final ingredient that we need to complete our description
-of $\T$ is a set $\T_{=}$ of equations between 2-cells.
-Formally, we could declare that $\T_{=}$ is a set of tuples
-$(\Gamma,\alpha,\beta,\phi,\psi)$, where 
-$\Gamma\proves\phi:\alpha\to\beta\in\A$ and
+of $\T$ is a collection of equations between 2-cells.
+Formally, we declare that for each pair
+$\Gamma\proves\alpha\in\A$ and $\Gamma\proves\beta\in\A$ of
+1-cell sequents, there is a set that we denote
+$\T_{=}(\Gamma\proves \alpha\to\beta\in\A)$. This set consists
+of pairs $(\phi,\psi)$,
+where $\Gamma\proves\phi:\alpha\to\beta\in\A$ and
 $\Gamma\proves\psi:\alpha\to\beta\in\A$ are derivable
 2-cell sequents.
 %
-We must of course require $\T_{=}$ to be invariant under renaming,
-again.
+We also require the collection of equations to be closed under renaming,
+so if $\sigma$ is a permutation of the set of names then
+\[
+	(\phi,\psi)\in\T_{=}(\Gamma\proves \alpha\to\beta\in\A)
+	\iff 
+	(\phi^{\sigma},\psi^{\sigma})\in\T_{=}(\Gamma^{\sigma}\proves \alpha^{\sigma}\to\beta^{\sigma}\in\A).
+\]
+In fact this restriction is not strictly necessary, since the
+axiom rule for equations (below) permits any 1-in-2 substitution instance
+of an equation to be used, but we retain it for the sake of
+consistency.
 
 The derivation rules for equations are as follows.
 There are three rules expressing
@@ -240,33 +385,41 @@ reflexive, symmetric, and transitive:
 	reflexivity:
 	\[\begin{prooftree}
 		\justifies
-		\phi=\phi:\alpha\to\beta\in\A
+		\Gamma\proves\phi=\phi:\alpha\to\beta\in\A
 		\using=_{r}
 	\end{prooftree}\]
 	\item symmetry:
 	\[\begin{prooftree}
-		\phi=\psi:\alpha\to\beta\in\A
+		\Gamma\proves\phi=\psi:\alpha\to\beta\in\A
 		\justifies
-		\psi=\phi:\alpha\to\beta\in\A
+		\Gamma\proves\psi=\phi:\alpha\to\beta\in\A
 		\using=_{s}
 	\end{prooftree}\]
 	\item and transitivity:
 	\[\begin{prooftree}
-		\psi=\gamma:\alpha\to\beta\in\A
+		\Gamma\proves\psi=\chi:\alpha\to\beta\in\A
 		\quad
-		\phi=\psi:\alpha\to\beta\in\A
+		\Gamma\proves\phi=\psi:\alpha\to\beta\in\A
 		\justifies
-		\phi=\gamma:\alpha\to\beta\in\A
+		\Gamma\proves\phi=\chi:\alpha\to\beta\in\A
 		\using=_{t}
 	\end{prooftree}\]
 \end{itemize}
-There is an axiom rule for equations:
+There is an axiom rule for equations, which allows us to use any 1-in-2 substitution
+instance of an equation axiom:
 \begin{itemize}
-	\item For every $(\Gamma,\alpha,\beta,\phi,\psi)\in\T_{=}$,
+	\item For every $(\Delta,\A,\alpha,\beta,\phi,\psi)\in\T_{=}$,
+	with $\Delta = (B_{1}\in\CB_{1}, \cdots, B_{n}\in\CB_{n})$,
 	\[\begin{prooftree}
+		\Gamma_{1} \proves \gamma_{1}\in\CB_{1}
+		\quad\cdots\quad
+		\Gamma_{n} \proves \gamma_{n}\in\CB_{n}
 		\justifies
-		\Gamma\proves \phi=\psi: \alpha\to\beta
-		\using \phi=\psi
+		\Gamma_{1}\cdots\Gamma_{n}
+			\proves \phi[B_{i}:=\gamma_{i}]_{i} = \psi[B_{i}:=\gamma_{i}]_{i}
+			: \alpha[B_{i}:=\gamma_{i}]_{i} \to \beta[B_{i}:=\gamma_{i}]_{i}
+			\in\A
+		\using (\phi=\psi)
 	\end{prooftree}\]
 \end{itemize}
 The next two rules express the idea that the 2-cell construction rules
@@ -279,48 +432,163 @@ should preserve equality:
 	\Gamma\proves \psi=\psi': \alpha\to\beta \in\A
 	\justifies
 	\Gamma\proves \phi\cdot\psi = \phi'\cdot\psi': \alpha\to\gamma \in\A
+	\using\mathrm{comp}
 \end{prooftree}\]
-\item The 1-cell application rule: for every $f\in\T(\A_{1},\dots,\A_{n};\CB)$,
+% \item 1-in-2 substitution preserves equality: for every
+% 	$f\in\T(\A_{1}, \dots, \A_{n}; \CB)$,
+% 	\begin{mspill}\begin{prooftree}
+% 		\Gamma, B\in\CB, \Delta \proves \phi=\phi':\alpha\to\beta \in\C
+% 		\justifies
+% 		\Gamma, A_{1}\in \A_{1}, \dots, A_{n}\in \A_{n},\Delta
+% 			\proves \phi[A:=f(\vec A)] = \phi'[A:=f(\vec A)]
+% 			: \alpha[A:=f(\vec A)]\to\beta[A:=f(\vec A)]
+% 			\in \C
+% 		\using \textrm{sub}(f)
+% 	\end{prooftree}\end{mspill}
+\item The 1-cell application rule preserves equality: for every
+	$f\in\T(\A_{1},\dots,\A_{n};\CB)$,
 	\[\begin{prooftree}
-		\Gamma_{1}\proves \tau_{1} = \tau'_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}
+		\Gamma_{1}\proves \phi_{1}=\phi'_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}
 		\quad \cdots \quad
-		\Gamma_{n}\proves \tau_{n} = \tau'_{n} : \alpha_{n}\to\beta_{n} \in \A_{n}
+		\Gamma_{n}\proves \phi_{n}=\phi'_{n} : \alpha_{n}\to\beta_{n} \in \A_{n}
 		\justifies
-		\Gamma_{1},\cdots,\Gamma_{n}\proves
-			f(\tau_{1},\dots,\tau_{n}) = f(\tau'_{1},\dots,\tau'_{n})
+		\Gamma_{1},\cdots,\Gamma_{n}
+			\proves f(\phi_{1},\dots,\phi_{n}) = f(\phi'_{1},\dots,\phi'_{n})
 			: f(\alpha_{1},\dots,\alpha_{n}) \to f(\beta_{1},\dots,\beta_{n})
 			\in\CB
+		\using f(\to)
 	\end{prooftree}\]
-	The names in the $\Gamma_{i}$ are again required to be pairwise disjoint.
-
-
+\end{itemize}
+Next, there are equations expressing the fact that 1-cell application
+preserves identities and composition:
+\begin{itemize}
+\item 1-cell application preserves identities: for every
+	$f\in\T(\A_{1},\dots,\A_{n};\CB)$,
+	\[\begin{prooftree}
+		\Gamma_{1}\proves \alpha_{1}\in \A_{1}
+		\quad\cdots\quad
+		\Gamma_{n}\proves \alpha_{n}\in \A_{n}
+		\justifies
+		\Gamma_{1},\cdots,\Gamma_{n} \proves
+			f(1_{\alpha_{1}}, \dots, 1_{\alpha_{n}}) = 1_{f(\alpha_{1}, \dots, \alpha_{n})}
+			\in\CB
+		\using f(1)
+	\end{prooftree}\]
+\item 1-cell application preserves composition: for every
+	$f\in\T(\A_{1},\dots,\A_{n};\CB)$,
+	\begin{mspill}\begin{prooftree}
+		\Gamma_{1}\proves\phi_{1}: \beta_{1}\to\gamma_{1}\in\A_{1}
+			\enskip \Gamma_{1}\proves\psi_{1}: \alpha_{1}\to\beta_{1}\in\A_{n}
+		\quad\dots\quad
+		\Gamma_{n}\proves\phi_{n}: \beta_{n}\to\gamma_{n}\in\A_{n}
+			\enskip \Gamma_{n}\proves\psi_{n}: \alpha_{n}\to\beta_{n}\in\A_{n}
+		\justifies
+		\Gamma_{1},\cdots,\Gamma_{n}
+		\proves f(\phi_{1},\dots,\phi_{n})\cdot f(\psi_{1},\dots,\psi_{n})
+			= f(\phi_{1}\cdot\psi_{1},\dots,\phi_{n}\cdot\psi_{n})
+			: f(\alpha_{1}, \dots, \alpha_{n})
+			\to f(\gamma_{1},\dots, \gamma_{n})
+			\in\CB
+		\using f(\cdot)
+	\end{prooftree}\end{mspill}
+\end{itemize}
+The identity 2-cells should be units for composition:
+\begin{itemize}
+\item Left identity:
+	\[\begin{prooftree}
+		\Gamma\proves \phi:\alpha\to\beta\in\CB
+		\justifies
+		\Gamma\proves 1_{\beta}\cdot\phi = \phi: \alpha\to\beta\in\CB
+		\using l_{\beta}
+	\end{prooftree}\]
+\item Right identity:
+	\[\begin{prooftree}
+		\Gamma\proves \phi:\alpha\to\beta\in\CB
+		\justifies
+		\Gamma\proves \phi\cdot1_{\alpha} = \phi: \alpha\to\beta\in\CB
+		\using r_{\beta}
+	\end{prooftree}\]
+\end{itemize}
+Finally, we have:
+\begin{itemize}
+\item The naturality rule:
+	for every $t\in \T^{\Gamma}_{\CB}[\alpha,\beta]$,
+	with $\Gamma = (A_{1}\in\A_{1}, \dots, A_{n}\in\A_{n})$,
+	\begin{mspill}\begin{prooftree}
+		\Gamma_{1}\proves\phi_{1}:\gamma_{1}\to\delta_{1}\in\A_{1}
+		\quad\cdots\quad
+		\Gamma_{n}\proves\phi_{n}:\gamma_{n}\to\delta_{n}\in\A_{n}
+		\justifies
+		\Gamma_{1}\cdots\Gamma_{n}
+			\proves \beta[A_{i} := \phi_{i}]_{i} \cdot t_{\gamma_{1},\dots, \gamma_{n}}
+				= t_{\delta_{1},\dots, \delta_{n}} \cdot \alpha[A_{i} := \phi_{i}]_{i}
+				: \alpha[A_{i} := \gamma_{i}]_{i} \to\beta[A_{i}:=\delta_{i}]_{i} \in \CB
+		\using t_{\natural} 
+	\end{prooftree}\end{mspill}
+	where the sets of names in the $\Gamma_{i}$ are pairwise disjoint.
+\end{itemize}
+The following proposition is just a sanity check of the equation rules.
+\begin{propn}
+	If \[\Gamma\proves\phi=\psi: \alpha\to\beta\in\CB\] is a derivable equation
+	sequent, then $\Gamma\proves\phi: \alpha\to\beta\in\CB$
+	and $\Gamma\proves\psi: \alpha\to\beta\in\CB$
+	are derivable 2-cell sequents.
+\end{propn}
+\begin{proof}
+	An easy induction over the derivation, using
+	Lemma~\ref{lemma-1in2} for the axiom rule and
+	Lemmas~\ref{lemma-1in2} and~\ref{lemma-2in1} for the naturality rule.
+\end{proof}
 
 \section{Interpretation}
-To interpret these sequents in a target Gray monoid $\B$, we need
-an interpretation of $\T$. An interpretation
-$v:\T\to\B$ consists of:
+To interpret these sequents in a target monoidal bicategory $\B$, we need
+an interpretation, or model, of $\T$. We begin by defining the interpretation
+in a Gray monoid, so suppose for now that $\B$ is a Gray monoid.
+A model $v:\T\to\B$ consists of:
 \begin{itemize}
 	\item for every $\A\in\T_{0}$, an object $v(\A)$ in $\B$;
 	\item for every $f\in\T(\A_{1},\dots,\A_{n};\CB)$, a 1-cell
 	\[
-		v(f): v(\A_{1})\tn\cdots v(\A_{n})\to v(\CB);
+		v(f): v(\A_{1})\tn\cdots\tn v(\A_{n})\to v(\CB);
 	\]
 	in $\B$.
+	\item for every $t\in\T^{\Gamma}_{\CB}[\alpha, \beta]$, a 2-cell
+	\[
+		v(t): \llbracket \Gamma\proves\alpha\in\CB \rrbracket_{v} \To
+			\llbracket \Gamma\proves\beta\in\CB \rrbracket_{v}
+	\]
+	where the function $\llbracket-\rrbracket_{v}$ is as defined for 1-cell
+	sequents below,
+	\item such that for every $(\Gamma,\alpha,\beta,\phi,\psi)\in\T_{=}$
+	we have
+	\[
+		\llbracket \Gamma\proves\phi:\alpha\to\beta \rrbracket_{v}
+		=
+		\llbracket \Gamma\proves\psi:\alpha\to\beta \rrbracket_{v}
+	\]
+	where the function $\llbracket-\rrbracket_{v}$ is as defined for 2-cell
+	sequents below.
 \end{itemize}
+If $\Gamma = (A_{1}\in\A_{1}, \cdots, A_{n}\in\A_{n})$ is a context, we write
+$v(\Gamma)$ as an abbreviation for $v(\A_{1})\tn\cdots\tn v(\A_{n})$.
 %
 \subsection{Interpretation of 1-cells}
-The semantic interpretation $\llbracket-\rrbracket_{v}$ of a 1-cell
-sequent is defined by induction over its derivation:
+The semantic interpretation $\semint-$ of a 1-cell
+derivation is defined by induction:
 \begin{itemize}
+% \item $\semint{A\in\C \proves A\in\C} = 1_{v(\C)}$,
 \item $\Bigl\llbracket	\begin{prooftree}
 	\justifies A\in\C \proves A\in\C \using (\C)
 \end{prooftree} \Bigr\rrbracket_{v} = 1_{v(\C)}$,
+% \item $\semint{\Gamma_{1}\cdots\Gamma_{n}\proves f(\alpha_{1}, \dots, \alpha_{n})}
+% 	= \Bigl( \semint{\Gamma_{1}\proves\} \Bigr)\o v(f)$,
+% 	where each $\Gamma_{i}$ contains the names that occur in $\alpha_{i}$.
 \item $\left\llbracket\begin{prooftree}
 		\[[\pi_{1}]\justifies\Gamma_{1}\proves \alpha_{1}\in \A_{1}\]
 		\quad\cdots\quad
 		\[[\pi_{n}]\justifies\Gamma_{n}\proves \alpha_{n}\in \A_{n}\]
 		\justifies
-		\Gamma_{1},\dots,\Gamma_{n} \proves f(\A_{1},\dots,\A_{n})\in\CB
+		\Gamma_{1},\dots,\Gamma_{n} \proves f(\alpha_{1},\dots,\alpha_{n})\in\CB
 		\using f(\bullet)
 	\end{prooftree}\right\rrbracket_{v}$
 	\newline\vskip1ex\strut\hfil$= v(f)\o\Bigl(
@@ -330,31 +598,583 @@ sequent is defined by induction over its derivation:
 	\tn\cdots\tn
 	\biggl\llbracket\begin{prooftree}
 		[\pi_{n}]\justifies\Gamma_{n}\proves \alpha_{n}\in \A_{n}
-	\end{prooftree}\Big\rrbracket_{v}
+	\end{prooftree}\biggr\rrbracket_{v}
 	\Bigr)$.
 \end{itemize}
+Since a derivable 1-cell sequent has a unique derivation, we may
+regard the input to the interpretation function as a sequent rather
+than a derivation. Clearly $\semint{\Gamma\proves \alpha\in\CB}$
+is always a 1-cell $v(\Gamma)\to v(\CB)$.
+%
+Where $\Gamma$ and $\CB$ are evident from the context, we shall
+abbreviate $\semint{\Gamma\proves \alpha\in\CB}$ to $\semint{\gamma}$.
 
-\section{Derivation-independence of the interpretation}
-As one would hope, the interpretation of a derivation depends only on
-the conclusion of that derivation, and not on the structure of the
-derivation itself. (This property of an interpretation
-is called \emph{coherence} by some authors: we prefer to call it
-derivation-independence, to avoid confusion, since it is not really
-a coherence property in the ordinary sense.)
+\subsection{Semantics of substitution}
+In order to define the interpretation of 2-cells (and, later, to
+show soundness) we shall need a careful analysis of the semantics
+of 1-cell substitution. The reason this is non-trivial is that the
+interchange law of a Gray monoid does not hold on the nose: there
+is some work to be done to account for this.
 
-The issue does not arise for 1-cell sequents, since the whole
-derivation is uniquely determined by the conclusion. For 2-cell
-sequents, there is some work to be done.
-\begin{propn}
-	If $D$ and $D'$ are two derivations of the 2-cell sequent
-	$\Gamma \proves \phi: \alpha \to \beta$, then $\llbracket D\rrbracket
-	= \llbracket D' \rrbracket$.
-\end{propn}
+\begin{definition}
+	Given arrows $f_{1}, \dots, f_{n}$ of a Gray monoid, we write
+	$\Tn_{i=1}^{n}f_{i}$ to mean $f_{1}\tn\cdots f_{n}$.
+\end{definition}
+\begin{definition}
+	Given arrows $f_{1}, \dots, f_{n}$ and $g_{1}, \dots, g_{n}$ of
+	a Gray monoid, let $\Ic_{i=1}^{n}(f_{i},g_{i})$ denote the
+	interchange isomorphism
+	\[
+		\Tn_{i=1}^{n}f_{i}\o\Tn_{i=1}^{n}g_{i}\to\Tn_{i=1}^{n}(f_{i}\o g_{i}).
+	\]
+	If $((f_{i,j})_{j=1}^{n_{i}})_{i=1}^{n}$
+	and $((g_{i,j})_{j=1}^{n_{i}})_{i=1}^{n}$
+	are nested sequences of 1-cells, then the interchange isomorphism
+	\[
+		\Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}f_{i}\o\Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}g_{i}
+		\to \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}(f_{i}\o g_{i})
+	\]
+	is denoted $(\Ic_{j=1}^{n_{i}})_{i=1}^{n}(f_{i,j},g_{i,j})$.
+\end{definition}
+\begin{remark}
+	We recall three fundamental properties of the interchange isomorphism:
+	\begin{enumerate}
+		\item $\Ic_{i=1}^{n}(f_{i},g_{i})$ is natural in the $f_{i}$ and $g_{i}$;
+		\item Given sequences $(f_{i})_{i=1}^{n}$, $(g_{i})_{i=1}^{n}$
+			and $(h_{i})_{i=1}^{n}$ of 1-cells, the diagram
+			\begin{diagram}
+				\Tn_{i=1}^{n}f_{i}\o \Tn_{i=1}^{n}g_{i}\o \Tn_{i=1}^{n}h_{i}
+					& \rTo^{\Ic_{i=1}^{n}(f_{i},g_{i})\o\Tn_{i=1}^{n}h_{i}}
+					& \Tn_{i=1}^{n}(f_{i}\o g_{i})\o\Tn_{i=1}^{n}h_{i} \\
+				\dTo<{\Tn_{i=1}^{n}f_{i}\o\Ic_{i=1}^{n}(g_{i},h_{i})}
+					&& \dTo>{\Ic_{i=1}^{n}(f_i\o g_{i}, h_{i})} \\
+				\Tn_{i=1}^{n}f_{i}\o\Tn_{i=1}^{n}(g_{i}\o h_{i})
+					& \rTo_{\Ic_{i=1}^{n}(f_{i}, g_{i}\o h_{i})}
+					& \Tn_{i=1}^{n}(f_{i}\o g_{i}\o h_{i})
+			\end{diagram}
+			commutes.
+		\item Given nested sequences $((f_{i,j})_{j=1}^{n_{i}})_{i=1}^{n}$
+			and $((g_{i,j})_{j=1}^{n_{i}})_{i=1}^{n}$, the diagram
+			\begin{diagram}
+				\Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}f_{i,j}\o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}g_{i,j}	
+					&& \rTo^{(\Ic_{j=1}^{n_{i}})_{i=1}^{n}(f_{i,j},g_{i,j})}
+					&& \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}(f_{i,j}\o g_{i,j}) \\
+				& \rdTo[snake=-1em]_{\Ic_{i=1}^{n}(\Tn_{j=1}^{n_{i}}f_{i,j}, \Tn_{j=1}^{n_{i}}g_{i,j})}
+					&& \ruTo[snake=1em]_{\Tn_{i=1}^{n}\Ic_{j=1}^{n_{i}}(f_{i,j},g_{i,j})} \\
+				&&\Tn_{i=1}^{n}( \Tn_{j=1}^{n_{i}}f_{i,j} \o \Tn_{j=1}^{n_{i}}g_{i,j} )
+			\end{diagram}
+			commutes.
+	\end{enumerate}
+\end{remark}
+The following simple Lemma will be useful later on.
+\begin{lemma}\label{lemma-ic}
+	Given a sequence $(f_{i})_{i=1}^{n}$
+	and nested sequences $((g_{i,j})_{j=1}^{n_{i}})_{i=1}^{n}$
+	and $((h_{i,j})_{j=1}^{n_{i}})_{i=1}^{n}$, the diagram
+	\begin{diagram}[labelstyle=\scriptstyle]
+		\Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} g_{i,j}
+			 \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j}
+			& \rTo^{\Tn_{i=1}^{n}f_{i} \o (\Ic_{j=1}^{n_{i}})_{i=1}^{n}(g_{i,j},h_{i,j})}
+			& \Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} (g_{i,j}\o h_{i,j}) \\
+		\dTo<{\Ic_{i=1}^{n}(f_{i},\Tn_{j=1}^{n_{i}}g_{i,j}) \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j}}
+		\\
+		\Tn_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g_{i,j}) \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j}
+			&& \dTo>{\Ic_{i=1}^{n}(f_{i},\Tn_{j=1}^{n_{i}} (g_{i,j}\o h_{i,j}))} \\
+		\dTo<{\Ic_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g_{i,j}, \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j})}
+		\\
+		\Tn_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g_{i,j} \o \Tn_{j=1}^{n_{i}} h_{i,j})
+			& \rTo_{\Tn_{i=1}^{n}( f_{i} \o \Ic_{j=1}^{n_{i}}(g_{i,j}, h_{i,j}) )}
+			& \Tn_{i=1}^{n}( f_{i} \o  \Tn_{j=1}^{n_{i}}(g_{i,j} \o h_{i,j}))
+	\end{diagram}
+	commutes.
+\end{lemma}
 \begin{proof}
-	
+	Consider the diagram
+	\begin{diagram}[labelstyle=\scriptstyle]
+		\Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} g_{i,j}
+			 \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j}
+			&& \rTo^{\Tn_{i=1}^{n}f_{i} \o (\Ic_{j=1}^{n_{i}})_{i=1}^{n}(g_{i,j},h_{i,j})}
+			&& \Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} (g_{i,j}\o h_{i,j}) \\
+		\dTo<{\Ic_{i=1}^{n}(f_{i},\Tn_{j=1}^{n_{i}}g_{i,j}) \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j}}
+			& \rdTo^{\Tn_{i=1}^{n}f_{i} \o \Ic_{i=1}^{n}(\Tn_{j=1}^{n_{i}} g_{i,j}, \Tn_{j=1}^{n_{i}} h_{i,j})}
+			&& \ruTo[snake=-2em]^{\Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Ic_{j=1}^{n_{i}}(g_{i,j}, h_{i,j})} \\
+		\Tn_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g_{i,j}) \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j}
+			\hskip2em
+			&& \Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}(\Tn_{j=1}^{n_{i}}g_{i,j} \o \Tn_{j=1}^{n_{i}}h_{i,j})
+			&& \dTo>{\Ic_{i=1}^{n}(f_{i},\Tn_{j=1}^{n_{i}} (g_{i,j}\o h_{i,j}))} \\
+		\dTo<{\Ic_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g_{i,j}, \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j})}
+			& \ldTo[snake=2em]_{\Ic_{i=1}^{n}(f_{i}, \Tn_{j=1}^{n_{i}} g_{i,j} \o \Tn_{j=1}^{n_{i}} h_{i,j})} \\
+		\Tn_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g_{i,j} \o \Tn_{j=1}^{n_{i}} h_{i,j})
+			&& \rTo_{\Tn_{i=1}^{n}( f_{i} \o \Ic_{j=1}^{n_{i}}(g_{i,j}, h_{i,j}) )}
+			&& \Tn_{i=1}^{n}( f_{i} \o  \Tn_{j=1}^{n_{i}}(g_{i,j} \o h_{i,j}))
+	\end{diagram}
+	whose regions commute for the reasons described in the Remark above.
+\end{proof}
+%
+Now let $\Gamma\proves \beta\in\C$ be a derivable 1-cell sequent, where
+$\Gamma = (B_{i}\in\CB_{i})_{i=1}^{n}$, and for each $1\leq i\leq n$
+let $\Delta_{i}\proves \alpha_{i}\in\CB_{i}$ be a derivable 1-cell sequent.
+We shall explicitly define an isomorphism
+\[
+	\norm_{\C}^{\Gamma}((\alpha_{i})_{i=1}^{n},\beta)
+		: \semint{\beta}\o\Tn_{i=i}^{n}\semint{\alpha_{i}}
+		\rTo^{\cong}
+		\semint{\beta[B_{i}:=\alpha_{i}]_{i=1}^{n}}
+\]
+The definition is by recursion over $\beta$. If $\beta = B_{1}$, then
+we use the identity. So suppose that $\beta = f(\beta_{1}, \dots, \beta_{m})$
+for some natural number $m$ and 1-cell symbol $f\in\T(\C_{1},\cdots,\C_{m};\D)$.
+For each $1\leq i\leq m$, let $m_{i}$ denote the
+number of names that occur in $\beta_{i}$, and let $B^{i}_{j}$
+denote $B_{j+\sum_{r<i}m_{r}}$ and $\alpha^{i}_{j}$ denote
+$\alpha_{j+\sum_{r<i}m_{r}}$, so that $(B_{i})_{i=1}^{n}$ is divided
+into the nested sequence $((B^{i}_{j})_{j=1}^{m_{i}})_{i=1}^{m}$,
+where the inner sequence $(B^{i}_{j})_{j=1}^{m_{i}}$ contains just
+the names that occur in $\beta_{i}$. In a similar way, divide the
+context $\Gamma$ into $(\Gamma_{1}, \cdots, \Gamma_{m})$ so that
+each $\Gamma_{i}$ contains the names that occur in $\beta_{i}$,
+i.e.\ $\Gamma_{i} = (B^{i}_{j}\in\B^{i_{j}})_{j=1}^{m_{i}}$, where
+the nested sequence $(\B^{i}_{j})$ is defined in the obvious way.
+
+Now, define $\norm^{\Gamma}_{\D}((\alpha_{i})_{i=1}^{n},\beta)$
+to be the composite
+\begin{diagram}
+	v(f) \o \Tn_{i=1}^{m}\semint{\beta_{i}} \o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\alpha^{i}_{j}}
+	\\
+	\dTo>{v(f) \o \Ic_{i=1}^{m}( \semint{\beta_{i}}, \Tn_{j=1}^{m_{j}}\semint{\alpha^{i}_{j}} )}
+	\\
+	v(f) \o \Tn_{i=1}^{m}( \semint{\beta_{i}} \o \Tn_{j=1}^{m_{i}}\semint{\alpha^{i}_{j}} )
+	\\
+	\dTo>{v(f) \o \Tn_{i=i}^{m} \norm^{\Gamma_{i}}_{\C_{i}}((\alpha^{i}_{j})_{j=1}^{m_{i}}, \beta_{i})}
+	\\
+	v(f) \o \Tn_{i=1}^{m}\semint{\beta_{i}[B^{i}_{j} := \alpha^{i}_{j}]_{j=1}^{m_{i}}}
+\end{diagram}
+This completes the recursive definition.
+
+We shall need the fact that the $\norm$ operation has a kind of
+associativity property, described in the following Proposition.
+This is absolutely fundamental, since it is used to show that Gray monoids
+have enough coherence for our language to be soundly interpretable.
+Unfortunately the somewhat cumbersome notation perhaps obscures the
+underlying simplicity here. It is to be hoped -- and I think expected --
+that a suitable general coherence theorem will eventually render this obvious.
+\begin{propn}
+	Let $\Gamma\proves\gamma\in\D$ be a derivable 1-cell sequent,
+	and 
+\end{propn}
+
+\subsection{Interpretation of 2-cells}
+The semantic interpretation of a 2-cell derivation is also defined by induction:
+\begin{itemize}
+\item
+	$\semint[bigg]{\begin{prooftree}
+		\Gamma\proves \alpha\in\A
+		\justifies
+		\Gamma\proves 1_{\alpha}: \alpha\to\alpha\in\A
+		\using 1
+	\end{prooftree}}
+	= 1_{\semint{\Gamma\proves \alpha\in\A}}$,
+\item
+	$\semint[bigg]{\begin{prooftree}
+		\[[\pi_{1}]\justifies\Gamma\proves \phi: \beta\to\gamma \in\A\]
+		\quad
+		\[[\pi_{2}]\justifies\Gamma\proves \psi: \alpha\to\beta \in\A\]
+		\justifies
+		\Gamma\proves \phi\cdot\psi: \alpha\to\gamma \in\A
+		\using \mathrm{comp}
+	\end{prooftree}}$
+	\newline\vskip1ex\strut\hfil$=
+	\semint[bigg]{\begin{prooftree}
+		[\pi_{1}]\justifies\Gamma\proves \phi: \beta\to\gamma \in\A
+	\end{prooftree}}
+	\cdot
+	\semint[bigg]{\begin{prooftree}
+		[\pi_{2}]\justifies\Gamma\proves \psi: \alpha\to\beta \in\A
+	\end{prooftree}}$,
+\item $\semint[Bigg]{\begin{prooftree}
+		\Gamma_{1}\proves\gamma_{1}\in\A_{1}
+		\quad\cdots\quad
+		\Gamma_{n}\proves\gamma_{n}\in\A_{n}
+		\justifies
+		\Gamma_{1}\cdots\Gamma_{n} \proves t_{\gamma_{1},\dots, \gamma_{n}}
+			: \alpha[A_{i} := \gamma_{i}]_{i} \to\beta[A_{i} := \gamma_{i}]_{i}
+			\in \CB
+		\using t_{\bullet} 
+	\end{prooftree}}$
+	\newline\vskip1ex\strut\hfil$=
+	v(t)\o\Bigl(
+		\semint{\Gamma_{1}\proves\gamma_{1}\in\A_{1}}
+		\tn\cdots\tn
+		\semint{\Gamma_{n}\proves\gamma_{n}\in\A_{n}}
+	\Bigr)$,
+\item $\semint[stretch]{\begin{prooftree}
+		\[[\pi_{1}]\justifies\Gamma_{1}\proves \phi_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}\]
+		\quad \cdots \quad
+		\[[\pi_{n}]\justifies\Gamma_{n}\proves \phi_{n} : \alpha_{n}\to\beta_{n} \in \A_{n}\]
+		\justifies
+		\Gamma_{1},\cdots,\Gamma_{n}\proves f(\phi_{1},\dots,\phi_{n})
+			: f(\alpha_{1},\dots,\alpha_{n}) \to f(\beta_{1},\dots,\beta_{n})
+			\in\CB
+		\using f(\to)
+	\end{prooftree}}$
+	\newline\vskip1ex\strut\hfil$=
+	v(f)\o \Bigl(
+	\semint[bigg]{\begin{prooftree}
+		[\pi_{1}]\justifies\Gamma_{1}\proves \phi_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}
+	\end{prooftree}}
+	\tn\cdots\tn
+	\semint[bigg]{\begin{prooftree}
+		[\pi_{n}]\justifies\Gamma_{n}\proves \phi_{n} : \alpha_{n}\to\beta_{n} \in \A_{n}
+	\end{prooftree}}
+	\Bigr)$.
+\end{itemize}
+For brevity, we shall sometimes omit the 1-cell information, and write
+$\semint{\Gamma\proves\phi\in\CB}$ rather than
+\(
+	\semint{\Gamma\proves\phi: \alpha\to\beta \in\CB}.
+\)
+
+\begin{lemma}[Semantics of 1-in-2 substitution]\label{lemma-sem-1in2}
+	Let
+	\[
+		\Gamma_{1} \proves \gamma_{1}\in\CB_{1}
+		\quad\cdots\quad
+		\Gamma_{n} \proves \gamma_{n}\in\CB_{n}
+	\]
+	be derivable 1-cell sequents, and let
+	\[
+		\Delta\proves \phi: \alpha\to\beta\in\C
+	\]
+	be a derivable 2-cell sequent with
+	$\Delta = (B_{1}\in\CB_{1}, \cdots, B_{n}\in\CB_{n})$.
+	Then
+	\begin{mmulti}
+		\semint{
+			\Gamma_{1}\cdots\Gamma_{n}
+				\proves \phi[B_{i}:=\gamma_{i}]_{i}
+				: \alpha[B_{i}:=\gamma_{i}]_{i} \to \beta[B_{i}:=\gamma_{i}]_{i}
+				\in\C
+		}
+		\\ =
+		\semint{\Delta\proves\phi:\alpha\to\beta\in\C}
+		\o
+		\Bigl(
+			\semint{\Gamma_{1}\proves \gamma_{1}\in\CB_{1}}
+			\tn\cdots\tn
+			\semint{\Gamma_{n}\proves \gamma_{n}\in\CB_{n}}
+		\Bigr)
+	\end{mmulti}
+\end{lemma}
+\begin{proof}
+	By induction over the derivation of $\Delta\proves \phi: \alpha\to\beta\in\C$.
 \end{proof}
 
 \section{Soundness}
+To make use of the equation rules, we need to show that the derivable equations
+hold in every model.
+\begin{propn}[Soundness]
+	If
+	\[
+		\Gamma\proves\phi=\psi: \alpha\to\beta \in\CB
+	\]
+	is a derivable equation sequent and $v$ is an interpretation
+	then
+	\[
+		\llbracket \Gamma\proves\phi: \alpha\to\beta \in\CB \rrbracket_{v}
+		=
+		\llbracket \Gamma\proves\psi: \alpha\to\beta \in\CB \rrbracket_{v}.
+	\]
+\end{propn}
+\begin{proof}
+	We consider in turn each of the derivation rules for equations.
+	In places we shall abbreviate
+	\[
+		\semint{\Gamma\proves\phi: \alpha\to\beta\in\CB}
+	\]
+	as $\semint{\phi}$.
+	\begin{itemize}
+	\item The reflexivity, symmetry and transitivity rules need no comment.
+	\item For the axiom rule, let $(\Delta,\A,\alpha,\beta,\phi,\psi)\in\T_{=}$ and let
+		\[
+			\Gamma_{1} \proves \gamma_{1}\in\CB_{1}
+			\quad\cdots\quad
+			\Gamma_{n} \proves \gamma_{n}\in\CB_{n}
+		\]
+		be derivable 1-cell sequents. We must show that
+		\begin{mmulti}
+			\semint{
+				\Gamma_{1}\cdots\Gamma_{n}
+					\proves \phi[B_{i}:=\gamma_{i}]_{i}
+					: \alpha[B_{i}:=\gamma_{i}]_{i} \to \beta[B_{i}:=\gamma_{i}]_{i}
+			}
+			\\ =
+			\semint{
+				\Gamma_{1}\cdots\Gamma_{n}
+					\proves \psi[B_{i}:=\gamma_{i}]_{i}
+					: \alpha[B_{i}:=\gamma_{i}]_{i} \to \beta[B_{i}:=\gamma_{i}]_{i}
+			}.
+		\end{mmulti}
+		By definition of model, we already know that
+		\(
+			\semint{\phi}
+			=
+			\semint{\psi},
+		\)
+		hence
+		\[
+			\semint{\phi}
+				\o
+				\Bigl(
+					\semint{\gamma_{1}}
+					\tn\cdots\tn
+					\semint{\gamma_{n}}
+				\Bigr)
+			=
+			\semint{\psi}
+				\o
+				\Bigl(
+					\semint{\gamma_{1}}
+					\tn\cdots\tn
+					\semint{\gamma_{n}}
+				\Bigr)
+		\]
+		which, by Lemma~\ref{lemma-sem-1in2}, is what we require.
+	\item Since both horizontal and vertical composition preserve equality
+		in a 2-category (or indeed in a bicategory), the rules expressing
+		that composition and 1-cell application preserve equality are sound.
+	\item Let $f\in\T(\A_{1},\dots,\A_{n};\CB)$ and let
+		\[
+			\Gamma_{1}\proves \alpha_{1}\in \A_{1}
+			\quad\cdots\quad
+			\Gamma_{n}\proves \alpha_{n}\in \A_{n}
+		\]
+		be derivable 1-cell sequents. Then
+		\begin{mmulti}[.5em]
+			\semint{f(1_{\alpha_{1}},\dots,1_{\alpha_{n}})}
+			\\= v(f)\o\Bigl(
+				\semint{1_{\alpha_{1}}}
+				\tn\cdots\tn
+				\semint{1_{\alpha_{n}}}
+			\Bigr)
+			\\= v(f)\o\Bigl(
+				1_{\semint{\alpha_{1}}}
+				\tn\cdots\tn
+				1_{\semint{\alpha_{n}}}
+			\Bigr)
+			\\= v(f)\o1_{
+				\semint{\alpha_{1}}
+				\tn\cdots\tn
+				\semint{\alpha_{n}}
+			}
+			\\= 1_{
+				v(f)\o(
+					\semint{\alpha_{1}}
+					\tn\cdots\tn
+					\semint{\alpha_{n}}
+				)
+			}
+			\\= \semint{
+					1_{f(\alpha_{1}, \dots, \alpha_{n})}
+			}
+		\end{mmulti}
+		showing that 1-cell application preserves identities.
+	\item Let $f\in\T(\A_{1},\dots,\A_{n};\CB)$ and let
+		\[
+			\Gamma_{1}\proves\phi_{1}: \beta_{1}\to\gamma_{1}\in\A_{1}
+			\quad\cdots\quad
+			\Gamma_{n}\proves\phi_{n}: \beta_{n}\to\gamma_{n}\in\A_{n}
+		\]
+		and
+		\[
+			\Gamma_{1}\proves\psi_{1}: \alpha_{1}\to\beta_{1}\in\A_{1}
+			\quad\cdots\quad
+			\Gamma_{n}\proves\psi_{n}: \alpha_{n}\to\beta_{n}\in\A_{n}
+		\]
+		be derivable 2-cell sequents. Now, we have
+		\begin{mmulti}[1em]
+			\semint{
+			\Gamma_{1},\cdots,\Gamma_{n}
+				\proves f(\phi_{1},\dots,\phi_{n})\cdot f(\psi_{1},\dots,\psi_{n})
+				%= f(\phi_{1}\cdot\psi_{1},\dots,\phi_{n}\cdot\psi_{n})
+				%: f(\alpha_{1}, \dots, \alpha_{n})
+				%\to f(\gamma_{1},\dots, \gamma_{n})
+				\in\CB
+			}
+			\\=
+			\semint{\Gamma_{1},\cdots,\Gamma_{n}
+				\proves f(\phi_{1},\dots,\phi_{n})\in\CB}
+			\cdot
+			\semint{\Gamma_{1},\cdots,\Gamma_{n}
+				\proves f(\psi_{1},\dots,\psi_{n})\in\CB}
+			\\=
+			\bigl( v(f)\o (
+				\semint{\phi_{1}}\tn\cdots\semint{\phi_{n}}
+			) \bigr)
+			\cdot
+			\bigl( v(f)\o (
+				\semint{\psi_{1}}\tn\cdots\semint{\psi_{n}}
+			) \bigr)
+			\\=
+			v(f)\o\bigl(
+				(\semint{\phi_{1}}\tn\cdots\semint{\phi_{n}})
+				\cdot (\semint{\psi_{1}}\tn\cdots\semint{\psi_{n}})
+			\bigr)
+			\\=
+			v(f)\o\bigl(
+				(\semint{\phi_{1}}\cdot\semint{\psi_{1}})
+				\tn\cdots\tn
+				(\semint{\phi_{n}}\cdot\semint{\psi_{n}})
+			\bigr)
+			\\=
+			v(f)\o\bigl(
+				(\semint{\phi_{1}}\cdot\semint{\psi_{1}})
+			\tn\cdots\tn
+				(\semint{\phi_{n}}\cdot\semint{\psi_{n}})
+			\bigr)
+			\\=
+			v(f)\o\bigl(
+				(\semint{\phi_{1}\cdot\psi_{1}})
+			\tn\cdots\tn
+				(\semint{\phi_{n}\cdot\psi_{n}})
+			\bigr)
+			\\=
+			\semint{f(\phi_{1}\cdot\psi_{1},\dots,\phi_{n}\cdot\psi_{n})}
+		\end{mmulti}
+		showing that 1-cell application does indeed preserve composition.
+	\item The left and right identity rules are obviously sound,
+		since $\semint{1_{\alpha}} = 1_{\semint{\alpha}}$ is a strict unit for
+		vertical composition in a Gray monoid.
+	\item For the naturality rule, let $t\in \T^{\Gamma}_{\CB}[\alpha,\beta]$
+	and let
+	\[
+		\Gamma_{1}\proves\phi_{1}:\gamma_{1}\to\delta_{1}\in\A_{1}
+		\quad\cdots\quad
+		\Gamma_{n}\proves\phi_{n}:\gamma_{n}\to\delta_{n}\in\A_{n}
+	\]
+	be derivable 2-cell sequents. Then
+	\begin{mmulti}
+		\semint{\beta[A_{i} := \phi_{i}]_{i} \cdot t_{\gamma_{1},\dots, \gamma_{n}}}
+		\\=
+		\semint{\beta[A_{i} := \phi_{i}]_{i}}\cdot\semint{t_{\gamma_{1},\dots, \gamma_{n}}}
+		\\=
+		\bigl(
+			(\semint{\phi_{1}}\tn\cdots\tn\semint{\phi_{n}})\o\semint{\beta}
+		\bigr)
+		\cdot
+		\bigl(
+			(\semint{\gamma_{1}}\tn\cdots\tn\semint{\gamma_{n}})
+			\o v(t)
+		\bigr)
+		\\=
+		(\semint{\phi_{1}}\tn\cdots\tn\semint{\phi_{n}})\o v(t)
+		\\=
+		\bigl(
+			(\semint{\delta_{1}}\tn\cdots\tn\semint{\delta_{n}})
+			\o v(t)
+		\bigr)
+		\cdot
+		\bigl(
+			(\semint{\phi_{1}}\tn\cdots\tn\semint{\phi_{n}})\o\semint{\alpha}
+		\bigr)
+		\\=
+		\semint{t_{\delta_{1},\dots, \delta_{n}}}
+		\cdot
+		\semint{\alpha[A_{i}:=\phi_{i}]_{i}}
+		\\=
+		\semint{t_{\delta_{1},\dots, \delta_{n}} \cdot \alpha[A_{i}:=\phi_{i}]_{i}}
+	\end{mmulti}
+	hence the naturality rule is sound.
+	\end{itemize}
+\end{proof}
+\section{The theory of pseudomonoids}
+Next we see how the language may be used to reason about pseudomonoids.
+We will define the theory $\M$ of pseudomonoids, and show that reasoning
+in the formal language corresponds precisely to the usual modes of reasoning
+about monoidal categories, and that a model on $\M$ is precisely a pseudomonoid.
+The theory concerns
+a single object $\C$, so $\M_{0} = \{\C\}$. There are two basic 1-cells,
+$J:\I\to\C$ and $P:\C\tn\C\to\C$, so formally we have $\M(;\C) = \{J\}$
+and $\M(\C,\C;\C):=\{P\}$. There are six basic 2-cells, corresponding to
+$\aa$, $\ll$, $\rr$ and their inverses. The 2-cell $\aa$ goes from
+\[
+	A\in\C, B\in\C, C\in\C \proves P(A,P(B,C))\in\C
+\]
+to
+\[
+	A\in\C, B\in\C, C\in\C \proves P(P(A,B),C)\in\C;
+\]
+formally, for every three distinct names $A$, $B$ and $C$ we have
+\[\M^{(A\in\C,B\in\C,C\in\C)}_{\C}[P(A,P(B,C)),P(P(A,B),C)] = \{\aa\}.\]
+Less pedantically, we could
+express this by saying: $\aa$ is a 2-cell with components
+\[
+	\aa_{A,B,C}: P(A,P(B,C)) \to P(P(A,B),C)
+\]
+for $A$, $B$, $C\in\C$.
+In fact we want $\aa$ to be an invertible 2-cell, which of course
+means that there is another 2-cell $\aa^{-1}$ with components
+\[
+	\aa^{-1}_{A,B,C}: P(P(A,B),C) \to P(A,P(B,C))
+\]
+such that $\aa_{A,B,C}\cdot\aa^{-1}_{A,B,C}$ and
+$\aa^{-1}_{A,B,C}\cdot\aa_{A,B,C}$ are identities.
+In terms of the formal definition of the theory $\M$, this means
+\[\M^\Gamma_{\C}[P(P(A,B),C),P(A,P(B,C))] = \{\aa^{-1}\},\]
+\[(\Gamma,\C,P(P(A,B),C),P(P(A,B),C),\aa^{-1}_{A,B,C}\cdot\aa_{A,B,C},
+1_{P(P(A,B),C)})\in\M_{=},\]
+\[(\Gamma,\C,P(A,P(B,C)),P(A,P(B,C)),\aa_{A,B,C}\cdot\aa^{-1}_{A,B,C},
+1_{P(A,P(B,C))})\in\M_{=},\]
+where $\Gamma=(A\in\C,B\in\C,C\in\C)$.
+
+In the same way, we want $\ll$ to be an invertible 2-cell with
+components
+\[
+	\ll_{A}: P(J(),A) \to A
+\]
+for $A\in\C$, and $\rr$ to be an invertible 2-cell with
+components
+\[
+	\rr_{A}: P(A,J()) \to A
+\]
+for $A\in\C$. (Formally, the theory $\M$ contains 2-cells $\ll$,
+$\ll^{-1}$, $\rr$ and $\rr^{-1}$, and four equations expressing
+that $\ll^{-1}$ is inverse to $\ll$ and $\rr^{-1}$ is inverse to $\rr$.)
+
+Finally, we have the pentagon and triangle axioms. Consider the
+pentagon:
+\begin{mspill}\begin{diagram}\dlabel{pentagon}
+  P\bigl(A,P(B,P(C,D))\bigr)
+	  &\rTo^{\aa_{A,P(B,C),D}}&P(P(A,B),P(C,D))
+	  &\rTo^{\aa_{P(A,B),C,D}} & P\bigl(P(P(A,B),C),D\bigr)
+  \\
+  &\rdTo[snake=-1em](1,2)<{P(A,\aa_{B,C,D})} &%\dnum[pentagon]
+	  & \ruTo[snake=1em](1,2)>{P(\aa_{A,B,C},D)}
+  \\
+  & \spleft{P\bigl(A,P(P(B,C),D)\big)}
+	  & \rTo_{\aa_{A,P(B,C),D}}
+	  & \spright{P\bigl(P(A,P(B,C)),D\bigr)}
+\end{diagram}\end{mspill}
+Of course, this diagram is just a convenient way of writing the equation
+\[
+	\aa_{A,P(B,C),D}\cdot \aa_{P(A,B),C,D}
+	=
+	P(A,\aa_{B,C,D})\cdot P(\aa_{A,B,C},D)\cdot \aa_{A,P(B,C),D}
+\]
+which we take as a formal equation of $\M$. Thus any model of $\M$
+must satisfy
+\[
+	\semint{\aa_{A,P(B,C),D}\cdot \aa_{P(A,B),C,D}}
+	=
+	\semint{P(A,\aa_{B,C,D})\cdot P(\aa_{A,B,C},D)\cdot \aa_{A,P(B,C),D}}
+\]
+(where we have omitted the type information inside the semantic brackets).
+Now,
+\begin{mmulti}
+	\semint{\aa_{A,P(B,C),D}\cdot \aa_{P(A,B),C,D}}
+	\\= \semint{\aa_{A,P(B,C),D}}\cdot\semint{\aa_{P(A,B),C,D}}
+	\\= \bigl(v(\aa) \o (v(\C)\tn v(P)\tn v(\C))\bigr) \cdot
+		\bigl(v(\aa) \o (v(P)\tn v(\C)\tn v(\C)\bigr)
+\end{mmulti}
 
 \bibliography{cs}
 \end{document}
