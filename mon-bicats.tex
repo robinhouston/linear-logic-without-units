@@ -462,6 +462,11 @@ indicates the 2-cell
 		& F((A\tn \I)\tn B) 
 	\end{diagram}
 \end{definition}
+\begin{definition}
+	A \emph{strong} monoidal pseudofunctor is a monoidal pseudofunctor $F$
+	for which the 1-cell $F^{\tn}_{\I}$ is an equivalence, and the pseudo-natural
+	transformation $F^{\tn}$ is a pseudo-natural equivalence.
+\end{definition}
 \begin{definition} % monoidal pseudo-natural transformation
 	A \emph{monoidal pseudo-natural transformation} $\gamma: F\To G: \B\to\BC$
 	between monoidal pseudo-functors $F$ and $G$ is a pseudo-natural transformation
@@ -726,7 +731,20 @@ indicates the 2-cell
 \end{definition}
 
 \section{On coherence}\label{s-coherence}
-The coherence theorem of \citet{GPS} implies that every monoidal bicategory
+This section aims to give a concise overview of the available coherence
+results for monoidal bicategories. In a later chapter (XXXX), we shall
+prove some further coherence results, which are then used to develop
+a framework that allows us to reason about pseudomonoids without becoming
+bogged down in coherence conditions. First, we survey
+the coherence results that do (and do not) exist in the literature.
+The existing coherence theorems apply to tricategories, of which monoidal
+bicategories are a special case: a tricategory with one object is essentially
+a monoidal bicategory, in just the same way that a bicategory with one
+object is essentially a monoidal category. We shall state the results
+as they apply to monoidal bicategories, since that is the situation of
+interest here.
+
+The original coherence theorem \citep{GPS} implies that every monoidal bicategory
 is monoidally biequivalent to a Gray monoid:
 \begin{definition}
 A \emph{Gray monoid} is a monoidal
@@ -761,72 +779,50 @@ tensor products of 1-cells in this way. Then the only structural
 or composites thereof. We shall label them merely with the symbol
 $\sim$ (as above), since there is no possible ambiguity.
 
-Furthermore, \citet{GurskiThesis} shows that every \emph{free} monoidal bicategory
+This line of work is extended by \citet{GurskiThesis}, who shows that
+every \emph{free} monoidal bicategory
 is monoidally biequivalent to a free Gray monoid on the same generators.
 In particular, Gurski shows that the \emph{canonical} monoidal pseudofunctor
 from the free monoidal bicategory to the free Gray monoid is a monoidal
 biequivalence.
 %
-These theorems mean that it is often possible to prove a theorem
-about monoidal bicategories in two stages:
-\begin{enumerate}
-	\item Prove the theorem for Gray monoids,
-	\item Use a coherence theorem to deduce that the result
-		holds for all monoidal bicategories.
-\end{enumerate}
-%
-Gurski's theorem is especially
-useful here, because it gives a general argument for the second stage
-that applies in an important class of cases. In particular it applies
-to problems of the following form: some data (objects, 1-cells,
-2-cells) are given, subject to axioms that take the form of
-equations between 2-cells. New structures are constructed in terms
-of the given data, and it's desired to show that some equations
-must hold between constructed 2-cells. (The chapter on pseudomonoids
-contains several theorems that follow this pattern, since a pseudomonoid
-is defined in terms of data and axioms as outlined above.) This kind of
-question is 
-essentially a question about the free monoidal bicategory generated
-by the data and axioms, since an equation holds in every such monoidal
-bicategory if and only if it holds in the free one. Now, if the equations
-can be proved for Gray monoids, then in particular they hold in the
-appropriate free Gray monoid. Gurski's theorem then implies that they
-hold in the free monoidal bicategory, hence in every monoidal bicategory.
+For our purposes, this theorem is not as useful as it sounds. For example,
+we should like to say that the free monoidal bicategory on a pseudomonoid
+object is canonically monoidally biequivalent to the free Gray monoid on
+a pseudomonoid object. I imagine this is true\footnote{
+	Let me be bold: I conjecture that the free monoidal bicategory on
+	a pseudomonoid object is canonically monoidally biequivalent to the free
+	\emph{strict 2-monoidal 2-category} on a pseudomonoid object, where
+	`2-monoidal' means that the tensor product is given by a 2-functor
+	rather than a general pseudofunctor.
+}, but it does not follow from
+Gurski's theorem. The reason is that the theorem applies only to free
+constructions of a particular sort, in which the 1-cell generators are of
+the form $X\to Y$, where $X$ and $Y$ are 0-cell generators. A pseudomonoid
+can not be described in this form, since it requires a `tensor' 1-cell
+$P:\C\tn\C\to\C$.
 
-Sadly there are other cases in which it's desirable to work in a Gray
-monoid to keep the diagrams manageable, to which this argument does
-not apply. The external version of Cayley's theorem for pseudomonoids
-(chapter~\chCayley) is such a case; there we'll have to work a little harder
-to establish the second stage of the argument.
-
-Gurski's theorem also justifies the labour-saving device of \emph{stating}
-equations (between 2-cells) in the Gray monoid setting: since the monoidal
-pseudofunctor from the free monoidal bicategory to the free Gray monoid is
-a monoidal biequivalence, it has a biequi\-valence-inverse that has the effect
-of inserting structural equivalences and 2-cells where necessary. This
-inverse is not uniquely determined -- it's unique only up to pseudonatural
-equivalence -- but of course any such choice will preserve equality
-of 2-cells. So, if an equation is stated and proved in the Gray monoid
-setting then:
-\begin{enumerate}
-	\item it's always possible to insert structural equivalences and
-		2-cells to reinterpret the equation in the general setting,
-	\item however this is done, the reinterpreted equation holds.
-\end{enumerate}
-
-So much for theorems. A practice adopted by many authors
-\citep[e.g.][]{MonBicat,HDA1} is to state \emph{definitions} for
-Gray monoids rather than general monoidal bicategories. This has
-the undeniable advantage that it makes the definitions simpler
-to state and use. The disadvantage is that there isn't generally a \emph{unique}
-way to reinterpret such a definition for general monoidal bicategories.
-To be sure, all such reinterpretations will be interconvertible, but
-there is nevertheless an unfortunate ambiguity. We shall avoid this
-problem by adopting a hybrid strategy: we'll describe the \emph{data}
-(pseudonatural transformations, modifications) in the general setting,
-but state our \emph{axioms} for Gray monoids. As explained above, there is
-never any ambiguity in stating an equation between 2-cells in the Gray monoid
-setting.
+Gurski also provides a strictification (Grayification?) construction,
+showing explicitly how to construct, for any monoidal bicategory $\B$,
+a Gray monoid $\Gr(\B)$ together with explicit monoidal biequivalences
+$e: \Gr(\B)\to\B$ and $f: \B\to\Gr(\B)$. Furthermore, for any strong
+monoidal pseudofunctor $F:\B\to\BC$, Gurski constructs a strict functor
+$\Gr F: \Gr(\B)\to\Gr(\BC)$ such that the diagrams
+\[
+	\begin{diagram}
+		\Gr(\B) & \rTo^{\Gr F} & \Gr(\BC) \\
+		\dTo<{e} && \dTo>{e} \\
+		\B & \rTo_{F} & \BC
+	\end{diagram}
+	\mbox{\quad and\quad}
+	\begin{diagram}
+		\B & \rTo^{F} & \BC \\
+		\dTo<{f} && \dTo>{f} \\
+		\Gr(\B) & \rTo_{\Gr F} & \Gr(\BC)
+	\end{diagram}
+\]
+commute up to monoidal equivalence. We make essential use of this
+construction in Chapter~XXXX.
 
 \section{Braided monoidal bicategories}\label{s-braiding}
 The history of attempts to define the concept of braided monoidal bicategory highlights
@@ -864,7 +860,8 @@ Thus the definition below is conceivably the first that
 includes all the structure known to be necessary at its natural level
 of strictness, though we do not claim that any new insight was needed
 to formulate it. (It is not unimaginable that further axioms should yet
-be found wanting, though this does not seem especially likely.)
+be found wanting, though the results of Chapter~XXXX provide strong
+evidence that these axioms do suffice.)
 %
 \begin{definition}\label{def-braiding}
 	A \defn{braiding} for a monoidal bicategory $\B$
@@ -902,8 +899,35 @@ be found wanting, though this does not seem especially likely.)
 		&A,
 	\end{diagram}
 	\]
-	subject to various axioms. As explained in section~\ref{s-coherence},
-	we state the axioms in the Gray monoid setting. There are four axioms
+	subject to various axioms. We have chosen to state these axioms in the
+	Gray monoid setting, since the general versions are horribly unwieldy.
+	This can be justified by the observation that the data
+	above may be transported across a monoidal biequivalence: given a
+	monoidal biequivalence (preferably a monoidal pseudo-adjoint biequivalence)
+	\[
+		\B \pile{\rTo^{F}\\\lTo_{G}} \BC
+	\]
+	between monoidal bicategories, braiding data for $\B$, say, induces
+	braiding data for $\BC$ in a canonical way. For example, the 1-cell
+	$s_{A,B}: A\tn B \to B\tn A$ in $\BC$ is defined as
+	\[
+		A\tn B \approx GFA\tn GFB \approx G(FA\tn FB)
+			\rTo_{G(s_{FA,FB})} G(FB\tn FA) \approx GFB\tn GFA \approx B\tn A.
+	\]
+	It is easy, though tedious, to check that all the braiding
+	data may be transported in this way. Given this, and the axioms below,
+	we may define a braided monoidal bicategory to be a monoidal bicategory
+	$\B$ equipped with braiding data, such that these data satisfy the axioms
+	when transported to $\Gr(\B)$. This is unsatisfyingly indirect, and
+	complicates the task of verifying these axioms of any particular monoidal
+	bicategory, but seems preferable to the alternative. One should
+	also verify that, given two Gray monoids $\B$ and $\BC$ and a monoidal
+	biequivalence as above, the braiding data for $\B$ satisfy the axioms
+	if and only if the transported data satisfy the axioms in $\BC$. I confess
+	I have not explicitly done this, though it seems unimaginable that
+	it could be false.
+	
+	The axioms follow. There are four axioms
 	that relate the $S$ modifications to each other:
 	\[
 	\hskip-1em
@@ -1022,6 +1046,10 @@ be found wanting, though this does not seem especially likely.)
 			A\tn B && \rTo_{s_{A,B}} && B\tn A
 		\end{diagram}
 	\end{array}\]
+\end{definition}
+\begin{definition}
+	A \emph{braided monoidal bicategory} is a monoidal bicategory
+	equipped with a braiding.
 \end{definition}
 
 \subsection{The duality of the definition}
