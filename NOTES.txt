@@ -25,7 +25,7 @@ Part I - Background
 
 Part II - Tools
 
- 5. Coherence of positive braidings
+ 5. More coherence for monoidal bicategories
 
  6. A language for Gray monoids
 
@@ -47,3 +47,17 @@ Part III - Models
 
 
 Don't forget to grep for /xxxx/i, to find places that need fixing
+
+"Deliberate" gaps:
+	- Prof is a braided monoidal bicategory;
+	- Transport of structure claims in definition of braided monoidal bicategory.
+	
+	There are two areas in which I am aware that the treatment is something
+	less than rigorous. The bicategory $\Prof$ is assumed to have a braided
+	monoidal structure, given in the obvious way. I am not aware that a
+	precise proof of this (presumed) fact exists in the literature, neither
+	do I supply one. Second, the definition of braiding for a monoidal
+	bicategory relies on some assertions, detailed in the definition,
+	that are more than plausible but less than obvious, and are
+	not proved in detail. Other than these, any departures from rigour
+	are unintentional.
