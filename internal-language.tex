@@ -540,9 +540,9 @@ The following proposition is just a sanity check of the equation rules.
 	Lemmas~\ref{lemma-1in2} and~\ref{lemma-2in1} for the naturality rule.
 \end{proof}
 
-\section{Interpretation}
+\section{Interpretation in a Gray monoid}
 To interpret these sequents in a target monoidal bicategory $\B$, we need
-an interpretation, or model, of $\T$. We begin by defining the interpretation
+an interpretation, or model, of $\T$. This section defines the interpretation
 in a Gray monoid, so suppose for now that $\B$ is a Gray monoid.
 A model $v:\T\to\B$ consists of:
 \begin{itemize}
@@ -618,7 +618,7 @@ is some work to be done to account for this.
 
 \begin{definition}
 	Given arrows $f_{1}, \dots, f_{n}$ of a Gray monoid, we write
-	$\Tn_{i=1}^{n}f_{i}$ to mean $f_{1}\tn\cdots f_{n}$.
+	$\Tn_{i=1}^{n}f_{i}$ to mean \[f_{1}\tn\cdots\tn f_{n}.\]
 \end{definition}
 \begin{definition}
 	Given arrows $f_{1}, \dots, f_{n}$ and $g_{1}, \dots, g_{n}$ of
@@ -758,13 +758,129 @@ have enough coherence for our language to be soundly interpretable.
 Unfortunately the somewhat cumbersome notation perhaps obscures the
 underlying simplicity here. It is to be hoped -- and I think expected --
 that a suitable general coherence theorem will eventually render this obvious.
-\begin{propn}
+\begin{propn}[Double norm]\label{prop-double-norm}
 	Let $\Gamma\proves\gamma\in\D$ be a derivable 1-cell sequent,
-	and 
+	where $\Gamma = (C_{i}\in\C_{i})_{i=1}^{n}$. For each $1\leq i\leq n$,
+	let $\Delta_{i}\proves\beta_{i} \in\C_{i}$ be a derivable 1-cell sequent,
+	where $\Delta_{i} = (B^{i}_{j}\in\CB^{i}_{j})_{j=1}^{n_{i}}$. For each $1\leq i\leq n$
+	and $1\leq j\leq n_{i}$, let $\Xi^{i}_{j}\proves\alpha^{i}_{j}\in\CB^{i}_{j}$
+	be a derivable 1-cell sequent. Then the diagram
+	\begin{diagram}
+		\semint{\gamma}
+			\o \Tn_{i=1}^{n}\semint{\beta_{i}}\o\Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}\semint{\alpha^{i}_{j}}
+			& \rTo^{\semint{\gamma}
+				\o \Ic_{i=1}^{n}(\semint{\beta_{i}}, \Tn_{j=1}^{n_{i}}\semint{\alpha^{i}_{j}})}
+			& \semint{\gamma} \o \Tn_{i=1}^{n}( \semint{\beta_{i}}
+				\o \Tn_{j=1}^{n_{i}}\semint{\alpha^{i}_{j}} ) \\
+		\dTo[uppershortfall=-3pt,lowershortfall=0pt]>{\norm^{\Gamma}_{\D}\bigl((\beta_{i})_{i=1}^{n}, \gamma\bigr)
+		 	\o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}\semint{\alpha^{i}_{j}}}
+			& \ruTo[crab=-2em,shortfall=0pt](0,2)<{\semint{\gamma}
+				\o \Tn_{i=1}^{n}\norm^{\Delta_{i}}_{\C_{i}}\bigl((\alpha^{i}_{j})_{j=1}^{n_{i}}, \beta_{i}\bigr)} \\
+		\semint{\gamma[C_{i} := \beta_{i}]_{i=1}^{n}}
+			\o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}\semint{\alpha^{i}_{j}}
+			&& \semint{\gamma} \o \Tn_{i=1}^{n}\semint{\beta_{i}[B^{i}_{j} := \alpha^{i}_{j}]_{j=1}^{n_{i}}}
+			\\
+		\dTo[uppershortfall=-3pt]>{
+			\norm^{(\Delta_{i})_{i=1}^{n}}_{\D}\bigl(((\alpha^{i}_{j})_{j=1}^{n_{i}})_{i=1}^{n},
+				\gamma[C_{i} := B_{i}]_{i=1}^{n}\bigr)}
+			& \ruTo[crab=-2em,shortfall=0pt](0,2)<{\norm^{\Gamma}_{\D}\bigl((\beta_{i}[B^{i}_{j} := \alpha^{i}_{j}]_{j=1}^{n_{i}})_{i=1}^{n}, \gamma\bigr)} \\
+		\semint{\gamma[C_{i} := \beta_{i}]_{i=1}^{n}[[B^{i}_{j} := \alpha^{i}_{j}]_{j=1}^{n_{i}}]_{i=1}^{n}}
+			& \rTo_{=}
+			& \semint{\gamma[C_{i} := \beta_{i}[B^{i}_{j} := \alpha^{i}_{j}]_{j=1}^{n_{i}}]_{i=1}^{n}}
+	\end{diagram}
+	commutes.
 \end{propn}
+\begin{proof}
+	\def\<#1>{\langle#1\rangle}
+	The proof is by induction over $\gamma$. If $\gamma$ is a constant then the diagram
+	trivially commutes, so suppose that $\gamma = f(\gamma_{1}, \dots, \gamma_{m})$ for
+	some natural number $m$ and 1-cell symbol $f\in\T(\A_{1}, \dots, \A_{m}; \D)$.
+	For each $1\leq i\leq m$, let $m_{i}$ denote the number of names that occur
+	in $\gamma_{i}$, and for each $1\leq j\leq m_{i}$ let $\<i,j>$
+	denote $j+\sum_{r<i}m_{i}$. Thus the names occurring in $\gamma_{i}$ are
+	$C_{\<i,1>}, \cdots, C_{\<i, m_{i}>}$. Write $\Gamma_{i}$
+	for the context of $\gamma_{i}$, i.e.\ \[\Gamma_{i} =
+	(C_{\<i,1>}\in\C_{\<i,1>},
+	\cdots, C_{\<i, m_{i}>}\in\C_{\<i, m_{i}>}).\]
+	\begin{sidewaysfigure}
+	\begin{diagram}[labelstyle=\scriptstyle,hug]
+		v(f) \o \Tn_{i=1}^{m}\bigl( \semint{\gamma_{i}} \o \Tn_{j=i}^{m_{i}}\semint{\beta_{\<i,j>}} \bigr)
+				\o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\Tn_{k=1}^{n_{\<i,j>}}\semint{\alpha^{\<i,j>}_{k}}
+			&& \lTo^{\Ic}
+			&& v(f)\o\Tn_{i=1}^{n}\semint{\gamma_{i}}
+				\o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\beta_{\<i,j>}}
+				\o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\Tn_{k=1}^{n_{\<i,j>}}\semint{\alpha^{\<i,j>}_{k}} \\
+		\dTo<{\norm} & \rdTo(2,3)[nohug]^{\Ic} &&& \dTo>{\Ic} \\
+		v(f)\o\Tn_{i=1}^{m}\semint{\gamma_{i}[C_{\<i,j>} := \beta_{\<i,j>}]_{j=1}^{m_{i}}}
+				\o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\Tn_{k=1}^{n_{\<i,j>}}\semint{\alpha^{\<i,j>}_{k}}
+			&&&& v(f) \o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\gamma_{i}}
+				\o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}(\semint{\beta_{\<i,j>}}
+					\o\Tn_{k=1}^{n_{\<i,j>}}\semint{\alpha^{\<i,j>}_{k}}) \\
+		\dTo<{\Ic}
+			&& v(f)\o \Tn_{i=1}^{m}\bigl(
+					\semint{\gamma_{i}}
+					\o \Tn_{j=1}^{m_{i}}\semint{\beta_{\<i,j>}}
+					\o \Tn_{j=1}^{m_{i}}\Tn_{k=1}^{n_{\<i,j>}}\semint{\alpha^{\<i,j>}_{k}}
+				\bigr)
+			& \ldTo(2,3)[nohug]^{\Ic} & \dTo>{\norm} \\
+		v(f)\o\Tn_{i=1}^{n}\bigl(
+				\semint{\gamma_{i}[C_{\<i,j>} := \beta_{\<i,j>}]_{j=1}^{m_{i}}}
+					\o \Tn_{j=1}^{m_{i}}\Tn_{k=1}^{n_{\<i,j>}}\semint{\alpha^{\<i,j>}_{k}}
+				\bigr)
+			& \ldTo(2,1)[nohug]^{\Ic} & \dTo>{\Ic}
+			&& v(f)\o\Tn_{i=1}^{m}\semint{\gamma_{i}}
+				\o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}
+					\semint{\beta_{\<i,j>}[B^{\<i,j>}_{k} := \alpha^{\<i,j>}_{k}]_{k=1}^{n_{\<i,j>}}} \\
+		\dTo<{\norm}
+			&& v(f)\o\Tn_{i=1}^{m}\bigl(
+					\semint{\gamma_{i}}
+					\o \Tn_{j=1}^{m_{i}}(
+						\semint{\beta_{\<i,j>}}
+						\o \Tn_{k=1}^{n_{\<i,j>}}\semint{\alpha^{\<i,j>}_{k}}
+					)
+				\bigr)
+			&& \dTo>{\Ic} \\
+		v(f) \o \Tn_{i=1}^{m}\semint{
+				\gamma_{i}[C_{\<i,j>} := \beta_{\<i,j>}]_{j=1}^{m_{i}}
+				[[
+					B^{\<i,j>}_{k} := \alpha^{\<i,j>}_{k}
+				]_{k=1}^{n_{\<i,j>}}]_{j=1}^{m_{i}}
+			}
+			&&& \rdTo(2,1)^{\norm}
+			& v(f) \o \Tn_{i=1}^{m}\bigl(
+				\semint{\gamma_{i}}
+					\o \Tn_{j=1}^{m_{i}}\semint{
+						\beta_{\<i,j>}[B^{\<i,j>}_{k} := \alpha^{\<i,j>}_{k}]_{k=1}^{n_{\<i,j>}}
+					}
+				\bigr) \\
+		& \rdTo_{=} && \ldTo_{\norm} \\
+		&& v(f)\o\Tn_{i=1}^{m}\semint{
+				\gamma_{i}[C_{\<i,j>} := \beta_{\<i,j>}[
+					B^{\<i,j>}_{k} := \alpha^{\<i,j>}_{k}
+				]_{k=1}^{n_{\<i,j>}}]_{j=1}^{m_{i}}
+			}
+	\end{diagram}
+	\caption{The inductive step in the proof of the Double norm Proposition}\label{diag-dn}
+	\end{sidewaysfigure}
+	Consider the diagram in Figure~\ref{diag-dn}. Each arrow has been marked with
+	just its principal ingredient, $\Ic$ or $\norm$: the full definition can be uniquely recovered
+	by considering the source and target types. For example, the horizontal arrow is
+	\[
+		v(f) \o \Ic_{i=1}^{n}(\semint{\gamma_{i}}, \Tn_{j=1}^{m_{i}}\semint{\beta_{\<i,j>}})
+			\o \Tn_{i=1}^{n}\Tn_{j=1}^{m_{i}}\Tn_{k=1}^{n_{\<i,j>}}\semint{\alpha^{\<i,j>}_{k}}.
+	\]
+	By definition of $\norm$, the outer edge of this diagram corresponds to our claim.
+	The lower region commutes by the inductive hypothesis, and the upper region by
+	Lemma~\ref{lemma-ic}. The quadrilaterals commute by naturality of $\Ic$. Thus
+	the outside commutes, which proves the claim.
+\end{proof}
 
 \subsection{Interpretation of 2-cells}
-The semantic interpretation of a 2-cell derivation is also defined by induction:
+The semantic interpretation of a 2-cell derivation is also defined by induction.
+As for 1-cells, we define the interpretation on derivations, but since each
+derivable 2-cell sequent has a unique derivation the interpretation may be
+applied directly to derivable sequents. Also, we sometimes omit the type
+information when it is obvious from the context.
 \begin{itemize}
 \item
 	$\semint[bigg]{\begin{prooftree}
@@ -782,15 +898,15 @@ The semantic interpretation of a 2-cell derivation is also defined by induction:
 		\justifies
 		\Gamma\proves \phi\cdot\psi: \alpha\to\gamma \in\A
 		\using \mathrm{comp}
-	\end{prooftree}}$
-	\newline\vskip1ex\strut\hfil$=
-	\semint[bigg]{\begin{prooftree}
-		[\pi_{1}]\justifies\Gamma\proves \phi: \beta\to\gamma \in\A
-	\end{prooftree}}
-	\cdot
-	\semint[bigg]{\begin{prooftree}
-		[\pi_{2}]\justifies\Gamma\proves \psi: \alpha\to\beta \in\A
-	\end{prooftree}}$,
+	\end{prooftree}} = \semint{\phi}\cdot\semint{\psi}$.
+	% \newline\vskip1ex\strut\hfil$=
+	% \semint[bigg]{\begin{prooftree}
+	% 	[\pi_{1}]\justifies\Gamma\proves \phi: \beta\to\gamma \in\A
+	% \end{prooftree}}
+	% \cdot
+	% \semint[bigg]{\begin{prooftree}
+	% 	[\pi_{2}]\justifies\Gamma\proves \psi: \alpha\to\beta \in\A
+	% \end{prooftree}}$,
 \item $\semint[Bigg]{\begin{prooftree}
 		\Gamma_{1}\proves\gamma_{1}\in\A_{1}
 		\quad\cdots\quad
@@ -801,12 +917,16 @@ The semantic interpretation of a 2-cell derivation is also defined by induction:
 			\in \CB
 		\using t_{\bullet} 
 	\end{prooftree}}$
-	\newline\vskip1ex\strut\hfil$=
-	v(t)\o\Bigl(
-		\semint{\Gamma_{1}\proves\gamma_{1}\in\A_{1}}
-		\tn\cdots\tn
-		\semint{\Gamma_{n}\proves\gamma_{n}\in\A_{n}}
-	\Bigr)$,
+	\newline\vskip0ex
+	is defined to be the composite
+	\begin{diagram}
+		\semint{\alpha[A_{i} := \gamma_{i}]_{i}}
+			&& \semint{\beta[A_{i} := \gamma_{i}]_{i}}. \\
+		\dTo<{\norm^{-1}} && \uTo>{\norm} \\
+		\semint{\alpha}\o\Tn_{i=1}^{n}\semint{\gamma_{i}}
+			&\rTo^{v(t)\o\Tn_{i=1}^{n}\semint{\gamma_{i}}}
+				&\semint{\beta}\o\Tn_{i=1}^{n}\semint{\gamma_{i}}		
+	\end{diagram}
 \item $\semint[stretch]{\begin{prooftree}
 		\[[\pi_{1}]\justifies\Gamma_{1}\proves \phi_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}\]
 		\quad \cdots \quad
@@ -818,23 +938,19 @@ The semantic interpretation of a 2-cell derivation is also defined by induction:
 		\using f(\to)
 	\end{prooftree}}$
 	\newline\vskip1ex\strut\hfil$=
-	v(f)\o \Bigl(
-	\semint[bigg]{\begin{prooftree}
-		[\pi_{1}]\justifies\Gamma_{1}\proves \phi_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}
-	\end{prooftree}}
-	\tn\cdots\tn
-	\semint[bigg]{\begin{prooftree}
-		[\pi_{n}]\justifies\Gamma_{n}\proves \phi_{n} : \alpha_{n}\to\beta_{n} \in \A_{n}
-	\end{prooftree}}
-	\Bigr)$.
+	v(f) \o \Tn_{i=1}^{n}\semint{\phi_{i}}$.
+	% v(f)\o \Bigl(
+	% \semint[bigg]{\begin{prooftree}
+	% 	[\pi_{1}]\justifies\Gamma_{1}\proves \phi_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}
+	% \end{prooftree}}
+	% \tn\cdots\tn
+	% \semint[bigg]{\begin{prooftree}
+	% 	[\pi_{n}]\justifies\Gamma_{n}\proves \phi_{n} : \alpha_{n}\to\beta_{n} \in \A_{n}
+	% \end{prooftree}}
+	% \Bigr)$.
 \end{itemize}
-For brevity, we shall sometimes omit the 1-cell information, and write
-$\semint{\Gamma\proves\phi\in\CB}$ rather than
-\(
-	\semint{\Gamma\proves\phi: \alpha\to\beta \in\CB}.
-\)
 
-\begin{lemma}[Semantics of 1-in-2 substitution]\label{lemma-sem-1in2}
+\begin{propn}[Semantics of 1-in-2 substitution]\label{prop-sem-1in2}
 	Let
 	\[
 		\Gamma_{1} \proves \gamma_{1}\in\CB_{1}
@@ -848,25 +964,198 @@ $\semint{\Gamma\proves\phi\in\CB}$ rather than
 	be a derivable 2-cell sequent with
 	$\Delta = (B_{1}\in\CB_{1}, \cdots, B_{n}\in\CB_{n})$.
 	Then
-	\begin{mmulti}
+	\[
 		\semint{
 			\Gamma_{1}\cdots\Gamma_{n}
 				\proves \phi[B_{i}:=\gamma_{i}]_{i}
 				: \alpha[B_{i}:=\gamma_{i}]_{i} \to \beta[B_{i}:=\gamma_{i}]_{i}
 				\in\C
 		}
-		\\ =
-		\semint{\Delta\proves\phi:\alpha\to\beta\in\C}
-		\o
-		\Bigl(
-			\semint{\Gamma_{1}\proves \gamma_{1}\in\CB_{1}}
-			\tn\cdots\tn
-			\semint{\Gamma_{n}\proves \gamma_{n}\in\CB_{n}}
-		\Bigr)
-	\end{mmulti}
-\end{lemma}
+	\]
+	is equal to the composite
+	\begin{diagram}
+		\semint{\alpha[B_{i} := \gamma_{i}]_{i}}
+			&& \semint{\beta[B_{i} := \gamma_{i}]_{i}}. \\
+		\dTo<{\norm^{-1}} && \uTo>{\norm} \\
+		\semint{\alpha}\o\Tn_{i=1}^{n}\semint{\gamma_{i}}
+			&\rTo^{\semint{\phi}\o\Tn_{i=1}^{n}\semint{\gamma_{i}}}
+				&\semint{\beta}\o\Tn_{i=1}^{n}\semint{\gamma_{i}}		
+	\end{diagram}
+\end{propn}
 \begin{proof}
-	By induction over the derivation of $\Delta\proves \phi: \alpha\to\beta\in\C$.
+	\def\<#1>{\langle#1\rangle}
+	The proof is by induction over the derivation of $\phi$:
+	the non-trivial cases are 1-cell application and the axiom rule.
+	For 1-cell application, let $\phi = f(\phi_{1}, \dots, \phi_{m})$.
+	As before, let $m_{i}$ be the number of names occurring in $\phi_{i}$,
+	and let $\<i,j> = j+\sum_{r<i}m_{i}$.
+	Now consider the diagram
+	\begin{diagram}[labelstyle=\scriptstyle]
+		v(f)\o\Tn_{i=1}^{m}\semint{\alpha_{i}[B_{\<i,j>} := \gamma_{\<i,j>}]_{j=1}^{m_{i}}}
+		& \rTo^{ v(f)\o\Tn_{i=1}^{m}\semint{\phi_{i}[B_{\<i,j>} := \gamma_{\<i,j>}]_{j=1}^{m_{i}}} }
+		& v(f)\o\Tn_{i=1}^{m}\semint{\beta_{i}[B_{\<i,j>} := \gamma_{\<i,j>}]_{j=1}^{m_{i}}} \\
+		\dTo<{v(f) \o \Tn_{i=1}^{m}\norm^{-1}((\gamma_{\<i,j>})_{j}, \alpha_{i})}
+		&& \uTo<{v(f) \o \Tn_{i=1}^{m}\norm((\gamma_{\<i,j>})_{j}, \beta_{i})} \\
+		v(f)\o\Tn_{i=1}^{m}\bigl(
+				\semint{\alpha_{i}} \o \Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}
+			\bigr)
+			& \rTo^{v(f)\o\Tn_{i=1}^{m}\bigl(
+				\semint{\phi_{i}} \o \Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}
+			\bigr)}
+			& v(f)\o\Tn_{i=1}^{m}\bigl(
+				\semint{\beta_{i}} \o \Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}
+			\bigr) \\
+			\dTo<{v(f)\o \Ic_{i=1}^{m}(
+					\semint{\alpha_{i}}, \Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}
+				)^{-1}}
+				&& \uTo<{v(f)\o \Ic_{i=1}^{m}(
+					\semint{\beta_{i}}, \Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}
+				)} \\
+			v(f) \o \Tn_{i=1}^{m}\semint{\alpha_{i}}
+					\o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}
+				& \rTo_{v(f) \o \Tn_{i=1}^{m}\semint{\phi_{i}}
+					\o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}}
+				& v(f) \o \Tn_{i=1}^{m}\semint{\beta_{i}}
+					\o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}
+	\end{diagram}
+	where the upper square commutes by definition, and the lower square
+	commutes by naturality of $\Ic$. Thus the outside commutes: the left-hand
+	vertical edge is equal, by definition, to $\norm((\gamma_{i})_{i=1}^{n}, \alpha)^{-1}$,
+	and similarly the right-hand edge is equal to $\norm((\gamma_{i})_{i=1}^{n}, \beta)$.
+	The top edge is equal, again by definition, to $\semint{\phi[B_{i} := \gamma_{i}]_{i=1}^{n}}$,
+	and the lower edge to $\semint{\phi}\o\Tn_{i=1}^{n}\semint{\gamma_{\<i,j>}}$.
+	
+	For the axiom rule, let $\phi = t_{\delta_{1}, \dots, \delta_{m}}$,
+	where $t\in\T^{(A_{i}\in\A_{i})_{i=1}^{m}}_{\C}[\lambda, \mu]$.
+	Note that \[
+		\alpha = \lambda[A_{i} := \delta_{i}]_{i=1}^{m}
+		\mbox{\quad and\quad}
+		\beta = \lambda[A_{i} := \delta_{i}]_{i=1}^{l}.
+	\]
+	Let $m_{i}$ be the number of names occurring in $\delta_{i}$,
+	and let $\<i,j> = j+\sum_{r<i}m_{i}$. Note in particular that
+	\[
+		\Tn_{i=1}^{n}\semint{\gamma_{i}} = \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}.
+	\]	
+	Now consider the diagram
+	\begin{diagram}
+		\semint{
+			\lambda[A_{i} := \delta_{i}[B_{\<i,j>} := \gamma_{\<i,j>}]_{j=1}^{m_{i}}]_{i=1}^{m}
+		}
+			& \rTo^{\semint{\phi[B_{i} := \gamma_{i}]_{i=1}^{n}}}
+			& \semint{
+				\mu[A_{i} := \delta_{i}[B_{\<i,j>} := \gamma_{\<i,j>}]_{j=1}^{m_{i}}]_{i=1}^{m}
+			} \\
+		\dTo<{\norm^{-1}} && \uTo>{\norm} \\
+		\semint{\lambda} \o \Tn_{i=1}^{m}\semint{\delta_{i}[B_{\<i,j>} := \gamma_{\<i,j>}]_{j=1}^{m_{i}}}
+			& \rTo^{v(t) \o \Tn_{i=1}^{m}(\cdots)}
+			& \semint{\mu}
+				\o \Tn_{i=1}^{m}\semint{\delta_{i}[B_{\<i,j>} := \gamma_{\<i,j>}]_{j=1}^{m_{i}}} \\
+		\dTo<{\semint{\lambda}\o\Tn_{i}\norm^{-1}} && \uTo>{\semint{\mu}\o\Tn_{i=1}^{m}\norm} \\
+		\semint{\lambda} \o \Tn_{i=1}^{m}\bigl(
+				\semint{\delta_{i}} \o \Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}
+			\bigr)
+			& \rTo^{v(t) \o \Tn_{i=1}^{m}(\cdots)}
+			& \semint{\mu} \o \Tn_{i=1}^{m}\bigl(
+				\semint{\delta_{i}} \o \Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}
+			\bigr) \\
+			\dTo<{\semint{\lambda}\o\Ic^{-1}} && \uTo>{\semint{\mu}\o\Ic} \\
+			\semint{\lambda} \o \Tn_{i=1}^{m}
+				\semint{\delta_{i}} \o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}
+			& \rTo_{v(t)\o \Tn_{i}\Tn_{j}\semint{\delta_{\<i,j>}}}
+			& \semint{\mu} \o \Tn_{i=1}^{m}
+				\semint{\delta_{i}} \o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}
+	\end{diagram}
+	The upper square commutes by definition of $\semint{\phi[B_{i} := \gamma_{i}]_{i=1}^{n}}$,
+	and the other two squares commute by the 2-categorical interchange law, hence
+	the outside commutes.
+	Now, applying the Double norm result (Proposition~\ref{prop-double-norm})
+	to the vertical sides gives that the outside of the following diagram commutes:
+	\begin{diagram}
+		\semint{\alpha[B_{i} := \gamma_{i}]_{i=1}^{n}}
+			& \rTo^{\semint{\phi[B_{i} := \gamma_{i}]_{i=1}^{n}}}
+			& \semint{\beta[B_{i} := \gamma_{i}]_{i=1}^{n}} \\
+		\dTo<{\norm^{-1}} && \uTo>{\norm} \\
+		\semint{\alpha}\o\Tn_{i=1}^{n}\semint{\gamma_{i}}
+			& \rTo^{\semint{\phi} \o \Tn_{i=1}^{n}\semint{\gamma_{i}}}
+			& \semint{\beta}\o\Tn_{i=1}^{n}\semint{\gamma_{i}} \\
+		\dTo<{\norm^{-1}\o\Tn_{i=1}^{n}\semint{\gamma_{i}}}
+			&& \uTo>{\norm\o\Tn_{i=1}^{n}\semint{\gamma_{i}}} \\
+		\semint{\lambda} \o \Tn_{i=1}^{m}\semint{\delta_{i}} \o \Tn_{i=1}^{n}\semint{\gamma_{i}}
+			& \rTo_{v(t) \o \cdots}
+			& \semint{\mu} \o \Tn_{i=1}^{m}\semint{\delta_{i}} \o \Tn_{i=1}^{n}\semint{\gamma_{i}}
+	\end{diagram}
+	The lower square also commutes, by definition of $\semint{\phi}$, hence the upper
+	square commutes as required.
+\end{proof}
+
+\begin{propn}[Semantics of 2-in-1 substitution]\label{prop-sem-2in1}
+	Let $\Gamma\proves\gamma\in\C$ be a derivable 1-cell sequent, for
+	some \[ \Gamma = (A_{1}\in\A_{1},\dots, A_{n}\in\A_{n}). \]
+	Let
+	\[
+	\Delta_{1}\proves \phi_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}
+	\quad \cdots \quad
+	\Delta_{n}\proves \phi_{n} : \alpha_{n}\to\beta_{n} \in \A_{n}
+	\]
+	be derivable 2-cell sequents. Then
+	\[
+		\semint{
+		\Delta_{1},\cdots,\Delta_{n}\proves \gamma[A_{i} := \phi_{i}]_{i}
+			: \gamma[A_{i} := \alpha_{i}]_{i} \to \gamma[A_{i} := \beta_{i}]_{i}
+			\in\CB.
+		}
+	\]
+	is equal to the composite
+	\begin{diagram}
+		\semint{\gamma[A_{i} := \alpha_{i}]_{i}}
+			&& \semint{\gamma[A_{i} := \beta_{i}]_{i}}. \\
+		\dTo<{\norm^{-1}} && \uTo>{\norm} \\
+		\semint{\gamma}\o\Tn_{i=1}^{n}\semint{\alpha_{i}}
+			&\rTo^{\semint{\gamma}\o\Tn_{i=1}^{n}\semint{\phi_{i}}}
+				&\semint{\gamma}\o\Tn_{i=1}^{n}\semint{\beta_{i}}		
+	\end{diagram}
+\end{propn}
+\begin{proof}
+	\def\<#1>{\langle#1\rangle}
+	Compared with the previous Proposition, this one is easy to prove!
+	The proof is by induction over $\gamma$. If $\gamma$ is a constant
+	then it is trivial, so let $\gamma = f(\gamma_{1}, \dots, \gamma_{m})$
+	for some $f\in\T(\CB_{1}, \cdots, \CB_{m}; \C)$. For each $1\leq i\leq m$,
+	let $m_{i}$ be the number of names in $\gamma_{i}$, and let $\<i,j>=
+	j+\sum_{r<i}m_{r}$. We have to show that the outside of the diagram
+	\begin{diagram}
+		v(f) \o \Tn_{i=1}^{m}\semint{\gamma_{i}[A_{\<i,j>} := \alpha_{\<i,j>}]_{j=1}^{m_{i}}}
+			& \rTo^{v(f) \o \Tn_{i=1}^{m}\semint{\gamma_{i}[A_{\<i,j>} := \phi_{\<i,j>}]_{j=1}^{m_{i}}}}
+			& v(f) \o \Tn_{i=1}^{m}\semint{\gamma_{i}[A_{\<i,j>} := \beta_{\<i,j>}]_{j=1}^{m_{i}}} \\
+		\dTo<{v(f) \o \Tn_{i=1}^{m} \norm^{-1}} && \uTo>{v(f) \o \Tn_{i=1}^{m} \norm} \\
+		v(f) \o \Tn_{i=1}^{m}\bigl(
+				\semint{\gamma_{i}}
+				\o \Tn_{j=1}^{m_{i}}\semint{\alpha_{\<i,j>}}
+			\bigr)
+			& \rTo^{
+				v(f) \o \Tn_{i=1}^{m}\bigl(
+					\semint{\gamma_{i}}
+					\o \Tn_{j=1}^{m_{i}}\semint{\phi_{\<i,j>}}
+				\bigr)
+			}
+			& v(f) \o \Tn_{i=1}^{m}\bigl(
+					\semint{\gamma_{i}}
+					\o \Tn_{j=1}^{m_{i}}\semint{\beta_{\<i,j>}}
+				\bigr) \\
+		\dTo<{v(f) \o \Ic^{-1}} && \uTo>{v(f) \o \Ic} \\
+		v(f) \o \Tn_{i=1}^{m}\semint{\gamma_{i}}
+				\o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\alpha_{\<i,j>}}
+				& \rTo_{
+				v(f) \o \Tn_{i=1}^{m}\semint{\gamma_{i}}
+					\o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\phi_{\<i,j>}}
+				}
+			& v(f) \o \Tn_{i=1}^{m}\semint{\gamma_{i}}
+				\o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\beta_{\<i,j>}}
+	\end{diagram}
+	commutes. The upper square commutes by the inductive hypothesis,
+	and the lower square by naturality of $\Ic$, hence the outside
+	commutes as required.
 \end{proof}
 
 \section{Soundness}
@@ -887,14 +1176,9 @@ hold in every model.
 \end{propn}
 \begin{proof}
 	We consider in turn each of the derivation rules for equations.
-	In places we shall abbreviate
-	\[
-		\semint{\Gamma\proves\phi: \alpha\to\beta\in\CB}
-	\]
-	as $\semint{\phi}$.
 	\begin{itemize}
 	\item The reflexivity, symmetry and transitivity rules need no comment.
-	\item For the axiom rule, let $(\Delta,\A,\alpha,\beta,\phi,\psi)\in\T_{=}$ and let
+	\item For the axiom rule, let $(\phi,\psi)\in\T_{=}(\Delta\proves\alpha\to\beta\in\A)$ and let
 		\[
 			\Gamma_{1} \proves \gamma_{1}\in\CB_{1}
 			\quad\cdots\quad
@@ -924,21 +1208,29 @@ hold in every model.
 		\[
 			\semint{\phi}
 				\o
-				\Bigl(
-					\semint{\gamma_{1}}
-					\tn\cdots\tn
-					\semint{\gamma_{n}}
-				\Bigr)
+				\Tn_{i=1}^{n}
+					\semint{\gamma_{i}}
 			=
 			\semint{\psi}
 				\o
-				\Bigl(
-					\semint{\gamma_{1}}
-					\tn\cdots\tn
-					\semint{\gamma_{n}}
-				\Bigr)
+				\Tn_{i=1}^{n}
+					\semint{\gamma_{i}}
 		\]
-		which, by Lemma~\ref{lemma-sem-1in2}, is what we require.
+		which, by Proposition~\ref{prop-sem-1in2}, implies that
+		\[
+			\semint{
+				\phi[
+					B_{i} := \gamma_{i}
+				]_{i=1}^{n}
+			}
+			=
+			\semint{
+				\psi[
+					B_{i} := \gamma_{i}
+				]_{i=1}^{n}
+			}
+		\]
+		as required.
 	\item Since both horizontal and vertical composition preserve equality
 		in a 2-category (or indeed in a bicategory), the rules expressing
 		that composition and 1-cell application preserve equality are sound.
@@ -995,9 +1287,9 @@ hold in every model.
 			\semint{
 			\Gamma_{1},\cdots,\Gamma_{n}
 				\proves f(\phi_{1},\dots,\phi_{n})\cdot f(\psi_{1},\dots,\psi_{n})
-				%= f(\phi_{1}\cdot\psi_{1},\dots,\phi_{n}\cdot\psi_{n})
-				%: f(\alpha_{1}, \dots, \alpha_{n})
-				%\to f(\gamma_{1},\dots, \gamma_{n})
+				% = f(\phi_{1}\cdot\psi_{1},\dots,\phi_{n}\cdot\psi_{n})
+				% : f(\alpha_{1}, \dots, \alpha_{n})
+				% \to f(\gamma_{1},\dots, \gamma_{n})
 				\in\CB
 			}
 			\\=
@@ -1045,47 +1337,142 @@ hold in every model.
 		since $\semint{1_{\alpha}} = 1_{\semint{\alpha}}$ is a strict unit for
 		vertical composition in a Gray monoid.
 	\item For the naturality rule, let $t\in \T^{\Gamma}_{\CB}[\alpha,\beta]$
+	where
+	\[
+		\Gamma = (A_{1}\in\A_{1}, \cdots, A_{n}\in\A_{n}),
+	\]
 	and let
 	\[
 		\Gamma_{1}\proves\phi_{1}:\gamma_{1}\to\delta_{1}\in\A_{1}
 		\quad\cdots\quad
 		\Gamma_{n}\proves\phi_{n}:\gamma_{n}\to\delta_{n}\in\A_{n}
 	\]
-	be derivable 2-cell sequents. Then
-	\begin{mmulti}
+	be derivable 2-cell sequents. We wish to show that
+	\[
 		\semint{\beta[A_{i} := \phi_{i}]_{i} \cdot t_{\gamma_{1},\dots, \gamma_{n}}}
-		\\=
-		\semint{\beta[A_{i} := \phi_{i}]_{i}}\cdot\semint{t_{\gamma_{1},\dots, \gamma_{n}}}
-		\\=
-		\bigl(
-			(\semint{\phi_{1}}\tn\cdots\tn\semint{\phi_{n}})\o\semint{\beta}
-		\bigr)
-		\cdot
-		\bigl(
-			(\semint{\gamma_{1}}\tn\cdots\tn\semint{\gamma_{n}})
-			\o v(t)
-		\bigr)
-		\\=
-		(\semint{\phi_{1}}\tn\cdots\tn\semint{\phi_{n}})\o v(t)
-		\\=
-		\bigl(
-			(\semint{\delta_{1}}\tn\cdots\tn\semint{\delta_{n}})
-			\o v(t)
-		\bigr)
-		\cdot
-		\bigl(
-			(\semint{\phi_{1}}\tn\cdots\tn\semint{\phi_{n}})\o\semint{\alpha}
-		\bigr)
-		\\=
-		\semint{t_{\delta_{1},\dots, \delta_{n}}}
-		\cdot
-		\semint{\alpha[A_{i}:=\phi_{i}]_{i}}
-		\\=
-		\semint{t_{\delta_{1},\dots, \delta_{n}} \cdot \alpha[A_{i}:=\phi_{i}]_{i}}
-	\end{mmulti}
-	hence the naturality rule is sound.
+		=
+		\semint{t_{\delta_{1},\dots, \delta_{n}} \cdot \alpha[A_{i}:=\phi_{i}]_{i}},
+	\]
+	i.e. that the diagram
+	\begin{diagram}
+		\semint{
+			\alpha[
+				A_{i} := \gamma_{i}
+			]_{i}
+		}
+		& \rTo^{
+			\semint{
+				t_{\gamma_{1}, \dots, \gamma_{n}}
+			}
+		}
+		& \semint{
+			\beta[
+				A_{i} := \gamma_{i}
+			]_{i}
+		}
+		\\
+		\dTo<{
+			\semint{
+				\alpha[
+					A_{i} := \phi_{i}
+				]_{i}
+			}
+		}
+		&& \dTo>{
+			\semint{
+				\beta[
+					A_{i} := \phi_{i}
+				]_{i}
+			}
+		}
+		\\
+		\semint{
+			\alpha[
+				A_{i} := \delta_{i}
+			]_{i}
+		}
+		& \rTo_{
+			\semint{
+				t_{\delta_{1}, \dots, \delta_{n}}
+			}
+		}
+		& 
+		\semint{
+			\beta[
+				A_{i} := \delta_{i}
+			]_{i}
+		}
+	\end{diagram}
+	commutes. Expanding the definitions of these four arrows gives the diagram
+	\begin{diagram}
+		\semint{\alpha} \o \Tn_{i=1}^{n}\semint{\gamma_{i}}
+		& \rTo^{
+			v(t) \o \Tn_{i=1}^{n}\semint{\gamma_{i}}
+		}
+		& \semint{\beta} \o \Tn_{i=1}^{n}\semint{\gamma_{i}}
+		\\ \uTo<{\norm^{-1}} && \dTo>{\norm} \\
+		\semint{
+			\alpha[
+				A_{i} := \gamma_{i}
+			]_{i}
+		}
+		&& \semint{
+			\beta[
+				A_{i} := \gamma_{i}
+			]_{i}
+		}
+		\\ \dTo<{\norm^{-1}} && \dTo>{\norm^{-1}} \\
+		\semint{\alpha} \o \Tn_{i=1}^{n}\semint{\gamma_{i}}
+			&& \semint{\beta} \o \Tn_{i=1}^{n}\semint{\gamma_{i}}
+		\\
+		\dTo<{
+			\semint{\alpha} \o \Tn_{i=1}^{n}\semint{\phi_{i}}
+		}
+		&& \dTo<{
+			\semint{\beta} \o \Tn_{i=1}^{n}\semint{\phi_{i}}
+		}
+		\\
+		\semint{\alpha} \o \Tn_{i=1}^{n}\semint{\delta_{i}}
+		&& \semint{\beta} \o \Tn_{i=1}^{n}\semint{\delta_{i}}
+		\\ \dTo<{\norm} && \dTo>{\norm} \\
+		\semint{
+			\alpha[
+				A_{i} := \delta_{i}
+			]_{i}
+		}
+		&& \semint{
+			\beta[
+				A_{i} := \delta_{i}
+			]_{i}
+		}
+		\\ \dTo<{\norm^{-1}} && \uTo>{\norm} \\
+		\semint{\alpha} \o \Tn_{i=1}^{n}\semint{\gamma_{i}}
+		& \rTo_{
+			v(t) \o \Tn_{i=1}^{n}\semint{\delta_{i}}
+		}
+		& \semint{\beta} \o \Tn_{i=1}^{n}\semint{\delta_{i}}
+	\end{diagram}
+	which clearly commutes, by the interchange law for composition in a 2-category.
+	Hence the naturality rule is sound.
 	\end{itemize}
 \end{proof}
+\section{Interpretation in a general monoidal bicategory}
+We have shown how the language may be soundly interpreted in a Gray monoid.
+In this section, we use coherence to interpret the language soundly
+in any monoidal bicategory.
+
+Let $\B$ be a monoidal bicategory, and let $\Gr(\B)$ be the
+corresponding Gray monoid, as defined by \citet[][Chapter~10]{GurskiThesis},
+with monoidal biequivalences
+\[
+	\B \pile{\rTo_{e}\\\lTo^{f}} \Gr(\B).
+\]
+such that $fe$ is the identity on $\B$.
+We shall define the interpretation $v: \T\to\B$ in stages. For every
+object $\A$ of $\T$, let $v(\A)$ be an object of $\B$. For every
+1-cell $h\in\T(\A_{1}, \dots, \A_{n}; \CB)$, let $v(h)$ be a
+1-cell $e(\Tn_{i=1}^{n}f(v(\A_{i}))) \to v(\CB)$ in $\B$.
+
 \section{The theory of pseudomonoids}
 Next we see how the language may be used to reason about pseudomonoids.
 We will define the theory $\M$ of pseudomonoids, and show that reasoning
