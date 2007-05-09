@@ -1,8 +1,10 @@
 %!TEX TS-program = pdflatex
 \documentclass{robinthesisdraft}
+\def\pgfsysdriver{pgfsys-pdftex.def}
 \usepackage{robincs,thesisdefs,xr,tikz,prooftree}
 \externaldocument[Bicats:]{bicats}
 \externaldocument[MonBicats:]{mon-bicats}
+\tikzstyle{every picture}+=[remember picture, >=latex]
 
 \title{A Language for Monoidal Bicategories}
 \begin{document}
@@ -62,8 +64,8 @@ whose 1-cells are of the form
 In particular, the braiding on a braided Gray monoid is not of this
 form, and we will need an extension of the language to prove facts about
 structures that interact with the braiding, such as the braiding of
-a braided pseudomonoid. This extended language is developed later in
-the chapter.
+a braided pseudomonoid. This extended language is developed in
+the next chapter.
 % %
 % This restriction could probably be weakened to some extent, but
 % only by compromising the simplicity of the language.
@@ -72,7 +74,8 @@ Most of the formal development is fairly routine. The interpretation of
 a theory is defined first for Gray monoids, and then extended to arbitrary
 monoidal bicategories using coherence. The only technically difficult part
 is to account for the non-strictness of the interchange law in a Gray monoid,
-which requires one moderately hairy proof (XXXX).
+which requires some detailed technical work (\ref{s-semantics-of-substitution}
+and~\ref{s-interpretation-of-2-cells}).
 
 \section{The language}
 The language is used to prove equations between 2-cells that hold in
@@ -88,6 +91,7 @@ A \emph{theory} $\T$ consists of:
 		elements of $T_{0}$,
 		a set $\T(\A_{1},\ldots,\A_{n};\CB)$
 		of \emph{1-cells} $(\A_{1}, \dots, \A_{n})\to \CB$.
+		We suppose that the different sets of 1-cells are pairwise disjoint.
 	\item Sets of 2-cells and equations, as described below.
 \end{itemize}
 Before we attempt a formal description of the 2-cells and equations,
@@ -145,8 +149,11 @@ as follows:
 		\using f(\bullet)
 	\end{prooftree}
 \]
-where the names in the $\Gamma_{i}$ are assumed pairwise disjoint.
+where the sets of names in the $\Gamma_{i}$ are assumed pairwise disjoint.
 \end{itemize}
+(Whenever several contexts are mentioned together, we shall \emph{always} assume
+that their sets of names are pairwise disjoint, usually without explicitly mentioning
+this assumption.)
 So a 1-cell sequent is simply a formal composite of formal 1-cells.
 It is clear (and easily proved by induction) that every derivable 1-cell
 sequent has a unique derivation. Also:
@@ -159,7 +166,7 @@ sequent has a unique derivation. Also:
 	\[
 		[A_{1} := \alpha_{1}, \cdots, A_{n}:= \alpha_{n}].
 	\]
-	On occasion this may be abbreviated to $[A_{i} := \alpha_{i}]_{i}$,
+	On occasion this is abbreviated to $[A_{i} := \alpha_{i}]_{i}$,
 	where the value of $n$ is apparent from the context.
 	
 	Later, we sometimes need to use nested sequences: if
@@ -196,7 +203,7 @@ sequent has a unique derivation. Also:
 	throughout the derivation, as follows. For each sequent
 	$\Gamma\proves \gamma\in\C$ in the derivation, replace $\gamma$
 	by $\gamma[A_{i} := \alpha_{i}]_{i}$, and replace each name
-	$A_{i}\in\A_{i}$ of $\Gamma$ by $\Gamma_{i}$.
+	$A_{i}\in\A_{i}$ of $\Gamma$ by the contents of $\Gamma_{i}$.
 	%
 	Each application rule is thus transformed
 	into another instance of that application rule, and each axiom
@@ -215,6 +222,8 @@ so if $\sigma$ is a permutation of the set of names then we require
 \[
 	\T^{\Gamma^{\sigma}}_{\CB}[\alpha^{\sigma},\beta^{\sigma}] = \T^{\Gamma}_{\CB}[\alpha,\beta].
 \]
+Any two \emph{different} sets of 2-cells (i.e.\ sets that are not presumed equal by the above)
+are taken to be disjoint.
 %
 A 2-cell sequent is of the form $\Gamma\proves \phi: \alpha\to\beta \in\CB$.
 The derivation rules for 2-cell sequents are:
@@ -306,7 +315,7 @@ or vice versa, results in a derivable 2-cell sequent:
 	which is therefore derivable.
 \end{proof}
 \begin{lemma}[2-in-1 substitution]\label{lemma-2in1}
-	Let $\Gamma\proves\gamma\in\CB$ be a derivable 1-cell sequent, for
+	Let $\Gamma\proves\gamma\in\C$ be a derivable 1-cell sequent, for
 	some \[ \Gamma = (A_{1}\in\A_{1},\dots, A_{n}\in\A_{n}). \]
 	If the 2-cell sequents
 	\[
@@ -323,29 +332,42 @@ or vice versa, results in a derivable 2-cell sequent:
 	The names in the $\Delta_{i}$ must be pairwise disjoint, of course.
 \end{lemma}
 \begin{proof}
+	\def\<#1>{\langle#1\rangle}
 	This is simply a matter of repeatedly applying the 1-cell application
 	rule. Formally,
-	the proof is by induction on the number of 1-cell symbols in $\gamma$.
-	If there are none, then $\Gamma$ is the singleton $B\in\CB$ and $\gamma$
-	is just $B$, so the conclusion is equal	to the hypothesis and the claim
-	is trivial. Suppose, then, that $\gamma$ contains $k>0$ 1-cell symbols
-	and that the claim is true for all $\gamma$ containing fewer. Then
-	$\gamma$ is equal to $f(\delta_{1}, \dots, \delta_{m})$ for some
-	$m\in\N$, 1-cell symbol $f\in\T(\A_{1}, \dots, \A_{m}; \CB)$ and
-	1-cell expressions $\delta_{i}$. The context $\Gamma$ is equal to
+	the proof is by induction on $\gamma$.
+	If $\gamma$ is a constant, i.e.\ $\Gamma$ is the singleton $C\in\C$ and $\gamma$
+	is just $C$, then the conclusion is equal to the hypothesis and the claim
+	is trivial. Suppose, then, that $\gamma = f(\gamma_{1}, \dots, \gamma_{m})$ for some
+	$m\in\N$, 1-cell symbol $f\in\T(\CB_{1}, \dots, \CB_{m}; \C)$ and
+	1-cell expressions $\gamma_{i}$.
+	
+	Clearly the context $\Gamma$ must be equal to
 	$(\Gamma_{1}, \cdots, \Gamma_{m})$, where each $\Gamma_{i}$ contains
-	the names used in $\delta_{i}$.
+	the names used in $\gamma_{i}$.
 	%
-	For each $0\leq j\leq m$, let $c_{j}$ be the number of names in
-	$(\Gamma_{1},\cdots,\Gamma_{j})$. Thus
-	$\Gamma_{j} = (A_{c_{j-1}+1}\in\A_{c_{j-1}+1}, \cdots, A_{c_{j}}\in\A_{c_{j}})$.
+	We want to reindex the names so that it is clear to which $\gamma_{i}$
+	each belongs, for which we introduce a simple technical device that is
+	also used in several other proofs below.
+	For each $1\leq i\leq m$, let $m_{i}$ be the number of names in
+	$\Gamma_{i}$. Then, given $1\leq i \leq m$ and $1\leq j\leq m_{i}$,
+	define $\<i,j>$ to be $j+\sum_{r<i}m_{r}$. The effect of this definition
+	is that
+	\[
+		\Gamma_{i} = (A_{\<i,1>} \in \A_{\<i,1>}, \cdots, A_{\<i,m_{i}>} \in \A_{\<i,m_{i}>})
+	\]
+	or, in abbreviated notation, that
+	\[
+		\Gamma_{i} = (A_{\<i,j>} \in \A_{\<i,j>})_{j=1}^{m_{i}}
+	\]
 	%
 	The inductive hypothesis implies that, for each $1\leq i\leq m$, the
 	2-cell sequent
 	\[
-	\Delta_{c_{j-1}+1},\cdots,\Delta_{c_{j}}\proves \gamma_{j}[A_{i} := \phi_{i}]_{i}
-		: \gamma_{j}[A_{i} := \alpha_{i}]_{i} \to \gamma_{j}[A_{i} := \beta_{i}]_{i}
-		\in\CB.
+	\Gamma_{i}\proves \gamma_{i}[A_{\<i,j>} := \phi_{\<i,j>}]_{j=1}^{m_{i}}
+		: \gamma_{i}[A_{\<i,j>} := \alpha_{\<i,j>}]_{j=1}^{m_{i}}
+		\to \gamma_{j}[A_{\<i,j>} := \beta_{\<i,j>}]_{j=1}^{m_{i}}
+		\in\CB_{i}.
 	\]
 	is derivable. Now apply the 1-cell application rule to these sequents and
 	the 1-cell symbol $f$, and the conclusion follows.
@@ -609,7 +631,7 @@ is always a 1-cell $v(\Gamma)\to v(\CB)$.
 Where $\Gamma$ and $\CB$ are evident from the context, we shall
 abbreviate $\semint{\Gamma\proves \alpha\in\CB}$ to $\semint{\gamma}$.
 
-\subsection{Semantics of substitution}
+\subsection{Semantics of substitution}\label{s-semantics-of-substitution}
 In order to define the interpretation of 2-cells (and, later, to
 show soundness) we shall need a careful analysis of the semantics
 of 1-cell substitution. The reason this is non-trivial is that the
@@ -627,14 +649,14 @@ is some work to be done to account for this.
 	\[
 		\Tn_{i=1}^{n}f_{i}\o\Tn_{i=1}^{n}g_{i}\to\Tn_{i=1}^{n}(f_{i}\o g_{i}).
 	\]
-	If $((f_{i,j})_{j=1}^{n_{i}})_{i=1}^{n}$
-	and $((g_{i,j})_{j=1}^{n_{i}})_{i=1}^{n}$
+	If $((f^i_j)_{j=1}^{n_{i}})_{i=1}^{n}$
+	and $((g^i_j)_{j=1}^{n_{i}})_{i=1}^{n}$
 	are nested sequences of 1-cells, then the interchange isomorphism
 	\[
 		\Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}f_{i}\o\Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}g_{i}
 		\to \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}(f_{i}\o g_{i})
 	\]
-	is denoted $(\Ic_{j=1}^{n_{i}})_{i=1}^{n}(f_{i,j},g_{i,j})$.
+	is denoted $(\Ic_{j=1}^{n_{i}})_{i=1}^{n}(f^i_j,g^i_j)$.
 \end{definition}
 \begin{remark}
 	We recall three fundamental properties of the interchange isomorphism:
@@ -653,15 +675,15 @@ is some work to be done to account for this.
 					& \Tn_{i=1}^{n}(f_{i}\o g_{i}\o h_{i})
 			\end{diagram}
 			commutes.
-		\item Given nested sequences $((f_{i,j})_{j=1}^{n_{i}})_{i=1}^{n}$
-			and $((g_{i,j})_{j=1}^{n_{i}})_{i=1}^{n}$, the diagram
+		\item Given nested sequences $((f^i_j)_{j=1}^{n_{i}})_{i=1}^{n}$
+			and $((g^i_j)_{j=1}^{n_{i}})_{i=1}^{n}$, the diagram
 			\begin{diagram}
-				\Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}f_{i,j}\o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}g_{i,j}	
-					&& \rTo^{(\Ic_{j=1}^{n_{i}})_{i=1}^{n}(f_{i,j},g_{i,j})}
-					&& \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}(f_{i,j}\o g_{i,j}) \\
-				& \rdTo[snake=-1em]_{\Ic_{i=1}^{n}(\Tn_{j=1}^{n_{i}}f_{i,j}, \Tn_{j=1}^{n_{i}}g_{i,j})}
-					&& \ruTo[snake=1em]_{\Tn_{i=1}^{n}\Ic_{j=1}^{n_{i}}(f_{i,j},g_{i,j})} \\
-				&&\Tn_{i=1}^{n}( \Tn_{j=1}^{n_{i}}f_{i,j} \o \Tn_{j=1}^{n_{i}}g_{i,j} )
+				\Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}f^i_j\o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}g^i_j	
+					&& \rTo^{(\Ic_{j=1}^{n_{i}})_{i=1}^{n}(f^i_j,g^i_j)}
+					&& \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}(f^i_j\o g^i_j) \\
+				& \rdTo[snake=-1em]_{\Ic_{i=1}^{n}(\Tn_{j=1}^{n_{i}}f^i_j, \Tn_{j=1}^{n_{i}}g^i_j)}
+					&& \ruTo[snake=1em]_{\Tn_{i=1}^{n}\Ic_{j=1}^{n_{i}}(f^i_j,g^i_j)} \\
+				&&\Tn_{i=1}^{n}( \Tn_{j=1}^{n_{i}}f^i_j \o \Tn_{j=1}^{n_{i}}g^i_j )
 			\end{diagram}
 			commutes.
 	\end{enumerate}
@@ -669,88 +691,89 @@ is some work to be done to account for this.
 The following simple Lemma will be useful later on.
 \begin{lemma}\label{lemma-ic}
 	Given a sequence $(f_{i})_{i=1}^{n}$
-	and nested sequences $((g_{i,j})_{j=1}^{n_{i}})_{i=1}^{n}$
-	and $((h_{i,j})_{j=1}^{n_{i}})_{i=1}^{n}$, the diagram
+	and nested sequences $((g^i_j)_{j=1}^{n_{i}})_{i=1}^{n}$
+	and $((h^i_j)_{j=1}^{n_{i}})_{i=1}^{n}$, the diagram
 	\begin{diagram}[labelstyle=\scriptstyle]
-		\Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} g_{i,j}
-			 \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j}
-			& \rTo^{\Tn_{i=1}^{n}f_{i} \o (\Ic_{j=1}^{n_{i}})_{i=1}^{n}(g_{i,j},h_{i,j})}
-			& \Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} (g_{i,j}\o h_{i,j}) \\
-		\dTo<{\Ic_{i=1}^{n}(f_{i},\Tn_{j=1}^{n_{i}}g_{i,j}) \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j}}
+		\Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} g^i_j
+			 \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h^i_j
+			& \rTo^{\Tn_{i=1}^{n}f_{i} \o (\Ic_{j=1}^{n_{i}})_{i=1}^{n}(g^i_j,h^i_j)}
+			& \Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} (g^i_j\o h^i_j) \\
+		\dTo<{\Ic_{i=1}^{n}(f_{i},\Tn_{j=1}^{n_{i}}g^i_j) \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h^i_j}
 		\\
-		\Tn_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g_{i,j}) \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j}
-			&& \dTo>{\Ic_{i=1}^{n}(f_{i},\Tn_{j=1}^{n_{i}} (g_{i,j}\o h_{i,j}))} \\
-		\dTo<{\Ic_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g_{i,j}, \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j})}
+		\Tn_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g^i_j) \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h^i_j
+			&& \dTo>{\Ic_{i=1}^{n}(f_{i},\Tn_{j=1}^{n_{i}} (g^i_j\o h^i_j))} \\
+		\dTo<{\Ic_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g^i_j, \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h^i_j)}
 		\\
-		\Tn_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g_{i,j} \o \Tn_{j=1}^{n_{i}} h_{i,j})
-			& \rTo_{\Tn_{i=1}^{n}( f_{i} \o \Ic_{j=1}^{n_{i}}(g_{i,j}, h_{i,j}) )}
-			& \Tn_{i=1}^{n}( f_{i} \o  \Tn_{j=1}^{n_{i}}(g_{i,j} \o h_{i,j}))
+		\Tn_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g^i_j \o \Tn_{j=1}^{n_{i}} h^i_j)
+			& \rTo_{\Tn_{i=1}^{n}( f_{i} \o \Ic_{j=1}^{n_{i}}(g^i_j, h^i_j) )}
+			& \Tn_{i=1}^{n}( f_{i} \o  \Tn_{j=1}^{n_{i}}(g^i_j \o h^i_j))
 	\end{diagram}
 	commutes.
 \end{lemma}
 \begin{proof}
 	Consider the diagram
 	\begin{diagram}[labelstyle=\scriptstyle]
-		\Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} g_{i,j}
-			 \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j}
-			&& \rTo^{\Tn_{i=1}^{n}f_{i} \o (\Ic_{j=1}^{n_{i}})_{i=1}^{n}(g_{i,j},h_{i,j})}
-			&& \Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} (g_{i,j}\o h_{i,j}) \\
-		\dTo<{\Ic_{i=1}^{n}(f_{i},\Tn_{j=1}^{n_{i}}g_{i,j}) \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j}}
-			& \rdTo^{\Tn_{i=1}^{n}f_{i} \o \Ic_{i=1}^{n}(\Tn_{j=1}^{n_{i}} g_{i,j}, \Tn_{j=1}^{n_{i}} h_{i,j})}
-			&& \ruTo[snake=-2em]^{\Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Ic_{j=1}^{n_{i}}(g_{i,j}, h_{i,j})} \\
-		\Tn_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g_{i,j}) \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j}
+		\Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} g^i_j
+			 \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h^i_j
+			&& \rTo^{\Tn_{i=1}^{n}f_{i} \o (\Ic_{j=1}^{n_{i}})_{i=1}^{n}(g^i_j,h^i_j)}
+			&& \Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} (g^i_j\o h^i_j) \\
+		\dTo<{\Ic_{i=1}^{n}(f_{i},\Tn_{j=1}^{n_{i}}g^i_j) \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h^i_j}
+			& \rdTo^{\Tn_{i=1}^{n}f_{i} \o \Ic_{i=1}^{n}(\Tn_{j=1}^{n_{i}} g^i_j, \Tn_{j=1}^{n_{i}} h^i_j)}
+			&& \ruTo[snake=-2em]^{\Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}\Ic_{j=1}^{n_{i}}(g^i_j, h^i_j)} \\
+		\Tn_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g^i_j) \o \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h^i_j
 			\hskip2em
-			&& \Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}(\Tn_{j=1}^{n_{i}}g_{i,j} \o \Tn_{j=1}^{n_{i}}h_{i,j})
-			&& \dTo>{\Ic_{i=1}^{n}(f_{i},\Tn_{j=1}^{n_{i}} (g_{i,j}\o h_{i,j}))} \\
-		\dTo<{\Ic_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g_{i,j}, \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h_{i,j})}
-			& \ldTo[snake=2em]_{\Ic_{i=1}^{n}(f_{i}, \Tn_{j=1}^{n_{i}} g_{i,j} \o \Tn_{j=1}^{n_{i}} h_{i,j})} \\
-		\Tn_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g_{i,j} \o \Tn_{j=1}^{n_{i}} h_{i,j})
-			&& \rTo_{\Tn_{i=1}^{n}( f_{i} \o \Ic_{j=1}^{n_{i}}(g_{i,j}, h_{i,j}) )}
-			&& \Tn_{i=1}^{n}( f_{i} \o  \Tn_{j=1}^{n_{i}}(g_{i,j} \o h_{i,j}))
+			&& \Tn_{i=1}^{n}f_{i} \o \Tn_{i=1}^{n}(\Tn_{j=1}^{n_{i}}g^i_j \o \Tn_{j=1}^{n_{i}}h^i_j)
+			&& \dTo>{\Ic_{i=1}^{n}(f_{i},\Tn_{j=1}^{n_{i}} (g^i_j\o h^i_j))} \\
+		\dTo<{\Ic_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g^i_j, \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}} h^i_j)}
+			& \ldTo[snake=2em]_{\Ic_{i=1}^{n}(f_{i}, \Tn_{j=1}^{n_{i}} g^i_j \o \Tn_{j=1}^{n_{i}} h^i_j)} \\
+		\Tn_{i=1}^{n}(f_{i} \o \Tn_{j=1}^{n_{i}} g^i_j \o \Tn_{j=1}^{n_{i}} h^i_j)
+			&& \rTo_{\Tn_{i=1}^{n}( f_{i} \o \Ic_{j=1}^{n_{i}}(g^i_j, h^i_j) )}
+			&& \Tn_{i=1}^{n}( f_{i} \o  \Tn_{j=1}^{n_{i}}(g^i_j \o h^i_j))
 	\end{diagram}
 	whose regions commute for the reasons described in the Remark above.
 \end{proof}
 %
-Now let $\Gamma\proves \beta\in\C$ be a derivable 1-cell sequent, where
-$\Gamma = (B_{i}\in\CB_{i})_{i=1}^{n}$, and for each $1\leq i\leq n$
-let $\Delta_{i}\proves \alpha_{i}\in\CB_{i}$ be a derivable 1-cell sequent.
-We shall explicitly define an isomorphism
-\[
-	\norm_{\C}^{\Gamma}((\alpha_{i})_{i=1}^{n},\beta)
-		: \semint{\beta}\o\Tn_{i=i}^{n}\semint{\alpha_{i}}
-		\rTo^{\cong}
-		\semint{\beta[B_{i}:=\alpha_{i}]_{i=1}^{n}}
-\]
-The definition is by recursion over $\beta$. If $\beta = B_{1}$, then
-we use the identity. So suppose that $\beta = f(\beta_{1}, \dots, \beta_{m})$
-for some natural number $m$ and 1-cell symbol $f\in\T(\C_{1},\cdots,\C_{m};\D)$.
-For each $1\leq i\leq m$, let $m_{i}$ denote the
-number of names that occur in $\beta_{i}$, and let $B^{i}_{j}$
-denote $B_{j+\sum_{r<i}m_{r}}$ and $\alpha^{i}_{j}$ denote
-$\alpha_{j+\sum_{r<i}m_{r}}$, so that $(B_{i})_{i=1}^{n}$ is divided
-into the nested sequence $((B^{i}_{j})_{j=1}^{m_{i}})_{i=1}^{m}$,
-where the inner sequence $(B^{i}_{j})_{j=1}^{m_{i}}$ contains just
-the names that occur in $\beta_{i}$. In a similar way, divide the
-context $\Gamma$ into $(\Gamma_{1}, \cdots, \Gamma_{m})$ so that
-each $\Gamma_{i}$ contains the names that occur in $\beta_{i}$,
-i.e.\ $\Gamma_{i} = (B^{i}_{j}\in\B^{i_{j}})_{j=1}^{m_{i}}$, where
-the nested sequence $(\B^{i}_{j})$ is defined in the obvious way.
+\begin{definition}
+	Now let $\Gamma\proves \beta\in\C$ be a derivable 1-cell sequent, where
+	$\Gamma = (B_{i}\in\CB_{i})_{i=1}^{n}$, and for each $1\leq i\leq n$
+	let $\Delta_{i}\proves \alpha_{i}\in\CB_{i}$ be a derivable 1-cell sequent.
+	We shall explicitly define an isomorphism
+	\[
+		\norm_{\C}^{\Gamma}((\alpha_{i})_{i=1}^{n},\beta)
+			: \semint{\beta}\o\Tn_{i=i}^{n}\semint{\alpha_{i}}
+			\rTo^{\cong}
+			\semint{\beta[B_{i}:=\alpha_{i}]_{i=1}^{n}}
+	\]
+	The definition is by recursion over $\beta$. If $\beta = B_{1}$, then
+	we use the identity. So suppose that $\beta = f(\beta_{1}, \dots, \beta_{m})$
+	for some natural number $m$ and 1-cell symbol $f\in\T(\C_{1},\cdots,\C_{m};\D)$.
+	For each $1\leq i\leq m$, let $m_{i}$ denote the
+	number of names that occur in $\beta_{i}$, and let $B^{i}_{j}$
+	denote $B_{j+\sum_{r<i}m_{r}}$ and $\alpha^{i}_{j}$ denote
+	$\alpha_{j+\sum_{r<i}m_{r}}$, so that $(B_{i})_{i=1}^{n}$ is divided
+	into the nested sequence $((B^{i}_{j})_{j=1}^{m_{i}})_{i=1}^{m}$,
+	where the inner sequence $(B^{i}_{j})_{j=1}^{m_{i}}$ contains just
+	the names that occur in $\beta_{i}$. In a similar way, divide the
+	context $\Gamma$ into $(\Gamma_{1}, \cdots, \Gamma_{m})$ so that
+	each $\Gamma_{i}$ contains the names that occur in $\beta_{i}$,
+	i.e.\ $\Gamma_{i} = (B^{i}_{j}\in\B^{i_{j}})_{j=1}^{m_{i}}$, where
+	the nested sequence $(\B^{i}_{j})$ is defined in the obvious way.
 
-Now, define $\norm^{\Gamma}_{\D}((\alpha_{i})_{i=1}^{n},\beta)$
-to be the composite
-\begin{diagram}
-	v(f) \o \Tn_{i=1}^{m}\semint{\beta_{i}} \o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\alpha^{i}_{j}}
-	\\
-	\dTo>{v(f) \o \Ic_{i=1}^{m}( \semint{\beta_{i}}, \Tn_{j=1}^{m_{j}}\semint{\alpha^{i}_{j}} )}
-	\\
-	v(f) \o \Tn_{i=1}^{m}( \semint{\beta_{i}} \o \Tn_{j=1}^{m_{i}}\semint{\alpha^{i}_{j}} )
-	\\
-	\dTo>{v(f) \o \Tn_{i=i}^{m} \norm^{\Gamma_{i}}_{\C_{i}}((\alpha^{i}_{j})_{j=1}^{m_{i}}, \beta_{i})}
-	\\
-	v(f) \o \Tn_{i=1}^{m}\semint{\beta_{i}[B^{i}_{j} := \alpha^{i}_{j}]_{j=1}^{m_{i}}}
-\end{diagram}
-This completes the recursive definition.
-
+	Now, define $\norm^{\Gamma}_{\D}((\alpha_{i})_{i=1}^{n},\beta)$
+	to be the composite
+	\begin{diagram}
+		v(f) \o \Tn_{i=1}^{m}\semint{\beta_{i}} \o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\alpha^{i}_{j}}
+		\\
+		\dTo>{v(f) \o \Ic_{i=1}^{m}( \semint{\beta_{i}}, \Tn_{j=1}^{m_{j}}\semint{\alpha^{i}_{j}} )}
+		\\
+		v(f) \o \Tn_{i=1}^{m}( \semint{\beta_{i}} \o \Tn_{j=1}^{m_{i}}\semint{\alpha^{i}_{j}} )
+		\\
+		\dTo>{v(f) \o \Tn_{i=i}^{m} \norm^{\Gamma_{i}}_{\C_{i}}((\alpha^{i}_{j})_{j=1}^{m_{i}}, \beta_{i})}
+		\\
+		v(f) \o \Tn_{i=1}^{m}\semint{\beta_{i}[B^{i}_{j} := \alpha^{i}_{j}]_{j=1}^{m_{i}}}
+	\end{diagram}
+	This completes the recursive definition.
+\end{definition}
 We shall need the fact that the $\norm$ operation has a kind of
 associativity property, described in the following Proposition.
 This is absolutely fundamental, since it is used to show that Gray monoids
@@ -758,6 +781,12 @@ have enough coherence for our language to be soundly interpretable.
 Unfortunately the somewhat cumbersome notation perhaps obscures the
 underlying simplicity here. It is to be hoped -- and I think expected --
 that a suitable general coherence theorem will eventually render this obvious.
+Note that \citet[][Theorem~10.2.2]{GurskiThesis} does not quite suffice;
+since (as interpreted for monoidal bicategories) it applies only to a
+situation where the generating 1-cells are of the form $\A\to\CB$, for
+generating objects $\A$ and $\CB$.
+We have a more general situation where the source of a 1-cell is a tensor
+of generating objects.
 \begin{propn}[Double norm]\label{prop-double-norm}
 	Let $\Gamma\proves\gamma\in\D$ be a derivable 1-cell sequent,
 	where $\Gamma = (C_{i}\in\C_{i})_{i=1}^{n}$. For each $1\leq i\leq n$,
@@ -875,7 +904,7 @@ that a suitable general coherence theorem will eventually render this obvious.
 	the outside commutes, which proves the claim.
 \end{proof}
 
-\subsection{Interpretation of 2-cells}
+\subsection{Interpretation of 2-cells}\label{s-interpretation-of-2-cells}
 The semantic interpretation of a 2-cell derivation is also defined by induction.
 As for 1-cells, we define the interpretation on derivations, but since each
 derivable 2-cell sequent has a unique derivation the interpretation may be
@@ -883,7 +912,7 @@ applied directly to derivable sequents. Also, we sometimes omit the type
 information when it is obvious from the context.
 \begin{itemize}
 \item
-	$\semint[bigg]{\begin{prooftree}
+	$\ssemint[bigg]{v}{\begin{prooftree}
 		\Gamma\proves \alpha\in\A
 		\justifies
 		\Gamma\proves 1_{\alpha}: \alpha\to\alpha\in\A
@@ -891,7 +920,7 @@ information when it is obvious from the context.
 	\end{prooftree}}
 	= 1_{\semint{\Gamma\proves \alpha\in\A}}$,
 \item
-	$\semint[bigg]{\begin{prooftree}
+	$\ssemint[bigg]{v}{\begin{prooftree}
 		\[[\pi_{1}]\justifies\Gamma\proves \phi: \beta\to\gamma \in\A\]
 		\quad
 		\[[\pi_{2}]\justifies\Gamma\proves \psi: \alpha\to\beta \in\A\]
@@ -900,14 +929,14 @@ information when it is obvious from the context.
 		\using \mathrm{comp}
 	\end{prooftree}} = \semint{\phi}\cdot\semint{\psi}$.
 	% \newline\vskip1ex\strut\hfil$=
-	% \semint[bigg]{\begin{prooftree}
+	% \ssemint[bigg]{v}{\begin{prooftree}
 	% 	[\pi_{1}]\justifies\Gamma\proves \phi: \beta\to\gamma \in\A
 	% \end{prooftree}}
 	% \cdot
-	% \semint[bigg]{\begin{prooftree}
+	% \ssemint[bigg]{v}{\begin{prooftree}
 	% 	[\pi_{2}]\justifies\Gamma\proves \psi: \alpha\to\beta \in\A
 	% \end{prooftree}}$,
-\item $\semint[Bigg]{\begin{prooftree}
+\item $\ssemint[Bigg]{v}{\begin{prooftree}
 		\Gamma_{1}\proves\gamma_{1}\in\A_{1}
 		\quad\cdots\quad
 		\Gamma_{n}\proves\gamma_{n}\in\A_{n}
@@ -927,7 +956,7 @@ information when it is obvious from the context.
 			&\rTo^{v(t)\o\Tn_{i=1}^{n}\semint{\gamma_{i}}}
 				&\semint{\beta}\o\Tn_{i=1}^{n}\semint{\gamma_{i}}		
 	\end{diagram}
-\item $\semint[stretch]{\begin{prooftree}
+\item $\ssemint[stretch]{v}{\begin{prooftree}
 		\[[\pi_{1}]\justifies\Gamma_{1}\proves \phi_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}\]
 		\quad \cdots \quad
 		\[[\pi_{n}]\justifies\Gamma_{n}\proves \phi_{n} : \alpha_{n}\to\beta_{n} \in \A_{n}\]
@@ -940,11 +969,11 @@ information when it is obvious from the context.
 	\newline\vskip1ex\strut\hfil$=
 	v(f) \o \Tn_{i=1}^{n}\semint{\phi_{i}}$.
 	% v(f)\o \Bigl(
-	% \semint[bigg]{\begin{prooftree}
+	% \ssemint[bigg]{v}{\begin{prooftree}
 	% 	[\pi_{1}]\justifies\Gamma_{1}\proves \phi_{1} : \alpha_{1}\to\beta_{1} \in \A_{1}
 	% \end{prooftree}}
 	% \tn\cdots\tn
-	% \semint[bigg]{\begin{prooftree}
+	% \ssemint[bigg]{v}{\begin{prooftree}
 	% 	[\pi_{n}]\justifies\Gamma_{n}\proves \phi_{n} : \alpha_{n}\to\beta_{n} \in \A_{n}
 	% \end{prooftree}}
 	% \Bigr)$.
@@ -1062,7 +1091,7 @@ information when it is obvious from the context.
 			\dTo<{\semint{\lambda}\o\Ic^{-1}} && \uTo>{\semint{\mu}\o\Ic} \\
 			\semint{\lambda} \o \Tn_{i=1}^{m}
 				\semint{\delta_{i}} \o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}
-			& \rTo_{v(t)\o \Tn_{i}\Tn_{j}\semint{\delta_{\<i,j>}}}
+			& \rTo_{v(t)\o (\cdots)}
 			& \semint{\mu} \o \Tn_{i=1}^{m}
 				\semint{\delta_{i}} \o \Tn_{i=1}^{m}\Tn_{j=1}^{m_{i}}\semint{\gamma_{\<i,j>}}
 	\end{diagram}
@@ -1428,7 +1457,7 @@ hold in every model.
 		\dTo<{
 			\semint{\alpha} \o \Tn_{i=1}^{n}\semint{\phi_{i}}
 		}
-		&& \dTo<{
+		&& \dTo>{
 			\semint{\beta} \o \Tn_{i=1}^{n}\semint{\phi_{i}}
 		}
 		\\
@@ -1452,10 +1481,32 @@ hold in every model.
 		}
 		& \semint{\beta} \o \Tn_{i=1}^{n}\semint{\delta_{i}}
 	\end{diagram}
+	Cancelling the $\norm$ arrows gives
+	\begin{diagram}
+		\semint{\alpha} \o \Tn_{i=1}^{n}\semint{\gamma_{i}}
+		& \rTo^{
+			v(t) \o \Tn_{i=1}^{n}\semint{\gamma_{i}}
+		}
+		& \semint{\beta} \o \Tn_{i=1}^{n}\semint{\gamma_{i}}
+		\\
+		\dTo<{
+			\semint{\alpha} \o \Tn_{i=1}^{n}\semint{\phi_{i}}
+		}
+		&& \dTo>{
+			\semint{\beta} \o \Tn_{i=1}^{n}\semint{\phi_{i}}
+		}
+		\\
+		\semint{\alpha} \o \Tn_{i=1}^{n}\semint{\gamma_{i}}
+		& \rTo_{
+			v(t) \o \Tn_{i=1}^{n}\semint{\delta_{i}}
+		}
+		& \semint{\beta} \o \Tn_{i=1}^{n}\semint{\delta_{i}}
+	\end{diagram}
 	which clearly commutes, by the interchange law for composition in a 2-category.
 	Hence the naturality rule is sound.
 	\end{itemize}
 \end{proof}
+
 \section{Interpretation in a general monoidal bicategory}
 We have shown how the language may be soundly interpreted in a Gray monoid.
 In this section, we use coherence to interpret the language soundly
@@ -1465,19 +1516,175 @@ Let $\B$ be a monoidal bicategory, and let $\Gr(\B)$ be the
 corresponding Gray monoid, as defined by \citet[][Chapter~10]{GurskiThesis},
 with monoidal biequivalences
 \[
-	\B \pile{\rTo_{e}\\\lTo^{f}} \Gr(\B).
+	\B \pile{\rTo^{f}\\\lTo_{e}} \Gr(\B).
 \]
-such that $fe$ is the identity on $\B$.
-We shall define the interpretation $v: \T\to\B$ in stages. For every
-object $\A$ of $\T$, let $v(\A)$ be an object of $\B$. For every
-1-cell $h\in\T(\A_{1}, \dots, \A_{n}; \CB)$, let $v(h)$ be a
-1-cell $e(\Tn_{i=1}^{n}f(v(\A_{i}))) \to v(\CB)$ in $\B$.
+We briefly recall the definitions of $\Gr(\B)$ and $e$:
+\begin{itemize}
+	\item an object of $\Gr(\B)$ is a finite sequence of objects of $\B$,
+		which we regard as a formal tensor of those objects. So the tensor
+		product of two objects is just their concatenation as lists.
+	\item a `basic 1-cell'
+	\[
+		\langle f,x,y,\alpha,\beta \rangle:
+		(X_{i})_{i=1}^{x} (A_{i})_{i=1}^{m} (Y_{i})_{i=1}^{y}
+		\to
+		(X_{i})_{i=1}^{x} (B_{i})_{i=1}^{n} (Y_{i})_{i=1}^{y}
+	\]
+	consists of:
+	\begin{itemize}
+		\item a bracketing\footnote{
+			By \emph{bracketing} we mean what Gurski calls a `choice of association'
+			(his Definition~10.3.1).
+		} $\alpha$ of the subsequence $(A_{i})_{i=1}^{m}$,
+		\item a bracketing $\beta$ of the subsequence $(B_{i})_{i=1}^{n}$,
+		\item a 1-cell $f: \Tn_{\alpha}A_{i} \to \Tn_{\beta}B_{i}$ in $\B$,
+			where $\Tn_{\alpha}$ denotes the iterated tensor according to the
+			association $\alpha$.
+	\end{itemize}
+	\item Let us define the \emph{canonical tensor} of a sequence of objects or 1-cells to
+	associate to the right, for example $\Tn(A,B,C,D) = A\tn(B\tn(C\tn D))$.
+	%
+	On basic 1-cells, $e(\langle h,x,y,\alpha,\beta \rangle)$ is defined to
+		be a composite of three 1-cells:
+		\begin{diagram}
+			\Tn((X_{i})_{i=1}^{x} (A_{i})_{i=1}^{m} (Y_{i})_{i=1}^{y}) \\
+			\dTo>{\cong} \\
+			(\Tn_{i=1}^{x}X_{i})\tn\bigl((\Tn_{\alpha}A_{i})\tn(\Tn_{i=1}^{y}Y_{i})\bigr) \\
+			\dTo>{(\Tn_{i=1}^{x}X_{i})\tn h \tn(\Tn_{i=1}^{y}Y_{i})} \\
+			(\Tn_{i=1}^{x}X_{i})\tn\bigl((\Tn_{\beta}B_{i})\tn(\Tn_{i=1}^{y}Y_{i})\bigr) \\
+			\dTo>{\cong} \\
+			\Tn((X_{i})_{i=1}^{x} (B_{i})_{i=1}^{n} (Y_{i})_{i=1}^{y})
+		\end{diagram}
+		where the first and third arrows are associator 1-cells.%
+			(Gurski assumes that some associator
+			has been chosen for each pair of bracketings. We shall further assume
+			that each chosen associator has minimal complexity, where the complexity of
+			an associator is the number of basic structural 1-cells it is built
+			from. In addition we assume that, if $\alpha$ and $\beta$ are bracketings,
+			the chosen associator $\beta\to\alpha$ is the inverse of the
+			chosen associator $\alpha\to\beta$. This is clearly consistent with the
+			previous requirement.)
+	\item a 1-cell is a composable finite sequence of basic 1-cells.
+	\item On 1-cells, $e(f_{1},  \dots, f_{n})$ is defined to be
+	\[
+		e(f_{1}) \o \cdots \o e(f_{n}).
+	\]
+	\item a 2-cell $f \To g$ is a 2-cell $e(f) \To e(g)$ in $\B$.
+	\item $e$ is the identity on 2-cells.
+	\item Horizontal composition of 2-cells in $\Gr(\B)$ is non-trivial, and
+		inserts the structural isomorphisms necessary to make the types match.
+\end{itemize}
+Our primary interest in $e$ is that it serves as a machine for inserting
+structural 1-cells and 2-cells where appropriate. Unfortunately for us,
+the very simplicity of its definition means that it will often insert
+structural 1-cells unnecessarily. This is no bar to defining an interpretation
+in a general monoidal bicategory, but it would make the resulting interpretation
+more complicated than necessary. Therefore it is convenient to introduce
+a new operation $e'$ on the 1-cells of $\Gr(\B)$, which produces a
+1-cell in $\B$ that is isomorphic to, but generally simpler than, the
+one produced by $e$. We will also explicitly define an invertible
+2-cell $\epsilon(h): e(h) \To e'(h)$, for every 1-cell $h$ of $\Gr(\B)$.
+
+The first difference between $e'$ and $e$ is that we redefine the value of
+$e'$ on a basic 1-cell $\langle h,x,y,\alpha,\beta \rangle$. We suppress the
+first and/or third (associator) arrow when its source and target are equal.
+In this case our minimal-complexity criterion ensures that these associators
+are identities, hence there is an obvious invertible 2-cell
+\[
+	\epsilon(\langle h,x,y,\alpha,\beta \rangle):
+		e(\langle h,x,y,\alpha,\beta \rangle) \To e'(\langle h,x,y,\alpha,\beta \rangle)
+\]
+built from the unit 2-cells of the bicategory $\B$.
+%
+For example, let $A$ and $B$ be objects
+of $\B$, and consider the one-element sequences $(A)$ and $(B)$, which are
+objects of $\Gr(\B)$. Given $h: A\to B$ in $\B$, there is a basic 1-cell
+$\langle h,0,0,(-),(-) \rangle: (A)\to(B)$ in $\Gr(B)$; in fact this is
+precisely $f(h)$, according to Gurski's triequivalence $f$. Now, applying
+$e$ to this basic 1-cell gives the composite
+\[
+	A \rTo^{1} A \rTo^{h} B \rTo^{1} B,
+\]
+whereas applying $e'$ just gives $h: A\to B$.
+
+The second case in which $e$ may introduce unnecessary 1-cells comes
+when two basic 1-cells are juxtaposed within a 1-cell of $\Gr(\B)$.
+Suppose, for example, that we have a 1-cell containing
+$\langle h,x,y,\alpha,\beta \rangle$ followed by
+$\langle h',x',y',\alpha',\beta' \rangle$. Applying $e$ to this pair
+gives a composite of six 1-cells, the third and fourth of which are:
+\begin{diagram}
+	(\Tn_{i=1}^{x}X_{i})\tn\bigl((\Tn_{\beta}B_{i})\tn(\Tn_{i=1}^{n}B_{i})\bigr) \\
+	\dTo>{\cong} \\
+	\Tn((X_{i})_{i=1}^{x} (B_{i})_{i=1}^{n} (Y_{i})_{i=1}^{y}) \\
+	= \Tn((X'_{i})_{i=1}^{x'} (B'_{i})_{i=1}^{n'} (Y'_{i})_{i=1}^{y'}) \\
+	\dTo>{\cong} \\
+	(\Tn_{i=1}^{x'}X'_{i})\tn\bigl((\Tn_{\alpha'}B'_{i})\tn(\Tn_{i=1}^{y'}Y'_{i})\bigr)
+\end{diagram}
+We define $e'$ so that:
+\begin{itemize}
+	\item If these associators are mutually inverse, both are suppressed.
+	\item Otherwise, this composite is replaced by the relevent chosen
+		associator of minimal complexity.
+\end{itemize}
+And we define $\epsilon$ in the obvious way.
+
+Finally, we define $e'$ on the 2-cells of $\Gr(\B)$. If $\xi: (h_{i}) \to (k_{i})$
+is a 2-cell in $\Gr(\B)$, let $e'(\xi)$ be the composite
+\[
+	e'((h_{i})) \rTo^{\epsilon^{-1}((h_{i}))} e((h_{i}))
+		\rTo^{e(\xi)} e((k_{i}))
+		\rTo^{\epsilon((k_{i}))} e'((k_{i})).
+\]
+
+We shall say in stages what it means to give an interpretation $v: \T\to\B$,
+and use $v$ to simultaneously define:
+\begin{itemize}
+	\item an interpretation $v_{\Gr}: \T \to \Gr(\B)$, and
+	\item the semantic function $\semint{-}$.
+\end{itemize}
+The interpretation $v$ is given as follows:
+\begin{itemize}
+	\item To give the object part of $v$, one gives, for every
+	object $\A$ of $\T$, an object $v(\A)$ of $\B$. Using
+	this, we define the object part of $v_{\Gr}$ by letting
+	$v_{\Gr}(\A) = f(v(\A))$.
+	\item To give the 1-cell part of $v$, one gives,
+	for every $h\in\T(\A_{1}, \dots, \A_{n}; \CB)$,
+	a 1-cell $v(h): e(\Tn_{i=1}^{n}v_{\Gr}(\A_{i})) \to v(\CB)$.
+	Using this, we define $v_{\Gr}(h)$ to be the basic 1-cell
+	\[
+		(v_{\Gr}(\A_{i}))_{i=1}^{n} \to v_{\Gr}(\CB)
+	\]
+	for which $e'(v_{\Gr}(h)) = v(h)$.
+	\item The interpretation $\semint{\gamma}$ of a 1-cell is
+	defined to be $e'(\semint[v_{\Gr}]{\gamma})$.
+	\item To give the 2-cell part of $v$, one gives,
+	for every $t \in \T^{\Gamma}_{\CB}(\alpha, \beta)$,
+	a 2-cell
+	\[
+		v(t): \semint{\alpha} \to \semint{\beta}
+	\] in $\B$.
+	Since $e$ is a bijection on 2-cells, so is $e'$, hence there is a unique 2-cell
+	\[
+		v_{\Gr}(t): \semint[v_{\Gr}]{\alpha} \to \semint[v_{\Gr}]{\beta}
+	\]
+	for which $e'(v_{\Gr}(t)) = v(t)$.
+	\item The interpretation $\semint{\phi}$ of a 2-cell is
+	defined to be $e(\semint[v_{\Gr}]{\phi})$.
+	\item Additionally we demand that, for every
+	equation $(\phi, \psi) \in \T_{=}(\Gamma\proves\alpha\to\beta\in\CB)$,
+	$\semint{\phi} = \semint{\psi}$. Note that this is so if and only if
+	$\semint[v_{\Gr}]{\phi} = \semint[v_{\Gr}]{\psi}$.
+	\item Since the interpretation $\semint[v_{\Gr}]{-}$ is known to be sound,
+	the interpretation $\semint{-}$ is also sound.
+\end{itemize}
 
 \section{The theory of pseudomonoids}
 Next we see how the language may be used to reason about pseudomonoids.
 We will define the theory $\M$ of pseudomonoids, and show that reasoning
 in the formal language corresponds precisely to the usual modes of reasoning
-about monoidal categories, and that a model on $\M$ is precisely a pseudomonoid.
+about monoidal categories, and that a model of $\M$ is precisely a pseudomonoid.
 The theory concerns
 a single object $\C$, so $\M_{0} = \{\C\}$. There are two basic 1-cells,
 $J:\I\to\C$ and $P:\C\tn\C\to\C$, so formally we have $\M(;\C) = \{J\}$
@@ -1529,9 +1736,9 @@ that $\ll^{-1}$ is inverse to $\ll$ and $\rr^{-1}$ is inverse to $\rr$.)
 
 Finally, we have the pentagon and triangle axioms. Consider the
 pentagon:
-\begin{mspill}\begin{diagram}\dlabel{pentagon}
+\begin{mspill}\begin{diagram}%\dlabel{pentagon}
   P\bigl(A,P(B,P(C,D))\bigr)
-	  &\rTo^{\aa_{A,P(B,C),D}}&P(P(A,B),P(C,D))
+	  &\rTo^{\aa_{A,B,P(C,D)}}&P(P(A,B),P(C,D))
 	  &\rTo^{\aa_{P(A,B),C,D}} & P\bigl(P(P(A,B),C),D\bigr)
   \\
   &\rdTo[snake=-1em](1,2)<{P(A,\aa_{B,C,D})} &%\dnum[pentagon]
@@ -1543,25 +1750,536 @@ pentagon:
 \end{diagram}\end{mspill}
 Of course, this diagram is just a convenient way of writing the equation
 \[
-	\aa_{A,P(B,C),D}\cdot \aa_{P(A,B),C,D}
+	\aa_{P(A,B),C,D} \cdot \aa_{A,P(B,C),D}
 	=
-	P(A,\aa_{B,C,D})\cdot P(\aa_{A,B,C},D)\cdot \aa_{A,P(B,C),D}
+	P(\aa_{A,B,C},D) \cdot \aa_{A,P(B,C),D} \cdot P(A,\aa_{B,C,D})
 \]
 which we take as a formal equation of $\M$. Thus any model of $\M$
 must satisfy
 \[
-	\semint{\aa_{A,P(B,C),D}\cdot \aa_{P(A,B),C,D}}
+	\semint{\aa_{P(A,B),C,D} \cdot \aa_{A,B,P(C,D)}}
 	=
-	\semint{P(A,\aa_{B,C,D})\cdot P(\aa_{A,B,C},D)\cdot \aa_{A,P(B,C),D}}
+	\semint{P(\aa_{A,B,C},D) \cdot \aa_{A,P(B,C),D} \cdot P(A,\aa_{B,C,D})}.
 \]
-(where we have omitted the type information inside the semantic brackets).
-Now,
+Similarly the triangle:
+\begin{diagram}
+        P(A,P(J(),C)) &\rTo^{\aa_{A,I,C}}& P(P(A,J()), C)\\
+        &\rdTo[snake=-1ex](1,2)<{P(A, \ll_C}\ldTo[snake=1ex](1,2)>{P(\rr_A,C)}\\
+        &P(A,C)
+\end{diagram}
+represents the equation
+\[
+	P(\rr_A,C) \cdot \aa_{A,I,C}  =  P(A, \ll_C),
+\]
+hence a model of $\M$ must also satisfy
+\[
+	\semint{P(\rr_A,C) \cdot \aa_{A,J(),C}}  =  \semint{P(A, \ll_C)}.
+\]
+%
+Now, let us consider an interpretation of $\M$ in a Gray monoid $\B$. We shall
+omit $v()$, writing just $\C$ instead of $v(\C)$, and $P$ instead of $v(P)$, etc.
+So an interpretation of $\M$ consists of an object $\C$,
+1-cells $J: \I \to \C$ and $P:\C\tn\C\to\C$,
+and invertible 2-cells
+\[\begin{array}{c@{\qquad}c}
+	\multicolumn2c{	\begin{diagram}[s=2.2em,tight]
+		&& \C^2\\
+		&\ruTo^{\C\tn P} && \rdTo^P\\
+		\C^3 && \Arr\Downarrow\aa && \C\\
+		&\rdTo_{P\tn\C}&&\ruTo>{P}\\
+		&&\C^2
+	\end{diagram}
+}
+	\\[6em]
+	\begin{diagram}[vtrianglewidth=1.5em,tight]
+		\C\tn\C &&\lTo^{J\tn\C}&&\I\tn\C\\
+		&\rdTo[snake=-1ex]<{P}
+			&\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\ll\end{array}$}%
+			&\ldTo[snake=1ex]>{1}\\
+		&&\C
+	\end{diagram}
+	&
+	\begin{diagram}[vtrianglewidth=1.5em,tight]
+		\C\tn \C &&\lTo^{\C\tn J} && \C\tn\I\\
+		&\rdTo[snake=-1ex]<{P}
+			&\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\rr\end{array}$}%
+			&\ldTo[snake=1ex]>{1}\\
+		&&\C
+	\end{diagram}
+\end{array}\]
+subject to equations corresponding to the pentagon and triangle conditions.
+Let us first consider the pentagon equation
+\[
+	\semint{\aa_{P(A,B),C,D} \cdot \aa_{A,B,P(C,D)}}
+	=
+	\semint{P(\aa_{A,B,C},D) \cdot \aa_{A,P(B,C),D} \cdot P(A,\aa_{B,C,D})}.
+\]
+equivalently
+\[
+	\semint{\aa_{P(A,B),C,D}} \cdot \semint{\aa_{A,B,P(C,D)}}
+	=
+	\semint{P(\aa_{A,B,C},D)} \cdot \semint{\aa_{A,P(B,C),D}} \cdot \semint{P(A,\aa_{B,C,D})}.
+\]
+By definition, $\semint{\aa_{A,B, P(C,D)}}: \semint{P(A,P(B, P(C,D)))}
+	\To \semint{P(P(A,B), P(C,D))}$ is
+\begin{diagram}
+	\semint{P(A,P(B, P(C,D)))} && \semint{P(P(A,B), P(C,D))} \\
+	\dTo<{\norm^{-1}} && \uTo>{\norm} \\ 
+	\semint{P(A, P(B,X))} \o (\C\tn\C\tn P)
+	& \rTo_{\aa \o (\C\tn\C\tn P)}
+	& \semint{P(P(A,B),X)} \o (\C\tn\C\tn P)
+\end{diagram}
+On the left we have
 \begin{mmulti}
-	\semint{\aa_{A,P(B,C),D}\cdot \aa_{P(A,B),C,D}}
-	\\= \semint{\aa_{A,P(B,C),D}}\cdot\semint{\aa_{P(A,B),C,D}}
-	\\= \bigl(v(\aa) \o (v(\C)\tn v(P)\tn v(\C))\bigr) \cdot
-		\bigl(v(\aa) \o (v(P)\tn v(\C)\tn v(\C)\bigr)
+	\semint{
+	P(A,
+		P(B,
+			P(C,D)
+		)
+	)
+	}
+	\\= P \o (\C\tn\semint{
+		P(B,
+			P(C,D)
+		)
+	})
+	\\= P \o (\C\tn(
+		P \o (\C\tn\semint{
+			P(C,D)
+		}
+	)))
+	\\= P \o (\C\tn(
+		P \o (\C\tn P)
+	))
+	\\= P \o (\C\tn P) \o (\C\tn\C\tn P)
 \end{mmulti}
+and the $\norm^{-1}$ map is just the identity. The reason is
+essentially that every occurrence of $P$ has one argument equal
+to a constant. Thus the right-hand side is more interesting: we have
+\[
+	\semint{
+	P(
+		P(A,B), P(C,D)
+	)
+	}
+	=
+	P \o (P\tn P)
+\]
+and the $\norm$ map is the isomorphism
+\[
+	P \o (P\tn\C) \o (\C\tn\C\tn P) \to P \o (P\tn P).
+\]
+So this 2-cell is
+\def\rnode#1#2{%
+       \tikz[baseline=(#1.base),inner sep=0pt,outer sep=3pt]
+               \node(#1){\mathsurround=0pt$\displaystyle#2$};
+       }
+\begin{diagram}[s=2.2em]
+	&& && \C^2\\
+	&& &\ruTo^{\C\tn P} && \rdTo^P\\
+	\rnode{left}{\C^{4}}&\rTo^{\C\tn \C\tn P}& \C^3 && \Arr\Downarrow\aa && \C\\
+	&& &\rdTo[hug]_{P\tn\C}&&\ruTo>{P}\\
+	&& &&\rnode{bottom}{\C^2}
+	%
+	\begin{tikzpicture}[overlay]
+		\path[->] (left) edge [out=-45, in=180, out looseness=0.7]
+			node [left, pos=0.6] {$P\tn P$} node [above=1em, pos=0.5] {$\sim$} (bottom);
+	\end{tikzpicture}
+\end{diagram}
+In a similar way, one may calculate that
+\[
+	\semint{\aa_{P(A,B),C,D}}
+\]
+is equal to
+\begin{diagram}[s=2.2em]
+	&& && \rnode{top}{\C^2}\\
+	&& &\ruTo[hug]^{\C\tn P} && \rdTo^P\\
+	\rnode{left}{\C^{4}}&\rTo_{P\tn\C\tn\C}& \C^3 && \Arr\Downarrow\aa && \C\\
+	&& &\rdTo_{P\tn\C}&&\ruTo>{P}\\
+	&& &&\rnode{bottom}{\C^2}
+	%
+	\begin{tikzpicture}[overlay]
+		\path[->] (left) edge [in = 180, out looseness=0.7]
+			node [left, pos=0.6] {$P\tn P$} node [below=1em, pos=0.5] {$\sim$} (top);
+	\end{tikzpicture}
+\end{diagram}
+Note that, according to the definition of Gray monoid, in fact
+\[
+	P\tn P = (C\tn P)\o(P\tn\C\tn\C),
+\]
+and this interchange cell is the identity.
+Thus the composite
+\[
+	\semint{\aa_{P(A,B),C,D} \cdot \aa_{A,B,P(C,D)}}
+	= \semint{\aa_{P(A,B),C,D}} \cdot \semint{\aa_{A,B,P(C,D)}}
+\]
+is
+\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+	&&\C^3\\
+	&\ruTo^{\C^2\tn P}&\dTo[snake=-5pt]<{P\tn\C}&\rdTo^{\C\tn P}\\
+	\C^4 &\sim& \C^2 &\mathop{\Leftarrow}\limits_{\;\;\;\aa}& \C^2\\
+	\dTo<{P\tn\C^2}&\ruTo[hug]_{\C\tn P} && \rdTo_P & \dTo>{P}\\
+	\C^3 && \Arr\Downarrow\aa && \C\\
+	&\rdTo_{P\tn\C}&&\ruTo>{P}\\
+	&&\C^2
+\end{diagram}
+where we have written $\C^{2}$ as an abbreviation for $\C\tn\C$, etc.
+%
+Calculating
+\[
+	\semint{P(\aa_{A,B,C},D) \cdot \aa_{A,P(B,C),D} \cdot P(A,\aa_{B,C,D})}.
+\]
+is less interesting, since all the $\norm$ maps are identities, so
+it is just
+\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+	&&\C^3\\
+	&\ruTo^{\C^2\tn P}&&\rdTo^{\C\tn P}\\
+	\C^4 && \Arr\Downarrow{\C\tn \aa} && \C^2\\
+	\dTo<{P\tn\C^2}&\rdTo[hug]^{\C\tn P\tn\C} && \ruTo[hug]^{\C\tn P} & \dTo>{P}\\
+	\C^3 &\mathop{\Leftarrow}\limits_{\;\;\;\aa\tn\C}& \C^3 &\Arr\Swarrow{\scriptstyle\!\!\!\aa}& \C\\
+	&\rdTo_{P\tn\C}&\dTo[snake=5pt]>{\!\!P\tn\C}&\ruTo>{P}\\
+	&&\C^2
+\end{diagram}
+Thus the pentagon axiom, in a Gray monoid, is:
+\begin{equation}\label{eq-aa}
+	\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+		&&\C^3\\
+		&\ruTo^{\C^2\tn P}&\dTo[snake=-5pt]<{P\tn\C}&\rdTo^{\C\tn P}\\
+		\C^4 &\sim& \C^2 &\mathop{\Leftarrow}\limits_{\;\;\;\aa}& \C^2\\
+		\dTo<{P\tn\C^2}&\ruTo[hug]_{\C\tn P} && \rdTo_P & \dTo>{P}\\
+		\C^3 && \Arr\Downarrow\aa && \C\\
+		&\rdTo_{P\tn\C}&&\ruTo>{P}\\
+		&&\C^2
+	\end{diagram}
+	\qquad=\qquad
+	\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+		&&\C^3\\
+		&\ruTo^{\C^2\tn P}&&\rdTo^{\C\tn P}\\
+		\C^4 && \Arr\Downarrow{\C\tn \aa} && \C^2\\
+		\dTo<{P\tn\C^2}&\rdTo[hug]^{\C\tn P\tn\C} && \ruTo[hug]^{\C\tn P} & \dTo>{P}\\
+		\C^3 &\mathop{\Leftarrow}\limits_{\;\;\;\aa\tn\C}& \C^3 &\Arr\Swarrow{\scriptstyle\!\!\!\aa}& \C\\
+		&\rdTo_{P\tn\C}&\dTo[snake=5pt]>{\!\!P\tn\C}&\ruTo>{P}\\
+		&&\C^2
+	\end{diagram}
+\end{equation}
+In a similar way, the triangle axiom is:
+\begin{equation}
+\begin{diagram}[s=2.2em]
+	& & \rnode{CIC}{\C\tn\I\tn\C} \\
+	& & \dTo<{\C\tn J\tn\C} \\
+	& & \C^{3} \\
+	& \ldTo^{\C\tn P} && \rdTo[hug]^{P\tn\C} \\
+	\C^{2} && \Right_\aa && \rnode{CC}{\C^{2}} \\
+	& \rdTo_{P} && \ldTo_{P} \\
+	& & \C
+	\begin{tikzpicture}[overlay]
+		\path[->] (CIC) edge [out=0, in=90, out looseness=0.7]
+			node [right, pos=0.6] {$1$} node [left=1em, pos=0.5] {$\Right_{\rr\tn\C}$} (CC);
+	\end{tikzpicture}
+\end{diagram}
+\qquad=\qquad
+\begin{diagram}[s=2.2em]
+	& & \rnode{CIC}{\C\tn\I\tn\C} \\
+	& \ldTo^{\C\tn J\tn\C} \\
+	\C^{3} && \llap{$\Right_{\rr\tn\C}$} \\
+	& \rdTo_{\C\tn P} \\
+	& & \rnode{CC}{\C^{2}} \\
+	& & \dTo<{P} \\
+	& & \C 
+	\begin{tikzpicture}[overlay]
+		\path[->] (CIC) edge [out=-45, in=45, out looseness=0.7]
+			node [right, pos=0.6] {$1$} (CC);
+	\end{tikzpicture}
+\end{diagram}
+\end{equation}
 
+The interpretation in a general monoidal bicategory works in a
+similar way; the monoidal biequivalence `$e$' causes structural
+1-cells and 2-cells to be inserted where necessary. Let us consider
+the 2-cell $\aa$: its interpretation needs to be a 2-cell
+\[
+	\semint{P(A,P(B,C))} \to \semint{P(P(A,B),C)},
+\]
+and $\semint{P(A,P(B,C))}$ is simply
+\[
+	\C\tn(\C\tn\C)
+	\rTo^{\C\tn P}
+	\C\tn\C
+	\rTo^{P}
+	\C
+\]
+whereas $\semint{P(P(A,B),C)}$ is
+\[
+	\C\tn(\C\tn\C)
+	\rTo^{a_{\C,\C,\C}}
+	(\C\tn\C)\tn\C
+	\rTo^{P\tn\C}
+	\C\tn\C
+	\rTo^{P}
+	\C,
+\]
+hence $\aa$ should be a 2-cell
+\begin{diagram}
+		\C\tn(\C\tn\C)
+		& \rTo^{\C\tn P} & \C\tn\C
+		\\
+		\dTo<{a_{\C,\C,\C}}
+		& \Swarrow\aa
+		&& \rdTo^{P}
+		\\
+		(\C\tn\C)\tn\C
+		& \rTo_{P\tn\C} & \C\tn\C
+		& \rTo_{P} & \C
+\end{diagram}
+The axioms also sport structural 2-cells. For example, the pentagon equation becomes
+the requirement that
+\begin{mspill}\begin{diagram}
+	\C\tn(\C\tn(\C\tn\C))
+	& \rTo^{\C\tn(\C\tn P)} & \C\tn(\C\tn\C)
+	& \rTo^{\C\tn P} & \C\tn\C
+	\\
+	\dTo[snake=-1.5em]<{a_{\C,\C,\C\tn\C}}
+	& \Swarrow a_{\C,\C,P}
+	& \dTo>{a_{\C,\C,\C}}
+	& \Swarrow\aa
+	&& \rdTo(2,3)^P
+	\\
+	&& (\C\tn\C)\tn\C
+	\\
+	(\C\tn\C)\tn(\C\tn\C)
+	& \ruTo(2,1)^{(\C\tn\C)\tn P}
+	& \cong
+	& \rdTo(2,1)^{P\tn\C}
+	& \C\tn\C
+	& \rTo_P & \C
+	\\
+	\dTo[snake=-1.5em]<{a_{\C\tn\C,\C,\C}}
+	& \rdTo(2,1)_{P\tn(\C\tn\C)}
+	&\C\tn(\C\tn\C)
+	& \ruTo(2,1)_{\C\tn P}
+	&& \ruTo(2,3)_P
+	\\
+	& \Swarrow a_{P,\C,\C}
+	& \dTo>{a_{\C,\C,\C}}
+	& \Swarrow\aa
+	\\
+	((\C\tn\C)\tn\C)\tn\C
+	& \rTo_{(P\tn\C)\tn\C} & (\C\tn\C)\tn\C
+	& \rTo_{P\tn\C} & \C\tn\C
+\end{diagram}\end{mspill}
+must be equal to
+\begin{diagram}
+	&& \rnode{t}{\C\tn(\C\tn(\C\tn\C))}
+	& \rTo^{\C\tn(\C\tn P)} & \C\tn(\C\tn\C)
+	\\
+	& %\ldTo(2,3)
+	& \dTo<{\C\tn a_{\C,\C,\C}}
+	& \Swarrow\C\tn \aa
+	&& \rdTo^{\C\tn P}
+	\\
+	&& \C\tn ((\C\tn\C)\tn\C)
+	& \rTo_{\C\tn(P\tn\C)} & \C\tn(\C\tn\C)
+	& \rTo_{\C\tn P} & \C\tn\C
+	\\
+	\rnode{l}{(\C\tn\C)\tn(\C\tn\C)} & \Left_{\pi_{A,B,C,D}^{-1}}
+	& \dTo<{a_{\C,\C\tn\C,\C}}
+	& \Swarrow a_{\C,P,\C}
+	& \dTo<{a_{\C,\C,\C}}
+	& \Swarrow\aa
+	&& \rdTo^{P}
+	\\
+	& %\rdTo(2,3)
+	& (\C\tn(\C\tn\C))\tn\C
+	& \rTo_{(\C\tn P)\tn\C}
+	& (\C\tn\C)\tn\C
+	& \rTo_{P\tn\C}
+	& \C\tn\C & \rTo_P & \C
+	\\
+	&& \dTo<{a_{\C,\C,\C}\tn\C}
+	& \Downarrow\aa\tn\C
+	&& \ruTo_{P\tn\C}
+	\\
+	&& \rnode{b}{((\C\tn\C)\tn\C)\tn\C} & \rTo_{(P\tn\C)\tn\C} & (\C\tn\C)\tn\C
+	\begin{tikzpicture}[overlay]
+		\path[->] (t) edge [out=180, in=90]
+			node [left] {$a_{\C,\C,\C\tn\C}$} (l);
+		\path[->] (l) edge [out=-90, in=180]
+			node [left] {$a_{\C\tn\C,\C,\C}$} (b); 
+	\end{tikzpicture}
+\end{diagram}
+and the triangle equation becomes the requirement that
+\begin{diagram}
+	\C\tn(\I\tn\C) & \rTo^{a_{\C,\I,\C}} & \rnode{t}{(\C\tn\I)\tn\C} \\
+	\dTo<{\C\tn(J\tn\C)} & \Arr\Nearrow{a_{\C,J,\C}} & \dTo>{(\C\tn J)\tn\C} \\
+	\C\tn(\C\tn\C) & \rTo_{a_{\C,\C,\C}} & (\C\tn\C)\tn\C & \Right_{\rr\tn\C} \\
+	\dTo<{\C\tn P} & \Arr\Nearrow{\aa} && \rdTo_{P\tn\C} \\
+	\C\tn\C & \rTo_{P} & \C & \lTo_{P} & \rnode{b}{\C\tn\C}
+	\begin{tikzpicture}[overlay]
+		\path[->] (t) edge [out=0, in=90]
+			node [right] {$r_{\C}\tn\C$} (b);
+	\end{tikzpicture}
+\end{diagram}
+be equal to
+\begin{diagram}[h=2.2em]
+	& & \rnode{CIC}{\C\tn(\I\tn\C)} \\
+	& \ldTo^{\C\tn (J\tn\C)} && \rdTo^{a_{\C,\I,\C}} \\
+	\C^{3} & \rlap{$\Right_{\rr\tn\C}$} & \dTo~{\C\tn l_{\C}}
+		& \llap{$\Right_{\mu_{\C,\C}}$} & (\C\tn\I)\tn\C\\
+	& \rdTo_{\C\tn P} && \ldTo_{r_{\C}\tn\C} \\
+	& & \rnode{CC}{\C\tn\C} \\
+	& & \dTo<{P} \\
+	& & \C 
+	% \begin{tikzpicture}[overlay]
+	% 	\path[->] (CIC) edge [out=-45, in=45, out looseness=0.7]
+	% 		node [right, pos=0.6] {$\C\tn l_{\C}$} (CC);
+	% \end{tikzpicture}
+\end{diagram}
+(In fact the `raw' version of the equation, as it emerges from the
+interpretation, has $\mu^{-1}$ on the left-hand side, rather than
+$\mu$ on the right as we have written.)
+
+\section{Calculating in the theory of pseudomonoids}
+Now we may use the language to prove various facts about
+pseudomonoids, essentially using the formal interpretation of the
+language as a translation tool that allows us to transfer
+proofs from the familiar setting of monoidal categories.
+As a first example, consider the simple fact that
+\[
+	\ll_{P(J(),A)} = P(J(), \ll_{A}): P(J(), P(J(), A)) \to P(J(), A).
+\]
+The usual proof runs as follows: since $\ll$ is a natural transformation,
+we have a naturality square
+\begin{diagram}
+	P(J(), P(J(), A)) & \rTo^{P(J(), \ll_{A})} & P(J(), A) \\
+	\dTo<{\ll_{P(J(), A)}} &\natural& \dTo>{\ll_{A}} \\
+	P(J(), A) & \rTo_{\ll_{A}} & A
+\end{diagram}
+which, since $\ll_{A}$ is invertible, implies the claim.
+The formal proof in our language is precisely the same:
+the naturality square is an instance of the naturality
+axiom; we then compose with $\ll^{-1}_{A}$ (using the axiom
+that composition preserves equality), then use our
+axiom relating $\ll$ and $\ll^{-1}$ to derive
+\[
+	1_{A} \cdot \ll_{P(J(),A)} = 1_{A} \cdot P(J(), \ll_{A}),
+\]
+and finally use the identity axiom (and symmetry and transitivity)
+to conclude that
+\[
+	\ll_{P(J(),A)} = P(J(), \ll_{A}): P(J(), P(J(), A)) \to P(J(), A)
+\]
+as required. In a Gray monoid, this shows that
+\begin{diagram}[h=1.5em]
+	\\\ \\
+	&&& \sim\\
+	\rnode{l}{\C} & \rTo_{J\tn\C} & \C\tn\C & \rTo_{P} & \rnode{l2}{\C} & \rTo_{J\tn\C}
+		& \rnode{r}{\C\tn\C} & \rTo_{P} & \rnode{r2}{\C} \\
+	&&&&&& \Downarrow\ll \\
+	\begin{tikzpicture}[overlay]
+		\path[->] (l) edge [out=30, in=150]
+			node [above] {$J\tn(P\o(J\tn\C))$} (r);
+		\path[->] (l2) edge [out=-60, in=-120]
+			node [below] {$1$} (r2);
+	\end{tikzpicture}
+\end{diagram}
+is equal to
+\begin{diagram}[h=1.5em]
+	\\\ \\
+	&&& \sim\\
+	\rnode{l}{\C} & \rTo_{J\tn\C} & \C\tn\C & \rTo_{P} & \rnode{r2}{\C} & \rTo_{J\tn\C}
+		& \rnode{r}{\C\tn\C} & \rTo_{P} & \C \\
+	&& \Downarrow\ll \\
+	\begin{tikzpicture}[overlay]
+		\path[->] (l) edge [out=30, in=150]
+			node [above] {$J\tn(P\o(J\tn\C))$} (r);
+		\path[->] (l) edge [out=-60, in=-120]
+			node [below] {$1$} (r2);
+	\end{tikzpicture}
+\end{diagram}
+Since we may cancel the common $\norm$ cell, this can equivalently
+be stated as:
+\begin{diagram}[h=1.5em]
+	\rnode{l}{\C} & \rTo_{J\tn\C} & \C\tn\C & \rTo_{P} & \rnode{l2}{\C} & \rTo_{J\tn\C}
+		& \rnode{r}{\C\tn\C} & \rTo_{P} & \rnode{r2}{\C} \\
+	&&&&&& \Downarrow\ll \\
+	\begin{tikzpicture}[overlay]
+		\path[->] (l2) edge [out=-60, in=-120]
+			node [below] {$1$} (r2);
+	\end{tikzpicture}
+\end{diagram}
+is equal to
+\begin{diagram}[h=1.5em]
+	\rnode{l}{\C} & \rTo_{J\tn\C} & \C\tn\C & \rTo_{P} & \rnode{r2}{\C} & \rTo_{J\tn\C}
+		& \rnode{r}{\C\tn\C} & \rTo_{P} & \C \\
+	&& \Downarrow\ll \\
+	\begin{tikzpicture}[overlay]
+		\path[->] (l) edge [out=-60, in=-120]
+			node [below] {$1$} (r2);
+	\end{tikzpicture}
+\end{diagram}
+For a more substantial application, consider the triangle
+\begin{diagram}[vtriangleheight=3em]
+	P(J(),P(A,B)) && \rTo^{\aa_{J(),A,B}} && P(P(J(), A), B) \\
+	& \rdTo_{\ll_{P(A,B)}} && \ldTo_{P(\ll_{A}, B)} \\
+	&& P(A,B)
+\end{diagram}
+The proof of this, as given by \citet{KellyML} for monoidal categories,
+runs as follows. Let us omit the symbol $P$ to save space, so we write
+$(A,B)$ to mean $P(A,B)$. Consider the diagram
+\begin{mspill}\begin{diagram}[midvshaft,hug]
+	\bigl(A,(J(),(C,D))\bigr)
+		&\rTo^{\aa_{A,J(),(C,D)}} & ((A,J()),(C,D))
+		&\rTo^{\aa_{(A,J()),C,D}} & \bigl(((A,J()),C),D\bigr)
+	\\
+	& \rdTo(1,2)^{(A,\ll_{(C,D)})} \ldTo(1,2)_{(\rr_{A}, (C,D))}
+		& \rlap{\qquad$\natural$} &\ldTo(1,2)^{((\rr_{A},C),D)}
+	\\
+		& (A,(C,D)) & \rTo_{\aa_{A,C,D}} & ((A,C),D)
+	\\
+	\dTo<{(A,\aa_{J(),C,D})}>{\qquad?}
+		\ruTo(1,2)_{(A,(\ll_{C},D))}
+		&& \natural &&
+		\luTo(1,2)_{((A,\ll_{C}),D)}
+		\uTo>{(\aa_{A,J(),C},D)}
+	\\
+	\bigl(A,((J(),C),D)\big)
+		&& \rTo_{\aa_{A,(J(),C),D}}
+		&& \bigl((A,(J(),C)),D\bigr)
+\end{diagram}\end{mspill}
+The outside commutes by the pentagon axiom.
+The quadrilaterals commute by naturality, and the unmarked triangles
+by the triangle axiom. Since $\aa_{A,C,D}$ is invertible, it follows
+that the triangle marked `$?$' commutes.
+Now set $A = J()$, and use the naturality and invertibility of $\ll$ to
+conclude that the required triangle commutes.
+It's easy to see that all this reasoning is formalisable in the language,
+hence
+\[
+	\semint{\aa_{J(), A, B} \cdot \ll_{P(A,B)}}
+	=
+	\semint{P(\ll_{A}, B)}
+\]
+in any model.
+By a dual argument,
+\[
+	\semint{\rr_{P(A,B)} \cdot \aa_{A,B,J()}} = \semint{P(A, \rr_{B})}
+\]
+as well. Also, we can show that $\semint{\ll_{J()}} = \semint{\rr_{J()}}$,
+as follows:
+\[
+	P(\ll_{J()},A) \cdot \aa_{J(),J(),A} = \ll_{P(J(),A)}
+\]
+by the triangle we proved above, which is equal to $P(J(), \ll_{A})$
+by the naturality argument at the start of this section, which in
+turn is equal to $P(\rr_{J()}, A) \cdot \aa_{J(),J(),A}$ by the
+triangle axiom. Since $\aa_{J(),J(),A}$ is invertible, we have
+that $P(\ll_{J()},A) = P(\rr_{J()}, A)$. Then use the invertibility
+and naturality of $\rr$ to conclude $\ll_{J()} = \rr_{J()}$, as
+required.
+
+Again, this reasoning may easily be formalised in the language,
+and as promised the language allows us to transfer proofs from
+the setting of ordinary monoidal categories to that of arbitrary
+pseudomonoids.
 \bibliography{cs}
 \end{document}
