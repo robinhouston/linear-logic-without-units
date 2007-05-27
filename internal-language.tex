@@ -1329,34 +1329,25 @@ hold in every model.
 				\proves f(\psi_{1},\dots,\psi_{n})\in\CB}
 			\\=
 			\bigl( v(f)\o (
-				\semint{\phi_{1}}\tn\cdots\semint{\phi_{n}}
+				\Tn_{i=1}^{n}\semint{\phi_{i}}
 			) \bigr)
 			\cdot
 			\bigl( v(f)\o (
-				\semint{\psi_{1}}\tn\cdots\semint{\psi_{n}}
+				\Tn_{i=1}^{n}\semint{\psi_{i}}
 			) \bigr)
 			\\=
 			v(f)\o\bigl(
-				(\semint{\phi_{1}}\tn\cdots\semint{\phi_{n}})
-				\cdot (\semint{\psi_{1}}\tn\cdots\semint{\psi_{n}})
+				\Tn_{i=1}^{n}\semint{\phi_{i}}
+				\cdot
+				\Tn_{i=1}^{n}\semint{\psi_{i}}
 			\bigr)
 			\\=
-			v(f)\o\bigl(
-				(\semint{\phi_{1}}\cdot\semint{\psi_{1}})
-				\tn\cdots\tn
-				(\semint{\phi_{n}}\cdot\semint{\psi_{n}})
+			v(f)\o\Tn_{i=1}^{n}\bigl(
+				\semint{\phi_{i}}\cdot\semint{\psi_{i}}
 			\bigr)
 			\\=
-			v(f)\o\bigl(
-				(\semint{\phi_{1}}\cdot\semint{\psi_{1}})
-			\tn\cdots\tn
-				(\semint{\phi_{n}}\cdot\semint{\psi_{n}})
-			\bigr)
-			\\=
-			v(f)\o\bigl(
-				(\semint{\phi_{1}\cdot\psi_{1}})
-			\tn\cdots\tn
-				(\semint{\phi_{n}\cdot\psi_{n}})
+			v(f)\o\Tn_{i=1}^{n}\bigl(
+				\semint{\phi_{i}\cdot\psi_{i}}
 			\bigr)
 			\\=
 			\semint{f(\phi_{1}\cdot\psi_{1},\dots,\phi_{n}\cdot\psi_{n})}
@@ -1523,7 +1514,7 @@ We briefly recall the definitions of $\Gr(\B)$ and $e$:
 	\item an object of $\Gr(\B)$ is a finite sequence of objects of $\B$,
 		which we regard as a formal tensor of those objects. So the tensor
 		product of two objects is just their concatenation as lists.
-	\item a `basic 1-cell'
+	\item a `basic 1-cell' of $\Gr(\B)$
 	\[
 		\langle f,x,y,\alpha,\beta \rangle:
 		(X_{i})_{i=1}^{x} (A_{i})_{i=1}^{m} (Y_{i})_{i=1}^{y}
@@ -1534,12 +1525,13 @@ We briefly recall the definitions of $\Gr(\B)$ and $e$:
 	\begin{itemize}
 		\item a bracketing\footnote{
 			By \emph{bracketing} we mean what Gurski calls a `choice of association'
-			(his Definition~10.3.1).
+			(his Definition~10.3.1). This can include copies of the unit object:
+			for example, $((\I\tn A)\tn B)\tn \I$ is a bracketing of $(A,B)$.
 		} $\alpha$ of the subsequence $(A_{i})_{i=1}^{m}$,
 		\item a bracketing $\beta$ of the subsequence $(B_{i})_{i=1}^{n}$,
 		\item a 1-cell $f: \Tn_{\alpha}A_{i} \to \Tn_{\beta}B_{i}$ in $\B$,
 			where $\Tn_{\alpha}$ denotes the iterated tensor according to the
-			association $\alpha$.
+			bracketing $\alpha$.
 	\end{itemize}
 	\item Let us define the \emph{canonical tensor} of a sequence of objects or 1-cells to
 	associate to the right, for example $\Tn(A,B,C,D) = A\tn(B\tn(C\tn D))$.
@@ -1564,10 +1556,10 @@ We briefly recall the definitions of $\Gr(\B)$ and $e$:
 			the chosen associator $\beta\to\alpha$ is the inverse of the
 			chosen associator $\alpha\to\beta$. This is clearly consistent with the
 			previous requirement.)
-	\item a 1-cell is a composable finite sequence of basic 1-cells.
+	\item a 1-cell of $\Gr(\B)$ is a composable finite sequence of basic 1-cells.
 	\item On 1-cells, $e(f_{1},  \dots, f_{n})$ is defined to be
 	\[
-		e(f_{1}) \o \cdots \o e(f_{n}).
+		e(f_{n}) \o \cdots \o e(f_{1}).
 	\]
 	\item a 2-cell $f \To g$ is a 2-cell $e(f) \To e(g)$ in $\B$.
 	\item $e$ is the identity on 2-cells.
