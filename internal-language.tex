@@ -653,8 +653,8 @@ is some work to be done to account for this.
 	and $((g^i_j)_{j=1}^{n_{i}})_{i=1}^{n}$
 	are nested sequences of 1-cells, then the interchange isomorphism
 	\[
-		\Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}f_{i}\o\Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}g_{i}
-		\to \Tn_{i=1}^{n}\Tn_{j=1}^{n_{i}}(f_{i}\o g_{i})
+		\Tn_{i=1}^{n}\Tn_{j=1}^{n^{i}_{j}}f^{i}_{j}\o\Tn_{i=1}^{n}\Tn_{j=1}^{n^{i}_{j}}g^{i}_{j}
+		\to \Tn_{i=1}^{n}\Tn_{j=1}^{n^{i}_{j}}(f^{i}_{j}\o g^{i}_{j})
 	\]
 	is denoted $(\Ic_{j=1}^{n_{i}})_{i=1}^{n}(f^i_j,g^i_j)$.
 \end{definition}
@@ -737,7 +737,7 @@ The following simple Lemma will be useful later on.
 	Now let $\Gamma\proves \beta\in\C$ be a derivable 1-cell sequent, where
 	$\Gamma = (B_{i}\in\CB_{i})_{i=1}^{n}$, and for each $1\leq i\leq n$
 	let $\Delta_{i}\proves \alpha_{i}\in\CB_{i}$ be a derivable 1-cell sequent.
-	We shall explicitly define an isomorphism
+	We shall explicitly define a `normalisation' isomorphism
 	\[
 		\norm_{\C}^{\Gamma}((\alpha_{i})_{i=1}^{n},\beta)
 			: \semint{\beta}\o\Tn_{i=i}^{n}\semint{\alpha_{i}}
@@ -748,9 +748,9 @@ The following simple Lemma will be useful later on.
 	we use the identity. So suppose that $\beta = f(\beta_{1}, \dots, \beta_{m})$
 	for some natural number $m$ and 1-cell symbol $f\in\T(\C_{1},\cdots,\C_{m};\D)$.
 	For each $1\leq i\leq m$, let $m_{i}$ denote the
-	number of names that occur in $\beta_{i}$, and let $B^{i}_{j}$
+	number of names that occur in $\beta_{i}$. Let $B^{i}_{j}$
 	denote $B_{j+\sum_{r<i}m_{r}}$ and $\alpha^{i}_{j}$ denote
-	$\alpha_{j+\sum_{r<i}m_{r}}$, so that $(B_{i})_{i=1}^{n}$ is divided
+	$\alpha_{j+\sum_{r<i}m_{r}}$. Thus $(B_{i})_{i=1}^{n}$ is divided
 	into the nested sequence $((B^{i}_{j})_{j=1}^{m_{i}})_{i=1}^{m}$,
 	where the inner sequence $(B^{i}_{j})_{j=1}^{m_{i}}$ contains just
 	the names that occur in $\beta_{i}$. In a similar way, divide the
@@ -1503,13 +1503,15 @@ We have shown how the language may be soundly interpreted in a Gray monoid.
 In this section, we use coherence to interpret the language soundly
 in any monoidal bicategory.
 
+\newcommand\ee{\mathbf{e}}
+\newcommand\ff{\mathbf{f}}
 Let $\B$ be a monoidal bicategory, and let $\Gr(\B)$ be the
 corresponding Gray monoid, as defined by \citet[][Chapter~10]{GurskiThesis},
 with monoidal biequivalences
 \[
-	\B \pile{\rTo^{f}\\\lTo_{e}} \Gr(\B).
+	\B \pile{\rTo^{\ff}\\\lTo_{\ee}} \Gr(\B).
 \]
-We briefly recall the definitions of $\Gr(\B)$ and $e$:
+We briefly recall the definitions of $\Gr(\B)$ and $\ee$:
 \begin{itemize}
 	\item an object of $\Gr(\B)$ is a finite sequence of objects of $\B$,
 		which we regard as a formal tensor of those objects. So the tensor
@@ -1536,7 +1538,7 @@ We briefly recall the definitions of $\Gr(\B)$ and $e$:
 	\item Let us define the \emph{canonical tensor} of a sequence of objects or 1-cells to
 	associate to the right, for example $\Tn(A,B,C,D) = A\tn(B\tn(C\tn D))$.
 	%
-	On basic 1-cells, $e(\langle h,x,y,\alpha,\beta \rangle)$ is defined to
+	On basic 1-cells, $\ee(\langle h,x,y,\alpha,\beta \rangle)$ is defined to
 		be a composite of three 1-cells:
 		\begin{diagram}
 			\Tn((X_{i})_{i=1}^{x} (A_{i})_{i=1}^{m} (Y_{i})_{i=1}^{y}) \\
@@ -1557,34 +1559,34 @@ We briefly recall the definitions of $\Gr(\B)$ and $e$:
 			chosen associator $\alpha\to\beta$. This is clearly consistent with the
 			previous requirement.)
 	\item a 1-cell of $\Gr(\B)$ is a composable finite sequence of basic 1-cells.
-	\item On 1-cells, $e(f_{1},  \dots, f_{n})$ is defined to be
+	\item On 1-cells, $\ee(f_{1},  \dots, f_{n})$ is defined to be
 	\[
 		e(f_{n}) \o \cdots \o e(f_{1}).
 	\]
-	\item a 2-cell $f \To g$ is a 2-cell $e(f) \To e(g)$ in $\B$.
-	\item $e$ is the identity on 2-cells.
+	\item a 2-cell $f \To g$ is a 2-cell $\ee(f) \To \ee(g)$ in $\B$.
+	\item $\ee$ is the identity on 2-cells.
 	\item Horizontal composition of 2-cells in $\Gr(\B)$ is non-trivial, and
 		inserts the structural isomorphisms necessary to make the types match.
 \end{itemize}
-Our primary interest in $e$ is that it serves as a machine for inserting
+Our primary interest in $\ee$ is that it serves as a machine for inserting
 structural 1-cells and 2-cells where appropriate. Unfortunately for us,
 the very simplicity of its definition means that it will often insert
 structural 1-cells unnecessarily. This is no bar to defining an interpretation
 in a general monoidal bicategory, but it would make the resulting interpretation
 more complicated than necessary. Therefore it is convenient to introduce
-a new operation $e'$ on the 1-cells of $\Gr(\B)$, which produces a
+a new operation $\ee'$ on the 1-cells of $\Gr(\B)$, which produces a
 1-cell in $\B$ that is isomorphic to, but generally simpler than, the
-one produced by $e$. We will also explicitly define an invertible
-2-cell $\epsilon(h): e(h) \To e'(h)$, for every 1-cell $h$ of $\Gr(\B)$.
+one produced by $\ee$. We will also explicitly define an invertible
+2-cell $\epsilon(h): \ee(h) \To \ee'(h)$, for every 1-cell $h$ of $\Gr(\B)$.
 
-The first difference between $e'$ and $e$ is that we redefine the value of
-$e'$ on a basic 1-cell $\langle h,x,y,\alpha,\beta \rangle$. We suppress the
+The first difference between $\ee'$ and $\ee$ is that we redefine the value of
+$\ee'$ on a basic 1-cell $\langle h,x,y,\alpha,\beta \rangle$. We suppress the
 first and/or third (associator) arrow when its source and target are equal.
 In this case our minimal-complexity criterion ensures that these associators
 are identities, hence there is an obvious invertible 2-cell
 \[
 	\epsilon(\langle h,x,y,\alpha,\beta \rangle):
-		e(\langle h,x,y,\alpha,\beta \rangle) \To e'(\langle h,x,y,\alpha,\beta \rangle)
+		\ee(\langle h,x,y,\alpha,\beta \rangle) \To \ee'(\langle h,x,y,\alpha,\beta \rangle)
 \]
 built from the unit 2-cells of the bicategory $\B$.
 %
@@ -1592,18 +1594,18 @@ For example, let $A$ and $B$ be objects
 of $\B$, and consider the one-element sequences $(A)$ and $(B)$, which are
 objects of $\Gr(\B)$. Given $h: A\to B$ in $\B$, there is a basic 1-cell
 $\langle h,0,0,(-),(-) \rangle: (A)\to(B)$ in $\Gr(B)$; in fact this is
-precisely $f(h)$, according to Gurski's triequivalence $f$. Now, applying
-$e$ to this basic 1-cell gives the composite
+precisely $\ff(h)$, according to Gurski's triequivalence $\ff$. Now, applying
+$\ee$ to this basic 1-cell gives the composite
 \[
 	A \rTo^{1} A \rTo^{h} B \rTo^{1} B,
 \]
-whereas applying $e'$ just gives $h: A\to B$.
+whereas applying $\ee'$ just gives $h: A\to B$.
 
-The second case in which $e$ may introduce unnecessary 1-cells comes
+The second case in which $\ee$ may introduce unnecessary 1-cells comes
 when two basic 1-cells are juxtaposed within a 1-cell of $\Gr(\B)$.
 Suppose, for example, that we have a 1-cell containing
 $\langle h,x,y,\alpha,\beta \rangle$ followed by
-$\langle h',x',y',\alpha',\beta' \rangle$. Applying $e$ to this pair
+$\langle h',x',y',\alpha',\beta' \rangle$. Applying $\ee$ to this pair
 gives a composite of six 1-cells, the third and fourth of which are:
 \begin{diagram}
 	(\Tn_{i=1}^{x}X_{i})\tn\bigl((\Tn_{\beta}B_{i})\tn(\Tn_{i=1}^{n}B_{i})\bigr) \\
@@ -1613,20 +1615,20 @@ gives a composite of six 1-cells, the third and fourth of which are:
 	\dTo>{\cong} \\
 	(\Tn_{i=1}^{x'}X'_{i})\tn\bigl((\Tn_{\alpha'}B'_{i})\tn(\Tn_{i=1}^{y'}Y'_{i})\bigr)
 \end{diagram}
-We define $e'$ so that:
+We define $\ee'$ so that:
 \begin{itemize}
 	\item If these associators are mutually inverse, both are suppressed.
-	\item Otherwise, this composite is replaced by the relevent chosen
+	\item Otherwise, this composite is replaced by the relevant chosen
 		associator of minimal complexity.
 \end{itemize}
 And we define $\epsilon$ in the obvious way.
 
-Finally, we define $e'$ on the 2-cells of $\Gr(\B)$. If $\xi: (h_{i}) \to (k_{i})$
-is a 2-cell in $\Gr(\B)$, let $e'(\xi)$ be the composite
+Finally, we define $\ee'$ on the 2-cells of $\Gr(\B)$. If $\xi: (h_{i}) \to (k_{i})$
+is a 2-cell in $\Gr(\B)$, let $\ee'(\xi)$ be the composite
 \[
-	e'((h_{i})) \rTo^{\epsilon^{-1}((h_{i}))} e((h_{i}))
-		\rTo^{e(\xi)} e((k_{i}))
-		\rTo^{\epsilon((k_{i}))} e'((k_{i})).
+	\ee'((h_{i})) \rTo^{\epsilon^{-1}((h_{i}))} \ee((h_{i}))
+		\rTo^{\ee(\xi)} \ee((k_{i}))
+		\rTo^{\epsilon((k_{i}))} \ee'((k_{i})).
 \]
 
 We shall say in stages what it means to give an interpretation $v: \T\to\B$,
@@ -1640,30 +1642,30 @@ The interpretation $v$ is given as follows:
 	\item To give the object part of $v$, one gives, for every
 	object $\A$ of $\T$, an object $v(\A)$ of $\B$. Using
 	this, we define the object part of $v_{\Gr}$ by letting
-	$v_{\Gr}(\A) = f(v(\A))$.
+	$v_{\Gr}(\A) = \ff(v(\A))$.
 	\item To give the 1-cell part of $v$, one gives,
 	for every $h\in\T(\A_{1}, \dots, \A_{n}; \CB)$,
-	a 1-cell $v(h): e(\Tn_{i=1}^{n}v_{\Gr}(\A_{i})) \to v(\CB)$.
+	a 1-cell $v(h): \ee(\Tn_{i=1}^{n}v_{\Gr}(\A_{i})) \to v(\CB)$.
 	Using this, we define $v_{\Gr}(h)$ to be the basic 1-cell
 	\[
 		(v_{\Gr}(\A_{i}))_{i=1}^{n} \to v_{\Gr}(\CB)
 	\]
-	for which $e'(v_{\Gr}(h)) = v(h)$.
+	for which $\ee'(v_{\Gr}(h)) = v(h)$.
 	\item The interpretation $\semint{\gamma}$ of a 1-cell is
-	defined to be $e'(\semint[v_{\Gr}]{\gamma})$.
+	defined to be $\ee'(\semint[v_{\Gr}]{\gamma})$.
 	\item To give the 2-cell part of $v$, one gives,
 	for every $t \in \T^{\Gamma}_{\CB}(\alpha, \beta)$,
 	a 2-cell
 	\[
 		v(t): \semint{\alpha} \to \semint{\beta}
 	\] in $\B$.
-	Since $e$ is a bijection on 2-cells, so is $e'$, hence there is a unique 2-cell
+	Since $\ee$ is a bijection on 2-cells, so is $\ee'$, hence there is a unique 2-cell
 	\[
 		v_{\Gr}(t): \semint[v_{\Gr}]{\alpha} \to \semint[v_{\Gr}]{\beta}
 	\]
-	for which $e'(v_{\Gr}(t)) = v(t)$.
+	for which $\ee'(v_{\Gr}(t)) = v(t)$.
 	\item The interpretation $\semint{\phi}$ of a 2-cell is
-	defined to be $e(\semint[v_{\Gr}]{\phi})$.
+	defined to be $\ee(\semint[v_{\Gr}]{\phi})$.
 	\item Additionally we demand that, for every
 	equation $(\phi, \psi) \in \T_{=}(\Gamma\proves\alpha\to\beta\in\CB)$,
 	$\semint{\phi} = \semint{\psi}$. Note that this is so if and only if
@@ -1799,7 +1801,9 @@ and invertible 2-cells
 		&&\C
 	\end{diagram}
 \end{array}\]
+where we have written $\C^{2}$ as an abbreviation for $\C\tn\C$, etc.,
 subject to equations corresponding to the pentagon and triangle conditions.
+%
 Let us first consider the pentagon equation
 \[
 	\semint{\aa_{P(A,B),C,D} \cdot \aa_{A,B,P(C,D)}}
@@ -1915,7 +1919,6 @@ is
 	&\rdTo_{P\tn\C}&&\ruTo>{P}\\
 	&&\C^2
 \end{diagram}
-where we have written $\C^{2}$ as an abbreviation for $\C\tn\C$, etc.
 %
 Calculating
 \[
@@ -1986,7 +1989,7 @@ In a similar way, the triangle axiom is:
 \end{equation}
 
 The interpretation in a general monoidal bicategory works in a
-similar way; the monoidal biequivalence `$e$' causes structural
+similar way; the monoidal biequivalence $\ee'$ causes structural
 1-cells and 2-cells to be inserted where necessary. Let us consider
 the 2-cell $\aa$: its interpretation needs to be a 2-cell
 \[
