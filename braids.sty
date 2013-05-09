@@ -1,100 +1,459 @@
 \NeedsTeXFormat{LaTeX2e}[1994/12/01]
 \ProvidesPackage{braids}
 \RequirePackage{tikz}
+\usetikzlibrary{shapes.geometric}
+
+\def\braids@debug#1{}
+%\let\braids@debug = \wlog
 
 \def\braids@over{draw=white,double=black,very thick}
 \newcount\braids@i
 \newcount\braids@x\newcount\braids@xa\newcount\braids@xb
 \newcount\braids@y\newcount\braids@iy\newcount\braids@ny
+
 \newtoks\braids@name
-\def\braids@unshift{
-	\edef\doit{\noexpand\braids@unsh@ft\the\braids@name\relax}
-	\doit}
-\def\braids@unsh@ft#1#2\relax{\global\braids@name={#2}#1}
-\def\braids@drawstrand{
-	\edef\names{\the\braids@name}\ifx\names\@empty
-	\draw
-		(\braids@xa,\braids@y)
-		..
-		controls (\braids@xa,\braids@iy)
-		and (\braids@xb,\braids@iy)
-		..
-		(\braids@xb,\braids@ny) ;
+\newtoks\braids@strand
+\newtoks\braids@prevstrand
+\def\braids@unshift{%
+	\ifx\names\@empty
 	\else
+		\edef\doit{\noexpand\braids@unshift@name\the\braids@name\relax}%
+		\doit
+	\fi
+}
+\def\braids@unshift@name{\@ifnextchar=\braids@eq@unshift@name\braids@noeq@unshift@name}
+\def\braids@eq@unshift@name={%
+	\tikzstyle{every path} = [draw=black,double=white,thick]%
+	\braids@pushstrand=\braids@unsh@ft@name}
+\def\braids@noeq@unshift@name{%
+	\tikzstyle{every path} = [draw=white,double=black,ultra thick]%
+	\braids@pushstrand-\braids@unsh@ft@name}
+\def\braids@unsh@ft@name#1,#2\relax{\global\braids@name={#2}\gdef\braids@thelabel{#1}}
+\def\braids@pushstrand#1{\edef\doit{\noexpand\braids@push@strand#1\the\braids@strand\relax}\doit}
+\def\braids@push@strand#1#2\relax{\braids@debug{pushing #1 after #2}\global\braids@strand={#2#1}}
+
+\def\braids@rotstrand{%
+	\@ifnextchar[\braids@rotstrand@brack\braids@rotstrand@nobr}
+\def\braids@rotstrand@nobr{%
+	\braids@debug{before rotation: \the\braids@prevstrand|\the\braids@strand}%
+	\edef\doit{\noexpand\braids@rot@strand\the\braids@strand\relax\the\braids@prevstrand\relax}%
+	\doit
+	\braids@debug{after rotation: \the\braids@prevstrand|\the\braids@strand}%
+}
+\def\braids@rotstrand@brack[#1]{%
+	\braids@debug{before rotation[#1]: \the\braids@prevstrand|\the\braids@strand}%
+	\edef\doit{\noexpand\braids@rot@strand@brack[#1]\the\braids@strand\relax\the\braids@prevstrand\relax}%
+	\doit\braids@debug{after rotation: \the\braids@prevstrand|\the\braids@strand}}
+\def\braids@rot@strand#1#2\relax#3\relax{%
+	\ifx=#1
+		\tikzstyle{every path} = [draw=black,double=white,thick]%
+	\else
+		\tikzstyle{every path} = [draw=white,double=black,ultra thick]%
+	\fi
+	\global\braids@strand={#2}%
+	\global\braids@prevstrand={#3#1}%
+}
+\def\braids@rot@strand@brack[#1]#2#3\relax#4\relax{%
+	\ifx=#1
+		\tikzstyle{every path} = [draw=black,double=white,thick]%
+	\else
+		\tikzstyle{every path} = [draw=white,double=black,ultra thick]%
+	\fi
+	\ifx=#2
+		\tikzstyle{incoming strand} = [draw=black,double=white,thick]%
+	\else
+		\tikzstyle{incoming strand} = [draw=white,double=black,ultra thick]%
+	\fi
+	\global\braids@strand={#3}%
+	\global\braids@prevstrand={#4#1}%
+}
+
+
+\setcounter{errorcontextlines}{20}
+
+
+\newtoks\braids@savednames
+\def\braids@savenames#1{%
+	\braids@i=0\loop\ifnum\braids@i<#1
+		\advance\braids@i by 1
+		\ifx\names\@empty
+			\braids@savestrand
+		\else
+			\braids@savename
+		\fi
+	\repeat
+	\ignorespaces
+}
+\def\braids@savename{%
+	\ifx\names\@empty\else
+		\edef\doit{\noexpand\braids@dosave\the\braids@savednames\relax\the\braids@name\relax}%
+		\doit
+		\braids@debug{after savename: (\the\braids@savednames)\the\braids@name}%
+	\fi
+}
+\def\braids@dosave#1\relax#2,#3\relax{%
+	\global\braids@savednames = {#1#2,}%
+	\global\braids@name  = {#3}%
+}
+
+\def\braids@restorenames{%
+	\edef\doit{%
+		\noexpand\global\noexpand\braids@name={\the\braids@savednames\the\braids@name}%
+	}%
+	\doit
+	\global\braids@savednames={}%
+	\braids@doswap@neg
+	\ignorespaces
+}
+
+\newtoks\braids@savedstrands
+\def\braids@savestrand{%
+	\braids@debug{before savestrand: \the\braids@prevstrand|\the\braids@strand}%
+	\edef\doit{%
+		\noexpand\braids@save@strand\the\braids@strand\relax\the\braids@savedstrands\relax}%
+	\doit
+	\braids@debug{after savestrand: \the\braids@prevstrand|\the\braids@strand}}
+\def\braids@save@strand#1#2\relax#3\relax{%
+	\ifx=#1
+		\tikzstyle{every path} = [draw=black,double=white,thick]%
+	\else
+		\tikzstyle{every path} = [draw=white,double=black,ultra thick]%
+	\fi
+	\global\braids@strand={#2}%
+	\global\braids@savedstrands={#3#1}%
+}
+\def\braids@doswap@pos{%
+	\edef\doit{\noexpand\global\noexpand\braids@do@swap@pos\the\braids@prevstrand\the\braids@savedstrands\relax}%
+	\doit
+	\global\braids@savedstrands={}%
+	\braids@debug{after doswap(pos): \the\braids@prevstrand|\the\braids@strand}}
+\def\braids@do@swap@pos#1\relax{%
+	\global\braids@prevstrand={#1}}
+
+\def\braids@doswap@neg{%
+	\edef\doit{\noexpand\global\noexpand\braids@do@swap@neg\the\braids@savedstrands\the\braids@strand\relax}%
+	\doit
+	\global\braids@savedstrands={}%
+	\braids@debug{after doswap(neg): \the\braids@prevstrand|\the\braids@strand}}
+\def\braids@do@swap@neg#1\relax{%
+	\global\braids@strand={#1}}
+
+
+\newcount\braids@result
+\def\braids@componentcount#1#2{%
+	\braids@result = 0
+	\braids@component@count{#1}{#2#1}}
+\def\braids@component@count#1#2{%
+	\edef\componentlist{#2}%
+	\ifx\componentlist\@empty\else
+		\def\takeit##1#1##2\relax{\advance\braids@result by 1%
+			\braids@component@count{#1}{##2}}%
+		\edef\doit{\noexpand\takeit#2\relax}%
+		\doit
+	\fi}
+
+
+% next must be called before calling label, name(s)toend, drawstrand
+\def\braids@next{\edef\names{\the\braids@name}\braids@unshift\braids@rotstrand}
+\def\braids@toswap{\edef\names{\the\braids@name}\braids@unshift\braids@savestrand}
+\def\braids@label{\ifx\names\@empty\else
+	node[fill=white, anchor=mid east] {$\braids@thelabel$}\fi}
+
+\def\braids@drawstrand{
 	\draw
 		(\braids@xa,\braids@y)
-		node[fill=white] {$\braids@unshift$}
+		[draw=white, ultra thick]
 		..
 		controls (\braids@xa,\braids@iy)
 		and (\braids@xb,\braids@iy)
 		..
 		(\braids@xb,\braids@ny) ;
-	\fi
+	%
+	\draw
+		(\braids@xa,\braids@y) \braids@label
+		node [above right] {$\scriptstyle \braids@superlabel$}
+		..
+		controls (\braids@xa,\braids@iy)
+		and (\braids@xb,\braids@iy)
+		..
+		(\braids@xb,\braids@ny) ;
 	\advance\braids@xa by 1
 	\advance\braids@xb by 1
 }
-\newenvironment{braid}[1][]
-	{\braids@name = {#1}
-	\begin{tikzpicture}[xscale=0.4,yscale=-.75]
+\tikzstyle{braidtriangle}=[regular polygon,regular polygon sides=3,regular polygon rotate=30,draw=black,fill=white,thick,inner sep=2pt,thin]
+\def\braids@triangle(#1,#2)#3;{%
+	\node[style=braidtriangle] at (#1,#2) {$\vphantom{\mathop{f}}\!\!\mathop{#3}$} ;
+}
+
+\def\braids@s{%
+	\def\braids@superlabels{}%
+	\def\braids@superlabel{}%
+	\@ifnextchar'\braids@neg@s\braids@pos@s}
+\def\braids@pos@s{\@ifnextchar<\braids@pos@labelled@s\braids@pos@choose@s}
+\def\braids@neg@s'{\@ifnextchar<\braids@pos@labelled@s\braids@neg@choose@s}
+\def\braids@pos@choose@s{\@ifnextchar(\braids@pos@plain@s\braids@pos@default@s} 
+\def\braids@pos@default@s{\braids@pos@plain@s(1,1)} 
+\def\braids@pos@plain@s(#1,#2){ 
+	\braids@xa = \braids@x
+	\braids@xb = \braids@x
+	\advance\braids@xb by #2
+	\braids@i=0\loop\ifnum\braids@i<#1
+		\braids@toswap
+		\advance\braids@i by 1
+		\braids@drawstrand
+	\repeat
+	%
+	\braids@xa = \braids@x
+	\braids@xb = \braids@x
+	\advance\braids@xa by #1
+	\braids@i=0\loop\ifnum\braids@i<#2
+		\braids@next
+		\advance\braids@i by 1
+		\braids@drawstrand
+	\repeat
+	%
+	\advance\braids@x by #1
+	\advance\braids@x by #2
+	\braids@doswap@pos
+}
+\def\braids@neg@choose@s{\@ifnextchar(\braids@neg@plain@s\braids@neg@default@s} 
+\def\braids@neg@default@s{\braids@neg@plain@s(1,1)} 
+\def\braids@neg@plain@s(#1,#2){ 
+	\braids@savenames{#1}
+	\braids@xa = \braids@x
+	\braids@xb = \braids@x
+	\advance\braids@xa by #1
+	\braids@i=0\loop\ifnum\braids@i<#2
+		\braids@next
+		\advance\braids@i by 1
+		\braids@drawstrand
+	\repeat
+	%
+	\braids@restorenames
+	\braids@debug{names restored}%
+	\braids@xa = \braids@x
+	\braids@xb = \braids@x
+	\advance\braids@xb by #2
+	\braids@i=0\loop\ifnum\braids@i<#1
+		\braids@next
+		\advance\braids@i by 1
+		\braids@drawstrand
+	\repeat
+	%
+	\advance\braids@x by #1
+	\advance\braids@x by #2
+}
+\def\braids@superlabels{}
+\def\braids@superlabel{}
+\def\braids@nextsuperlabel{%
+	\ifx\braids@superlabels\@empty
+		\def\braids@superlabel{}
+	\else
+		\edef\doit{\noexpand\braids@super@labels\braids@superlabels\relax}\doit
+	\fi}
+\def\braids@super@labels#1/#2\relax{%
+	\global\def\braids@superlabels{#2}\global\def\braids@superlabel{#1}}
+\def\braids@pos@labelled@s<#1,#2>{
+	\braids@xa = \braids@x
+	\braids@xb = \braids@x
+	\global\edef\braids@superlabels{#1/}
+	\braids@componentcount/{#2}
+	\advance\braids@xb by \braids@result
+	\braids@i=0\loop
+		\braids@nextsuperlabel
+		\ifx\braids@superlabel\@empty\else
+		\braids@toswap
+		\advance\braids@i by 1
+		\braids@drawstrand
+	\repeat
+	%
+	\braids@xa = \braids@x
+	\braids@xb = \braids@x
+	\global\edef\braids@superlabels{#2/}
+	\braids@componentcount/{#1}
+	\advance\braids@xa by \braids@result
+	\braids@i=0\loop
+		\braids@nextsuperlabel
+		\ifx\braids@superlabel\@empty\else
+		\braids@next
+		\advance\braids@i by 1
+		\braids@drawstrand
+	\repeat
+	%
+	\braids@componentcount/{#1/#2}
+	\advance\braids@x by \braids@result
+	\braids@doswap@pos
+}
+\def\braids@neg@labelled@s<#1,#2>{
+	% !!! TODO !!!
+}
+\newcount\braids@c@count
+\newif\ifbraids@narrow\braids@narrowfalse
+\newcommand \braids@c[1][1]{%
+	\braids@c@count=#1\@ifnextchar^\braids@labelled@c\braids@plain@c}
+\def\braids@plain@c{%
+	\braids@i=0\loop\ifnum\braids@i<\braids@c@count
+		\braids@next
+		\advance\braids@i by 1
+		\ifbraids@narrow
+			\draw (\braids@x,\braids@y) \braids@label
+				-- (\braids@x,\braids@iy) ;
+		\else
+			\draw (\braids@x,\braids@y) \braids@label
+				-- (\braids@x,\braids@ny) ;
+		\fi
+		\advance \braids@x by 1
+	\repeat
+}
+\def\braids@labelled@c^#1{%
+	\braids@i=0\loop\ifnum\braids@i<\braids@c@count
+		\braids@next
+		\advance\braids@i by 1
+		\ifbraids@narrow
+			\draw (\braids@x,\braids@y) \braids@label
+				node[above right] {$\scriptstyle #1$}
+				-- (\braids@x,\braids@iy) ;
+		\else
+			\draw (\braids@x,\braids@y) \braids@label
+				node[above right] {$\scriptstyle #1$}
+				-- (\braids@x,\braids@ny) ;
+		\fi
+		\advance \braids@x by 1
+	\repeat
+}
+\newcommand \braids@C[1][1]{%
+	\braids@c@count=#1\@ifnextchar^\braids@labelled@C\braids@plain@C}
+\def\braids@plain@C{%
+	\braids@i=0\loop\ifnum\braids@i<\braids@c@count
+		\braids@next
+		\advance\braids@i by 2
+		\ifbraids@narrow
+			\draw (0.5+\braids@x,\braids@y) \braids@label
+				-- (0.5+\braids@x,\braids@iy) ;
+		\else
+			\draw (0.5+\braids@x,\braids@y) \braids@label
+				-- (0.5+\braids@x,\braids@ny) ;
+		\fi
+		\advance \braids@x by 2
+	\repeat
+}
+\def\braids@labelled@C^#1{%
+	\braids@i=0\loop\ifnum\braids@i<\braids@c@count
+		\braids@next
+		\advance\braids@i by 2
+		\ifbraids@narrow
+			\draw (0.5+\braids@x,\braids@y) \braids@label
+				node[above right] {$\scriptstyle #1$}
+				-- (0.5+\braids@x,\braids@iy) ;
+		\else
+			\draw (0.5+\braids@x,\braids@y) \braids@label
+				node[above right] {$\scriptstyle #1$}
+				-- (0.5+\braids@x,\braids@ny) ;
+		\fi
+		\advance \braids@x by 2
+	\repeat
+}
+\newcommand\braids@f[1][]{%
+	\braids@next
+	\draw (\braids@x,\braids@y) \braids@label
+		-- node[circle,draw=black,fill=white,thick] {$#1$}
+	(\braids@x,\braids@ny) ;
+	\advance \braids@x by 1
+}
+\newcommand\braids@t[1][]{%
+	\edef\braids@t@label{#1}%
+	\@ifnextchar^\braids@labelled@t\braids@plain@t}
+\def\braids@plain@t{%
+	\braids@next[-]
+	\draw (\braids@x,\braids@y) \braids@label
+		[style=incoming strand] -- (\braids@x,\braids@iy) ;
+	\draw (\braids@x,\braids@iy)
+		-- (\braids@x,\braids@ny) ;
+	\braids@triangle(\braids@x,\braids@iy) {\braids@t@label} ;
+	\advance \braids@x by 1
+}
+\def\braids@labelled@t^#1{%
+	\braids@next[-]
+	\draw (\braids@x,\braids@y) \braids@label
+		node[above right] {$\scriptstyle #1$}
+		[style=incoming strand] -- (\braids@x,\braids@iy) ;
+	\draw (\braids@x,\braids@iy)
+		-- (\braids@x,\braids@ny) ;
+	\braids@triangle(\braids@x,\braids@iy) {\braids@t@label} ;
+	\advance \braids@x by 1
+}
+\newcommand\braids@T[1][]{%
+	\edef\braids@t@label{#1}%
+	\@ifnextchar^\braids@labelled@T\braids@plain@T}
+\def\braids@plain@T{%
+	\braids@next[-]
+	\draw (\braids@x,\braids@y) \braids@label
+		[style=incoming strand] -- (\braids@x,\braids@iy) ;
+	\braids@next[-]
+	\draw (1+\braids@x,\braids@y) \braids@label
+		[style=incoming strand] -- (1+\braids@x,\braids@iy) ;
+	\draw (0.5+\braids@x,\braids@iy)
+		-- (0.5+\braids@x,\braids@ny) ;
+	\braids@triangle(0.5+\braids@x,\braids@iy) {\braids@t@label} ;
+	\advance \braids@x by 2
+}
+\def\braids@labelled@T^#1/#2{%
+	\braids@next[-]
+	\draw (\braids@x,\braids@y) \braids@label
+		node[above right] {$\scriptstyle #1$}
+		[style=incoming strand] -- (\braids@x,\braids@iy) ;
+	\braids@next[-]
+	\draw (1+\braids@x,\braids@y) \braids@label
+		node[above right] {$\scriptstyle #2$}
+		[style=incoming strand] -- (1+\braids@x,\braids@iy) ;
+	\draw (0.5+\braids@x,\braids@iy)
+		-- (0.5+\braids@x,\braids@ny) ;
+	\braids@triangle(0.5+\braids@x,\braids@iy) {\braids@t@label} ;
+	\advance \braids@x by 2
+}
+\def\braids@newline{
+	\braids@debug{new line}%
+	\edef\names{\the\braids@name}\ifx\names\@empty\else
+		\@latex@error{Too many strand names specified}
+	\fi
+	\global\braids@name = {}
+	\global\braids@strand = \braids@prevstrand
+	\global\braids@prevstrand = {}
+	\ifbraids@narrow
+		\advance\braids@y  by 1
+		\advance\braids@iy by 1
+		\advance\braids@ny by 1
+	\else
+		\advance\braids@y  by 2
+		\advance\braids@iy by 2
+		\advance\braids@ny by 2
+	\fi
+	\braids@narrowfalse
+	\braids@x = 0
+}
+
+\tikzstyle{braidextras}=[]
+\newcommand\braidstyle[1]{\tikzstyle{braidextras}=[#1]}
+\newenvironment{braid}[2][]
+	{%
+	\global\braids@name = {#2,}
+	\global\braids@savednames={}
+	\global\braids@strand={}
+	\global\braids@prevstrand={}
+	%
+	\begin{tikzpicture}[baseline=(current bounding box.east),cm={0,-0.6,.75,0,(0,0)},style=braidextras,#1]
 		\braids@x  = 0
 		\braids@y  = 0
 		\braids@iy = 1
 		\braids@ny = 2
-		\renewcommand\c[1][1]{
-			\braids@i=0\loop\ifnum\braids@i<##1
-				\advance\braids@i by 1
-				\edef\names{\the\braids@name}\ifx\names\@empty
-					\draw (\braids@x,\braids@y) -- (\braids@x,\braids@ny) ;
-				\else
-					\draw (\braids@x,\braids@y)
-					node[fill=white] {$\braids@unshift$}
-					-- (\braids@x,\braids@ny) ;
-				\fi
-				\advance \braids@x by 1
-			\repeat 
-		}
-		\def\f{
-			\edef\names{\the\braids@name}\ifx\names\@empty
-				\draw (\braids@x,\braids@y)
-				-- node[circle,draw=black,fill=white,thick] {}
-				(\braids@x,\braids@ny) ;
-			\else
-				\draw (\braids@x,\braids@y)
-				node[fill=white] {$\braids@unshift$}
-				-- node[circle,,draw=black,fill=white,thick] {}
-				(\braids@x,\braids@ny) ;
-			\fi
-			\advance \braids@x by 1
-		}
-		\def\s(##1,##2){ 
-			\braids@xa = \braids@x
-			\braids@xb = \braids@x
-			\advance\braids@xb by ##2
-			\braids@i=0\loop\ifnum\braids@i<##1
-				\advance\braids@i by 1
-				\braids@drawstrand
-			\repeat
-			%
-			\braids@xa = \braids@x
-			\braids@xb = \braids@x
-			\advance\braids@xa by ##1
-			\braids@i=0\loop\ifnum\braids@i<##2
-				\advance\braids@i by 1
-				\braids@drawstrand
-			\repeat
-			%
-			\advance\braids@x by ##1
-			\advance\braids@x by ##2
-		}
-		\def\\{
-			\edef\names{\the\braids@name}\ifx\names\@empty\else
-				\@latex@error{Too many strand names specified}
-				\braids@name = {}
-			\fi
-			\advance\braids@y  by 2
-			\advance\braids@iy by 2
-			\advance\braids@ny by 2
-			\braids@x = 0
-		}
+		%
+		\let\c\braids@c
+		\let\C\braids@C
+		\let\s\braids@s
+		\let\f\braids@f
+		\let\t\braids@t
+		\let\T\braids@T
+		\let\\\braids@newline
+		\let\narrow\braids@narrowtrue
 	}
 	{\end{tikzpicture}\ignorespacesafterend}
