@@ -1,0 +1,37 @@
+%!TEX TS-program = latex
+\documentclass[myriad,12pt]{robinthesis}
+
+%\includeonly{internal-language}
+
+\author{Robin Houston}
+\title{Linear Logic without Units}
+\begin{thesis}
+    \maketitle
+    \tableofcontents
+    \vfill Word count: 34015
+    % other lists go here
+    
+	\include{abstract}    
+    \declpage
+    \copyrightpage
+	\include{ack}
+    
+	\include{intro}
+	
+    \include{bicats}
+    \include{mon-bicats}
+	% Need _something_ about pseudomonoids here…
+    
+	\include{some-coherence}
+    \include{internal-language}
+    \include{pseudomonoids}
+    
+	\include{cayley}
+	\include{promonoidal}
+	
+	{\let\origdiag = \diag
+	\def\diag#1{\origdiag{semicc/#1}}
+	\let\origcdiag = \cdiag
+	\def\cdiag#1{\origcdiag{semicc/#1}}
+    \include{semicc/semi-compact-closed}}
+\end{thesis}

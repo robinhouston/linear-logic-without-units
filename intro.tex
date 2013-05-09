@@ -1,0 +1,79 @@
+%!TEX TS-program = latex
+\documentclass{robinthesis}
+
+\begin{thesischapter}{Intro}{Introduction}
+\section{Linear logic without units}
+The starting point of this work is the question: what is a categorical model of the unitless fragment of multiplicative linear logic? The question has at least some intrinsic interest, and we shall see that a proper understanding of the natural answer demands some unexpectedly sophisticated mathematics. Also the category of proof nets \citep{Girard87} is an important part of the proof theory of linear logic, and proof nets do not give a natural interpretation of the units. (Several authors \emph{have} considered extended notions of proof net that include units -- see \citet{TrimbleThesis,BCST,LSUnits,HughesUnits} -- but it must be admitted that these extended proof nets are substantially more complicated, and none succeeds in giving a purely geometric normal form for proofs. As a symptom of this complication, it is an open question whether equivalence of MLL proofs can be decided in polynomial time; whereas Girard's proof nets immediately suggest a polynomial time algorithm to decide proof equivalence in the unitless fragment.)
+
+On a more pragmatic note, linear logic and related systems have a number of applications to computer programming. One example is the linear logic programming developed by \citet{LinearLogicProgramming}. Systems of linear types, and the closely related `uniqueness types', are also increasingly important; the functional programming language Clean \citep{Clean} uses
+a system of uniqueness types to facilitate integration of effects such as input and output with purely-functional code.
+%
+For many practical purposes, the unit objects (or unit types, in a type system) do not play an important role. What is more, they can create significant complication, illustrated by the remarkable fact that the provability problem for the unit-\emph{only} fragment of multiplicative linear logic is NP-complete \citep{UOLLNP}. So it is reasonable to imagine that the unitless fragment of multiplicative linear logic will prove to be of practical importance.
+
+The answer may appear at first glance to be trivial. After all it is well known, following \citet{SeelyLL}, that the star-autonomous categories of \citet{BarrStac} are the appropriate structures to model multiplicative linear logic, so surely one may simply describe some obvious notion of `unitless star-autonomous category'?
+%
+This superficially reasonable idea turns out to be too simple-minded to work. Consider the following proof:
+\[\begin{prooftree}\thickness=0.2pt
+	\[
+		\justifies p \proves p
+		\using \mbox{Ax}
+	\]
+	\quad
+	\[
+		\[
+			\justifies q\proves q
+			\using\mbox{Ax}
+		\]
+		\justifies \proves q\perp\parr q
+		\using\mbox{$\bot$R}
+	\]
+	\justifies
+	p \proves p \tn (q\perp\parr q)
+	\using\mbox{$\tn$R}
+\end{prooftree}\]
+Although this proof does not involve any units, it makes essential use of a sequent with an empty left-hand side, and so its interpretation in a star-aut\-on\-om\-ous category \emph{does} necessarily involve the unit object. (A sequent of type $\proves q\perp\parr q$ would be interpreted as an arrow $I\to Q\parr Q\perp$, where $Q$ is the object that interprets the propositional variable $q$.)
+
+So it is clear that the units cannot be dispensed with altogether: we need at least to have some way to interpret sequents that have an empty left- or right-hand side. Having thus isolated the difficulty, we begin by concentrating on the intuitionistic fragment. An intuitionistic sequent always has precisely one formula on the right, so only the left-hand side may be empty. Thus we need some analogue of `arrow $I\to X$', without there actually being a unit object $I$. In other words, we need some functor $\C\to\Set$ (where $\C$ is the category in question) to play the role of the hom functor $\C(I, -)$.
+%
+It turns out that structures of this sort have previously been studied, for a very different reason: \citet{DayPro} considered what he at the time called `premonoidal' categories, while studying monoidal structure on presheaf categories. Nowadays these structures are known as \emph{promonoidal} instead,\footnote{Indeed, the term \emph{premonoidal} has since been reused to mean something altogether different \citep{Premonoidal}.} which is the term we shall use.
+
+A promonoidal category is something more general than a monoidal category: instead of having a tensor functor $\tn:\C\times\C\to\C$ and a unit object $I\in\C$, it has a tensor profunctor $P:\C\times\C\rPro\C$ and a unit profunctor $J: 1\rPro\C$. A profunctor $1\rPro\C$ is precisely a functor $\C\to\Set$, which is what we are looking for. So we are interested in particular in the special case of those promonoidal categories whose tensor is an honest functor, but whose unit is a general profunctor.
+
+\section{The multicategory approach}
+It is worth briefly contemplating the road not taken (particularly since it looks more attractive at first, but turns out on examination to lead to the same destination). One might take the view that any sequent system -- or at least any sequent system in which the cut rule is admissible, which is to say any sequent system that might reasonably be considered to describe a logic -- may be interpreted in a multicategory. The presence of such rules as the left-tensor and left-unit rules of linear logic allows us to restrict our attention to representable multicategories \citep{RepMulticats}, which are essentially the same as monoidal categories. On this view, in order to model the unitless fragment we should be looking at multicategories in which only \emph{non-empty} sequences of objects admit a representation. Such multicategories are \emph{prima facie} more general than the promonoidal categories considered here, for the following reason. Although a multicategory does have, for example, a natural transformation of the form
+\begin{equation}\label{eq-notinv}
+	\int^{A} \C(;A) \times \C(A,B;C) \to \C(B;C)
+\end{equation}
+given by composition, this is not necessarily invertible (as it must be in a promonoidal category). Since there seems to be no intrinsic reason that we should demand invertibility here, the multicategory formulation looks like an improvement over the promonoidal one. But this is an illusion: in the cases that we are considering, there is also an implication connective, so we may suppose that for every object $A$ there is a functor $A \lolli -$ and an isomorphism
+\[
+	\C(\vec X, A; B) \cong \C(\vec X; A\lolli B)
+\]
+natural in the sequence $\vec X$ and the object $B$. This does force the transformation (\ref{eq-notinv}) to be invertible, since we now have a sequence of isomorphisms
+\[\begin{array}{r@{\;}c@{\;}l}
+	\int^{A} \C(;A) \times \C(A,B;C)
+		&\cong& \int^{A} \C(;A) \times \C(A;B\lolli C) \\
+		&\cong& \C(;B\lolli C) \\
+		&\cong& \C(B; C).
+\end{array}\]
+So we have arrived at the same destination by a different, and arguably more natural, route.
+
+\section{The study of pseudomonoids}
+Having established that we are engaged in the study of promonoidal categories, there is the immediate problem that not much has been written about them -- certainly when compared with monoidal categories, which have been very well-studied. It seems clear that most of the known results about monoidal categories have analogies in the promonoidal setting, but it would be unaccountably tedious merely to `translate' huge portions of the monoidal categories literature into the promonoidal setting. Better would be to find a general argument to the effect that 
+such a translation is possible.
+
+In fact there is nothing particularly special about promonoidal categories in an abstract sense. They are but one example of the general notion of \emph{pseudomonoid} in a monoidal bicategory, and we expect (and shall prove) that much of what is known about monoidal categories in particular is actually true of pseudomonoids in general, when formulated appropriately. Furthermore, when considering structures internal to a monoidal bicategory there is nothing particularly special about pseudomonoids! The translation procedure can in fact be carried through for a substantial class of structures internal to a monoidal bicategory. So we arrive at a general translation result that has potential applications that go far beyond those we consider here.
+
+The thesis may be approximately divided into three parts. The first part (Chapters~\refchapter{Bicats} and~\refchapter{MonBicats}) consists of background material: we review the basics of bicategories and monoidal bicategories, before going on to define pseudomonoids. The second part (Chapters~\refchapter{Coh}--\refchapter{Psmon}) establishes the `translation' mentioned above. Only in the third part (Chapters~\refchapter{Promon} and~\refchapter{SemiCC}) do we finally return to the original question, and use all this machinery to study the models of unitless linear logic.
+
+\section{Prerequisites}
+We assume the basics of linear logic, category theory, and categorical proof theory. As far as linear logic and its categorical interpretation is concerned, these prerequisites are essentially contained in \citet{Girard87} and \citet{SeelyLL}. Of category theory we assume a little more: say the contents of \citet{MacLane}. Some familiarity with the theory of profunctors \citep{LawvereModules,BenabouDist} and promonoidal categories \citep{DayPro} would be useful, but is not strictly assumed.
+
+\section{Other approaches}
+Others have recently considered the question of defining categorical models for the unitless fragment of multiplicative linear logic. A preprint of \citet{LSFreeBool} gave a definition that, on examination, appeared
+weaker than the one developed in this work.
+Correspondence with the authors established that this difference was
+not intended, and the final version includes an additional axiom that
+makes the definition equivalent to ours.
+\citet{ProofNetCats} give a very different-looking definition just for the star-autonomous case, which is nevertheless again equivalent to ours.
+
+\end{thesischapter}

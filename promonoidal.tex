@@ -1,0 +1,754 @@
+%!TEX TS-program = latex
+\documentclass{robinthesis}
+
+\begin{thesischapter}{Promon}{Linear Logic without Units}
+In this, the title chapter, we at last address the question
+that we set out to answer at the outset. We consider the notion
+of model described in the introduction, and bring to bear all the
+machinery of earlier chapters to find a simple formulation of it.
+
+\section{Promonoidal categories}
+As we have foreshadowed, we are mainly interested in the monoidal
+bicategory $\Prof$ of categories and profunctors. Its objects are
+categories, and a 1-cell $\C\rPro\D$ is a profunctor from $\C$ to $\D$;
+which is to say, a functor $\C\op\times\D\to\Set$. (Note that some
+authors use the converse direction, so what we call a profunctor
+from $\C$ to $\D$ they would call a profunctor from $\D$ to $\C$.
+There are good arguments in favour of both choices, and we have
+simply chosen the one that is easiest for our purposes.)
+
+Profunctors are composed by a convolution operation, where the
+composite
+\[
+	\CB \rPro^{F} \C \rPro^{G} \D
+\]
+is defined by the coend formula
+\[
+	GF(B,D) = \int^{C} F(B,C) \times G(C,D).
+\]
+The 2-cells of $\Prof$ are just ordinary natural transformations.
+It is easy enough to check that $\Prof$ is a bicategory. The
+monoidal structure is more subtle, and although it has long been
+assumed that $\Prof$ is a symmetric monoidal bicategory, the first
+rigorous published proof was given very recently by \citet{CartesianBicatsII}.
+The monoidal structure is given by the ordinary cartesian product
+of categories.
+
+A \emph{promonoidal category} is a pseudomonoid in $\Prof$. More
+concretely, a promonoidal category consists of a category $\C$
+equipped with profunctors
+\[
+	P: \C\times\C\rPro\C
+\]
+and
+\[
+	J: 1\rPro\C
+\]
+together with natural isomorphisms with components
+\[
+	\aa_{A,B,C,D}: \int^{X} P(A,X;D)\times P(B,C;X)
+		\to \int^{X} P(A,B;X)\times P(X,C;D),
+\]
+\[
+	\ll_{A,B}: \int^{X} J(X)\times P(X,A;B) \to \C(A,B),
+\]
+and
+\[
+	\rr_{A,B}: \int^{X} J(X)\times P(A,X;B) \to \C(A,B),
+\]
+satisfying the pseudomonoid axioms.
+
+A functor $F: \C\to \D$ induces profunctors $\C(-,F=): \C\rPro \D$
+and $\C(F-,=): \D\rPro\C$. These extend in an obvious way to
+bijective-on-objects embeddings
+\[
+	\Cat \to\Prof
+\]
+and \[
+	\Cat\op\to\Prof,
+\]
+which (by Yoneda) are locally full and faithful. In particular,
+the covariant embedding gives every monoidal category the
+structure of a promonoidal category in a natural way. Concretely,
+one takes $P(A,B;C) = \C(A\tn B,C)$ and $J(A) = \C(I,A)$.
+
+\subsection{Braiding and symmetry}
+Clearly a braided promonoidal category must be a braided pseudomonoid
+in $\Prof$: that is, a promonoidal category $\C$ additionally equipped
+with a natural isomorphism with components
+\[
+	\sigma_{A,B,C}: P(A,B;C) \to P(B,A;C)
+\]
+satisfying the braiding axioms.
+
+We have not given a general definition of symmetric pseudomonoid,
+because to do so would require venturing into the deep waters of
+\emph{sylleptic} monoidal bicategories. However we can easily say
+what it means for a braided promonoidal category to be symmetric;
+we simply demand that\[
+	\sigma_{A,B,C} = \sigma_{B,A,C}^{-1}.
+\]
+It is clear that, in the symmetric case, each of the two braiding
+axioms implies the other.
+
+\section{Modelling linear logic without units}
+As explained in the introduction, the appropriate structures for
+modelling the unitless fragment of multiplicative intuitionistic
+linear logic are promonoidal categories where the multiplication
+$P$ is represented by a functor, but the unit $J$ generally is not.
+\begin{definition}
+	A semi symmetric monoidal category (semi SMC) consists
+	of a category $\C$ equipped with functors
+	\[
+		\tn: \C\times\C\to \C
+	\]
+	and
+	\[
+		J:\C\to\Set
+	\]
+	and natural isomorphisms with components
+	\[
+		\alpha_{A,B,C}: A\tn(B\tn C),
+	\]
+	\[
+		\sigma_{A,B}: A\tn B\to B\tn A,
+	\]
+	and
+	\[
+		\lambda_{A,B}: \int^{X} J(X)\times\C(X\tn A,B) \to \C(A,B)
+	\]
+	satisfying the axioms for a symmetric promonoidal category.
+	The associativity (pentagon) and symmetry (hexagon) axioms do not involve the unit,
+	so are the same as for an ordinary symmetric monoidal category.
+	In detail, the diagrams
+	\begin{diagram}
+	 A\tensor \bigl(B\tensor (C\tensor D)\bigr)
+	 &\rTo^\alpha&(A\tensor B)\tensor (C\tensor D)
+	 &\rTo^\alpha & \bigl((A\tensor B)\tensor C\bigl)\tensor D
+	 \\
+	 \dTo<{A\tn\alpha} &&&& \uTo>{\alpha\tn D}
+	 \\
+	 A\tensor\big((B\tensor C)\tensor D\big)
+	 && \rTo_\alpha && \bigl(A\tensor(B\tensor C)\bigr)\tensor D
+	\end{diagram}
+	and
+	\begin{diagram}
+	 A\tn(B\tn C) & \rTo^{\alpha} & (A\tn B)\tn C & \rTo^{\sigma} & C\tn(A\tn B) \\
+	 \dTo<{A\tn\sigma} &&&& \dTo>{\alpha} \\
+	 A\tn(C\tn B) & \rTo_{\alpha} & (A\tn C)\tn B  & \rTo_{\sigma\tn B} & (C\tn A)\tn B
+	\end{diagram}
+	must commute. The unit axiom says that
+	the diagram
+	\begin{diagram}%\dlabel{bigone}
+        \int^X J(X)\times\C((X\tn B)\tn C, Z) & \rTo^{\int^X J(X)\times\C(\alfa XBC, Z)}
+                & \int^X J(X)\times\C(X\tn (B\tn C), Z)
+        \\
+        \dTo<{\cong}
+        \\
+        \int^{X,Y} J(X)\times\C(X\tn B, Y)\times \C(Y\tn C, Z)&
+                &\dTo>{\lambda_{B\tn C,Z}}
+        \\
+        \dTo<{\int^Y\lambda_{B,Y}\times\C(Y\tn C,Z)}
+        \\
+        \int^Y\C(B,Y)\times\C(Y\tn C,Z) &\rTo_\cong&\C(B\tn C,Z)
+	\end{diagram}
+	must commute for all $B$,$C$,$Z\in\C$.
+\end{definition}
+\begin{definition}
+	A semi symmetric monoidal closed category (semi SMCC) is a semi SMC
+	$\C$ together with a functor
+	\[
+		\lolli: \C\op\times\C\to\C
+	\]
+	and a natural isomorphism with components
+	\[
+		\curry_{A,B,C}: \C(A\tn B,C)\to \C(A,B\lolli C).
+	\]
+\end{definition}
+
+The purpose of this chapter is to find a simpler formulation of
+the notion of semi SMCC. We should like to formulate the notion
+in a way that does not involve coends, for one thing. In fact we
+give two such formulations, which are superficially very different.
+Before delving into the details, we give a summary of our two
+presentations.
+
+\subsection{The presentation via linear elements}\label{s-linel}
+There is an obvious notion of \emph{unitless SMCC}, essentially
+obtained  taking the ordinary definition of SMCC
+and erasing those parts that mention the unit object.
+In the introduction, we saw that unitless SMCCs are not
+adequate to model the unitless fragment of IMLL, because of
+the need to represent sequents whose left-hand side is empty.
+However, it turns out that the gap between unitless SMCCs and
+semi SMCCs is smaller than it seems: surprisingly, no additional
+structure is actually required! In fact a semi SMCC can be described
+as a unitless SMCC satisfying a certain \emph{property}. Here we
+briefly describe the property in question.
+
+Given a unitless SMCC $\C$, and an object $A\in\C$, let us define
+a \emph{linear element} of $A$ to be a natural transformation with
+components
+\[
+	\gamma_{X}: X \to A\tn X
+\]
+such that, for all $X$ and $Y\in\C$, the diagram
+\begin{diagram}
+	& X\tn Y \\
+	\ldTo(1,2)<{\gamma_{X\tn Y}} && \rdTo(1,2)>{\gamma_{X}\tn Y} \\
+	A\tn(X\tn Y) & \rTo_{\alpha_{A,X,Y}} & (A\tn X)\tn Y
+\end{diagram}
+% \begin{diagram}
+% 	A &\rTo^{\gamma_Y} & A\tn Y \\
+% 	\dTo<{\gamma_{X\tn Y}} && \dTo>{\gamma_X\tn Y} \\
+% 	A\tn(X\tn Y) & \rTo_{\alpha_{A,X,Y}} & (A\tn X)\tn Y
+% \end{diagram}
+commutes. It's easy to see that, in an ordinary monoidal category,
+the linear elements of $A$ are in bijective correspondence with
+morphisms $I\to A$. Now, there is an obvious functor
+\[
+	\Lin: \C\to \Set
+\]
+that takes each object $A\in\C$ to the set of linear elements on
+$\C$. (In an ordinary monoidal category, it is isomorphic to the
+hom functor $\C(I,-)$.) Furthermore, there is a canonical natural
+transformation with components
+\[
+	\ell_{A,B}: \Lin(A\lolli B) \to \C(A,B);
+\]
+if $\gamma$ is a linear element of $A\lolli B$, then
+$\ell_{A,B}(\gamma)$ is just the composite
+\[
+	A \rTo^{\gamma_{A}} (A\lolli B)\tn A \rTo^{\ev^{A}_{B}} B
+\]
+where $\ev^{A}$ is the counit of the adjunction $-\tn A \dashv A\lolli-$.
+
+Our additional condition, then, is as follows: a unitless SMCC
+$\C$ can be regarded as a semi SMCC just when the natural transformation
+$\ell$ is invertible, so that every arrow $A\to B$ comes from a
+unique linear element of $A\lolli B$. It is easy to see that this
+condition is satisfied when $\C$ has a unit object, and in
+Section~\ref{s-promon-unit} we shall prove that in fact it
+is satisfied if and only if $\C$ has a promonoidal unit.
+
+\subsection{The `$\psi$' presentation}\label{s-psi-presentation}
+Our second presentation is given in terms of structure rather
+than properties. We show that to give a semi SMCC is to give
+a category $\C$ equipped with an associative, symmetric\footnote{
+      \emph{I.e.}, equipped with the standard associativity and symmetry 
+      isomorphisms and coherence laws of a symmetric monoidal category.}
+functor
+$\tn:\C\times\C\to\C$, a functor $\lolli:\C\op\times\C\to\C$
+%       (\emph{internal hom}) 
+through which hom factors up to isomorphism,
+\begin{diagram}
+       \C\op\times\C &\rTo^\lolli& \C\\
+       &\rdTo_{\mathrm{hom}}\raise1em\hbox{\qquad$\cong$}&\dTo.>{\exists J}\\
+       &&\Set
+\end{diagram}
+and a natural isomorphism
+\[
+       \psi_{A,B,C}\;\;:\;\; (A\tn B)\lolli C \;\;\to\;\;
+       A\lolli(B\lolli C)
+\]
+such that the diagram
+\begin{diagram}[h=1.5em] \bigl(A\tn(B\tn C)\bigr)\lolli D
+&\rTo^{\alpha_{A,B,C}\lolli D} &\bigl((A\tn B)\tn
+C\bigr)\lolli D\\ &&\dTo>{\psi_{A\tn B,C,D}}\\
+\dTo<{\psi_{A,B\tn C,D}}&&(A\tn B)\lolli(C\lolli D)\\
+&&\dTo>{\psi_{A,B,C\lolli D}}\\ A\lolli\bigl((B\tn C)\lolli
+D\bigr)&\rTo_{A\lolli\psi_{B,C,D}}
+&A\lolli\bigl(B\lolli(C\lolli D)\bigr) \end{diagram} commutes.
+
+%XXXX - incoherent presentation
+% One can go further: although the condition above is not
+% redundant, it is nevertheless the case that, given a natural isomorphism
+% $\psi$ not necessarily satisfying the condition, one can find another
+% natural isomorphism $\psi'$ that does satisfy it. Therefore, to
+% give a semi SMCC it is enough to give a unitless SMCC $\C$ equipped with
+% a functor $J:\C\to\Set$ such that $J(A\lolli B)$ is naturally isomorphic
+% to $\C(A,B)$.
+
+\section{The promonoidal unit}\label{s-promon-unit}
+Although we are primarily interested in semi SMCCs, the basic argument
+here works in any braided promonoidal category, so we shall work at
+that level of generality and specialise to our intended application
+at the end.
+
+The essential tool here is the Cayley Theorem for pseudomonoids:
+in the case $\B=\mathbf{Cat}$, it shows that every monoidal category is
+monoidally equivalent to a \emph{strict} monoidal category. In the case $\B=\mathbf{Prof}$,
+which is the case we're interested in here, it allows us to construct a canonical
+representation for the promonoidal unit. (This turns out to be particularly powerful in the
+braided, or symmetric, case.)
+
+In summary, the story goes as follows.
+It is a familiar fact that, in a semigroup, all units must be equal: if $i$ and $j$ are
+both units, then $i=ij=j$. The existence or otherwise of a unit is really a \emph{property}
+of a semigroup; there is no choice of how to define the unit. By a similar argument, in a
+pseudomonoid (or `pseudosemigroup', a pseudomonoid without the unit structure) all units
+are isomorphic. Being good category theorists, we don't care about the difference
+between isomorphic structures; so we have no real choice in how to define the unit of
+a pseudomonoid: given the tensor structure ($P$ and $\aa$), either it is possible to
+define a unit, or it isn't. We might say that the unit is `essentially property-like'
+\citep[cf.][]{proplike}. This point may seem rather irrelevant, since the easiest way
+to demonstrate the existence of a unit is often to exhibit one. However, it turns out
+that in the case of promonoidal categories that is not necessarily true. There is a
+canonical representative for the unit -- the functor here denoted $\Lin$ -- defined
+solely in terms of the tensor structure ($P$ and $\alpha$) that is isomorphic to the
+unit whenever there is a unit to be isomorphic to. Furthermore, in the case of braided
+or symmetric promonoidal categories, we can define a simple test of whether or not
+there is a unit. So we may \emph{define} a braided promonoidal category purely in
+terms of the tensor, associator and braiding, subject to a condition that determines
+the existence of a unit. Should an actual unit be required, we are free to use the
+canonical unit $\Lin$.
+
+Now for the details. Let $\C$ be a promonoidal category. The monoidal category $\mathbf{Prof}(1, \C)$
+is $[\C, \Set]$, equipped with Day's convolution tensor. The monoidal category
+$\Mod_{\C}(\C,\C)$ does not really have a simpler description than the general one given above:
+an object is a profunctor $\C\rPro\C$ together with a natural transformation
+\begin{diagram}
+	\C\times\C & \rPro^P & \C\\
+	\dPro<{F\times\C}&\Arr\Swarrow{\phi^F}&\dTo>F\\
+	\C\times\C&\rPro_P & \C
+\end{diagram}
+satisfying the conditions of Definition~\chref{Cayley}{def-module-map}.
+So $\phi^F$ is a natural isomorphism with components
+\[
+	\phi^F_{A,B,C}: \int^X P(A,B;X)\times F(X;C) \to \int^X F(A;X)\times P(X,B;C).
+\]
+Now let us write $\E$ as an abbreviation for the monoidal category $\Mod_{\C}(\C,\C)$,
+and let $A\in\C$. We have a sequence of natural isomorphisms
+\[\begin{array}{rclp{5cm}}
+	JA &\cong& [\C,\Set](\C(A,-), J) & {by Yoneda} \\
+	&\cong& \E(\phi'_\C(\C(A,-)), \phi'_\C(J)) & {since $i_\C$ is full and faithful} \\
+	&\cong& \E(\phi'_\C(\C(A,-)), I) & {applying $m_I$}
+\end{array}\]
+where $\phi'_{\C}$ is the monoidal equivalence $[\C,\Set]\to\E$
+described by Proposition~\chref{Cayley}{prop-psmoncayley}.
+If we define the functor $\Lin: \C\to\Set$ as $\Lin(A) := \E(\phi'_\C(\C(A,-)), I)$,
+then we have exhibited a natural isomorphism $\theta: J \To \Lin$.
+An element of the set $\Lin(A)$ is a natural transformation $\gamma$ with components
+\[
+	\gamma_{X,Y}: P(A,X;Y) \to \C(X,Y)
+\]
+such that the diagram
+\begin{equation}\label{diag-linel}
+\begin{diagram}[h=2em]
+	\int^X P(L,M;X)\times P(A,X;N) & \rTo^{\int^X P(L,M;X)\times\gamma_{X,N}}
+		& \int^X P(L,M;X)\times\C(X,N) \\
+	&&\dTo>\cong \\
+	\dTo<{\alpha_{A,L,M}} && P(L,M;N) \\
+	&&\uTo>\cong \\
+	\int^X P(A,L;X)\times P(X,M;N) & \rTo_{\int^X \gamma_{L,X}\times P(X,M;N)}
+		& \int^X\C(L,X)\times P(X,M;N)
+\end{diagram}
+\hskip-2em % Tuck the equation number in
+\end{equation}
+commutes for all $L$, $M$ and $N$ in $\C$. We shall refer to the elements
+of this set as the \defns{linear element} of $A$.
+
+For the purposes of this thesis, of course, we're particularly interested
+in the case where the profunctor $P$ is represented by a functor $\tn: \C\times\C\to\C$.
+In this case, a linear element is a natural transformation with components
+\[
+	\gamma_{X,Y}: \C(A\tn X, Y) \to \C(X,Y)
+\]
+which, by Yoneda, can be represented by a natural transformation with components
+\[
+	\gamma_X: X \to A\tn X.
+\]
+With this representation, the condition boils down to the requirement that
+the diagram
+\begin{diagram}
+	& X\tn Y \\
+	\ldTo(1,2)<{\gamma_{X\tn Y}} && \rdTo(1,2)>{\gamma_{X}\tn Y} \\
+	A\tn(X\tn Y) & \rTo_{\alpha_{A,X,Y}} & (A\tn X)\tn Y
+\end{diagram}
+should commute, for all $X$, $Y\in\C$.
+
+Since an element of $\Lin(A)$ is a natural transformation 
+\[
+	\gamma_{X,Y}: P(A,X;Y) \to \C(X,Y),
+\]
+for every $A$ there is an obvious natural transformation $\lambda'^A$
+with components
+\[
+	\lambda'^A_{X,Y}: \Lin(A)\times P(A,X;Y) \to \C(X,Y),
+\]
+dinatural in $A$.
+
+\begin{propn}
+	The diagram
+	\begin{diagram}[h=2em]
+		JA\times P(A,X;Y) \\
+		&\rdTo^{\lambda^A_{X,Y}}\\
+		\dTo<{\theta_A\times P(A,X;Y)} && \C(X,Y) \\
+		&\ruTo_{\lambda'^A_{X,Y}} \\
+		\Lin A \times P(A,X;Y)
+	\end{diagram}
+	commutes, for all $A$, $X$ and $Y\in\C$.
+\end{propn}
+\begin{proof}
+	This is a direct consequence of the definition of $\theta$: any
+	apparent complexity here is notational rather than mathematical.
+	First we shall calculate the effect of $\theta_A: JA\to\Lin A$
+	on an element $e\in JA$. We'll consider in sequence the three
+	isomorphisms that define $\theta$. The first takes $e$ to the
+	natural transformation with $X$-component
+	\[
+		(f:A\to X) \mapsto J(f)(e);
+	\]
+	this must then be mapped by the second to a natural transformation
+	\[
+		P(A,X;Y) \to \int^Z JZ\times P(Z,X;Y)
+	\]
+	natural in $X$ and $Y$.
+	The elements of $\int^Z JZ\times P(Z,X;Y)$ are equivalence classes
+	of pairs $\langle j, p\rangle$, with $j\in JZ$ and $p\in P(Z,X;Y)$
+	for some $Z\in\C$. Our element is mapped to the $A$-indexed natural
+	family of functions
+	\[
+		(p\in P(A,X;Y)) \mapsto [\langle e,p\rangle].
+	\]
+	where $[\langle e,p\rangle]$ denotes the equivalence class containing
+	$\langle e,p\rangle$. The final natural isomorphism takes this element
+	to the $A$-indexed natural family of functions
+	\[
+		(p\in P(A,X;Y)) \mapsto \lambda_{X,Y}([\langle e,p\rangle]).
+	\]
+	Now it's easy to show that the diagram commutes: let $\langle e,p\rangle$
+	be an element of $JA\times P(A,X;Y)$. The vertical arrow maps it to
+	the pair $\langle f, p\rangle$, where $f$ is the linear element
+	displayed above. $\lambda'$ then maps this to $\lambda_{X,Y}^A(e,p)$,
+	as required.
+\end{proof}
+%
+There is an apparent asymmetry here: although it was easy to define
+$\lambda'$, there is no obvious way to define a corresponding $\rho'$
+-- unless of course our promonoidal category is braided, of which more
+below. This asymmetry derives from the fact that $\E$ is defined using
+\emph{right} $\C$-modules,
+and of course it would be possible to define a dual version using left
+modules, which would also be monoidally isomorphic to $\Prof(1,\C)$,
+hence to $\E$. Using this, we could define a `co-linear elements' functor
+$\Lin': \C\to\Set$, with a canonical natural isomorphism
+\[
+	\rho'^A_{X,Y}: \Lin'A\times P(X,A;Y) \to \C(X,Y).
+\]
+However, in general there is no canonical natural isomorphism between
+$\Lin$ and $\Lin'$. In the braided case, there is. So in that case we
+may simply take $\Lin$ (or equivalently $\Lin'$) to be the unit, which
+role it is able to fulfil if and only if $\lambda'$ (equivalently $\rho'$)
+is invertible. More formally we have:
+\begin{propn}\label{prop-promonunit}
+	Let $\C$ be a category, and $P: \C\times\C\rPro\C$ a profunctor.
+	Let $\alpha$ be an associator satisfying the pentagon
+	condition, and let $\sigma$ be a braiding satisfying the
+	hexagon conditions. There exists a unit $J:1\rPro\C$ (with
+	coherent unit isomorphisms $\lambda$ and $\rho$) if and only
+	if the natural transformation
+	\[
+		\lambda': \int^A \Lin A\times P(A,X;Y) \to \C(X,Y),
+	\]
+	defined above, is invertible.
+\end{propn}
+\begin{proof}
+	We have already established the `only if' direction, so let
+	$\C$, $P$, $\alpha$ and $\sigma$ be given, and define $\Lin: \C\to\Set$
+	and $\lambda'$. Suppose that $\lambda'$ is invertible.
+	
+	By the presentation of braided pseudomonoids given in Section~\chref{Psmon}{s-braided-facts},
+	it suffices to show that
+	\[
+		\begin{diagram}
+			1\times\C^2 & \rPro^{\Lin\times\C^2} & \C^3 \\
+			\dPro<{1\times P} & \sim & \dPro>{\C\times P} \\
+			\rnode{IC}{1\times\C} & \rPro^{\Lin\times\C} & \C^2 \\
+			&\lambda' & \dPro>P \\
+			&&\rnode{C}{\C}
+			\nccurve[angleA=270,angleB=180,ncurv=1]{->}{IC}{C}\Bput1
+		\end{diagram}
+		=
+		\begin{diagram}
+			\rnode{ICC}{1\times\C^2} & \rPro^{\Lin\times\C^2} & \C^3 & \rPro^{\C\times P} & \C^2 \\
+			&\lambda'\times\C &\dPro[snake=1em]>{P\times\C} & \alpha & \dPro>P \\
+			&&\rnode{CC}{\C^2} & \rPro_P & \C
+			\nccurve[angleA=270,angleB=180,ncurv=1]{->}{ICC}{CC}\Bput1
+		\end{diagram}
+	\]
+	Concretely, this amounts to showing that the diagram
+	\begin{diagram}[h=2em,labelstyle=\scriptstyle]
+		\int^{A,X} P(A,X;N)\times\Lin A\times P(L,M;X)
+		& \rTo^{\int^X \lambda'_{X,N}\times P(L,M;X)}
+		& \int^X \C(X,N)\times P(L,M;X) \\
+		&&\dTo>\cong \\
+		\dTo<{\int^A\Lin A\times\alpha_{A,L,M,N}}
+		&& P(L,M;N) \\
+		&&\uTo>\cong \\
+		\int^{A,X}\Lin A\times P(A,L;X)\times P(X,M;N)
+		& \rTo_{\int^X\lambda'_{L,X}\times P(X,M;N)}
+		& \int^X\C(L,X)\times P(X,M;N)
+	\end{diagram}
+	commutes, which is an immediate consequence of (\ref{diag-linel}).
+\end{proof}
+
+\subsection{Application to semi SMCCs}
+In the case where $\C$ is a semi SMCC, we have the isomorphism
+\[
+	\int^A \Lin A\times P(A,X;Y) \cong \int^{A} \Lin(A)\times\C(A,X\lolli Y)
+	\cong \Lin(X\lolli Y),
+\]
+and the natural transformation $\lambda'_{X,Y}: \Lin(X\lolli Y)\to\C(X,Y)$
+is precisely the natural transformation that we called $\ell$ in Section~\ref{s-linel}.
+Therefore Proposition~\ref{prop-promonunit} does indeed justify the presentation
+described in Section~\ref{s-linel}.
+
+\section{The $\psi$ presentation}
+In the closed case we have a functor $\lolli$ such that
+\[
+	P(A,B;C) \cong \C(A, B\lolli C),
+\]
+The left-unit isomorphism of a promonoidal category has components
+\[
+	\lambda_{A,B}: \int^{X} J(X)\times P(X,A;B) \to \C(A,B),
+\]
+the left-hand side of which is isomorphic to
+\[
+	\int^{X} J(X)\times \C(X, A\lolli B)
+\]
+which in turn is isomorphic to $J(A\lolli B)$. So we can take
+$\lambda$ to be an isomorphism
+\[
+	\lambda_{A,B}: J(A\lolli B) \to \C(A,B),
+\]
+thereby eliminating the need to mention coends. The problem
+(if we want a fully coherent presentation) is to reconcile the
+fact that the associativity and symmetry are defined using $\tn$,
+whereas the unit is defined using $\lolli$. Abstractly, we may
+consider that we have two isomorphic multiplication profunctors,
+say $P$ and $Q$ where
+\[
+	P(A,B;C) = \C(A\tn B,C)
+\]
+and
+\[
+	Q(A,B;C) = \C(A, B\lolli C),
+\]
+with the associativity and symmetry isomorphisms defined on $P$,
+and the unit isomorphism defined on $Q$. Of course a unit isomorphism
+may be defined on $P$ by using the isomorphism with $Q$, and the
+coherence condition for the unit expressed in terms of this composite.
+Here it simplifies matters to back up
+and address the question at the level of structure internal to
+a general monoidal bicategory. (The symmetry does not play an
+essential role in this part of the argument, so there is no need
+to assume a braiding here.) We shall use the language of
+components, and to make the notation more familiar we shall
+write $A\tn B$ to mean $P(A,B)$ and $A\odot B$ to mean $Q(A,B)$.
+Also we'll write $I$ to mean $J()$. So (symmetry aside)
+we have invertible 2-cells with components
+\[
+	\alpha_{A,B,C}: A\tn(B\tn C) \to (A\tn B)\tn C,
+\]
+\[
+	\lambda_{A}: I\odot A\to A,
+\]
+and
+\[
+	\chi_{A,B}: A\tn B \to A\odot B,
+\]
+this last corresponding to the currying isomorphism.
+We assume that $\alpha$ satisfies the pentagon condition, and that the
+diagram of components
+\begin{diagram}\dlabel[$\boldsymbol{\lambda\alpha\chi}$]{diag-lac}
+	I\tn(A\tn B) && \rTo^{\alpha_{I,A,B}} && (I\tn A)\tn B \\
+	\dTo<{\chi_{I,A\tn B}} && \dnum && \dTo>{\chi_{I,A}\tn B} \\
+	I\odot(A\tn B) & \rTo_{\lambda_{A\tn B}} & A\tn B
+		& \lTo_{\lambda_{A}\tn B} & (I\odot A)\tn B
+\end{diagram}
+commutes. Now, define $\psi$ to be the unique invertible 2-cell
+with components
+\[
+	\psi_{A,B,C}: A\odot(B\tn C)\to (A\odot B)\odot C,
+\]
+such that the diagram
+\begin{diagram}\dlabel[$\boldsymbol{\alpha\chi\psi}$]{diag-acp}
+	A\tn(B\tn C) && \rTo^{\alpha_{A,B,C}} && (A\tn B)\tn C \\
+	\dTo<{\chi_{A,B\tn C}} &&\dnum&& \dTo>{\chi_{A,B}\tn C} \\
+	A\odot(B\tn C) & \rTo_{\psi_{A,B,C}} & (A\odot B)\odot C
+		& \lTo_{\chi_{A\odot B, C}} & (A\odot B)\tn C
+\end{diagram}
+commutes. In the abstract this seems a rather odd thing to construct,
+but in our concrete example it corresponds (via Yoneda) to a natural
+isomorphism $(X\tn Y)\lolli Z \cong X\lolli(Y\lolli Z)$, an internal
+analogue of currying. We shall consider the relationship between
+$\chi$ and $\psi$, with the aim of replacing the former by the latter.
+\begin{lemma}\label{lemma-chipsiunit}
+	If diagram \pref{diag-acp} commutes, then diagram
+	\pref{diag-lac} commutes if and only if the following does.
+	\begin{diagram}\dlabel[$\boldsymbol{\lambda\chi\psi}$]{diag-lcp}
+		I\odot(A\tn B) & \rTo^{\psi_{I,A,B}} & (I\odot A)\odot B \\
+		\dTo<{\lambda_{A\tn B}} &\dnum& \dTo>{\lambda_{A}\odot B} \\
+		A\tn B & \rTo_{\chi_{A,B}} & A\odot B
+	\end{diagram}
+\end{lemma}
+\begin{proof}
+	Consider the diagram
+	\begin{diagram}[h=1.5em]
+		I\tn(A\tn B) && \rTo^{\alpha_{I,A,B}} && (I\tn A)\tn B \\
+		\\
+		\dTo<{\chi_{I,A\tn B}} && (I\odot A)\odot B && \dTo>{\chi_{I,A}\tn B} \\
+		&\ruTo^{\psi_{I,A,B}} & \dTo>{\scriptstyle\lambda_{A}\odot B} & \luTo^{\chi_{I\odot A,B}}\\
+		I\odot(A\tn B) && A\odot B && (I\odot A)\tn B \\
+		& \rdTo_{\lambda_{A\tn B}} & \uTo>{\scriptstyle\chi_{A,B}} & \ldTo_{\lambda_{A}\tn B} \\
+		&&A\tn B
+	\end{diagram}
+	The upper region is an instance of \pref{diag-acp}, and the quadrilateral
+	at lower-right commutes by naturality. Since all the components are invertible,
+	it follows that the outside \pref{diag-lac} commutes if and only if the
+	left-hand quadrilateral \pref{diag-lcp} does.
+\end{proof}
+\begin{lemma}\label{lemma-pentagons}
+	If diagram \pref{diag-acp} commutes, then so does
+	\begin{diagram}\dlabel[$\boldsymbol{\alpha\psi}$]{diag-ap}
+	 A\odot \bigl(B\tensor (C\tensor D)\bigr)
+	 &\rTo^\psi&(A\odot B)\odot (C\tensor D)
+	 &\rTo^\psi & \bigl((A\odot B)\odot C\bigl)\odot D
+	 \\
+	 \dTo<{A\tn\alpha} &&\dnum&& \uTo>{\psi\odot D}
+	 \\
+	 A\odot\big((B\tensor C)\tensor D\big)
+	 && \rTo_\psi && \bigl(A\odot(B\tensor C)\bigr)\odot D
+	\end{diagram}
+\end{lemma}
+\begin{proof}
+	We can use \pref{diag-acp} to show that \pref{diag-ap} is equivalent
+	to the pentagon condition.
+	\begin{sidewaysfigure}
+	\begin{diagram}
+	 A\odot \bigl(B\tensor (C\tensor D)\bigr)
+	 &&\rTo^\psi&&(A\odot B)\odot (C\tensor D)
+	 &&\rTo^\psi && \bigl((A\odot B)\odot C\bigl)\odot D
+	 \\
+	 &\luTo &&& \uTo &&& \ruTo
+	 \\
+	 &&A\tensor \bigl(B\tensor (C\tensor D)\bigr)
+	 &\rTo^\alpha&(A\tensor B)\tensor (C\tensor D)
+	 &\rTo^\alpha & \bigl((A\tensor B)\tensor C\bigl)\tensor D
+	 \\
+	 \dTo<{A\odot\alpha} &&\dTo<{A\tn\alpha} &&&& \uTo>{\alpha\tn D} && \uTo>{\psi\odot D}
+	 \\
+	 && A\tensor\big((B\tensor C)\tensor D\big)
+	 && \rTo_\alpha && \bigl(A\tensor(B\tensor C)\bigr)\tensor D
+	 \\
+	 &\ldTo &&&&&& \rdTo
+	 \\
+	 A\odot\big((B\tensor C)\tensor D\big)
+	 &&&& \rTo_\psi &&&& \bigl(A\odot(B\tensor C)\bigr)\odot D
+	\end{diagram}
+	\caption{Diagram used in the proof of Lemma~\ref{lemma-pentagons}}
+	\label{fig-pentagons}
+	\end{sidewaysfigure}
+	Consider the diagram shown in Figure~\ref{fig-pentagons}. The
+	unlabelled arrows are constructed using repeated instances of $\chi$:
+	for example the vertical arrow
+	\[
+		(A\tn B)\tn(C\tn D) \to (A\odot B)\odot(C\tn D)
+	\]
+	is equal to the diagonal of the commutative square
+	\begin{diagram}
+		(A\tn B)\tn(C\tn D) & \rTo^{\chi_{A,B}\tn(C\tn D)} & (A\odot B)\tn(C\tn D) \\
+		\dTo<{\chi_{A\tn B,C\tn D}} && \dTo>{\chi_{A\odot B,C\tn D}} \\
+		(A\tn B)\odot(C\tn D) & \rTo_{\chi_{A,B}\odot(C\tn D)} & (A\odot B)\odot(C\tn D)
+	\end{diagram}
+	The cells that involve these arrows thus commute by a combination of
+	naturality and condition~\pref{diag-acp}. So the central pentagon
+	commutes if and only if the outside does.
+\end{proof}
+\begin{lemma}\label{lemma-acp}
+	If \pref{diag-lcp} and \pref{diag-ap} commute, then so does \pref{diag-acp}.
+\end{lemma}
+\begin{proof}
+	Consider the diagram shown in Figure~\ref{fig-acp}.
+	\begin{sidewaysfigure}
+	\begin{diagram}[hug]
+	 I\odot \bigl(B\tensor (C\tensor D)\bigr)
+	 &&\rTo^{\psi_{I,B,C\tn D}}&&(I\odot B)\odot (C\tensor D)
+	 &&\rTo^{\psi_{I\odot B,C,D}} && \bigl((I\odot B)\odot C\bigl)\odot D
+	 \\
+	 &\rdTo^{\lambda_{B\tn(C\tn D)}} &&& \dTo<{\lambda_{B}\odot(C\tn D)}
+		&\natural_{\psi}&& \ldTo^{(\lambda_{B}\odot C)\odot D}
+	 \\
+	 &&B\tensor (C\tensor D)
+	 &\rTo^{\chi_{B,C\tn D}}&B\odot (C\tensor D)
+	 &\rTo^{\psi_{B,C,D}} & (B\odot C)\odot D
+	 \\
+	 \dTo<{I\odot\alpha_{B,C,D}} &\natural_{\lambda}&\dTo<{\alpha} &&&& \uTo>{\chi_{B,C}\odot D}
+		&& \uTo>{\psi\odot D}
+	 \\
+	 && (B\tensor C)\tensor D
+	 && \rTo_{\chi_{B\tn C,D}} && (B\tensor C)\odot D
+	 \\
+	 &\ruTo^{\lambda_{(B\tn C)\tn D}} &&&&&& \luTo^{\lambda_{B\tn C}\odot D}
+	 \\
+	 I\odot\big((B\tensor C)\tensor D\big)
+	 &&&& \rTo_{\psi_{I,B\tn C,D}} &&&& \bigl(I\odot(B\tensor C)\bigr)\odot D
+	\end{diagram}
+	\caption{Diagram used in the proof of Lemma~\ref{lemma-acp}}
+	\label{fig-acp}
+	\end{sidewaysfigure}
+	The regions marked with the symbol $\natural$ commute by
+	naturality, the other three quadrilaterals commute by~\pref{diag-lcp},
+	and the outside is an instance of~\pref{diag-ap}. Thus the inner
+	pentagonal region commutes, which is precisely~\pref{diag-acp}.
+\end{proof}
+So $\chi$ and $\psi$ are interdefinable: given $\chi$, we can define
+$\psi$ using diagram~\pref{diag-acp}, and alternatively given $\psi$
+we can define $\chi$ using diagram~\pref{diag-lcp}. If we take $\psi$
+rather than $\chi$ to be part of our defining data, then it suffices
+to take~\pref{diag-ap} as an additional axiom (in addition to the
+pentagon condition). Diagram \pref{diag-lcp} commutes by construction
+so, by Lemma~\ref{lemma-acp}, condition~\pref{diag-acp} holds;
+then by Lemma~\ref{lemma-chipsiunit} condition~\pref{diag-lac}
+holds too.
+
+In the concrete case we're considering, this justifies the
+presentation of Section~\ref{s-psi-presentation}.
+
+\section{The star-autonomous Case}
+Finally, we consider full (non-intuitionistic) multiplicative
+linear logic. The appropriate notion of model (for the unitless
+fragment) is easy to find:
+\begin{definition}
+	A \emph{semi star-autonomous category} is a semi SMC $\C$
+	equipped with an equivalence $-^{*}: \C\to\C\op$ and a natural
+	isomorphism with components $\C(A\tn B, C)\cong\C(A, (B\tn\C^{*})^{*})$.
+\end{definition}
+We shall write $B\lolli C$ as an abbreviation for $(B\tn C^{*})^{*}$.
+The $\psi$ presentation becomes remarkably simple in the
+star-autonomous case:
+\begin{propn}
+	To give a semi star-autonomous category is to give a
+	category $\C$ equipped with an associative, symmetric
+	functor $\tn: \C\times\C\to\C$, an equivalence
+	$-^{*}: \C\to\C\op$, and a functor $J: \C\to\Set$
+	with a natural isomorphism
+	\[
+		J((A\tn B^{*})^{*}) \cong \C(A,B).
+	\]
+\end{propn}
+\begin{proof}
+	Define $\psi_{A,B,C}$ to be the composite
+	\[
+		\bigl((A\tn B)\tn C^{*}\bigr)^{*}
+		\rTo^{(\alpha_{A,B,C^{*}})^{*}}
+		\bigl(A\tn (B\tn C^{*})\bigr)^{*}
+		\rTo^{(A\tn n_{B\tn C^{*}})^{*}}
+		\Bigl( A\tn \bigl( (B\tn C^{*})^{*} \bigr)^{*} \Bigr)^{*}.
+	\]
+	With this definition, the diagram~\pref{diag-ap} commutes
+	as a consequence of the pentagon condition.
+\end{proof}
+
+\end{thesischapter}
