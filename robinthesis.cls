@@ -171,7 +171,7 @@
         \end{center}
         \vfill
         \begin{center}
-                \number\the\year
+                2007
         \end{center}
         \vfill
         \begin{center}
