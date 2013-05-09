@@ -1,0 +1,195 @@
+\NeedsTeXFormat{LaTeX2e}[1994/12/01]
+\ProvidesPackage{robincs}
+\RequirePackage{pstricks, pst-node, graphicx, amssymb, amsthm, stmaryrd}
+%%
+% Note: amsmath is no longer loaded by default, because it does
+%       freaky stuff with labels that can cause problems with
+%       otherwise correct code. (And I don't use it anyway.)
+%%
+\RequirePackage[mathscr]{euscript}
+\RequirePackage[PostScript=dvips,nohug,midshaft,balance]{diagrams}
+
+\author{Robin Houston}  % Can be over-ridden with another \author
+
+\newif\ifpdftex
+\ifx\pdftexversion\undefined\pdftexfalse\else\pdftextrue\fi
+
+\newcommand\N{\mathbb{N}}
+
+\newcommand\lp{{\fontshape{n}\selectfont(}}
+\newcommand\rp{{\fontshape{n}\selectfont)}}
+\newcommand\lining[1]{{\fontfamily{ich}\selectfont#1}}
+
+%%
+% This has a similar effect to the macro of the same name defined
+% in the xspace package. The implementation is completely different
+% though. The advantage of the present definition is that you don't
+% get an extra space in something like \emph{hello\xspace}. The
+% disadvantage is that you can't use it within another macro, except
+% at the very end. That's a good trade-off for now.
+%
+\DeclareRobustCommand\xspace{\catcode`\ =12\catcode`\^^M=12\futurelet\@let@token\@xspace}
+\def\@xspace{\def\next{\relax}%
+\uccode`\"=`\ \uppercase{\ifx\@let@token"\space\let\next=\@gobble\fi}%
+\uccode`\"=`\^^M\uppercase{\ifx\@let@token"\space\let\next=\@gobble\fi}%
+\robin@resetspaces\next}
+\def\robin@resetspaces{\catcode`\ =10\catcode`\^^M=5}
+
+%%
+% We want parentheses in emphasised text to be upright.
+% (This doesn't work if the argument has already been expanded,
+% e.g. when \emph is called from another macro. Such is life...)
+%
+\let\robin@origemph\emph
+\let\lparen(\let\rparen)
+{\catcode`\(=\active\gdef({\textup\lparen}
+\catcode`\)=\active\gdef){\textup\rparen}
+\gdef\emph{%
+  \global\edef\robin@resetparens{%
+    \catcode`\noexpand\(=\the\catcode`\(%
+    \catcode`\noexpand\)=\the\catcode`\)%
+  }%
+  \catcode`\(=\active\catcode`\)=\active\robin@emph}
+}
+\def\robin@emph#1{\robin@origemph{#1}\robin@resetparens\relax}
+
+\newcommand\tuple[2][]{%
+        \def\myarg{#1}\ifx\myarg\empty%
+                \let\lbra=\left  %
+                \let\rbra=\right %
+        \else%
+                \expandafter\let\expandafter\lbra\csname#1l\endcsname\relax
+                \expandafter\let\expandafter\rbra\csname#1r\endcsname %
+        \fi%
+	{\lbra\langle#2\rbra\rangle}}
+\def\iff{\Leftrightarrow}
+\newcommand\relarrow{\ensuremath{\mathrel{-\!\!\!+\!\!\!\!\shortrightarrow}}}
+\newcommand\cat[1]{\mathrm{#1}}
+\newcommand\Set{\cat{Set}}
+\newcommand\defn[1][ ]{\gdef\robin@firstarg{#1}\robin@defn}
+\def\robin@empty{ }
+\newcommand\robin@defn[2][]{\def\secondarg{#1}%
+	\ifx\robin@firstarg\robin@empty%
+		\label{dfn-#2}%
+	\else%
+		\ifx\secondarg\empty%
+			\label{dfn-\robin@firstarg|#2}%
+		\else%
+			\ifx\robin@firstarg\empty%
+				\label{dfn-#1}%
+			\else%
+				\label{dfn-\robin@firstarg|#1}%
+			\fi%
+		\fi%
+	\fi%
+	\emph{#2}}
+\newcommand\defns[1][]{\gdef\robin@firstarg{#1}\robin@defns}
+\newcommand\robin@defns[2][]{\def\secondarg{#1}%
+	\ifx\robin@firstarg\empty%
+		\label{dfn-#2}%
+	\else%
+		\ifx\secondarg\empty%
+			\label{dfn-\robin@firstarg|#2}%
+		\else%
+			\label{dfn-\robin@firstarg|#1}%
+		\fi%
+	\fi%
+	\emph{#2s}}
+\newcommand\amper{\mbox{\enskip \&\enskip }}
+\newcommand\Implies{\;\Rightarrow\;}
+\newcommand\id{\mathord{\mathrm{id}}}
+\newcommand\inl{\mathord{\mathrm{inl}}}\newcommand\inr{\mathord{\mathrm{inr}}}
+
+\newcommand\e\varepsilon
+\newcommand\pfx{\mathrel{\trianglelefteqslant}}
+\newcommand\pfxneq{\mathrel{\vartriangleleft}}
+
+% set of #1 such that #2
+\let\classleft\{
+\let\classright\}
+\def\normall#1{\def\myarg{#1}\def\dot{.}\ifx\myarg\dot\else#1\fi}
+\let\normalr\normall
+\newcommand   \class[3][]{{%
+        \def\myarg{#1}\ifx\myarg\empty%
+                \let\lbra=\left  %
+                \let\rbra=\right %
+        \else%
+                \expandafter\let\expandafter\lbra\csname#1l\endcsname\relax
+                \expandafter\let\expandafter\rbra\csname#1r\endcsname %
+        \fi%
+        \lbra\classleft\lbra.\!#2 \,\rbra|\,#3 \rbra\classright%
+}}
+\newcommand\classbag[2]{%
+	\lbag#1\,|#2\rbag
+}
+\newenvironment{eqar}{\[\def\arraystretch{1}\begin{array}{rcl}}
+	{\end{array}\]\ignorespacesafterend}
+
+\ifx\c@chapter\undefined
+	\newtheorem{propn}{Proposition}
+\else
+	\newtheorem{propn}{Proposition}[chapter]
+\fi
+\newtheorem{thm}[propn]{Theorem}
+\newtheorem{lemma}[propn]{Lemma}
+\newtheorem{corollary}[propn]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[propn]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[propn]{Remark}
+\let\reallyendproof\endproof\def\endproof{\reallyendproof\noindent\ignorespacesafterend}
+\let\reallyenddefinition\enddefinition\def\enddefinition{\reallyenddefinition\noindent\ignorespacesafterend}
+\let\reallyendremark\endremark\def\endremark{\reallyendremark\noindent\ignorespacesafterend}
+\renewenvironment{quotation}
+               {\list{}{\listparindent 0em%
+                        \itemindent    \listparindent
+                        \rightmargin   \leftmargin
+                        \parsep        \z@ \@plus\p@}%
+                \item\relax}
+               {\endlist}
+
+\newcommand\mr[1]{\mathrel{[#1]}}
+%\newcommand\nmr[1]{\mathrel{\reflectbox{${}^c$}[#1]^c}}
+\newcommand\nmr[1]{\mathrel{[#1]^c}}
+
+\newcommand\pipesurround[2][normal]{
+    \def\myarg{#1}\ifx\myarg\empty%
+            \let\lbra=\left  %
+            \let\rbra=\right %
+    \else%
+            \expandafter\let\expandafter\lbra\csname#1l\endcsname\relax
+            \expandafter\let\expandafter\rbra\csname#1r\endcsname %
+    \fi%
+\lbra|#2\rbra|}
+
+% length of a word
+\let\length\pipesurround
+
+% cardinality of a set
+\let\card\pipesurround
+
+% absolute value of a number
+\let\abs\pipesurround
+
+\let\tensor\otimes
+\def\lolli{\mathbin{\multimap}}
+
+\newenvironment{starredequation}[1][*]{\def\mcr@eqlabel{\textup(#1\textup)}\def\@currentlabel{#1}$$}
+                                        {\eqno \hbox{\mcr@eqlabel}$$\ignorespacesafterend}
+
+\def\C{\mathbb{C}}
+\def\D{\mathbb{D}}
+\let\tn\tensor
+\let\To\Rightarrow
+\def\op{^\mathrm{op}}
+
+\def\mkspin#1#2{\smash{%
+  \rotatebox[origin=c]{180}{\mathsurround=0pt$#1#2$}}}
+\def\spin{\mathpalette\mkspin}
+\def\parr{\mathbin{\spin{\&}}}
+
+
+% This tries to match the diagrams package
+\psset{nodesep=3pt,linewidth=\fontdimen8\textfont3,%
+arrowinset=0, arrowsize=2.8pt 0, arrowlength=1.4, labelsep=3pt}
+%
+% Set the arc angle for curved arrows
+\psset{arcangle=30}%

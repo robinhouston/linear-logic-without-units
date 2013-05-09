@@ -1,0 +1,209 @@
+\NeedsTeXFormat{LaTeX2e}[1994/12/01]
+\ProvidesPackage{thesisdefs}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% macro definitions for my PhD thesis %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Hyphenation
+\hyphenation{bi-eq-uiv-al-ence}
+\hyphenation{pseudo-mon-oids}
+\hyphenation{mon-oid-al}
+\hyphenation{pro-mon-oid-al}
+
+%% Packages
+\RequirePackage[round]{natbib}
+\bibliographystyle{plainnat}
+\renewcommand\hyper@natanchorstart[1]{}
+\renewcommand\hyper@natanchorend{}
+\renewcommand\hyper@natlinkstart[1]{}
+\renewcommand\hyper@natlinkend{}
+\renewcommand\hyper@natlinkbreak[2]{#1}
+\renewcommand\bibsection{%
+	\section*{Bibliography}%
+	\addcontentsline{toc}{chapter}{Bibliography}%
+}
+
+\RequirePackage{rotating}
+% Patch up a minor bug in the 'rotating' package:
+\let\orig@end@rotfloat = \end@rotfloat
+\def\end@rotfloat{\orig@end@rotfloat\ignorespacesafterend}
+\let\endsidewaysfigure\end@rotfloat
+\let\endsidewaystable\end@rotfloat
+
+% Make rotating work with hyperref
+\ifx\ifHy@implicit\@undefined\else
+	\ifHy@implicit
+		\def\rot@label#1{\@bsphack
+		  \r@protected@write\@auxout{}%
+		         {\string\newlabel{#1}{{\@currentlabel}{\therpage}{\string\relax }{}{}}}%
+		  \@esphack}%
+	\fi
+\fi
+
+
+%% Arrows
+\newarrow{Pro}--+->
+\newcommand\Arr[2]{{}#1{\hbox to 0pt{\mathsurround=0pt$\!#2$\hss}}}
+\DeclareMathSymbol{\Rrightarrow}  {\mathrel}{AMSa}{"56}
+\newcommand\Tto{\Rrightarrow}
+
+\newcommand\Right{\mathop\Rightarrow\limits}
+\newcommand\Left{\mathop\Leftarrow\limits}
+
+%% Roman and Greek alphabetic symbols
+\newcommand\V{\mathscr{V}}
+\newcommand\BA{\mathcal{A}}
+\newcommand\B{\mathcal{B}}
+\newcommand\BC{\mathcal{C}}
+
+\newcommand\A{\mathbb{A}}
+\newcommand\CB{\mathbb{B}}
+\newcommand\E{\mathbb{E}}
+\newcommand\X{\mathbb{X}}
+\newcommand\Y{\mathbb{Y}}
+
+\newcommand\Cat{\mathrm{Cat}}
+\newcommand\Prof{\mathrm{Prof}}
+\newcommand\Lin{\mathrm{Lin}}
+
+\newcommand\curry{\mathrm{curry}}
+\newcommand\ev{\mathrm{ev}}
+\newcommand\coev{\mathrm{coev}}
+\newcommand\comp{\mathrm{comp}}
+
+\newcommand\Bicat{\mathbf{Bicat}}
+
+\newcommand\Mod{\mathrm{Mod}}
+\newcommand\Gr{\mathrm{Gr}}
+
+\renewcommand\a\alpha
+\renewcommand\l\lambda
+\renewcommand\r\rho
+
+% This allows you to write $\alfa ABC$ rather than $\alpha_{A,B,C}$,
+%  which saves typing and makes the code more readable.
+\newcommand\alfa[3]{\alpha_{#1,#2,#3}}
+
+\renewcommand\aa{\mathfrak{a}}
+\renewcommand\ll{\mathfrak{l}}
+\newcommand\rr{\mathfrak{r}}
+
+% We need \ss (qua German double-s) in the bibliography, so this definition will be made only where needed.
+%\renewcommand\ss{\mathfrak{s}}
+
+\newcommand\I{{\mathbb{I}}}
+
+\newcommand\T{{\mathcal{T}}}
+\newcommand\M{{\mathcal{M}}}
+
+\newcommand\Ic{\mathop{\mathrm{I}}}
+\newcommand\norm{\mathrm{norm}}
+
+%% Other symbols
+
+\let\reallynatural = \natural
+\def\natural{\mathop\reallynatural\nolimits}
+
+\let\Tn = \bigotimes
+\let\x = \times
+\let\o = \circ
+\let\simsim = \approx
+
+\renewcommand\perp{^\bot}
+
+\def\mkspin#1#2{\smash{%
+  \rotatebox[origin=c]{180}{\mathsurround=0pt$#1#2$}}}
+\def\spin{\mathpalette\mkspin}
+\def\parr{\mathbin{\spin{\&}}}
+
+\newcommand\illol{\mathbin{\mathpalette\mkreflected\lolli}}
+\newcommand\mkreflected[2]{\reflectbox{$#1#2$}}
+
+\let\proves = \vdash
+\newcommand\ssemint[3][normal]{%
+	\let\normall\relax\let\normalr\relax
+	\let\stretchl\left\let\stretchr\right
+	\csname#1l\endcsname\llbracket#3\csname#1r\endcsname\rrbracket_{#2}}
+\newcommand\semint[2][v]{\ssemint{#1}{#2}}
+
+\renewcommand\tuple[1]{\langle#1\rangle}
+
+% Cat^co (\op is already defined in robincs.sty)
+\newcommand\co{^\mathrm{co}}
+
+%% Labels for diagrams
+\newcommand\clr{(\boldsymbol{\lambda\rho})}
+\newcommand\ca{(\boldsymbol{\alpha})}
+
+\newcommand\cFl{[\boldsymbol\lambda]}
+\newcommand\cFr{[\boldsymbol\rho]}
+\newcommand\cFa{[\boldsymbol\alpha]}
+
+%% Number equations within section
+\@addtoreset{equation}{section}
+\renewcommand\theequation{\thesection.\arabic{equation}}
+
+%% Parenthesised reference.
+\newcommand\pref[1]{\textup(\ref{#1}\textup)}
+
+%% For labelling diagrams.
+%  (The two-part definition of \dnum means that the first token
+%  of its expansion is \hbox, so \raise1em\dnum will work.)
+\newcommand\dlabel[2][]{\def\arg{#1}%
+  \ifx\arg\@empty
+    \refstepcounter{equation}%
+        \global\let\robin@dnum = \theequation
+  \else
+    \def\@currentlabel{#1}%
+        \gdef\robin@dnum{#1}%
+  \fi
+  \label{#2}}
+\newcommand\dnum{\hbox\bgroup\morednum}
+\newcommand\morednum[1][]{\def\arg{#1}\textup(%
+        \ifx\arg\@empty%
+                \robin@dnum%
+        \else
+                \ref{#1}%
+        \fi
+        \textup)\egroup}
+
+%% For making diagrams with overlapping columns.
+%  (used in (pentagon) and the nonabelian 4-cocycle condition)
+\def\spleft#1{\hbox to 2em{\hss$#1$}}
+\def\spright#1{\hbox to 2em{$#1$\hss}}
+\def\spboth#1{\hbox to 2em{\hss$#1$\hss}}
+
+%% Symmetric companion to \llap and \rlap, with optional width argument
+\newcommand\clap[2][0pt]{%
+	\ifmmode%
+		\gdef\robin@clap@wd{#1}%
+		\mathpalette\robin@clap{#2}%
+	\else%
+		\hbox to#1{$#2$}%
+	\fi%
+}
+\newcommand\robin@clap[2]{\hbox to\robin@clap@wd{\hss$#1#2$\hss}}
+
+%% Centred math environment, spilling into the margins if needed
+\newenvironment{mspill}{%
+        \vskip\abovedisplayskip\hbox to \textwidth\bgroup\hss%
+        \hbox\bgroup$\displaystyle
+}{%
+        $\egroup\hss\egroup\vskip\belowdisplayskip\noindent\ignorespacesafterend
+}
+
+\newenvironment{mmulti}[1][1em]{%
+	\renewcommand\\[1][\hskip2em]{$\vskip1ex\strut##1$\displaystyle}
+	\vskip\abovedisplayskip\hskip#1$\displaystyle
+}{%
+	$\vskip\belowdisplayskip
+	\noindent\ignorespacesafterend
+}
+
+%% For including PDF diagrams
+\newcommand\graphicscale{.3}
+\newcommand\diag[1]{\includegraphics[scale=\graphicscale]{#1}}
+\newcommand\cdiag[1]{%
+	\begin{tabular}[c]{c}\includegraphics[scale=\graphicscale]{#1}\end{tabular}}
+
