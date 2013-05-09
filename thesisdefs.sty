@@ -25,22 +25,6 @@
 }
 
 \RequirePackage{rotating}
-% Patch up a minor bug in the 'rotating' package:
-\let\orig@end@rotfloat = \end@rotfloat
-\def\end@rotfloat{\orig@end@rotfloat\ignorespacesafterend}
-\let\endsidewaysfigure\end@rotfloat
-\let\endsidewaystable\end@rotfloat
-
-% Make rotating work with hyperref
-\ifx\ifHy@implicit\@undefined\else
-	\ifHy@implicit
-		\def\rot@label#1{\@bsphack
-		  \r@protected@write\@auxout{}%
-		         {\string\newlabel{#1}{{\@currentlabel}{\therpage}{\string\relax }{}{}}}%
-		  \@esphack}%
-	\fi
-\fi
-
 
 %% Arrows
 \newarrow{Pro}--+->
