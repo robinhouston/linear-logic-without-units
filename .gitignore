@@ -2,3 +2,6 @@
 *.log
 *.out
 *.toc
+*.dvi
+*.pdf
+*.blg
