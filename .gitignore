@@ -5,3 +5,6 @@
 *.dvi
 *.pdf
 *.blg
+*.fls
+*.fdb_latexmk
+
