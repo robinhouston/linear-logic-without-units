@@ -1,0 +1,310 @@
+\begin{thebibliography}{51}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Ad{\' a}mek et~al.(2001)Ad{\' a}mek, El~Bashir, Sobral, and
+  Velebil]{LaxEpis}
+Ji{\v r}{\' i} Ad{\' a}mek, Robert El~Bashir, Manuela Sobral, and Ji{\v r}{\'
+  i} Velebil.
+\newblock On functors which are lax epimorphisms.
+\newblock \emph{Theory and Applications of Categories}, 8\penalty0
+  (20):\penalty0 509--521, 2001.
+
+\bibitem[Baez and Neuchl(1996)]{HDA1}
+John Baez and Martin Neuchl.
+\newblock Higher dimensional algebra {I}. braided monoidal 2-categories.
+\newblock \emph{Advances in Mathematics}, 121:\penalty0 196--244, 1996.
+
+\bibitem[Barr(1979)]{BarrStac}
+Michael Barr.
+\newblock \emph{{$\star$}-Autonomous Categories}, volume 752 of \emph{Lecture
+  Notes in Mathematics}.
+\newblock Springer-Verlag, 1979.
+
+\bibitem[B{\'e}nabou(2000)]{BenabouDist}
+Jean B{\'e}nabou.
+\newblock Distributors at work.
+\newblock June 2000.
+\newblock URL
+  \url{\url{http://www.mathematik.tu-darmstadt.de/~streicher/FIBR/DiWo.ps.gz}}.
+
+\bibitem[Blute et~al.(1996)Blute, Cockett, Seely, and Trimble]{BCST}
+Richard Blute, Robin Cockett, Robert Seely, and Todd Trimble.
+\newblock Natural deduction and coherence for weakly distributive categories.
+\newblock \emph{Journal of Pure and Applied Algebra}, 113:\penalty0 220 --296,
+  1996.
+
+\bibitem[Breen(1994)]{Breen-ator}
+Larry Breen.
+\newblock \emph{On the Classification of 2-Gerbes and 2-Stacks}, volume 225 of
+  \emph{Astérisque}.
+\newblock Société Mathématique de France, Paris, 1994.
+
+\bibitem[Carboni et~al.(2007)Carboni, Kelly, Walters, and
+  Wood]{CartesianBicatsII}
+A.~Carboni, G.~M. Kelly, R.~F.~C. Walters, and R.~J. Wood.
+\newblock Cartesian bicategories ii.
+\newblock \url{arXiv:0708.1921}, 2007.
+
+\bibitem[Carmody(1995)]{CarmodyThesis}
+Sean~Michael Carmody.
+\newblock \emph{Cobordism Categories}.
+\newblock PhD thesis, University of Cambridge, Cambridge, UK, 1995.
+
+\bibitem[Crans(1998)]{GeneralizedCenters}
+Sjoerd~E. Crans.
+\newblock Generalized centers of braided and sylleptic monoidal 2-categories.
+\newblock \emph{Advances in Mathematics}, 136\penalty0 (2):\penalty0 183--223,
+  June 1998.
+\newblock \doi{10.1006/aima.1998.1720}.
+
+\bibitem[Day(1970)]{DayPro}
+Brian Day.
+\newblock On closed categories of functors.
+\newblock In Saunders Mac~Lane, editor, \emph{Reports of the Midwest Category
+  Seminar}, volume 137 of \emph{Lecture Notes in Mathematics}, pages 1--38,
+  Berlin--New York, 1970. Springer-Verlag.
+
+\bibitem[Day and Street(1997)]{MonBicat}
+Brian Day and Ross Street.
+\newblock Monoidal bicategories and {H}opf algebroids.
+\newblock \emph{Advances in Mathematics}, 129:\penalty0 99--157, 1997.
+
+\bibitem[Do{\v s}en and Petri{\'c}(2005)]{ProofNetCats}
+Kosta Do{\v s}en and Zoran Petri{\'c}.
+\newblock Coherence of proof-net categories.
+\newblock {\tt arXiv:math.CT/0503301}, March 2005.
+
+\bibitem[Girard(1987)]{Girard87}
+Jean-Yves Girard.
+\newblock Linear logic.
+\newblock \emph{Theoretical Computer Science}, 50:\penalty0 1--102, 1987.
+
+\bibitem[Gordon et~al.(1995)Gordon, Power, and Street]{GPS}
+Robert Gordon, John Power, and Ross Street.
+\newblock Coherence for tricategories.
+\newblock \emph{Memoirs of the American Mathematical Society}, 117\penalty0
+  (558), September 1995.
+
+\bibitem[Gurski(2006)]{GurskiThesis}
+Nick Gurski.
+\newblock \emph{An Algebraic Theory of Tricategories}.
+\newblock PhD thesis, University of Chicago, Chicago, IL, USA, 2006.
+
+\bibitem[Hermida(2000)]{RepMulticats}
+Claudio Hermida.
+\newblock Representable multicategories.
+\newblock \emph{Advances in Mathematics}, 151:\penalty0 164--225, 2000.
+
+\bibitem[Hines(1999)]{HinesSS}
+Peter Hines.
+\newblock The categorical theory of self-similarity.
+\newblock \emph{Theory and Applications of Categories}, 6\penalty0
+  (2):\penalty0 33--46, 1999.
+
+\bibitem[Hughes(2005)]{HughesUnits}
+Dominic Hughes.
+\newblock Simple multiplicative proof nets with units.
+\newblock Submitted, March 2005.
+
+\bibitem[Jay(1989)]{JayLanguages}
+Barry Jay.
+\newblock Languages for monoidal categories.
+\newblock \emph{Journal of Pure and Applied Algebra}, 59:\penalty0 61--85,
+  1989.
+
+\bibitem[Joyal and Kock(2005)]{JoyalKockUnits}
+Andr{\'e} Joyal and Joachim Kock.
+\newblock Coherence for weak units.
+\newblock Incomplete draft, 2005.
+
+\bibitem[Joyal and Street(1991)]{GTC}
+Andr{\'e} Joyal and Ross Street.
+\newblock The geometry of tensor calculus {I}.
+\newblock \emph{Advances in Mathematics}, 88:\penalty0 55--113, 1991.
+
+\bibitem[Joyal and Street(1993)]{BTC}
+Andr{\'e} Joyal and Ross Street.
+\newblock Braided tensor categories.
+\newblock \emph{Advances in Mathematics}, 102\penalty0 (1):\penalty0 20--78,
+  1993.
+
+\bibitem[Kapranov and Voevodsky(1994)]{KV}
+Mikhail Kapranov and Vladimir Voevodsky.
+\newblock 2-categories and {Z}amolodchikov's equations.
+\newblock In W~Haboush and Brian Parshall, editors, \emph{Algebraic groups and
+  their generalizations. Vol.~2: Quantum and infinite-dimensional methods},
+  volume~56, pages 177--259. American Mathematical Society, 1994.
+
+\bibitem[Kelly and Street(1974)]{ks1}
+G.~Max Kelly and Ross Street.
+\newblock Review of the elements of 2-categories.
+\newblock In \emph{Category Seminar}, volume 420 of \emph{Springer Lecture
+  Notes in Mathematics}, pages 75--103, 1974.
+
+\bibitem[Kelly(1964)]{KellyML}
+Max Kelly.
+\newblock On {M}ac{L}ane's conditions for coherence of natural associativities,
+  commutativities, etc.
+\newblock \emph{Journal of Algebra}, 1:\penalty0 397--402, 1964.
+
+\bibitem[Kelly(1982)]{KellyEnriched}
+Max Kelly.
+\newblock \emph{Basic Concepts of Enriched Category Theory}.
+\newblock Number~64 in London Mathematical Society Lecture Notes. Cambridge
+  University Press, 1982.
+\newblock ISBN 0521287022.
+
+\bibitem[Kelly and Lack(1997)]{proplike}
+Max Kelly and Stephen Lack.
+\newblock On property-like structures.
+\newblock \emph{Theory and Applications of Categories}, 3\penalty0
+  (9):\penalty0 213--250, 1997.
+
+\bibitem[Kock(2006{\natexlab{a}})]{KockUnits}
+Joachim Kock.
+\newblock Elementary remarks on units in monoidal categories.
+\newblock \url{ArXiv:math.CT/0507349} To appear in {\textit Mathematical
+  Proceedings of the Cambridge Philosophical Society}, 2006{\natexlab{a}}.
+
+\bibitem[Kock(2006{\natexlab{b}})]{KockWeakIdentityArrows}
+Joachim Kock.
+\newblock Weak identity arrows in higher categories.
+\newblock \emph{International Mathematics Research Papers}, 2006:\penalty0
+  Article ID 69163, 54 pages, 2006{\natexlab{b}}.
+\newblock doi:10.1155/IMRP/2006/69163.
+
+\bibitem[Lack(2000)]{LackPseudomonads}
+Stephen Lack.
+\newblock A coherent approach to pseudomonads.
+\newblock \emph{Advances in Mathematics}, 152\penalty0 (2):\penalty0 179--202,
+  2000.
+
+\bibitem[Lack(1995)]{LackThesis}
+Stephen~Geoffrey Lack.
+\newblock \emph{The Algebra of Distributive and Extensive Categories}.
+\newblock PhD thesis, University of Cambridge, Cambridge, UK, 1995.
+
+\bibitem[Lack(2007)]{LackCompanion}
+Steve Lack.
+\newblock A 2-categories companion.
+\newblock \url{arXiv:math.CT/0702535v1}, 2007.
+
+\bibitem[Lamarche and Stra{\ss}burger(2005)]{LSFreeBool}
+Fran{\c c}ois Lamarche and Lutz Stra{\ss}burger.
+\newblock Constructing free boolean categories.
+\newblock Submission for \emph{Logic in Computer Science}, January 2005.
+
+\bibitem[Lawvere(1973)]{LawvereModules}
+F.~William Lawvere.
+\newblock Metric spaces, generalized logic and closed categories.
+\newblock \emph{Rendiconti del Seminario Matematico e Fisico di Milano},
+  XLIII:\penalty0 135--166, 1973.
+\newblock Reprinted as \cite{LawvereModulesReprint}.
+
+\bibitem[Lawvere(2002)]{LawvereModulesReprint}
+F.~William Lawvere.
+\newblock Metric spaces, generalized logic and closed categories.
+\newblock \emph{Reprints in Theory and Applications of Categories}, \penalty0
+  (1):\penalty0 1--37, 2002.
+\newblock URL \url{http://www.tac.mta.ca/tac/reprints/articles/1/tr1abs.html}.
+\newblock Reprinted from \cite{LawvereModules}.
+
+\bibitem[Lincoln and Winkler(1994)]{UOLLNP}
+Patrick Lincoln and Timothy Winkler.
+\newblock Constant-only multiplicative linear logic is {NP}-complete.
+\newblock \emph{Theoretical Computer Science}, 135\penalty0 (1):\penalty0
+  155--169, 1994.
+
+\bibitem[Mac~Lane(1963)]{MLCoh}
+Saunders Mac~Lane.
+\newblock Natural associativity and commutativity.
+\newblock \emph{Rice University Studies}, 49:\penalty0 28--46, 1963.
+
+\bibitem[{Mac Lane}(1978)]{MacLane}
+Saunders {Mac Lane}.
+\newblock \emph{Categories for the Working Mathematician}.
+\newblock Graduate Texts in Mathematics. Springer-Verlag, 1978.
+
+\bibitem[Marmolejo(1997)]{MarmolejoPseudomonads}
+F.~Marmolejo.
+\newblock Doctrines whose structure forms a fully faithful adjoint string.
+\newblock \emph{Theory and Applications of Categories}, 3\penalty0
+  (2):\penalty0 24--44, 1997.
+
+\bibitem[Marmolejo(1999)]{MarmolejoDistributive}
+F.~Marmolejo.
+\newblock Distributive laws for pseudomonads.
+\newblock \emph{Theory and Applications of Categories}, 5\penalty0
+  (5):\penalty0 81--147, 1999.
+
+\bibitem[Marmolejo(2004)]{MarmolejoDistributiveII}
+F.~Marmolejo.
+\newblock Distributive laws for pseudomonads {II}.
+\newblock \emph{Journal of Pure and Applied Algebra}, 194\penalty0
+  (1--2):\penalty0 169--182, 2004.
+
+\bibitem[Miller(2004)]{LinearLogicProgramming}
+Dale Miller.
+\newblock Overview of linear logic programming.
+\newblock In Thomas Ehrhard, Jean-Yves Girard, Paul Ruet, and Phil Scott,
+  editors, \emph{Linear Logic in Computer Science}, volume 316 of \emph{London
+  Mathematical Society Lecture Note}, pages 119--150. Cambridge University
+  Press, 2004.
+
+\bibitem[Plasmeijer and van Eekelen(2001)]{Clean}
+Rinus Plasmeijer and Marko van Eekelen.
+\newblock Concurrent clean language report, version 2.0.
+\newblock Technical report, Department of Software Technology, University of
+  Nijmegen, Nijmegen, 2001.
+
+\bibitem[Power and Robinson(1997)]{Premonoidal}
+John Power and Edmund Robinson.
+\newblock Premonoidal categories and notions of computation.
+\newblock \emph{Mathematical Structures in Computer Science}, 7\penalty0
+  (5):\penalty0 453--468, 1997.
+
+\bibitem[Seely(1989)]{SeelyLL}
+Robert Seely.
+\newblock Linear logic, $*$-aut\-on\-om\-ous categories and cofree coalgebras.
+\newblock \emph{Contemporary Mathematics}, 92, 1989.
+
+\bibitem[Stra{\ss}burger and Lamarche(2004)]{LSUnits}
+Lutz Stra{\ss}burger and Fran\c{c}ois Lamarche.
+\newblock On proof nets for multiplicative linear logic with units.
+\newblock In Jerzy Marcinkowski and Andrzej Tarlecki, editors, \emph{Computer
+  Science Logic, CSL 2004}, volume 3210 of \emph{Lecture Notes in Computer
+  Science}, pages 145--159. Springer-Verlag, 2004.
+
+\bibitem[Street(1980)]{FIB}
+Ross Street.
+\newblock Fibrations in bicategories.
+\newblock \emph{Cahiers topologie et g{\'e}om{\'e}trie diff{\'e}rentielle},
+  21:\penalty0 111--160, 1980.
+
+\bibitem[Street(1995)]{LowDim}
+Ross Street.
+\newblock Low-dimensional topology and higher-order categories.
+\newblock In \emph{Proceedings of CT95}, Halifax, 1995.
+
+\bibitem[Tanaka(2005)]{TanakaThesis}
+Miki Tanaka.
+\newblock \emph{Pseudo-Distributive Laws and a Unified Framework for Variable
+  Binding}.
+\newblock PhD thesis, University of Edinburgh, Edinburgh, 2005.
+
+\bibitem[Trimble(1994)]{TrimbleThesis}
+Todd Trimble.
+\newblock \emph{Linear logic, bimodules, and full coherence for autonomous
+  categories}.
+\newblock PhD thesis, Rutgers University, 1994.
+
+\bibitem[Verity(1992)]{VerityThesis}
+Dominic Verity.
+\newblock \emph{Enriched categories, internal categories and change of base}.
+\newblock PhD thesis, University of Cambridge, Cambridge, 1992.
+
+\end{thebibliography}
