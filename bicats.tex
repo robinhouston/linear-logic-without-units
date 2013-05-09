@@ -1,6 +1,5 @@
 %!TEX TS-program = latex
-\documentclass{robinthesisdraft}
-\usepackage{robincs,thesisdefs}
+\documentclass{robinthesis}
 
 % In a few places, I used := to define things. Andrea pointed out that
 % I didn't do so consistently, so I've changed the instances of := to
@@ -9,10 +8,7 @@
 % definitions to use it.
 \newcommand\defeqto{=}
 
-\title{Bicategories}
-\begin{document}
-\maketitle
-
+\begin{thesischapter}{Bicats}{Bicategories}
 Monoidal and promonoidal categories are both instances of the
 general notion of a pseudomonoid in a monoidal bicategory. We
 shall need some results about promonoidal categories that are
@@ -123,10 +119,13 @@ to time.
 	the case of monoidal categories by \citet[section~1]{BTC}, and
 	explicitly for bicategories by \citet[chapter~2]{GurskiThesis}%
 	\footnote{
-		The only gap in Gurski's account is that he omits to prove
-		the bicategorical Yoneda lemma, instead referring the reader to
-		two papers of Street, neither of which contains a proof either.
-		This gap is filled by Prop.~\ref{prop-yoneda} below.
+		Gurski's account is exceptionally thorough and largely
+		self-contained. He does use the bicategorical Yoneda
+		lemma without proof, and indeed that proof does not
+		appear ever to have been published -- presumably because
+		the idea is straightforward, even if the details verge
+		on overwhelming. We provide a proof as Prop.~\ref{prop-yoneda}
+		below.
 	}.
 	Anticipating some definitions we have yet to make, this version
 	says that the canonical functor from a free bicategory to the
@@ -168,9 +167,8 @@ to time.
 	
 	These remarks are intended only to help the reader to understand
 	what we mean when we draw a pasting diagram or an equation
-	involving them. A rigorous treatment of these issues would combine
-	Power's 2-categorical pasting theorem \citep{2catPasting} with
-	the coherence theorem described in Remark~\ref{rem-abstract-coherence}.
+	involving them. A rigorous treatment of bicategorical pasting
+	is given by \citet{VerityThesis}.
 \end{remark}
 
 \begin{remark} % on string diagrams
@@ -346,9 +344,7 @@ to time.
 	defined as above, except that the 2-cells that appear in the
 	definition need not be invertible. Lax functors have their uses
 	-- for example, a lax functor $1\to\B$ is the same as a monad
-	in $\B$ -- but we have no need of them. (We note in passing that
-	the preceding remark does not apply to the lax case, where the two
-	unit conditions are independent.)
+	in $\B$ -- but we have no need of them.
 \end{remark}
 
 \begin{definition}\label{def-psnat} % pseudo-natural transformation
@@ -432,7 +428,7 @@ to time.
 \begin{remark}
 	Of course there is such a thing as a lax natural transformation,
 	where the 2-cells $\gamma_{f}$ need not be invertible. (In
-	Bénabou's original terminology, this would actually be an
+	B{\'e}nabou's original terminology, this would actually be an
 	oplax transformation -- his 2-cells point the other way --
 	but the direction we use seems to be a more natural and
 	useful choice: see \citet[Section~5.7]{LackCompanion} for
@@ -506,7 +502,13 @@ Pseudo-natural transformations compose in the obvious way, as do modifications.
 Given any two bicategories $\B$ and $\BC$, there is a \emph{pseudo-functor bicategory}
 $\Bicat(\B,\BC)$ whose objects are pseudo-functors $\B\to\BC$,
 whose 1-cells are pseudo-natural transformations and whose
-2-cells are modifications. We omit the routine verification that
+2-cells are modifications.\footnote{
+	Note that this notation is inconsistent with that of
+	\citet{FIB}, which uses $\Bicat(\B,\BC)$ to denote the
+	bicategory whose objects are \emph{lax} functors from
+	$\B$ to $\BC$.
+}
+We omit the routine verification that
 this is indeed a bicategory, but remark that coherence lifts from
 $\BC$. It is significant that if $\BC$ is in fact a 2-category
 (i.e.\ its associativity and unit isomorphisms are all identities) then
@@ -554,15 +556,13 @@ is that the property-likeness of units has some interesting consequences.
 One consequence of this has been studied in detail by
 \citet{KockUnits,JoyalKockUnits,KockWeakIdentityArrows};
 a different aspect is visible in the present work, especially in
-Section~XXXX, where we
+Section~\chref{Promon}{s-promon-unit}, where we
 find that a braided promonoidal category has a \emph{canonical} unit,
 and identify a simple property that holds just when this unit exists.
-This principle also underpins the results of Section~\chref{Cayley}{s-unit-remarks},
-which are crucial for the material of Chapter~XXXX.
 
 In the immediate context, we can illustrate some of the phenomena as
 follows: the unit conditions in the
-definitions of pseudo-functor and pseudo-natural transformation
+definitions of pseudo-functor and pseudo-natur\-al transformation
 are, in a sense, redundant. (This is not the case where lax functors
 or lax natural transformations are concerned -- the invertibility of
 our 2-cells is essential to the argument.)
@@ -659,7 +659,7 @@ redundant:
 %
 For pseudo-functors, the situation is a little more subtle.
 The following notion will be useful, both here
-and later in Chapter~\chCayley.
+and later in Chapter~\refchapter{Cayley}.
 \begin{definition}\label{def-fully-faithful}
 	A 1-cell $f: A\to B$ is \emph{(representably) fully-faithful}
 	if, for every object $X$, the functor
@@ -695,7 +695,7 @@ and later in Chapter~\chCayley.
 		the other hand, the analogous property does not generally
 		hold for enriched categories: the $\V$-fully-faithful
 		functors do not always coincide with those 1-cells of
-		$\V-\Cat$ that are representably fully-faithful.
+		$\V$-$\Cat$ that are representably fully-faithful.
 	\item The co-fully-faithful 1-cells of $\Cat$ are characterised
 	by \citet{LaxEpis}, who call them `lax epimorphisms'.
 	%
@@ -807,6 +807,10 @@ and later in Chapter~\chCayley.
 \end{proof}
 
 \section{The bicategorical Yoneda lemma}
+The Yoneda lemma for bicategories was first stated by \citet{FIB},
+in a long paper that states many basic results without proof. Since
+the proof, even if it is in some sense routine, is rather intricate,
+we give a detailed account here.
 \begin{definition} % representable pseudofunctors
 	Let $A$ be an object of the bicategory $\B$. The \emph{covariant
 	representable pseudo-functor determined by $A$},
@@ -815,8 +819,8 @@ and later in Chapter~\chCayley.
 	\]
 	is defined as follows. On an object $X\in\B$, the category $\B(A,X)$ is
 	just the the hom-category of the same name. The action
-	$\B(A,-)_{X,Y}: \B(X,Y)\to[\B(A,X),\B(A,Y)]$ is defined to be the
-	currying of the composition functor $\o:\B(X,Y)\x\B(A,X)\to\B(A,Y)$.
+	\[\B(A,-)_{X,Y}: \B(X,Y)\to[\B(A,X),\B(A,Y)]\] is defined to be the
+	currying of the composition functor \[\o:\B(X,Y)\x\B(A,X)\to\B(A,Y).\]
 	
 	For an object $X\in\B$, the unit isomorphism $\B(A,-)_X: 1_{\B(A,X)}\To1_X\o-$
 	is defined to be $\l^{-1}$, and for a composable pair
@@ -865,7 +869,7 @@ and later in Chapter~\chCayley.
 		\psi(a)_k: \psi(a)_Y\cdot\B(A,k) \To F(k)\cdot\psi(a)_X.
 	\]
 	For $x\in\B(A,X)$, we define the component
-		$(\psi(a)_k)_x: F(k\o x)(a)\to F(k)(F(x)(a))$
+		\[(\psi(a)_k)_x: F(k\o x)(a)\to F(k)(F(x)(a))\]
 	to be $(F_{k,x}^{-1})_a$.
 	%
 	The naturality of $F_{k,x}$ ensures that $\psi(a)_k$ is natural.
@@ -984,7 +988,7 @@ and later in Chapter~\chCayley.
 	\end{equation}
 	
 	Since $\gamma$ is pseudo-natural, we know that
-	\[
+	\[\hskip-1cm
 	\begin{diagram}
 		\B(A,A) & \rTo^{\gamma_A} & \rnode{FA}{FA}\\
 		\dTo<{\B(A,f)} & \Nearrow\gamma_f & \dTo>{Ff}\\
@@ -1790,7 +1794,7 @@ i.e.\ adjunctions in a pseudo-functor bicategory.
 	% 	\]
 	% 	which may be rearranged into the unit condition for $\gamma$.
 	\item The composition condition for $\phi$ states that
-		\[
+		\[\hskip-1cm
 		\begin{diagram}[h=2em]
 			\rnode{FA}{FA} & \rTo^{Ff}& FB & \rTo^{Fg}& \rnode{FC}{FC}\\
 			&&\raise4pt\hbox{$\Downarrow F_{g,f}$}\\
@@ -1809,7 +1813,7 @@ i.e.\ adjunctions in a pseudo-functor bicategory.
 		\end{diagram}
 		\]
 		Taking mates, and using Prop.~\ref{prop-mates}(\ref{mate-natural}, \ref{mate-vert}), gives
-		\[
+		\[\hskip-1cm
 		\begin{diagram}[h=2em]
 			\rnode{FA}{FA} & \rTo^{Ff}& FB & \rTo^{Fg}& \rnode{FC}{FC}\\
 			&&\raise4pt\hbox{$\Downarrow F_{g,f}$}\\
@@ -2071,7 +2075,7 @@ Recall the definition of equivalence (Definition\ref{def-equivalence}).
 	and counit $\eta^{-1}$.
 \end{remark}
 %
-In later chapters, particularly Chapter~XXXX, we will often consider
+In later chapters, particularly Chapter~\refchapter{Psmon}, we will often consider
 mates with respect to adjoint equivalences. Such mating has some special
 properties which are crucial for our applications.
 %
@@ -2332,5 +2336,4 @@ It is certainly well-known, but I am not aware of a published proof.%
 	so $G$ is normal, as required.
 \end{proof}
 
-\bibliography{cs}
-\end{document}
+\end{thesischapter}

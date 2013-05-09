@@ -1,13 +1,9 @@
 %!TEX TS-program = latex
-\documentclass{robinthesisdraft}
-\usepackage{robincs,thesisdefs,xr}
-\externaldocument[Bicats:]{bicats}
-\externaldocument[Psmon:]{pseudomonoids}
+\documentclass{robinthesis}
+% \externaldocument[Bicats:]{bicats}
+% \externaldocument[Psmon:]{pseudomonoids}
 
-\title{Monoidal Bicategories}
-\begin{document}
-\maketitle
-
+\begin{thesischapter}{MonBicats}{Monoidal Bicategories}
 \begin{definition}\label{def-monbicat}
 	A monoidal bicategory $\B$ is a bicategory equipped with
 	a unit object $\I\in\B$, a pseudo-functor
@@ -64,7 +60,7 @@
 such that for all $A$, $B$, $C$, $D$ and $E$ in $\B$, the condition
 shown in Fig.~\ref{fig-4coc} holds,
 \begin{sidewaysfigure}
-\begin{diagram}
+\ \hskip4cm\scalebox{0.75}{\begin{diagram}
 	  &&
 	  (A\tn B)\tensor \bigl(C\tensor (D\tensor E)\bigr)
 	  &\rTo[rightshortfall=4.5em]^{a}&\spboth{((A\tn B)\tensor C)\tensor (D\tensor E)}
@@ -94,9 +90,9 @@ shown in Fig.~\ref{fig-4coc} holds,
 	  & \rTo[rightshortfall=4.5em]_{A\tn a} & \spboth{A\tn((B\tn(C\tn D))\tn E)}
 	  & \rTo[leftshortfall=4.5em]_a & (A\tn(B\tn(C\tn D)))\tn E
 	   \ruTo[snake=1.5em](1,1)_{(A\tn a)\tn E}
-\end{diagram}
-must be equal to
-\begin{diagram}
+\end{diagram}}
+\\ must be equal to\\
+\ \hskip4cm\scalebox{0.75}{\begin{diagram}
 	&(A\tn B)\tn(C\tn(D\tn E))
 	& \rTo^a & ((A\tn B)\tn C)\tn(D\tn E)
 	& \rTo^{a} & (((A\tn B)\tn C)\tn D)\tn E
@@ -122,7 +118,7 @@ must be equal to
 	\\
 	& A\tn(B\tn((C\tn D)\tn E)) & \rTo_{A\tn a} & A\tn((B\tn(C\tn D)\tn E)
 	& \rTo_a & (A\tn(B\tn(C\tn D)))\tn E
-\end{diagram}
+\end{diagram}}
 \caption{The associativity axiom used in the definition of monoidal bicategory (sometimes
 	called the \textit{non-abelian 4-cocycle condition}).
 }\label{fig-4coc}
@@ -163,7 +159,7 @@ is equal to
 	&&A\tn((\I\tn B)\tn C) & \rTo_{a_{A,\I\tn B,C}} & (A\tn(\I\tn B))\tn C
 \end{diagram}
 and
-\begin{diagram}
+\scalebox{0.75}{\begin{diagram}
 	A\tn(B\tn C) & \rTo^{a_{A,B,C}} & (A\tn B)\tn C
 	\\
 	\uTo<{A\tn (B\tn l_C)}>{\hskip3em\Searrow a_{A,B,l_C}}
@@ -182,9 +178,9 @@ and
 	& \spleft{A\tn\big((B\tn \I)\tn C\big)}
 	& \rTo_{a_{A,B\tn \I,C}}
 	& \spright{\bigl(A\tn(B\tn \I)\bigr)\tn C}
-\end{diagram}
+\end{diagram}}
 is equal to
-\begin{diagram}
+\scalebox{0.75}{\begin{diagram}
 	&&A\tn(B\tn C) & \rTo^{a_{A,B,C}} & (A\tn B)\tn C
 	\\
 	&\ruTo^{A\tn (B\tn l_C)} &&&& \luTo^{r_{A\tn B}\tn C}
@@ -198,7 +194,7 @@ is equal to
 	&&&& \ruTo_{a_{A,B,\I}\tn C}
 	\\
 	&&A\tn((B\tn \I)\tn C) & \rTo_{a_{A,B\tn \I,C}} & (A\tn(B\tn \I))\tn C
-\end{diagram}
+\end{diagram}}
 \end{definition}
 This is not \emph{quite} the most general possible definition, since we have
 merely specified an object $\I$ rather than a pseudo-functor $1\to\B$. But since
@@ -222,10 +218,12 @@ for example, given 1-cells $f:A\to B$ and $g: C\to D$, the diagram
 	C\tn B & \rTo_{C\tn g} & C\tn D
 \end{diagram}
 indicates the 2-cell
-\begin{mspill}
+\[
 	(f\tn D)\o(A\tn g) \rTo^{\tn_{(f,1),(1,g)}} (f\o 1)\tn(1\o g) \rTo^{\r_f\tn\l_g}f.g
+\hskip8em\]
+\[\hskip8em
 		\rTo^{\l_f^{-1}\tn\r_g^{-1}} (1.f)\tn(g.1) \rTo^{\tn_{(1,f),(g,1)}^{-1}} (C\tn g)\o(f\tn B).  
-\end{mspill}
+\]
 
 \begin{remark}\label{rem-defining-L} % defining L in terms of the other data
 	Notice that the first unit equation -- since all its cells are invertible -- allows
@@ -281,7 +279,7 @@ indicates the 2-cell
 	\item satisfying the equation shown in Figs.~\ref{fig-monpsf-1}
 		and~\ref{fig-monpsf-2}, and
 	\begin{sidewaysfigure}
-		\begin{diagram}
+		\scalebox{0.75}{\begin{diagram}
 			%&&
 			FA\tn(FB\tn(FC\tn FD))
 			& \rTo^{FA\tn(FB\tn F^\tn_{C,D})} & FA\tn(FB\tn F(C\tn D))
@@ -341,12 +339,13 @@ indicates the 2-cell
 			& \rTo_{F^\tn_{(A\tn B)\tn C, D}} & \rnode{b}{F(((A\tn B)\tn C)\tn D)}
 			\nccurve[angleA=0,angleB=90]{->}tr\Aput{F(a_{A,B,C\tn D})}
 			\nccurve[angleA=270,angleB=0]{->}rb\Aput{F(a_{A,B,C\tn D})}
-		\end{diagram}
+		\end{diagram}}
 		\caption{Left-hand side of an equation used in the definition of monoidal pseudo-functor:
 		for all $A$, $B$, $C$, $D\in\B$, this pasting must be equal to the one shown
 		in Fig.~\ref{fig-monpsf-2}.}\label{fig-monpsf-1}
 	\end{sidewaysfigure}
 	\begin{sidewaysfigure}
+		\scalebox{0.75}{%
 		\begin{diagram}
 			&&
 			\rnode{1}{FA\tn(FB\tn(FC\tn FD))}
@@ -397,12 +396,12 @@ indicates the 2-cell
 			& \rTo_{F^\tn_{(A\tn B)\tn C, D}} & \rnode{b}{F(((A\tn B)\tn C)\tn D)}
 			\nccurve[angleA=180,angleB=90]{->}12\Aput{FA\tn a_{FB,FC,FD}}
 			\nccurve[angleA=270,angleB=180]{->}34\Aput{a_{FA,FB,FC}\tn FD}
-		\end{diagram}
+		\end{diagram}}
 		\caption{Right-hand side of the equation: this pasting must be equal to the one
 		shown in Fig.~\ref{fig-monpsf-1}}\label{fig-monpsf-2}
 	\end{sidewaysfigure}
 	also such that for all $A$, $B\in\B$ the pasting
-	\begin{diagram}
+	\[\scalebox{0.75}{\begin{diagram}
 		&&
 		\rnode{1}{FA\tn(\I\tn FB)}
 		& \rTo^{a_{FA,\I,FB}} & (FA\tn \I)\tn FB
@@ -436,9 +435,9 @@ indicates the 2-cell
 		\rnode{2}{FA\tn FB}
 		& \rTo_{F^\tn_{A,B}} & F(A\tn B)
 		\nccurve[angle=180,ncurv=1]{->}12\Bput{FA\tn l_{FB}}
-	\end{diagram}
+	\end{diagram}}\]
 	is equal to
-	\begin{diagram}
+	\[\scalebox{0.75}{\begin{diagram}
 		FA\tn(\I\tn FB)
 		& \rTo^{a_{FA,\I,FB}} & (FA\tn \I)\tn FB
 		& \rTo^{(FA\tn F^\tn_\I)\tn FB} & (FA\tn F\I)\tn FB
@@ -460,13 +459,36 @@ indicates the 2-cell
 		& F(A\tn B)
 		&& \lTo_{F(r_A\tn B)}
 		& F((A\tn \I)\tn B) 
-	\end{diagram}
+	\end{diagram}}\]
 \end{definition}
 \begin{definition}
 	A \emph{strong} monoidal pseudofunctor is a monoidal pseudofunctor $F$
 	for which the 1-cell $F^{\tn}_{\I}$ is an equivalence, and the pseudo-natural
 	transformation $F^{\tn}$ is a pseudo-natural equivalence.
 \end{definition}
+\begin{remark}
+	One might try to define a \emph{strict} map of monoidal bicategories
+	to be a monoidal strict functor $F$ such that $F^{\tn}_{I}$ and
+	$F_{\tn}$ are identities. However it's easy to see that, with this
+	definition, the composite of two strict maps is not necessarily strict
+	(because the composite of two identities is not necessarily an identity).
+	On the other hand, there certainly \emph{is} a category whose objects
+	are monoidal bicategories and whose arrows preserve all the structure
+	on the nose. Moreover, these strict maps are in one-one correspondence
+	with monoidal strict functors defined as above; but their composition
+	is subtly different.
+	
+	The moral of the story is that we cannot, in general, expect to be
+	able to define strict maps merely as special pseudo-maps. That
+	this is possible for bicategories is merely a low-dimensional
+	quirk.
+	
+	In a similar way, composition of monoidal pseudofunctors is not
+	associative on the nose; again, the existence of a category (as
+	opposed to a bi- or tricategory) of bicategories and pseudofunctors
+	is a low-dimensional phenomenon that cannot be expected to persist
+	at higher dimensions.
+\end{remark}
 \begin{definition} % monoidal pseudo-natural transformation
 	A \emph{monoidal pseudo-natural transformation} $\gamma: F\To G: \B\to\BC$
 	between monoidal pseudo-functors $F$ and $G$ is a pseudo-natural transformation
@@ -484,7 +506,7 @@ indicates the 2-cell
 		GA\tn GB & \rTo_{G^\tn_{A,B}} & G(A\tn B) 
 	\end{diagram}
 	such that for all $A$, $B$, $C\in\B$, the pasting
-	\begin{diagram}
+	\[\scalebox{0.75}{\begin{diagram}
 		&
 		FA \tn(FB\tn FC)
 		& \rTo^{FA\tn F^\tn_{B,C}} & FA\tn F(B\tn C)
@@ -525,9 +547,9 @@ indicates the 2-cell
 			\Bput{\gamma_A\tn(\gamma_B\tn\gamma_C)}
 		\nccurve[angleA=-45,angleB=45,ncurv=.9]{->}{FABFC}{GABGC}
 			\aput(.4){\gamma_{A\tn B}\tn\gamma_C}
-	\end{diagram}
+	\end{diagram}}\]
 	is equal to
-	\begin{diagram}
+	\[\scalebox{0.75}{\begin{diagram}
 		&&
 		\rnode{1}{FA\tn(FB\tn FC)}
 		& \rTo^{FA\tn F^\tn_{B,C}} & \rnode{4}{FA\tn F(B\tn C)}
@@ -574,7 +596,7 @@ indicates the 2-cell
 			\aput(.7){a_{FA,FB,FC}}
 		\nccurve[angleA=-45,angleB=45,ncurv=.9]{->}45
 			\aput(.4){\gamma_A\tn\gamma_{B\tn C}}
-	\end{diagram}
+	\end{diagram}}\]
 	and for all $A\in\B$, the pasting
 	\begin{diagram}
 		&& \rnode{1}{FA\tn \I}
@@ -732,7 +754,7 @@ indicates the 2-cell
 
 \section{On coherence}\label{s-coherence}
 This section aims to give a concise overview of the available coherence
-results for monoidal bicategories. In a later chapter (XXXX), we shall
+results for monoidal bicategories. In a later chapter (\refchapter{Coh}), we shall
 prove some further coherence results, which are then used to develop
 a framework that allows us to reason about pseudomonoids without becoming
 bogged down in coherence conditions. First, we survey
@@ -822,7 +844,7 @@ $\Gr F: \Gr(\B)\to\Gr(\BC)$ such that the diagrams
 	\end{diagram}
 \]
 commute up to monoidal equivalence. We make essential use of this
-construction in Chapter~XXXX.
+construction in Chapter~\refchapter{Language}.
 
 \section{Braided monoidal bicategories}\label{s-braiding}
 The history of attempts to define the concept of braided monoidal bicategory highlights
@@ -860,7 +882,7 @@ Thus the definition below is conceivably the first that
 includes all the structure known to be necessary at its natural level
 of strictness, though we do not claim that any new insight was needed
 to formulate it. (It is not unimaginable that further axioms should yet
-be found wanting, though the results of Chapter~XXXX provide strong
+be found wanting, though the results of Chapter~\refchapter{Coh} provide strong
 evidence that these axioms do suffice.)
 %
 \begin{definition}\label{def-braiding}
@@ -924,8 +946,13 @@ evidence that these axioms do suffice.)
 	also verify that, given two Gray monoids $\B$ and $\BC$ and a monoidal
 	biequivalence as above, the braiding data for $\B$ satisfy the axioms
 	if and only if the transported data satisfy the axioms in $\BC$. I confess
-	I have not explicitly done this, though it seems unimaginable that
-	it could be false.
+	I have not explicitly done this, though it seems unlikely to be
+	false.
+	
+	In a more pragmatic (if less precise) vein, one could regard these axioms as being mere
+	abbreviations of the general versions. In practice it is clear how to write down
+	the equivalent axioms for a general monoidal bicategory, by inserting structural 2-cells
+	where necessary.
 	
 	The axioms follow. There are four axioms
 	that relate the $S$ modifications to each other:
@@ -1047,9 +1074,15 @@ evidence that these axioms do suffice.)
 		\end{diagram}
 	\end{array}\]
 \end{definition}
+% \begin{definition}\label{def-positive-braiding}
+% 	A \emph{positive braiding} is defined the same way as a braiding, except that the
+% 	pseudo-natural transformation $s$ is not assumed to be an equivalence.
+% \end{definition}
 \begin{definition}
 	A \emph{braided monoidal bicategory} is a monoidal bicategory
 	equipped with a braiding.
+	% A \emph{positively braided monoidal bicategory}
+	% is a monoidal bicategory equipped with a positive braiding.
 \end{definition}
 
 \subsection{The duality of the definition}
@@ -1109,7 +1142,7 @@ axioms involving $S_{A,\I|B}$ and $S_{A|\I,B}$.
 One could write down several other natural conditions on the unit
 cells. These turn out to be derivable from the two conditions we
 have. In particular:
-\begin{propn}\label{prop-braiding-unit}
+\begin{propn}\label{prop-braiding-unit-1}
 	In any braided Gray monoid, the 2-cells
 	\[
 		\begin{diagram}[hug,s=4em]
@@ -1222,8 +1255,53 @@ have. In particular:
 			& \dTo>1 \\
 		& & A\tn D\tn C
 	\end{diagram}
-	is the identity, and setting $A=\I$ yields the claim. XYZ
+	is the identity, and setting $A=\I$ yields the claim.
 \end{proof}
 
-\bibliography{cs}
-\end{document}
+\begin{propn}\label{prop-braiding-unit-2}
+	In any braided Gray monoid, the equations
+		\[
+		\begin{diagram}[hug,s=4em]
+			A\tn B\tn \I & \rTo^{A\tn s_{B,\I}} & A\tn \I\tn B \\
+			\dTo<1 & \rdTo(2,2)^{s_{A\tn B,\I}}
+				\raise 2em\hbox to 0pt{$\Arr\Nearrow{\scriptstyle S_{A,B|\I}}$\hss}
+				\raise-1em\hbox to 0pt{\hss$\mathop\Rightarrow\limits_{U_{A\tn B|\I}}$}
+				& \dTo>{s_{A,\I}\tn B} \\
+			A\tn B & \lTo_{1} & \I\tn A\tn B
+		\end{diagram}
+		\hskip3em=\hskip-1em
+		\begin{diagram}[hug,s=4em]
+			A\tn B\tn \I & \rTo^{A\tn s_{B,\I}} & A\tn \I\tn B \\
+			\dTo<1 & \ldTo(2,2)^{1}
+				\raise-1em\hbox to 0pt{$\Arr\Searrow{\scriptstyle U_{A|\I}\tn B}$\hss}
+				\raise 2em\hbox to 0pt{\hss$\mathop\Rightarrow\limits_{A\tn U_{B|\I}}$}
+				& \dTo>{s_{A,\I}\tn B} \\
+			A\tn B & \lTo_{1} & \I\tn A\tn B
+		\end{diagram}
+	\]
+	\[
+		\begin{diagram}[hug,s=4em]
+			\I\tn A\tn B & \rTo^{s_{\I,A}\tn B} & A\tn \I\tn B \\
+			\dTo<1 & \rdTo(2,2)^{s_{A\tn B,\I}}
+				\raise 2em\hbox to 0pt{$\Arr\Swarrow{\scriptstyle S_{\I|A,B}}$\hss}
+				\raise-1em\hbox to 0pt{\hss$\mathop\Leftarrow\limits_{U_{\I|A\tn B}}$}
+				& \dTo>{A\tn s_{\I,B}} \\
+			A\tn B & \lTo_{1} & A\tn B\tn \I
+		\end{diagram}
+		\hskip3em=\hskip-1em
+		\begin{diagram}[hug,s=4em]
+			\I\tn A\tn B & \rTo^{s_{\I,A}\tn B} & A\tn \I\tn B \\
+			\dTo<1 & \ldTo(2,2)^{1}
+				\raise-1em\hbox to 0pt{$\Arr\Nwarrow{\scriptstyle A\tn U_{\I|B}}$\hss}
+				\raise 2em\hbox to 0pt{\hss$\mathop\Leftarrow\limits_{U_{\I|A}\tn B}$}
+				& \dTo>{A\tn s_{\I,B}} \\
+			A\tn B & \lTo_{1} & A\tn B\tn \I
+		\end{diagram}
+	\]
+	hold.
+\end{propn}
+\begin{proof}[Proof sketch]
+	This is proved in a similar way to the preceding proposition, though the
+	argument is lengthier. Start with the third axiom, setting $C=\I$.
+\end{proof}	
+\end{thesischapter}

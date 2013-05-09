@@ -1,11 +1,8 @@
 %!TEX TS-program = latex
-\documentclass{robinthesisdraft}
-\usepackage{robincs,thesisdefs,xr}
+\documentclass{robinthesis}
 
-\title{Cayley's Theorem for Pseudomonoids}
-\begin{document}
-\maketitle
-
+\begin{thesischapter}{Cayley}{Cayley's Theorem for Pseudomonoids}
+%
 In its traditional form, Cayley's theorem says that every finite group
 is (isomorphic to) a subgroup of one of the symmetric groups. What the
 proof actually shows is that every monoid $M$ is a submonoid of the monoid
@@ -15,7 +12,7 @@ to the function $x\o-$.
 A `Cayley Theorem for monoidal categories' has been used by
 \citet[Proposition~1.3]{BTC} to show that every monoidal category
 is monoidally equivalent to a \emph{strict} monoidal category.
-But it turns out that we need the corresponding theorem for
+It turns out that we need the corresponding theorem for
 promonoidal categories; and rather than just prove another special
 case, it seems wise to generalise. So the purpose of this
 chapter is to state and prove a Cayley Theorem for pseudomonoids.
@@ -52,7 +49,10 @@ with unit $e: I\to M$ and multiplication $m: M\tn M\to M$.
 The Cayley-Yoneda theorems are best stated in terms of modules:
 \begin{definition}\label{def-module}
 	A \emph{right $M$-module} consists of an object $X\in\V$ and a map
-	$x: X\tn M\to X$ such that the diagrams
+	\[
+		x: X\tn M\to X
+	\]
+	such that the diagrams
 	\[
 	\begin{diagram}
 		X\tn M\tn M & \rTo^{x\tn M} & X\tn M \\
@@ -212,8 +212,8 @@ the monoid structure.
 % 
 \subsection{The internal Cayley Theorem}
 The theorem above is external in the sense that it essentially
-concerns $\V(I, M)$, the underlying ordinary monoid of $M$. If
-the monoidal category $\V$ is closed, then we can state an
+concerns the set $\V(I, X)$ rather than the module $X$ itself.
+If the monoidal category $\V$ is closed, then we can state an
 internal version, purely in terms of arrows in $\V$ itself.
 %
 So let $\V$ be biclosed, i.e.\ suppose we are given
@@ -316,7 +316,7 @@ the equaliser diagram.
 	Above we have deduced the internal theorem from the external one.
 	Conversely, the external theorem can be obtained as a corollary of the internal
 	one, under an additional assumption on $\V$. The additional assumption is
-	that the functor $\V(I,-); \V\to\Set$ should preserve equalisers. In
+	that the functor $\V(I,-): \V\to\Set$ should preserve equalisers. In
 	particular, this is always so if $\V$ has small coproducts, because in that
 	case $\V$ is \emph{tensored} \citep[in the sense of][Section~2.7]{KellyEnriched}
 	as a $\Set$-category, and so the functor $\V(I,-)$ has a left adjoint.
@@ -327,8 +327,7 @@ the equaliser diagram.
 \section{Cayley's Theorem for Pseudomonoids}
 Both these theorems, internal and external, admit generalisation to
 the higher-dimensional setting. But since it is sufficient for our
-applications, we shall largely confine ourselves to the external version,
-with just some brief remarks about the internal one.
+applications, we shall confine ourselves to the external version.
 
 \subsection{Modules for pseudomonoids}
 First we must give a suitable definition of $\C$-module, where $\C$ is
@@ -487,15 +486,18 @@ right $\C$-modules.
 	which is easily verified to satisfy the necessary equations.
 \end{definition}
 
-\subsection{The case $\B=\Cat$}
-Since these higher modules are perhaps unfamiliar, we shall
-unpack the definitions in the familiar case $\B=\Cat$.
-Let $\C$ be a monoidal category; then a right $\C$-module
-is a category $\X$ together with a functor
+\subsection{Modules via Components}
+The calculus of components is very useful here. We shall consider
+what the definitions mean in terms of components, which in practice
+is essentially the same thing as considering what they imply in the
+case $\B = \Cat$.
+
+A right $\C$-module consists of an object $\X$ together with a functor
 \[
-	\bullet: \X\times\C\to\X,
+	x: \X\tn\C\to\X;
 \]
-and natural isomorphisms
+we shall write this functor in infix form as $\bullet$. There are also
+invertible 2-cells with components
 \[
 	\alpha^{\bullet}_{X,A,B}: X\bullet(A\tn B) \to (X\bullet A)\bullet B
 \]
@@ -504,7 +506,8 @@ and
 	\rho^{\bullet}_{X}: X\bullet I \to X
 \]
 where we take $X$ to be a (generic) element of $\X$,
-and $A$, $B$ to be elements of $\C$.
+and $A$, $B$ to be elements of $\C$. These are just the
+2-cells that were denoted $\chi^{P}$ and $\chi^{J}$ above.
 %
 The coherence conditions say that the diagrams
 \begin{diagram}
@@ -525,12 +528,11 @@ and
 must commute, for all $X\in\X$ and $A$, $B$, $C\in\C$.
 %
 It is clear that, in particular, $\C$ itself is a right
-$\C$-module, when equipped in the obvious way; a fact which
-is furthermore easily seen to be true in the general setting.
+$\C$-module, when equipped in the obvious way.
 
 Now, if we have two right $\C$-modules $\X$ and $\Y$, a
-map of modules $F: \X\to\Y$ is a functor $F$ equipped with
-a natural isomorphism
+map of modules $F: \X\to\Y$ is a 1-cell $F$ equipped with
+an invertible 2-cell with components
 \[
 	F^{\bullet}_{X,A}: F(X\bullet A)\to FX\bullet A
 \]
@@ -553,42 +555,132 @@ and
 \end{diagram}
 commute.
 
-\subsection{Remarks on the unit conditions}\label{s-unit-remarks}
-The definitions above are conventional in style. However,
-we have the same sort of redundancy that we saw, for pseudofunctors
-and pseudonatural transformations, in Section~\chref{Bicats}{s-identities}.
-This time, the redundancy turns out to be essential to some of our later
-results.
+Finally, given maps of modules $F$ and $G: \X\to\Y$, a module
+2-cell is given by a 2-cell $\gamma: F\to G$ such that the diagram
+of components
+\begin{diagram}
+	F(X\bullet A) & \rTo^{F^{\bullet}_{X,A}} & FX\bullet A \\
+	\dTo<{\gamma_{X\bullet A}} && \dTo>{\gamma_{X}\bullet A} \\
+	G(X\bullet A) & \rTo_{G^{\bullet}_{X,A}} & GX\bullet A
+\end{diagram}
+commutes for all $X\in X$ and $A\in \C$.
 
-For a start, we have:
-\begin{propn}
-	The unit condition of Definition~\ref{def-psmod-map}
-	is redundant.
+\subsection{External Cayley for Pseudomonoids}
+We shall use the component presentation to prove the External Cayley
+theorem.
+\begin{propn}[External Cayley for Pseudomonoids]\label{prop-psmoncayley}
+	For every right $\C$-module $\X$, the functor
+	\[
+		\phi_{\X}: \Mod_{\C}(\C,\X)\to \B(\I,\X)
+	\]
+	defined by $\phi_{\X}(F) = F(I)$ (and in the obvious
+	way on 2-cells) is an equivalence of categories, with equivalence-inverse
+	$\phi'_{\X}: \B(\I,\X) \to \Mod_{\C}(\C,\X)$ defined as
+	\[
+		\phi'_{\X}(X()) = X()\bullet-
+	\]
+	and made into a map of modules
+	by the invertible 2-cell $\alpha^{\bullet}_{X(),-,-}$.
 \end{propn}
 \begin{proof}
-	In the situation $\B=\Cat$, the proof is via the diagram
-	\begin{diagram}
-	F(X\bullet(I\tn A)) && \rTo^{F^{\bullet}_{X,I\tn A}}
-		&& FX\bullet(I\tn A) \\
-	& \rdTo(0,4)<{F(\alpha^{\bullet}_{X,I,A})}
-		\rdTo[snake=1em](1,2)^{F(X\bullet\lambda_{A})}
-		& & \ldTo[snake=-1em](1,2)^{FX\bullet\lambda_{A}}
-		\ruTo(0,4)<{\alpha^{\bullet}_{FX,I,A}} \\
-		& F(X\bullet A) & \rTo^{F^{\bullet}_{X,A}} & FX\bullet A \\
-	 \ruTo[snake=.5em](1,2)_{F(\rho^{\bullet}_{X}\bullet A)}
-		&& \ruTo[snake=-.5em](1,2)<{F(\rho^{\bullet}_{X})\bullet A}
-		&& \luTo(1,2)<{\rho^{\bullet}_{FX}\bullet A} \\
-	F((X\bullet I)\bullet A) & \rTo_{F^{\bullet}_{X\bullet I,A}}
-		& F(X\bullet I)\bullet A & \rTo_{F^{\bullet}_{X,I}\bullet A}
-		& (FX\bullet I)\bullet A
-	\end{diagram}
-	We observe that, since the outside commutes and all the
-	other cells commute, and since the arrows are all invertible,
-	the lower triangle must also commute. Then let $A=I$ and use
-	the fact that the functor $-\bullet I$ is full and faithful.
+	Let $F: \C\to\X$ be a map of $\C$-modules; then
+	$\phi'_{\X}(\phi_{\X}(F)) = F(I)\bullet-$
+	which, by the natural isomorphism $F^{\bullet}_{I,-}$, is
+	naturally isomorphic to $F(I\tn-)$ which, by the right-unit
+	isomorphism of $\C$, is naturally isomorphic to $F$.
 	
-	The same proof works in the general setting: 
+	Let $X()$ (in component notation) be a 1-cell $\I\to\X$.
+	Then
+	\[
+		\phi_{\X}(\phi'_{\X}(X())) = X()\bullet I,
+	\]
+	which is
+	naturally isomorphic to $X()$ by the natural isomorphism
+	$\rho^{\bullet}_{X}$.
 \end{proof}
 
-\bibliography{cs}
-\end{document}
+\begin{propn}
+	The functor $\phi_{\C}: \Mod_{\C}(\C,\C)\to \B(\I,\C)$
+	can be equipped with the structure of a strong monoidal
+	functor, with respect to the natural monoidal structures
+	on the categories $\Mod_{\C}(\C,\C)$ and $\B(\I,\C)$.
+\end{propn}
+\begin{proof}
+	The unit for the monoidal structure of $\Mod_{\C}(\C,\C)$ is
+	of course the identity map, and $\phi_{\C}(1) = 1(I) \cong I$.
+	For the `tensor' part of the monoidal structure of $\phi_{\C}$,
+	we take the composite
+	\[
+		G(F(I)) \rTo_{\cong}^{G(\lambda_{FI}^{-1})} G(I\tn FI)
+			\rTo_{\cong}^{G^{\bullet}_{I,FI}} GI\tn FI.
+	\]
+	The unit condition holds by the triangle in the definition of map
+	of modules, so it remains to show the associativity condition.
+	Let $F$, $G$, and $H$ be module maps $\C\to\C$, and consider
+	the diagram
+	\begin{diagram}
+		HGFI & \rTo^{H\lambda_{GFI}} & H(I\tn GFI)
+			& \rTo^{H^{\bullet}_{I,GFI}} & HI\tn GFI \\
+		\dTo<{HG\lambda_{FI}} && \dTo>{H(I\tn G\lambda_{FI})}
+			&& \dTo>{HI\tn G\lambda_{FI}} \\
+		HG(I\tn FI) & \rTo_{H\lambda_{G(I\tn FI)}} & H(I\tn G(I\tn FI))
+			& \rTo_{H^{\bullet}_{I,G(I\tn FI)}} & HI\tn G(I\tn FI) \\
+		\dTo<{H(G^{\bullet}_{I,FI})} && \dTo>{H(I\tn G^{\bullet}_{I,FI})}
+			&& \dTo>{HI\tn G^{\bullet}_{I,FI}} \\
+		H(GI\tn FI) & \rTo^{H\lambda_{GI\tn FI}} & H(I\tn(GI\tn FI))
+			& \rTo_{H^{\bullet}_{I,GI\tn FI}} & HI\tn(GI\tn FI) \\
+		\dTo<{H^{\bullet}_{GI,FI}} & \rdTo_{H(\lambda_{GI}\tn FI)}
+			& \dTo>{H(\alpha_{I,GI,FI})} \\
+		HGI\tn FI && H((I\tn GI)\tn FI) && \dTo>{\alpha_{HI,GI,FI}} \\
+		& \rdTo_{H(\lambda_{GI})\tn FI} & \dTo>{H^{\bullet}_{I\tn GI,FI}} \\
+		&& H(I\tn GI)\tn FI & \rTo_{H^{\bullet}_{I,GI}\tn FI} & (HI\tn GI)\tn FI
+	\end{diagram}
+	where the quadrilaterals commute by naturality, the triangle by
+	definition of pseudomonoid, and the pentagonal region by the definition
+	of morphism of modules.
+\end{proof}
+
+So we have shown that, for any pseudomonoid $\C\in\B$, the monoidal
+category $\B(\I,\C)$ is monoidally equivalent to $\Mod_{\C}(\C,\C)$.
+In the case $\B=\Cat$, this shows that every monoidal category is
+monoidally equivalent to a \emph{strict} monoidal category. However
+we are more interested in the case $\B=\Prof$, and some of the
+implications in this case are explored in the next chapter.
+
+% \subsection{Remarks on the unit conditions}\label{s-unit-remarks}
+% The definitions above are conventional in style. However,
+% we have the same sort of redundancy that we saw, for pseudofunctors
+% and pseudonatural transformations, in Section~\chref{Bicats}{s-identities}.
+% This time, the redundancy turns out to be essential to some of our later
+% results.
+% 
+% For a start, we have:
+% \begin{propn}
+% 	The unit condition of Definition~\ref{def-psmod-map}
+% 	is redundant.
+% \end{propn}
+% \begin{proof}
+% 	In the situation $\B=\Cat$, the proof is via the diagram
+% 	\begin{diagram}
+% 	F(X\bullet(I\tn A)) && \rTo^{F^{\bullet}_{X,I\tn A}}
+% 		&& FX\bullet(I\tn A) \\
+% 	& \rdTo(0,4)<{F(\alpha^{\bullet}_{X,I,A})}
+% 		\rdTo[snake=1em](1,2)^{F(X\bullet\lambda_{A})}
+% 		& & \ldTo[snake=-1em](1,2)^{FX\bullet\lambda_{A}}
+% 		\ruTo(0,4)<{\alpha^{\bullet}_{FX,I,A}} \\
+% 		& F(X\bullet A) & \rTo^{F^{\bullet}_{X,A}} & FX\bullet A \\
+% 	 \ruTo[snake=.5em](1,2)_{F(\rho^{\bullet}_{X}\bullet A)}
+% 		&& \ruTo[snake=-.5em](1,2)<{F(\rho^{\bullet}_{X})\bullet A}
+% 		&& \luTo(1,2)<{\rho^{\bullet}_{FX}\bullet A} \\
+% 	F((X\bullet I)\bullet A) & \rTo_{F^{\bullet}_{X\bullet I,A}}
+% 		& F(X\bullet I)\bullet A & \rTo_{F^{\bullet}_{X,I}\bullet A}
+% 		& (FX\bullet I)\bullet A
+% 	\end{diagram}
+% 	We observe that, since the outside commutes and all the
+% 	other cells commute, and since the arrows are all invertible,
+% 	the lower triangle must also commute. Then let $A=I$ and use
+% 	the fact that the functor $-\bullet I$ is full and faithful.
+% 	
+% 	The same proof works in the general setting: 
+% \end{proof}
+\end{thesischapter}

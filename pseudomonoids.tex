@@ -1,13 +1,8 @@
 %!TEX TS-program = latex
-\documentclass{robinthesisdraft}
-\usepackage{robincs,thesisdefs,xr}
-\externaldocument[Bicats:]{bicats}
-\externaldocument[MonBicats:]{mon-bicats}
+\documentclass{robinthesis}
 
-\title{Pseudomonoids}
-\begin{document}
-\maketitle
-
+\begin{thesischapter}{Psmon}{Pseudomonoids}
+\renewcommand\ss{\mathfrak{s}}
 A monoid, in a monoidal category, consists of an object $A$ equipped
 with a unit $u: I\to A$ and a multiplication $m: A\tn A\to A$, satisfying
 the obvious unit and associativity axioms. In a monoidal \emph{bicategory},
@@ -18,10 +13,12 @@ pseudomonoids in the monoidal bicategory $\Cat$; though for present
 purposes we are particularly interested in promonoidal categories,
 which are pseudomonoids in $\Prof$.
 
-Though the notion of pseudomonoid is fairly well known (at least in
-certain circles) no published account goes
-much further than stating the definition \citep{MonBicat}.
-So without further ado, here is the definition.
+Little has been published about pseudomonoids per se, though the
+definition is given by \citet{MonBicat}. However, the
+equivalent notion of \emph{pseudomonad} (in a tricategory or Gray-category)
+has received more attention:
+from \citet{MarmolejoPseudomonads, MarmolejoDistributive, MarmolejoDistributiveII, LackPseudomonads, TanakaThesis},
+among others.
 
 \begin{definition} % definition of pseudomonoid
 	A pseudomonoid $\C$ in a monoidal bicategory $\B$ is a normal
@@ -31,7 +28,7 @@ So without further ado, here is the definition.
 		J: \I\to\C,\\
 		P:\C\tn\C\to\C,
 	\end{array}\]
-	and 2-cells
+	and invertible 2-cells
 	\[\begin{array}{c@{\qquad}c}
 		\multicolumn2c{\begin{diagram}
 			\C\tn(\C\tn\C) && \rTo^{a_{\C,\C,\C}} && (\C\tn\C)\tn\C
@@ -101,37 +98,39 @@ So without further ado, here is the definition.
 			&&\C^2
 		\end{diagram}
 	\end{equation}
-	Note that equation (\ref{eq-lra}) is equivalent to
-	\[
-	\begin{diagram}
-		\C\tn\I\tn\C\\
-		\dTo<1 &\hbox to0pt{\hss$\C\tn\ll$}\rdTo(2,1)^{\C\tn J\tn\C} & \C\tn\C\tn\C\\
-		\C\tn\C & \ldTo(2,1)_{\C\tn P}\\
-		\dTo<P\\
-		\C
-	\end{diagram}
-	\qquad=\qquad
-	\begin{diagram}
-		\C\tn\I\tn\C\\
-		\dTo<1 &\hbox to0pt{\hss$\rr\tn\C$}\rdTo(2,1)^{\C\tn J\tn\C} & \C\tn\C\tn\C\\
-		\C\tn\C & \ldTo(2,1)_{P\tn\C} &\dTo>{\C\tn P}\\
-		\dTo<P & \raise1.5em\hbox{$\aa$}& \C\tn\C\\
-		\C&\ldTo(2,1)_P
-	\end{diagram}
-	\]
-	by composing with the inverse of $\aa$. We shall often use it in this form, without
-	further remark. Similar variations of other equations may also be used without
-	drawing attention to the fact.
+	% Note that equation (\ref{eq-lra}) is equivalent to
+	% \[
+	% \begin{diagram}
+	% 	\C\tn\I\tn\C\\
+	% 	\dTo<1 &\hbox to0pt{\hss$\C\tn\ll$}\rdTo(2,1)^{\C\tn J\tn\C} & \C\tn\C\tn\C\\
+	% 	\C\tn\C & \ldTo(2,1)_{\C\tn P}\\
+	% 	\dTo<P\\
+	% 	\C
+	% \end{diagram}
+	% \qquad=\qquad
+	% \begin{diagram}
+	% 	\C\tn\I\tn\C\\
+	% 	\dTo<1 &\hbox to0pt{\hss$\rr\tn\C$}\rdTo(2,1)^{\C\tn J\tn\C} & \C\tn\C\tn\C\\
+	% 	\C\tn\C & \ldTo(2,1)_{P\tn\C} &\dTo>{\C\tn P}\\
+	% 	\dTo<P & \raise1.5em\hbox{$\aa$}& \C\tn\C\\
+	% 	\C&\ldTo(2,1)_P
+	% \end{diagram}
+	% \]
+	% by composing with the inverse of $\aa$. We shall often use it in this form, without
+	% further remark. Similar variations of other equations may also be used without
+	% drawing attention to the fact.
 \end{definition}
 %
-The first of these equations corresponds to Mac Lane's pentagon
-axiom, and the second corresponds to the triangle axiom relating
-$\alpha$, $\lambda$ and $\rho$.
+The first of these equations corresponds to the triangle axiom relating
+$\alpha$, $\lambda$ and $\rho$, and the second to Mac Lane's pentagon
+axiom.
 
 \section{Some facts about pseudomonoids}
-This section is essentially a translation of \cite{KellyML} into the language
-of general pseudomonoids. In particular, we shall show that the following
-three equations hold for any pseudomonoid $\C$.
+If we express the results of \cite{KellyML} in the language
+of general pseudomonoids, we obtain the three equations below.
+In the following sections, we shall prove that they hold in
+general, by showing how Kelly's argument can be applied,
+via the calculus of components, to any pseudomonoid $\C$.
 \begin{equation}\label{eq-lla}
 \begin{diagram}
 	\I\tn\C^2 & \rTo^{J\tn\C^2} &\C^3& \rTo^{\C\tn P} & \C^2\\
@@ -186,340 +185,619 @@ three equations hold for any pseudomonoid $\C$.
 \citet[section~3.4]{LackThesis} describes an interesting geometrical way to
 prove these equations, using certain four-dimensional diagrams.\footnote{
 	Lack is working in the slightly more general
-	context of enriched bicategories: a pseudomonoid is an enriched bicategory
-	with one object.}
-Here we give a more down-to-earth version of the argument, where we confine
-our diagrams to the two dimensions of the page. The reader is thereby spared
-the trouble of attempting to visualise a four-dimensional hypercube, at the
-expense of having to follow sometimes lengthy sequences of equations between
-two-dimensional diagrams.
+	context of enriched bicategories: a pseudomonoid is an enriched
+	bicategory with one object.}
+\citet[][Proposition~8.1]{MarmolejoPseudomonads} gives a more down-to-earth version of the argument, using pasting diagrams. Instead we will show how they follow from Kelly's proof for ordinary monoidal categories, by the calculus of components.
 
-The following lemma will be very useful. It corresponds to the fact that, in a monoidal category,
-the functors $I\tn-$ and $-\tn I$ are faithful.
-\begin{lemma}\label{lemma-faithful}
-	Let $A$ be some object of $\B$, let $f$, $g: A\to\C$
-	and let $\gamma$, $\delta: f\To g$. If
-	\[\hbox{\vrule height 3em depth 2em width 0pt}
-	\begin{diagram}
-		\rnode{CA}{\C\tn A} & \Downarrow{\scriptstyle\C\tn\gamma} & \rnode{CC}{\C\tn\C} &\rTo^P &\C
-		\ncarc{->}{CA}{CC}\Aput{\C\tn f}
-		\ncarc{<-}{CC}{CA}\Aput{\C\tn g}
-	\end{diagram}
-	\quad=\quad
-	\begin{diagram}
-		\rnode{CA}{\C\tn A} & \Downarrow{\scriptstyle\C\tn\delta} & \rnode{CC}{\C\tn\C} &\rTo^P &\C
-		\ncarc{->}{CA}{CC}\Aput{\C\tn f}
-		\ncarc{<-}{CC}{CA}\Aput{\C\tn g}
-	\end{diagram}
-	\]
-	then $\gamma = \delta$.
-	%
-	Dually, if
-	\[\hbox{\vrule height 3em depth 2em width 0pt}
-	\begin{diagram}
-		\rnode{AC}{A\tn\C} & \Downarrow{\scriptstyle\gamma\tn\C} & \rnode{CC}{\C\tn\C} &\rTo^P &\C
-		\ncarc{->}{AC}{CC}\Aput{f\tn\C}
-		\ncarc{<-}{CC}{AC}\Aput{g\tn\C}
-	\end{diagram}
-	\quad=\quad
-	\begin{diagram}
-		\rnode{AC}{A\tn\C} & \Downarrow{\scriptstyle\delta\tn\C} & \rnode{CC}{\C\tn\C} &\rTo^P &\C
-		\ncarc{->}{AC}{CC}\Aput{f\tn\C}
-		\ncarc{<-}{CC}{AC}\Aput{g\tn\C}
-	\end{diagram}
-	\]
-	then $\gamma=\delta$.
-\end{lemma}
-\begin{proof}
-	For the first part, suppose
-	\[\hbox{\vrule height 3em depth 2em width 0pt}
-	\begin{diagram}
-		\rnode{CA}{\C\tn A} & \Downarrow{\scriptstyle\C\tn\gamma} & \rnode{CC}{\C\tn\C} &\rTo^P &\C
-		\ncarc{->}{CA}{CC}\Aput{\C\tn f}
-		\ncarc{<-}{CC}{CA}\Aput{\C\tn g}
-	\end{diagram}
-	\quad=\quad
-	\begin{diagram}
-		\rnode{CA}{\C\tn A} & \Downarrow{\scriptstyle\C\tn\delta} & \rnode{CC}{\C\tn\C} &\rTo^P &\C.
-		\ncarc{->}{CA}{CC}\Aput{\C\tn f}
-		\ncarc{<-}{CC}{CA}\Aput{\C\tn g}
-	\end{diagram}
-	\]
-	Then
-	\[\begin{array}{rcl}
-		\gamma &=&
-			\begin{diagram}
-			&&\rnode{top}{\I\tn\C}\\
-			&&\sim\\
-			\rnode{IA}{\I\tn A} & \rTo^{J\tn A} & \rnode{CA}{\C\tn A}
-				& \Downarrow{\scriptstyle\C\tn\gamma} & \rnode{CC}{\C\tn\C}
-				\raise2em\hbox to0pt{\hskip.5em$\ll$\hss}
-				\raise-2em\hbox to0pt{\hskip.5em$\ll$\hss}
-				&\rTo^P & \rnode{C}{\C}\\
-			&&\sim\\
-			&&\rnode{bot}{\I\tn\C}
-			\ncarc{->}{CA}{CC}\Aput{\C\tn f}
-			\ncarc{<-}{CC}{CA}\Aput{\C\tn g}
-			\ncarc{->}{IA}{top}\Aput{\I\tn f}
-			\ncarc{->}{top}{CC}\aput{-53}(0.6){J\tn\C}
-			\ncarc{->}{top}{C}\Aput{1}
-			\ncarc{<-}{C}{bot}\Aput{1}
-			\ncarc{<-}{CC}{bot}\aput{53}(0.4){J\tn\C}
-			\ncarc{<-}{bot}{IA}\Aput{\I\tn g}
-			\end{diagram}
-		\\[7em]
-		&=&
-			\begin{diagram}
-			&&\rnode{top}{\I\tn\C}\\
-			&&\sim\\
-			\rnode{IA}{\I\tn A} & \rTo^{J\tn A} & \rnode{CA}{\C\tn A}
-				& \Downarrow{\scriptstyle\C\tn\delta} & \rnode{CC}{\C\tn\C}
-				\raise2em\hbox to0pt{\hskip.5em$\ll$\hss}
-				\raise-2em\hbox to0pt{\hskip.5em$\ll$\hss}
-				&\rTo^P & \rnode{C}{\C}\\
-			&&\sim\\
-			&&\rnode{bot}{\I\tn\C}
-			\ncarc{->}{CA}{CC}\Aput{\C\tn f}
-			\ncarc{<-}{CC}{CA}\Aput{\C\tn g}
-			\ncarc{->}{IA}{top}\Aput{\I\tn f}
-			\ncarc{->}{top}{CC}\aput{-53}(0.6){J\tn\C}
-			\ncarc{->}{top}{C}\Aput{1}
-			\ncarc{<-}{C}{bot}\Aput{1}
-			\ncarc{<-}{CC}{bot}\aput{53}(0.4){J\tn\C}
-			\ncarc{<-}{bot}{IA}\Aput{\I\tn g}
-			\end{diagram}
-		\\
-		&=&\delta.
-	\end{array}\]
-	The second part is proved similarly.
-\end{proof}
-%
-\begin{propn} % Equations (\ref{eq-lla}) and (\ref{eq-rra}) hold
-	Equations (\ref{eq-lla}) and (\ref{eq-rra}) hold, for any pseudomonoid $\C$.
-\end{propn}
-\begin{proof}
-	Consider the 2-cell
-	\begin{diagram}
-	\C\tn\I\tn\C^2 & \rTo^{\C\tn J\tn\C^2} &\C^4& \rTo^{\C^2\tn P} & \C^3\\
-	&\rdTo(2,2)<1\raise1em\hbox to0pt{$\C\tn\ll\tn\C$\hss}
-		& \dTo[snake=.8em]>{\C\tn P\tn\C} &\C\tn\aa&\dTo>{\C\tn P}\\
-	&&\C^3 &\rTo_{\C\tn P} &\C^2\\
-	&&\dTo<{P\tn\C} & \aa & \dTo>P\\
-	&&\C^2 & \rTo_P & \C
-	\end{diagram}
-	%
-	By equation (\ref{eq-lra}), this is equal to
-	\begin{diagram}
-	\C\tn\I\tn\C^2 & \rTo^{\C\tn J\tn\C^2} &\C^4& \rTo^{\C^2\tn P} & \C^3\\
-	\dTo<1&\raise1em\hbox to0pt{\hss$\rr\tn\C^2$}\ldTo[hug]_{P\tn\C^2}
-		& \dTo[snake=.8em]>{\C\tn P\tn\C} &\C\tn\aa&\dTo>{\C\tn P}\\
-	\C^3&\aa\tn\C&\C^3 &\rTo_{\C\tn P} &\C^2\\
-	&\rdTo_{P\tn\C}&\dTo<{P\tn\C} & \aa & \dTo>P\\
-	&&\C^2 & \rTo_P & \C
-	\end{diagram}
-	%
-	which, by (\ref{eq-aa}), is equal to
-	\begin{diagram}[tight,w=3.5em]
-	\C\tn\I\tn\C^2 & \rTo^{\C\tn J\tn\C^2} &\C^4& \rTo^{\C^2\tn P} & \C^3\\
-	\dTo<1 &\ldTo(2,2)_{P\tn\C^2}\raise1em\hbox to0pt{\hss$\rr\tn\C^2$}&\sim
-		&\ldTo^{P\tn\C} &\dTo>{\C\tn P}\\
-	\C^3 &\rTo_{\C\tn P} & \C^2 &\aa &\C^2\\
-	&\rdTo_{P\tn\C} &\aa&\rdTo_P&\dTo>P\\
-	&&\C^2 & \rTo_P & \C
-	\end{diagram}
-	%
-	Pasting on a structural 2-cell and its inverse gives
-	\begin{diagram}[tight,w=4em]
-	&&\C^4\\
-	&\ruTo^{\C\tn J\tn\C^2} &\sim&\rdTo^{\C^2\tn P}\\
-	\C\tn\I\tn\C^2&\rTo^{\C\tn\I\tn P} &\C\tn\I\tn\C &\rTo_{\C\tn J\tn\C} &\rnode{x}{\C^3}\\
-	&\rdTo[snake=1em]^{\C\tn J\tn\C^2} &&\sim\\
-	\dTo<1 &\rr&\C^4& \rTo^{\C^2\tn P} & \rnode{y}{\C^3}\\
-	&\ldTo(2,2)_{P\tn\C^2}&\sim
-		&\ldTo^{P\tn\C} &\dTo>{\C\tn P}\\
-	\C^3 &\rTo_{\C\tn P} & \C^2 &\aa &\C^2\\
-	&\rdTo_{P\tn\C} &\aa&\rdTo_P&\dTo>P\\
-	&&\C^2 & \rTo_P & \C
-	\ncline[doubleline=true,doublesep=2pt]{-}xy
-	\end{diagram}
-	which, since the structural 2-cells behave naturally, is equal to
-	\begin{diagram}[tight,w=4em]
-	&&\C^4\\
-	&\ruTo^{\C\tn J\tn\C^2} &\sim&\rdTo^{\C^2\tn P}\\
-	\C\tn\I\tn\C^2&\rTo^{\C\tn\I\tn P} &\C\tn\I\tn\C &\rTo_{\C\tn J\tn\C} &\rnode{x}{\C^3}\\
-	&&&\raise-1em\hbox{$\rr\tn\C$}\\
-	\dTo<1 &&\dTo<1&& \rnode{y}{\C^3}\\
-	&&&\ldTo^{P\tn\C} &\dTo>{\C\tn P}\\
-	\C^3 &\rTo_{\C\tn P} & \C^2 &\aa &\C^2\\
-	&\rdTo_{P\tn\C} &\aa&\rdTo_P&\dTo>P\\
-	&&\C^2 & \rTo_P & \C\hbox{\hskip1pt.\hss}
-	\ncline[doubleline=true,doublesep=2pt]{-}xy
-	\end{diagram}
-	%
-	This diagram can be redrawn as
-	\begin{diagram}
-	&&\rnode{CICC}{\C\tn\I\tn\C^2} &\rTo^{\C\tn J\tn\C^2} &\C^4\\
-	&&\dTo<{\C\tn\I\tn P} &\sim& \dTo>{\C^2\tn P}\\
-	&&\C\tn\I\tn\C &\rTo^{\C\tn J\tn\C} &\rnode{x}{\C^3}\\
-	&&\dTo<1&\rr\tn\C\\
-	\rnode{CCC}{\C^3}&\rTo^{\C\tn P}&\C^2 &\lTo^{P\tn\C} &\rnode{y}{\C^3}\\
-	\dTo<{P\tn\C} &\aa & \dTo>P & \aa & \dTo>{\C\tn P}\\
-	\C^2 &\rTo_P & \C &\lTo_P & \C^2
-	\ncline[doubleline=true,doublesep=2pt]{-}xy
-	\nccurve[angleA=180,angleB=90]{->}{CICC}{CCC}\Bput{1}
-	\end{diagram}
-	%
-	which by equation (\ref{eq-lra}) is equal to
-	\begin{diagram}[s=3.5em,tight]
-	&&\rnode{CICC}{\C\tn\I\tn\C^2} &\rTo^{\C\tn J\tn\C^2} &\C^4\\
-	&&\dTo<{\C\tn\I\tn P} &\sim& \dTo>{\C^2\tn P}\\
-	&&\C\tn\I\tn\C &\rTo^{\C\tn J\tn\C} &\rnode{x}{\C^3}\\
-	&&\dTo<1&\C\tn\ll\\
-	\rnode{CCC}{\C^3}&\rTo^{\C\tn P}&\C^2 &\lTo_{\C\tn P} &\rnode{y}{\C^3}\\
-	\dTo<{P\tn\C} &\aa & \dTo>P\\
-	\C^2 &\rTo_P & \C\hbox to0pt{\hskip1pt.\hss}
-	%
-	\ncline[doubleline=true,doublesep=2pt]{-}xy
-	\nccurve[angleA=180,angleB=90]{->}{CICC}{CCC}\Bput{1}
-	\end{diagram}
-	%
-	Comparing this with the diagram we started with, and cancelling $\aa$, we have
-	\[
-	\begin{diagram}[h=3.5em,w=4em,tight]
-	\C\tn\I\tn\C^2 & \rTo^{\C\tn J\tn\C^2} &\C^4& \rTo^{\C^2\tn P} & \C^3\\
-	&\rdTo(2,2)<1\raise1em\hbox to0pt{$\C\tn\ll\tn\C$\hss}
-		& \dTo[snake=.8em]>{\C\tn P\tn\C} &\C\tn\aa&\dTo>{\C\tn P}\\
-	&&\C^3 &\rTo_{\C\tn P} &\C^2\\
-	&&&& \dTo>P\\
-	&&&& \C
-	\end{diagram}
-	\quad=\quad
-	\begin{diagram}[s=3.5em,tight]
-	\C\tn\I\tn\C^2 &\rTo^{\C\tn J\tn\C^2} &\C^4\\
-	\dTo<{\C\tn\I\tn P} &\sim& \dTo>{\C^2\tn P}\\
-	\C\tn\I\tn\C &\rTo^{\C\tn J\tn\C} &\rnode{x}{\C^3}\\
-	\dTo<1&\C\tn\ll\\
-	\C^2 &\lTo_{\C\tn P} &\rnode{y}{\C^3}\\
-	\dTo<P\\
-	\C
-	\ncline[doubleline=true,doublesep=2pt]{-}xy
-	\end{diagram}
-	\]
-	whence Lemma~\ref{lemma-faithful} allows us to deduce equation (\ref{eq-lla}), as required.
-	Equation (\ref{eq-rra}) follows by symmetry.
-\end{proof}
-%
-The next lemma is the general form of the fact that $I\tn\lambda_A = \lambda_{I\tn A}$
-in a monoidal category.
-\begin{lemma}\label{lemma-lambda}
-The following equation holds for any pseudomonoid $\C$:
-\begin{equation}\label{eq-lambda}
-\hskip-2em
+\section{Pseudomonoids via the calculus of components}
+Next we see how the language of components may be used to reason about pseudomonoids.
+We will define the theory $\M$ of pseudomonoids, and show that reasoning
+in the formal language corresponds precisely to the usual modes of reasoning
+about monoidal categories, and that a model of $\M$ is precisely a pseudomonoid.
+The theory concerns
+a single object $\C$, so $\M_{0} = \{\C\}$. There are two basic 1-cells,
+$J:\I\to\C$ and $P:\C\tn\C\to\C$, so formally we have $\M(;\C) = \{J\}$
+and $\M(\C,\C;\C):=\{P\}$. There are six basic 2-cells, corresponding to
+$\aa$, $\ll$, $\rr$ and their inverses. The 2-cell $\aa$ goes from
+\[
+	A\in\C, B\in\C, C\in\C \proves P(A,P(B,C))\in\C
+\]
+to
+\[
+	A\in\C, B\in\C, C\in\C \proves P(P(A,B),C)\in\C;
+\]
+formally, for every three distinct names $A$, $B$ and $C$ we have
+\[\M^{(A\in\C,B\in\C,C\in\C)}_{\C}[P(A,P(B,C)),P(P(A,B),C)] = \{\aa\}.\]
+To make the notation appear more familiar, we shall write $A\ast B$ to
+mean $P(A,B)$, and $I$ to mean $J()$. Thus $\aa$ is a 2-cell with components
+\[
+	\aa_{A,B,C}: A\ast (B\ast C) \to (A\ast B)\ast C
+\]
+for $A$, $B$, $C\in\C$.
+In fact we want $\aa$ to be an invertible 2-cell, which formally
+means that there is another 2-cell $\aa^{-1}$ with components
+\[
+	\aa^{-1}_{A,B,C}: (A\ast B)\ast C \to A\ast (B\ast C)
+\]
+such that $\aa_{A,B,C}\cdot\aa^{-1}_{A,B,C}$ and
+$\aa^{-1}_{A,B,C}\cdot\aa_{A,B,C}$ are identities.
+In terms of the formal definition of the theory $\M$, this means
+\[\M^\Gamma_{\C}[P(P(A,B),C),P(A,P(B,C))] = \{\aa^{-1}\},\]
+\[(\Gamma,\C,P(P(A,B),C),P(P(A,B),C),\aa^{-1}_{A,B,C}\cdot\aa_{A,B,C},
+1_{P(P(A,B),C)})\in\M_{=},\]
+\[(\Gamma,\C,P(A,P(B,C)),P(A,P(B,C)),\aa_{A,B,C}\cdot\aa^{-1}_{A,B,C},
+1_{P(A,P(B,C))})\in\M_{=},\]
+where $\Gamma=(A\in\C,B\in\C,C\in\C)$.
+
+In the same way, we want $\ll$ to be an invertible 2-cell with
+components
+\[
+	\ll_{A}: I\ast A \to A
+\]
+for $A\in\C$, and $\rr$ to be an invertible 2-cell with
+components
+\[
+	\rr_{A}: A\ast I \to A
+\]
+for $A\in\C$. (Formally, the theory $\M$ contains 2-cells $\ll$,
+$\ll^{-1}$, $\rr$ and $\rr^{-1}$, and four equations expressing
+that $\ll^{-1}$ is inverse to $\ll$ and $\rr^{-1}$ is inverse to $\rr$.)
+
+Finally, we have the pentagon and triangle axioms. Consider the
+pentagon:
+\begin{mspill}\begin{diagram}%\dlabel{pentagon}
+  A\ast (B\ast (C\ast D))
+	  &\rTo^{\aa_{A,B,C\ast D}}&(A\ast B)\ast (C\ast D)
+	  &\rTo^{\aa_{A\ast B,C,D}} & \bigl(((A\ast B)\ast C)\ast D\bigr)
+  \\
+  &\rdTo[snake=-1em](1,2)<{A\ast \aa_{B,C,D}} &%\dnum[pentagon]
+	  & \ruTo[snake=1em](1,2)>{\aa_{A,B,C}\ast D}
+  \\
+  & \spleft{A\ast ((B\ast C)\ast D)}
+	  & \rTo_{\aa_{A,B\ast C,D}}
+	  & \spright{(A\ast (B\ast C))\ast D}
+\end{diagram}\end{mspill}
+Of course, this diagram is just a convenient way of writing the equation
+\[
+	\aa_{A\ast B,C,D} \cdot \aa_{A,B\ast C,D}
+	=
+	P(\aa_{A,B,C},D) \cdot \aa_{A,B\ast C,D} \cdot (A\ast\aa_{B,C,D})
+\]
+which we take as a formal equation of $\M$. Thus any model of $\M$
+must satisfy
+\[
+	\semint{\aa_{A\ast B,C,D} \cdot \aa_{A,B\ast C,D}}
+	=
+	\semint{P(\aa_{A,B,C},D) \cdot \aa_{A,B\ast C,D} \cdot (A\ast\aa_{B,C,D})}.
+\]
+Similarly the triangle:
 \begin{diagram}
-	\I\tn\I\tn\C & \rTo^{J\tn\I\tn\C} & \rnode{CIC}{\C\tn\I\tn\C}\\
-	&&\dTo>{\C\tn J\tn\C}\\
-	&\hbox to0pt{\hskip1em$\C\tn\ll$\hss}&\C^3\\
-	&&\dTo>{\C\tn P}\\
-	&&\rnode{CC}{\C^2}\\
-	&&\dTo>P\\
-	&&\C
-	\ncarc[arcangle=-70]{->}{CIC}{CC}\Bput{1}
+        A\ast (I\ast C) &\rTo^{\aa_{A,I,C}}& (A\ast I)\ast C\\
+        &\rdTo[snake=-1ex](1,2)<{A\ast\ll_C}\ldTo[snake=1ex](1,2)>{\rr_A\ast C}\\
+        &A\ast C
 \end{diagram}
-=
-\begin{diagram}[s=4em,tight]
-	\I\tn\I\tn\C & \rTo^{J\tn\I\tn\C} & \C\tn\I\tn\C\\
-	\dTo<{\I\tn J\tn\C} & \sim & \dTo>{\hbox to0pt{$\C\tn J\tn\C$\hss}}\\
-	\I\tn\C^2 & \rTo_{J\tn\C^2}& \C^3\\
-	\dTo<{\I\tn P} & \sim & \dTo>{\C\tn P}\\
-	\I\tn\C & \rTo^{J\tn \C} & \C^2\\
-	&\rdTo(2,2)_1\raise1em\hbox to 0pt{$\ll$\hss} & \dTo>P\\
-	&&\C
-\end{diagram}
-\hskip-2em
-\end{equation}
-\end{lemma}
-\begin{proof}
-	Since the structural 2-cells behave naturally,
-	\begin{diagram}
-		\I\tn\I\tn\C & \rTo^{J\tn\I\tn\C} & \rnode{CIC}{\C\tn\I\tn\C}\\
-		&&\dTo>{\C\tn J\tn\C}\\
-		\dTo<1&\hbox to0pt{\hskip1em$\C\tn\ll$\hss}&\C^3\\
-		&&\dTo>{\C\tn P}\\
-		\I\tn\C&\rTo^{J\tn\C}&\rnode{CC}{\C^2}\\
-		&\rdTo(2,2)_1\raise1em\hbox to0pt{\hskip1em$\ll$\hss}&\dTo>P\\
-		&&\C
-		\ncarc[arcangle=-70]{->}{CIC}{CC}\Bput{1}
-	\end{diagram}
-	is equal to
-	\begin{diagram}
-		&\rnode{IIC}{\I\tn\I\tn\C} & \rTo^{J\tn\I\tn\C} & \C\tn\I\tn\C\\
-		&\dTo<{\I\tn J\tn\C} & \sim & \dTo>{\C\tn J\tn\C}\\
-		\ll&\rnode{IC}{\I\tn\C^2} & \rTo_{J\tn\C^2}& \C^3\\
-		&\dTo<{\I\tn P} & \sim & \dTo>{\C\tn P}\\
-		&\rnode{IC}{\I\tn\C} & \rTo^{J\tn \C} & \C^2\\
-		&&\rdTo(2,2)_1\raise1em\hbox to 0pt{\hskip1em$\ll$\hss} & \dTo>P\\
-		&&&\C
-		\ncarc[arcangle=-70,ncurv=1]{->}{IIC}{IC}\Bput{1}
-	\end{diagram}
-	Vertically composing with the inverse of $\ll$ gives the claimed equation.
-\end{proof}
+represents the equation
+\[
+	(\rr_A\ast C) \cdot \aa_{A,I,C}  =  A\ast\ll_C,
+\]
+hence a model of $\M$ must also satisfy
+\[
+	\semint{(\rr_A\ast C) \cdot \aa_{A,I,C}}  =  \semint{A\ast\ll_C}.
+\]
 %
-\begin{propn}
-	Equation (\ref{eq-lr}) holds for any pseudomonoid $\C$.
-\end{propn}
-\begin{proof}
-	\[\begin{array}{rcl}
-	\begin{diagram}
-		&\I\tn\I\tn\C \\
-		&\dTo<{J\tn\I\tn\C} \\
-		&\rnode{CIC}{\C\tn\I\tn\C}\\
-		&\dTo>{\C\tn J\tn\C} \\
-		\rr\tn\C & \C^3 &\rTo^{\C\tn P} & \C^2 \\
-		&\dTo>{P\tn\C} &\aa& \dTo>P \\
-		&\rnode{CC}{\C^2} &\rTo_{P} & \C
-		\ncarc[arcangle=-70,ncurv=1]{->}{CIC}{CC}\Bput{1}
+Now, let us consider an interpretation of $\M$ in a Gray monoid $\B$. We shall
+omit $v()$, writing just $\C$ instead of $v(\C)$, and $P$ instead of $v(P)$, etc.
+So an interpretation of $\M$ consists of an object $\C$,
+1-cells $J: \I \to \C$ and $P:\C\tn\C\to\C$,
+and invertible 2-cells
+\[\begin{array}{c@{\qquad}c}
+	\multicolumn2c{	\begin{diagram}[s=2.2em,tight]
+		&& \C^2\\
+		&\ruTo^{\C\tn P} && \rdTo^P\\
+		\C^3 && \Arr\Downarrow\aa && \C\\
+		&\rdTo_{P\tn\C}&&\ruTo>{P}\\
+		&&\C^2
 	\end{diagram}
-	&\quad=\quad&
-	\begin{diagram}
-		&\I\tn\I\tn\C \\
-		&\dTo<{J\tn\I\tn\C} \\
-		&\rnode{CIC}{\C\tn\I\tn\C}\\
-		&\dTo>{\C\tn J\tn\C} \\
-		\C\tn\ll & \C^3 \\
-		&\dTo>{\C\tn P} \\
-		&\rnode{CC}{\C^2} &\rTo_{P} & \C
-		\ncarc[arcangle=-70,ncurv=1]{->}{CIC}{CC}\Bput{1}
-	\end{diagram}
-	\\[11em]
-	&=&
-	\begin{diagram}
-		\I\tn\I\tn\C & \rTo^{J\tn\I\tn\C} & \C\tn\I\tn\C\\
-		\dTo<{\I\tn J\tn\C} & \sim & \dTo>{\C\tn J\tn\C}\\
-		\I\tn\C^2 & \rTo_{J\tn\C^2}& \C^3\\
-		\dTo<{\I\tn P} & \sim & \dTo>{\C\tn P}\\
-		\I\tn\C & \rTo^{J\tn \C} & \C^2\\
-		&\rdTo(2,2)_1\raise1em\hbox to 0pt{$\ll$\hss} & \dTo>P\\
+}
+	\\[6em]
+	\begin{diagram}[vtrianglewidth=1.5em,tight]
+		\C\tn\C &&\lTo^{J\tn\C}&&\I\tn\C\\
+		&\rdTo[snake=-1ex]<{P}
+			&\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\ll\end{array}$}%
+			&\ldTo[snake=1ex]>{1}\\
 		&&\C
 	\end{diagram}
-	\\[10em]
-	&=&
-	\begin{diagram}
-		\I\tn\I\tn\C & \rTo^{J\tn\I\tn\C} & \C\tn\I\tn\C\\
-		\dTo<{\I\tn J\tn\C} & \sim & \dTo>{\C\tn J\tn\C} \\
-		\I\tn\C^2 & \rTo^{J\tn\C^2} & \rnode{x}{\C^3}\\
-		\dTo<1 & \ll\tn\C \\
-		\C^2 & \lTo^{P\tn\C} & \rnode{y}{\C^3} \\
-		\dTo<P & \aa & \dTo>{\C\tn P} \\
-		\C & \lTo_P & \C^2
-		\ncline[doubleline=true,doublesep=2pt]{-}xy
+	&
+	\begin{diagram}[vtrianglewidth=1.5em,tight]
+		\C\tn \C &&\lTo^{\C\tn J} && \C\tn\I\\
+		&\rdTo[snake=-1ex]<{P}
+			&\raise1ex\hbox{$\begin{array}c\Rightarrow\\[-5pt]\rr\end{array}$}%
+			&\ldTo[snake=1ex]>{1}\\
+		&&\C
 	\end{diagram}
-	\end{array}\]
-	These equalities hold by, respectively, equations (\ref{eq-lra}), (\ref{eq-lambda}), and (\ref{eq-lla}).
-	Now vertically compose with the inverse of $\aa$, and apply Lemma~\ref{lemma-faithful}
-	to deduce the claim.
-\end{proof}
+\end{array}\]
+where we have written $\C^{2}$ as an abbreviation for $\C\tn\C$, etc.,
+subject to equations corresponding to the pentagon and triangle conditions.
+%
+Let us first consider the pentagon equation
+\[
+	\semint{\aa_{A\ast B,C,D} \cdot \aa_{A,B,C\ast D}}
+	=
+	\semint{(\aa_{A,B,C}\ast D) \cdot \aa_{A,B\ast C,D} \cdot (A\ast\aa_{B,C,D})}.
+\]
+equivalently
+\[
+	\semint{\aa_{A\ast B,C,D}} \cdot \semint{\aa_{A,B,C\ast D}}
+	=
+	\semint{(\aa_{A,B,C}\ast D)} \cdot \semint{\aa_{A,P(B,C),D}} \cdot \semint{P(A,\aa_{B,C,D})}.
+\]
+By definition, $\semint{\aa_{A,B, C\ast D}}: \semint{A\ast(B\ast(C\ast D))}
+	\To \semint{(A\ast B)\ast(C\ast D)}$ is
+\begin{diagram}
+	\semint{A\ast(B\ast(C\ast D))} && \semint{(A\ast B)\ast(C\ast D)} \\
+	\dTo<{\norm^{-1}} && \uTo>{\norm} \\ 
+	\semint{A\ast(B\ast X)} \o (\C\tn\C\tn P)
+	& \rTo_{\aa \o (\C\tn\C\tn P)}
+	& \semint{(A\ast B)\ast X} \o (\C\tn\C\tn P)
+\end{diagram}
+On the left we have
+\begin{mmulti}
+	\semint{
+	A\ast(B\ast(C\ast D))
+	}
+	\\= P \o (\C\tn\semint{
+	B\ast(C\ast D)
+	})
+	\\= P \o (\C\tn(
+		P \o (\C\tn\semint{
+			C\ast D
+		}
+	)))
+	\\= P \o (\C\tn(
+		P \o (\C\tn P)
+	))
+	\\= P \o (\C\tn P) \o (\C\tn\C\tn P)
+\end{mmulti}
+and the $\norm^{-1}$ map is just the identity. The reason is
+essentially that every occurrence of $P$ has one argument equal
+to a constant. Thus the right-hand side is more interesting: we have
+\[
+	\semint{
+	(A\ast B)\ast(C\ast D)
+	}
+	=
+	P \o (P\tn P)
+\]
+and the $\norm$ map is the isomorphism
+\[
+	P \o (P\tn\C) \o (\C\tn\C\tn P) \to P \o (P\tn P).
+\]
+So this 2-cell is
+{\def\rnode#1#2{%
+	\tikz[baseline=(#1.base),inner sep=0pt,outer sep=3pt]
+		\node(#1){\mathsurround=0pt$\displaystyle#2$};
+	}
+\begin{diagram}[s=2.2em]
+	&& && \C^2\\
+	&& &\ruTo^{\C\tn P} && \rdTo^P\\
+	\rnode{left}{\C^{4}}&\rTo^{\C\tn \C\tn P}& \C^3 && \Arr\Downarrow\aa && \C\\
+	&& &\rdTo[hug]_{P\tn\C}&&\ruTo>{P}\\
+	&& &&\rnode{bottom}{\C^2}
+	%
+	\begin{tikzpicture}[overlay]
+		\path[->] (left) edge [out=-45, in=180, out looseness=0.7]
+			node [left, pos=0.6] {$P\tn P$} node [above=1em, pos=0.5] {$\sim$} (bottom);
+	\end{tikzpicture}
+\end{diagram}
+In a similar way, one may calculate that
+\[
+	\semint{\aa_{P(A,B),C,D}}
+\]
+is equal to
+\begin{diagram}[s=2.2em]
+	&& && \rnode{top}{\C^2}\\
+	&& &\ruTo[hug]^{\C\tn P} && \rdTo^P\\
+	\rnode{left}{\C^{4}}&\rTo_{P\tn\C\tn\C}& \C^3 && \Arr\Downarrow\aa && \C\\
+	&& &\rdTo_{P\tn\C}&&\ruTo>{P}\\
+	&& &&\rnode{bottom}{\C^2}
+	%
+	\begin{tikzpicture}[overlay]
+		\path[->] (left) edge [in = 180, out looseness=0.7]
+			node [left, pos=0.6] {$P\tn P$} node [below=1em, pos=0.5] {$\sim$} (top);
+	\end{tikzpicture}
+\end{diagram}}
+Note that, according to the definition of Gray monoid, in fact
+\[
+	P\tn P = (\C\tn P)\o(P\tn\C\tn\C),
+\]
+and this interchange cell is the identity.
+Thus the composite
+\[
+	\semint{\aa_{A\ast B,C,D} \cdot \aa_{A,B,C\ast D}}
+	= \semint{\aa_{A\ast B,C,D}} \cdot \semint{\aa_{A,B,C\ast D}}
+\]
+is
+\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+	&&\C^3\\
+	&\ruTo^{\C^2\tn P}&\dTo[snake=-5pt]<{P\tn\C}&\rdTo^{\C\tn P}\\
+	\C^4 &\sim& \C^2 &\mathop{\Leftarrow}\limits_{\;\;\;\aa}& \C^2\\
+	\dTo<{P\tn\C^2}&\ruTo[hug]_{\C\tn P} && \rdTo_P & \dTo>{P}\\
+	\C^3 && \Arr\Downarrow\aa && \C\\
+	&\rdTo_{P\tn\C}&&\ruTo>{P}\\
+	&&\C^2
+\end{diagram}
+%
+Calculating
+\[
+	\semint{(\aa_{A,B,C}\ast D) \cdot \aa_{A,B\ast C,D} \cdot (A\ast\aa_{B,C,D})}.
+\]
+is less interesting, since all the $\norm$ maps are identities, so
+it is just
+\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+	&&\C^3\\
+	&\ruTo^{\C^2\tn P}&&\rdTo^{\C\tn P}\\
+	\C^4 && \Arr\Downarrow{\C\tn \aa} && \C^2\\
+	\dTo<{P\tn\C^2}&\rdTo[hug]^{\C\tn P\tn\C} && \ruTo[hug]^{\C\tn P} & \dTo>{P}\\
+	\C^3 &\mathop{\Leftarrow}\limits_{\;\;\;\aa\tn\C}& \C^3 &\Arr\Swarrow{\scriptstyle\!\!\!\aa}& \C\\
+	&\rdTo_{P\tn\C}&\dTo[snake=5pt]>{\!\!P\tn\C}&\ruTo>{P}\\
+	&&\C^2
+\end{diagram}
+Thus the pentagon axiom, in a Gray monoid, is precisely
+equation~\pref{eq-aa}.
+% \begin{equation}\label{eq-aa}
+% 	\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+% 		&&\C^3\\
+% 		&\ruTo^{\C^2\tn P}&\dTo[snake=-5pt]<{P\tn\C}&\rdTo^{\C\tn P}\\
+% 		\C^4 &\sim& \C^2 &\mathop{\Leftarrow}\limits_{\;\;\;\aa}& \C^2\\
+% 		\dTo<{P\tn\C^2}&\ruTo[hug]_{\C\tn P} && \rdTo_P & \dTo>{P}\\
+% 		\C^3 && \Arr\Downarrow\aa && \C\\
+% 		&\rdTo_{P\tn\C}&&\ruTo>{P}\\
+% 		&&\C^2
+% 	\end{diagram}
+% 	\qquad=\qquad
+% 	\begin{diagram}[s=2.2em,labelstyle=\scriptstyle,tight]
+% 		&&\C^3\\
+% 		&\ruTo^{\C^2\tn P}&&\rdTo^{\C\tn P}\\
+% 		\C^4 && \Arr\Downarrow{\C\tn \aa} && \C^2\\
+% 		\dTo<{P\tn\C^2}&\rdTo[hug]^{\C\tn P\tn\C} && \ruTo[hug]^{\C\tn P} & \dTo>{P}\\
+% 		\C^3 &\mathop{\Leftarrow}\limits_{\;\;\;\aa\tn\C}& \C^3 &\Arr\Swarrow{\scriptstyle\!\!\!\aa}& \C\\
+% 		&\rdTo_{P\tn\C}&\dTo[snake=5pt]>{\!\!P\tn\C}&\ruTo>{P}\\
+% 		&&\C^2
+% 	\end{diagram}
+% \end{equation}
+In a similar way, the triangle axiom corresponds
+to equation~\pref{eq-lra}.
+% \begin{equation}
+% 	\def\rnode#1#2{%
+% 	\tikz[baseline=(#1.base),inner sep=0pt,outer sep=3pt]
+% 		\node(#1){\mathsurround=0pt$\displaystyle#2$};
+% 	}
+% \begin{diagram}[s=2.2em]
+% 	& & \rnode{CIC}{\C\tn\I\tn\C} \\
+% 	& & \dTo<{\C\tn J\tn\C} \\
+% 	& & \C^{3} \\
+% 	& \ldTo^{\C\tn P} && \rdTo[hug]^{P\tn\C} \\
+% 	\C^{2} && \Right_\aa && \rnode{CC}{\C^{2}} \\
+% 	& \rdTo_{P} && \ldTo_{P} \\
+% 	& & \C
+% 	\begin{tikzpicture}[overlay]
+% 		\path[->] (CIC) edge [out=0, in=90, out looseness=0.7]
+% 			node [right, pos=0.6] {$1$} node [left=1em, pos=0.5] {$\Right_{\rr\tn\C}$} (CC);
+% 	\end{tikzpicture}
+% \end{diagram}
+% \qquad=\qquad
+% \begin{diagram}[s=2.2em]
+% 	& & \rnode{CIC}{\C\tn\I\tn\C} \\
+% 	& \ldTo^{\C\tn J\tn\C} \\
+% 	\C^{3} && \llap{$\Right_{\rr\tn\C}$} \\
+% 	& \rdTo_{\C\tn P} \\
+% 	& & \rnode{CC}{\C^{2}} \\
+% 	& & \dTo<{P} \\
+% 	& & \C 
+% 	\begin{tikzpicture}[overlay]
+% 		\path[->] (CIC) edge [out=-45, in=45, out looseness=0.7]
+% 			node [right, pos=0.6] {$1$} (CC);
+% 	\end{tikzpicture}
+% \end{diagram}
+% \end{equation}
+%
+The interpretation in a general monoidal bicategory works in a
+similar way; the monoidal biequivalence $\mathbf{e}'$ causes structural
+1-cells and 2-cells to be inserted where necessary. Let us consider
+the 2-cell $\aa$: its interpretation needs to be a 2-cell
+\[
+	\semint{A\ast (B\ast C)} \to \semint{(A\ast B)\ast C},
+\]
+and $\semint{A\ast (B\ast C)}$ is simply
+\[
+	\C\tn(\C\tn\C)
+	\rTo^{\C\tn P}
+	\C\tn\C
+	\rTo^{P}
+	\C
+\]
+whereas $\semint{(A\ast B)\ast C}$ is
+\[
+	\C\tn(\C\tn\C)
+	\rTo^{a_{\C,\C,\C}}
+	(\C\tn\C)\tn\C
+	\rTo^{P\tn\C}
+	\C\tn\C
+	\rTo^{P}
+	\C,
+\]
+hence $\aa$ should be a 2-cell
+\begin{diagram}
+		\C\tn(\C\tn\C)
+		& \rTo^{\C\tn P} & \C\tn\C
+		\\
+		\dTo<{a_{\C,\C,\C}}
+		& \Swarrow\aa
+		&& \rdTo^{P}
+		\\
+		(\C\tn\C)\tn\C
+		& \rTo_{P\tn\C} & \C\tn\C
+		& \rTo_{P} & \C
+\end{diagram}
+The axioms also sport structural 2-cells. For example, the pentagon equation becomes
+the requirement that
+{\def\rnode#1#2{%
+	\tikz[baseline=(#1.base),inner sep=0pt,outer sep=3pt]
+		\node(#1){\mathsurround=0pt$\displaystyle#2$};
+	}
+\begin{mspill}\begin{diagram}
+	\C\tn(\C\tn(\C\tn\C))
+	& \rTo^{\C\tn(\C\tn P)} & \C\tn(\C\tn\C)
+	& \rTo^{\C\tn P} & \C\tn\C
+	\\
+	\dTo[snake=-1.5em]<{a_{\C,\C,\C\tn\C}}
+	& \Swarrow a_{\C,\C,P}
+	& \dTo>{a_{\C,\C,\C}}
+	& \Swarrow\aa
+	&& \rdTo(2,3)^P
+	\\
+	&& (\C\tn\C)\tn\C
+	\\
+	(\C\tn\C)\tn(\C\tn\C)
+	& \ruTo(2,1)^{(\C\tn\C)\tn P}
+	& \cong
+	& \rdTo(2,1)^{P\tn\C}
+	& \C\tn\C
+	& \rTo_P & \C
+	\\
+	\dTo[snake=-1.5em]<{a_{\C\tn\C,\C,\C}}
+	& \rdTo(2,1)_{P\tn(\C\tn\C)}
+	&\C\tn(\C\tn\C)
+	& \ruTo(2,1)_{\C\tn P}
+	&& \ruTo(2,3)_P
+	\\
+	& \Swarrow a_{P,\C,\C}
+	& \dTo>{a_{\C,\C,\C}}
+	& \Swarrow\aa
+	\\
+	((\C\tn\C)\tn\C)\tn\C
+	& \rTo_{(P\tn\C)\tn\C} & (\C\tn\C)\tn\C
+	& \rTo_{P\tn\C} & \C\tn\C
+\end{diagram}\end{mspill}
+must be equal to
+\begin{diagram}
+	&& \rnode{t}{\C\tn(\C\tn(\C\tn\C))}
+	& \rTo^{\C\tn(\C\tn P)} & \C\tn(\C\tn\C)
+	\\
+	& %\ldTo(2,3)
+	& \dTo<{\C\tn a_{\C,\C,\C}}
+	& \Swarrow\C\tn \aa
+	&& \rdTo^{\C\tn P}
+	\\
+	&& \C\tn ((\C\tn\C)\tn\C)
+	& \rTo_{\C\tn(P\tn\C)} & \C\tn(\C\tn\C)
+	& \rTo_{\C\tn P} & \C\tn\C
+	\\
+	\rnode{l}{(\C\tn\C)\tn(\C\tn\C)} & \Left_{\pi_{A,B,C,D}^{-1}}
+	& \dTo<{a_{\C,\C\tn\C,\C}}
+	& \Swarrow a_{\C,P,\C}
+	& \dTo<{a_{\C,\C,\C}}
+	& \Swarrow\aa
+	&& \rdTo^{P}
+	\\
+	& %\rdTo(2,3)
+	& (\C\tn(\C\tn\C))\tn\C
+	& \rTo_{(\C\tn P)\tn\C}
+	& (\C\tn\C)\tn\C
+	& \rTo_{P\tn\C}
+	& \C\tn\C & \rTo_P & \C
+	\\
+	&& \dTo<{a_{\C,\C,\C}\tn\C}
+	& \Downarrow\aa\tn\C
+	&& \ruTo_{P\tn\C}
+	\\
+	&& \rnode{b}{((\C\tn\C)\tn\C)\tn\C} & \rTo_{(P\tn\C)\tn\C} & (\C\tn\C)\tn\C
+	\begin{tikzpicture}[overlay]
+		\path[->] (t) edge [out=180, in=90]
+			node [left] {$a_{\C,\C,\C\tn\C}$} (l);
+		\path[->] (l) edge [out=-90, in=180]
+			node [left] {$a_{\C\tn\C,\C,\C}$} (b); 
+	\end{tikzpicture}
+\end{diagram}
+and the triangle equation becomes the requirement that
+\begin{diagram}
+	\C\tn(\I\tn\C) & \rTo^{a_{\C,\I,\C}} & \rnode{t}{(\C\tn\I)\tn\C} \\
+	\dTo<{\C\tn(J\tn\C)} & \Arr\Nearrow{a_{\C,J,\C}} & \dTo>{(\C\tn J)\tn\C} \\
+	\C\tn(\C\tn\C) & \rTo_{a_{\C,\C,\C}} & (\C\tn\C)\tn\C & \Right_{\rr\tn\C} \\
+	\dTo<{\C\tn P} & \Arr\Nearrow{\aa} && \rdTo_{P\tn\C} \\
+	\C\tn\C & \rTo_{P} & \C & \lTo_{P} & \rnode{b}{\C\tn\C}
+	\begin{tikzpicture}[overlay]
+		\path[->] (t) edge [out=0, in=90]
+			node [right] {$r_{\C}\tn\C$} (b);
+	\end{tikzpicture}
+\end{diagram}
+be equal to
+\begin{diagram}[h=2.2em]
+	& & \rnode{CIC}{\C\tn(\I\tn\C)} \\
+	& \ldTo^{\C\tn (J\tn\C)} && \rdTo^{a_{\C,\I,\C}} \\
+	\C^{3} & \rlap{$\Right_{\rr\tn\C}$} & \dTo~{\C\tn l_{\C}}
+		& \llap{$\Right_{\mu_{\C,\C}}$} & (\C\tn\I)\tn\C\\
+	& \rdTo_{\C\tn P} && \ldTo_{r_{\C}\tn\C} \\
+	& & \rnode{CC}{\C\tn\C} \\
+	& & \dTo<{P} \\
+	& & \C 
+	% \begin{tikzpicture}[overlay]
+	% 	\path[->] (CIC) edge [out=-45, in=45, out looseness=0.7]
+	% 		node [right, pos=0.6] {$\C\tn l_{\C}$} (CC);
+	% \end{tikzpicture}
+\end{diagram}}
+(In fact the `raw' version of the equation, as it emerges from the
+interpretation, has $\mu^{-1}$ on the left-hand side, rather than
+$\mu$ on the right as we have written.)
 
-\section{Braided pseudomonoids}
+\section{Calculating in the theory of pseudomonoids}
+Now we may use the language to prove various facts about
+pseudomonoids, essentially using the formal interpretation of the
+language as a translation tool that allows us to transfer
+proofs from the familiar setting of monoidal categories.
+As a first example, consider the simple fact that
+\[
+	\ll_{I\ast A} = I\ast\ll_{A}: I\ast(I\ast A) \to I\ast A.
+\]
+The usual proof runs as follows: since $\ll$ is a natural transformation,
+we have a naturality square
+\begin{diagram}
+	I\ast (I\ast A) & \rTo^{I\ast\ll_{A}} & I\ast A \\
+	\dTo<{\ll_{I\ast A}} &\natural& \dTo>{\ll_{A}} \\
+	I\ast A & \rTo_{\ll_{A}} & A
+\end{diagram}
+which, since $\ll_{A}$ is invertible, implies the claim.
+The formal proof in our language is precisely the same:
+the naturality square is an instance of the naturality
+axiom; we then compose with $\ll^{-1}_{A}$ (using the axiom
+that composition preserves equality), then use our
+axiom relating $\ll$ and $\ll^{-1}$ to derive
+\[
+	1_{A} \cdot \ll_{I\ast A} = 1_{A} \cdot I\ast \ll_{A},
+\]
+and finally use the identity axiom (and symmetry and transitivity)
+to conclude that
+\[
+	\ll_{I\ast A} = I\ast\ll_{A}: I\ast(I\ast A) \to I\ast A
+\]
+as required. In a Gray monoid, this shows that
+{\def\rnode#1#2{%
+	\tikz[baseline=(#1.base),inner sep=0pt,outer sep=3pt]
+		\node(#1){\mathsurround=0pt$\displaystyle#2$};
+	}
+\begin{diagram}[h=1.5em]
+	\\\ \\
+	&&& \sim\\
+	\rnode{l}{\C} & \rTo_{J\tn\C} & \C\tn\C & \rTo_{P} & \rnode{l2}{\C} & \rTo_{J\tn\C}
+		& \rnode{r}{\C\tn\C} & \rTo_{P} & \rnode{r2}{\C} \\
+	&&&&&& \Downarrow\ll \\
+	\begin{tikzpicture}[overlay]
+		\path[->] (l) edge [out=30, in=150]
+			node [above] {$J\tn(P\o(J\tn\C))$} (r);
+		\path[->] (l2) edge [out=-60, in=-120]
+			node [below] {$1$} (r2);
+	\end{tikzpicture}
+\end{diagram}
+is equal to
+\begin{diagram}[h=1.5em]
+	\\\ \\
+	&&& \sim\\
+	\rnode{l}{\C} & \rTo_{J\tn\C} & \C\tn\C & \rTo_{P} & \rnode{r2}{\C} & \rTo_{J\tn\C}
+		& \rnode{r}{\C\tn\C} & \rTo_{P} & \C \\
+	&& \Downarrow\ll \\
+	\begin{tikzpicture}[overlay]
+		\path[->] (l) edge [out=30, in=150]
+			node [above] {$J\tn(P\o(J\tn\C))$} (r);
+		\path[->] (l) edge [out=-60, in=-120]
+			node [below] {$1$} (r2);
+	\end{tikzpicture}
+\end{diagram}
+Since we may cancel the common $\norm$ cell, this can equivalently
+be stated as:
+\begin{diagram}[h=1.5em]
+	\rnode{l}{\C} & \rTo_{J\tn\C} & \C\tn\C & \rTo_{P} & \rnode{l2}{\C} & \rTo_{J\tn\C}
+		& \rnode{r}{\C\tn\C} & \rTo_{P} & \rnode{r2}{\C} \\
+	&&&&&& \Downarrow\ll \\
+	\begin{tikzpicture}[overlay]
+		\path[->] (l2) edge [out=-60, in=-120]
+			node [below] {$1$} (r2);
+	\end{tikzpicture}
+\end{diagram}
+is equal to
+\begin{diagram}[h=1.5em]
+	\rnode{l}{\C} & \rTo_{J\tn\C} & \C\tn\C & \rTo_{P} & \rnode{r2}{\C} & \rTo_{J\tn\C}
+		& \rnode{r}{\C\tn\C} & \rTo_{P} & \C \\
+	&& \Downarrow\ll \\
+	\begin{tikzpicture}[overlay]
+		\path[->] (l) edge [out=-60, in=-120]
+			node [below] {$1$} (r2);
+	\end{tikzpicture}
+\end{diagram}}
+For a more substantial application, consider the triangle \pref{eq-lla}:
+\begin{diagram}[vtriangleheight=3em]
+	I\ast(A\ast B) && \rTo^{\aa_{I,A,B}} && (I\ast A)\ast B \\
+	& \rdTo_{\ll_{A\ast B}} && \ldTo_{\ll_{A}\ast B} \\
+	&& A\ast B
+\end{diagram}
+The proof of this, as given by \citet{KellyML} for monoidal categories,
+runs as follows. Consider the diagram
+\begin{mspill}\begin{diagram}[midvshaft,hug]
+	\bigl(A,(I,(C,D))\bigr)
+		&\rTo^{\aa_{A,I,(C\ast D)}} & (A\ast I)\ast (C\ast D)
+		&\rTo^{\aa_{(A\ast I),C,D}} & ((A\ast I)\ast C)\ast D
+	\\
+	& \rdTo(1,2)^{(A,\ll_{(C,D)})} \ldTo(1,2)_{\rr_{A}\ast (C,D)}
+		& \rlap{\qquad$\natural$} &\ldTo(1,2)^{(\rr_{A}\ast C)\ast D}
+	\\
+		& A\ast (C\ast D) & \rTo_{\aa_{A,C,D}} & (A\ast C)\ast D
+	\\
+	\dTo<{A\ast\aa_{I,C,D}}>{\qquad?}
+		\ruTo(1,2)_{A\ast(\ll_{C}\ast D)}
+		&& \natural &&
+		\luTo(1,2)_{(A\ast\ll_{C})\ast D}
+		\uTo>{\aa_{A,I,C}\ast D}
+	\\
+	A\ast((I\ast C)\ast D)
+		&& \rTo_{\aa_{A,I\ast C,D}}
+		&& (A\ast(I\ast C))\ast D
+\end{diagram}\end{mspill}
+The outside commutes by the pentagon axiom.
+The quadrilaterals commute by naturality, and the unmarked triangles
+by the triangle axiom. Since $\aa_{A,C,D}$ is invertible, it follows
+that the triangle marked `$?$' commutes.
+Now set $A = I$, and use the naturality and invertibility of $\ll$ to
+conclude that the required triangle commutes.
+It's easy to see that all this reasoning is formalisable in the language,
+hence
+\[
+	\semint{\aa_{I, A, B} \cdot \ll_{A\ast B}}
+	=
+	\semint{\ll_{A}\ast B}
+\]
+in any model.
+By a dual argument,
+\[
+	\semint{\rr_{A\ast B} \cdot \aa_{A,B,I}} = \semint{A\ast\rr_{B}}
+\]
+as well. Also, we can show that $\semint{\ll_{I}} = \semint{\rr_{I}}$,
+as follows:
+\[
+	(\ll_{I}\ast A) \cdot \aa_{I,I,A} = \ll_{I\ast A}
+\]
+by the triangle we proved above, which is equal to $I\ast \ll_{A}$
+by the naturality argument at the start of this section, which in
+turn is equal to $(\rr_{I}\ast A) \cdot \aa_{I,I,A}$ by the
+triangle axiom. Since $\aa_{I,I,A}$ is invertible, we have
+that $\ll_{J()}\ast A = \rr_{J()}\ast A$. Then use the invertibility
+and naturality of $\rr$ to conclude $\ll_{I} = \rr_{I}$, as
+required.
+
+Again, this reasoning may easily be formalised in the language,
+and as promised the language allows us to transfer proofs from
+the setting of ordinary monoidal categories to that of arbitrary
+pseudomonoids.
+
+\section{Braided pseudomonoids}\label{s-braided}
 In the context of a braided monoidal bicategory $\B$, we can define
 what it means to have a braiding on a pseudomonoid in $\B$. Observe
 that it is not possible to define \emph{symmetric} pseudomonoids
@@ -668,6 +946,13 @@ as in the case of ordinary monoidal categories, is that $\rho$ appears
 just once; hence it may be eliminated from the data and defined
 in terms of $\sigma$ and $\lambda$.
 
+In fact this can be proved quite easily using the braided extension
+of the calculus of components that was mentioned briefly in Section~\chref{Language}{s-braided}. Sadly time constraints have made
+it impossible to incorporate this improvement in adequate detail, so
+instead we give a direct proof using pasting diagrams. This may serve
+at least to indicate what a dramatic simplification is made possible
+by component-based reasoning.
+
 \begin{remark}
 	Notice that, if we can prove that this equation holds of every braided
 	pseudomonoid, then in particular it holds of the dual braiding $\ss^{*}$,
@@ -729,6 +1014,49 @@ and indeed the essence of the lengthy argument here is contained in the
 two-line sketch proof therein. The proof is originally due to \citet{KellyML}
 -- that he considered a symmetry, rather than a braiding, does not affect
 the proof.
+
+At the end of the proof, we shall need to appeal to the following lemma.
+It corresponds to the fact that, in a monoidal category,
+the functors $I\tn-$ and $-\tn I$ are faithful.
+\begin{lemma}\label{lemma-faithful}
+	Let $A$ be some object of $\B$, let $f$, $g: A\to\C$
+	and let $\gamma$, $\delta: f\To g$. If
+	\[\hbox{\vrule height 3em depth 2em width 0pt}
+	\begin{diagram}
+		\rnode{CA}{\C\times A} & \Downarrow{\scriptstyle\C\times\gamma} & \rnode{CC}{\C\times\C} &\rTo^P &\C
+		\ncarc{->}{CA}{CC}\Aput{\C\times f}
+		\ncarc{<-}{CC}{CA}\Aput{\C\times g}
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+		\rnode{CA}{\C\times A} & \Downarrow{\scriptstyle\C\times\delta} & \rnode{CC}{\C\times\C} &\rTo^P &\C
+		\ncarc{->}{CA}{CC}\Aput{\C\times f}
+		\ncarc{<-}{CC}{CA}\Aput{\C\times g}
+	\end{diagram}
+	\]
+	then $\gamma = \delta$.
+	%
+	Dually, if
+	\[\hbox{\vrule height 3em depth 2em width 0pt}
+	\begin{diagram}
+		\rnode{AC}{A\times\C} & \Downarrow{\scriptstyle\gamma\times\C} & \rnode{CC}{\C\times\C} &\rTo^P &\C
+		\ncarc{->}{AC}{CC}\Aput{f\times\C}
+		\ncarc{<-}{CC}{AC}\Aput{g\times\C}
+	\end{diagram}
+	\quad=\quad
+	\begin{diagram}
+		\rnode{AC}{A\times\C} & \Downarrow{\scriptstyle\delta\times\C} & \rnode{CC}{\C\times\C} &\rTo^P &\C
+		\ncarc{->}{AC}{CC}\Aput{f\times\C}
+		\ncarc{<-}{CC}{AC}\Aput{g\times\C}
+	\end{diagram}
+	\]
+	then $\gamma=\delta$.
+\end{lemma}
+\begin{proof}
+	Easy, via the calculus of components.
+\end{proof}
+
+
 \begin{propn}\label{prop-lrs}
 	Equation~\pref{eq-lrs} holds in any braided pseudomonoid,
 	hence (by the discussion above) so does~\pref{eq-lrs'}.
@@ -749,7 +1077,7 @@ the proof.
 		&&& \rdTo[nohug]_{P} & \raise 1em\hbox{$\ss$} & \ldTo[nohug]_{P} \\
 		&&&& \C
 	\end{diagram}
-	By Proposition~\chref{MonBicats}{prop-braiding-unit}, this is equal to
+	By Proposition~\chref{MonBicats}{prop-braiding-unit-1}, this is equal to
 	\begin{diagram}[nohug,s=2em,tight]
 		&&\C\tn \I\tn \C && \lTo^{s_{\C,\C\tn \I}} && \C^{2}\tn \I \\
 		&\ldTo[snake=-1ex]^{\C\tn J\tn \C}
@@ -969,8 +1297,8 @@ the proof.
 \end{propn}
 \begin{proof}
 	We shall assume equations~\pref{eq-sa-left}, \pref{eq-lla} and~\pref{eq-lrs},
-	and derive equation~\pref{eq-lra}.
-	
+	and derive~\pref{eq-lra}.
+	%
 	Consider the 2-cell
 	\begin{diagram}
 		&&\I\tn \C^{2} & \lTo^{s_{\C,\I\tn \C}} & \rnode{CIC}{\C\tn \I\tn \C} \\
@@ -1136,5 +1464,4 @@ the proof.
 	we obtain equation~\pref{eq-lra}, as claimed.
 \end{proof}
 
-\bibliography{cs}
-\end{document}
+\end{thesischapter}

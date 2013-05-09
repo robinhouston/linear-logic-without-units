@@ -1,7 +1,9 @@
 
 @string{lncs	= "Lect. Notes Comp. Sci."}
 @string{lnm 	= "Lecture Notes in Mathematics"}
-@string{jpaa = "Journal of Pure and Applied Algebra"}
+@string{jpaa	= "Journal of Pure and Applied Algebra"}
+@string{tac	= "Theory and Applications of Categories"}
+@string{adv	= "Advances in Mathematics"}
 
 @string{springer = "Sprin\-ger-Ver\-lag"}
 @string{cup = "Cambridge University Press"}
@@ -1069,11 +1071,11 @@ MRREVIEWER = {Ryszard Janicki},
  publisher = {Elsevier Science Publishers Ltd.},
  }
 
-@unpublished{CSPolCat,
+@article{CSPolCat,
  	author="Robin Cockett and Robert Seely",
  	title = "Polarized Category Theory, Modules, and Game Semantics",
- 	month="June", year="2004",
- 	note="Working Draft"}
+	journal = tac,
+ 	volume = 18, number = 2, year=2007, pages = "4--101"}
 
 @unpublished{CatInn,
 	author="Martin Hyland",
@@ -1156,7 +1158,7 @@ MRREVIEWER = {Ryszard Janicki},
   author = "Jean B{\'e}nabou",
   title = "Distributors at Work",
   month="June", year="2000",
-  url = "http://www.mathematik.tu-darmstadt.de/~streicher/FIBR/DiWo.ps.gz"}
+  url = "\url{http://www.mathematik.tu-darmstadt.de/~streicher/FIBR/DiWo.ps.gz}"}
 
 @article{FreydKellyCont,
   author = "Peter J. Freyd and G. Max Kelly",
@@ -1178,7 +1180,7 @@ MRREVIEWER = {Ryszard Janicki},
 @ARTICLE{BTC,
         AUTHOR = "Andr{\'e} Joyal and Ross Street",
         TITLE = "Braided Tensor Categories",
-        JOURNAL = "Advances in Mathematics",
+        JOURNAL = adv,
         VOLUME = 102,
         NUMBER = 1,
         PAGES = "20--78",
@@ -1202,9 +1204,7 @@ MRREVIEWER = {Ryszard Janicki},
 @article{MonBicat,
   author = "Brian Day and Ross Street",
   title = "Monoidal Bicategories and {H}opf Algebroids",
-  year = 1997,
-  journal = "Advances in Mathematics",
-  volume = 129, pages = "99--157"}
+  year = 1997, journal = adv, volume = 129, pages = "99--157"}
 
 
 
@@ -1231,7 +1231,7 @@ MRREVIEWER = {Ryszard Janicki},
 @article{PromonKan,
   author = "Brian Day and Ross Street",
   title = "Kan Extensions along Promonoidal Functors",
-  journal = "Theory and Applications of Categories",
+  journal = tac,
   volume = 1, number = 4, year = 1995, pages="72--77"}
 
 @inproceedings{EKClosed,
@@ -1326,7 +1326,7 @@ MRREVIEWER = {Ryszard Janicki},
 @article{PropLike,
   author = "Max Kelly and Stephen Lack",
   title = "On Property-like Structures",
-  journal = "Theory and Applications of Categories",
+  journal = tac,
   volume = 3, number = 9, year = 1997, pages = "213--250"}
 
 @article{FIB,
@@ -1338,13 +1338,13 @@ MRREVIEWER = {Ryszard Janicki},
 @article{HinesSS,
   author = "Peter Hines",
   title = "The Categorical Theory of Self-similarity",
-  journal = "Theory and Applications of Categories",
+  journal = tac,
   volume = 6, number = 2, pages = "33--46", year = 1999}
 
 @article{GTC,
   author = "Andr{\'e} Joyal and Ross Street",
   title = "The geometry of tensor calculus {I}",
-  journal = "Advances in Mathematics",
+  journal = adv,
   volume = 88, year = 1991, pages = "55--113"}
 
 @inproceedings{LowDim,
@@ -1427,7 +1427,7 @@ MRREVIEWER = {Ryszard Janicki},
 @article{HDA1,
   author = "John Baez and Martin Neuchl",
   title = "Higher Dimensional Algebra {I}. Braided Monoidal 2-Categories",
-  journal = "Advances in Mathematics",
+  journal = adv,
   volume = 121, pages = "196--244", year = 1996}
 
 @unpublished{HughesUnits,
@@ -1447,6 +1447,12 @@ editor =      {Jerzy Marcinkowski and Andrzej Tarlecki},
 series =      {Lecture Notes in Computer Science},
 year =        2004
 }
+
+@phdthesis{TrimbleThesis,
+	author = "Todd Trimble",
+	title = "Linear logic, bimodules, and full coherence for autonomous categories",
+	year = 1994,
+	school = "Rutgers University"}
 
 @article{BCST,
   author       = "Richard Blute and Robin Cockett and Robert Seely and
@@ -1481,7 +1487,7 @@ year =        2004
 	author = {Crans, Sjoerd  E. },
 	citeulike-article-id = {1154406},
 	doi = {10.1006/aima.1998.1720},
-	journal = {Advances in Mathematics},
+	journal = adv,
 	keywords = {bicategory monoidal},
 	month = {June},
 	number = {2},
@@ -1564,7 +1570,7 @@ the development of 2-categories},
 @article{LaxEpis,
 	title = "On Functors Which Are Lax Epimorphisms",
 	author = "Ji{\v r}{\' i} Ad{\' a}mek and El Bashir, Robert and Manuela Sobral and Ji{\v r}{\' i} Velebil",
-	journal = "Theory and Applications of Categories",
+	journal = tac,
 	volume = 8, number = 20, year = 2001, pages = "509--521"
 }
 
@@ -1590,3 +1596,129 @@ the development of 2-categories},
   isbn = "0-521-53215-9",
   year = {2003}
 }
+
+@article{RepMulticats,
+	author = "Claudio Hermida",
+	title = "Representable Multicategories",
+	journal = adv,
+	volume = 151, pages = "164--225", year = 2000
+}
+
+@InProceedings{HigherDimensionalMulti,
+	author = 	 {Claudio Hermida and Michael Makkai and John Power},
+	title = 	 {Higher Dimensional Multigraphs},
+	booktitle =  {Proceedings of the Thirteenth Annual {IEEE} Symposium on Logic in Computer Science, {LICS} 1998},
+	year =	 1998,
+	editor =	 {Vaughan Pratt},
+	month =	 {June}, 
+	pages =      {199--206},
+	location =   {Indianapolis, IN, USA}, 
+	publisher =	 {IEEE Computer Society Press}
+}
+
+
+
+@article{Premonoidal,
+    author = "John Power and Edmund Robinson",
+    title = "Premonoidal Categories and Notions of Computation",
+    journal = "Mathematical Structures in Computer Science",
+    volume = "7",
+    number = "5",
+    pages = "453--468",
+    year = "1997"
+}
+
+@article{LawvereModules,
+	title = "Metric spaces, generalized logic and closed categories",
+	author = "F. William Lawvere",
+	journal = "Rendiconti del Seminario Matematico e Fisico di Milano",
+	volume = "XLIII", year = 1973, pages = "135--166",
+	note = "Reprinted as \cite{LawvereModulesReprint}"
+}
+
+@article{LawvereModulesReprint,
+	title = "Metric spaces, generalized logic and closed categories",
+	author = "F. William Lawvere",
+	journal = "Reprints in Theory and Applications of Categories",
+	number = 1, year = 2002, pages = "1--37",
+	url="http://www.tac.mta.ca/tac/reprints/articles/1/tr1abs.html",
+	note = "Reprinted from \cite{LawvereModules}"
+}
+
+@unpublished{CartesianBicatsII,
+  author = {A. Carboni and G.~M. Kelly and R.~F.~C. Walters and R.~J. Wood},
+  title = {Cartesian Bicategories II},
+  note = {\url{arXiv:0708.1921}},
+  year = {2007}
+}
+
+@article{MarmolejoPseudomonads,
+	title = "Doctrines whose structure forms a fully faithful adjoint string",
+	author = "F. Marmolejo",
+	journal = tac, volume = 3, number = 2, year = 1997, pages = "24--44"
+}
+
+@article{MarmolejoDistributive,
+	title = "Distributive laws for pseudomonads",
+	author = "F. Marmolejo",
+	journal = tac, volume = 5, number = 5, year = 1999, pages = "81--147"
+}
+
+@article{MarmolejoDistributiveII,
+	title = "Distributive laws for pseudomonads {II}",
+	author = "F. Marmolejo",
+	journal = jpaa, volume = 194, number = {1--2}, year = 2004, pages = "169--182"
+}
+
+
+@article{LackPseudomonads,
+        title = "A Coherent Approach to Pseudomonads",
+        author = "Stephen Lack",
+        journal = adv, volume = 152, number = 2, year = 2000, pages="179--202"
+}
+
+@phdthesis{VerityThesis,
+        author="Dominic Verity",
+        title="Enriched categories, internal categories and change of base",
+        school="University of Cambridge",
+        year="1992", address = "Cambridge"
+}
+
+@phdthesis{TanakaThesis,
+        author = "Miki Tanaka",
+        title = "Pseudo-Distributive Laws and a Unified Framework for Variable Binding",
+        school = "University of Edinburgh", address = "Edinburgh",
+        year = 2005}
+
+@INCOLLECTION{LinearLogicProgramming,
+  AUTHOR = {Dale Miller},
+  EDITOR = {Thomas Ehrhard and Jean-Yves Girard and Paul Ruet and
+                 Phil Scott},
+  BOOKTITLE = {Linear Logic in Computer Science},
+  TITLE = {Overview of linear logic programming},
+  PUBLISHER = {Cambridge University Press},
+  SERIES = {London Mathematical Society Lecture Note},
+  VOLUME = {316},
+  YEAR = {2004},
+  PAGES = {119--150},
+  PS = {http://www.lix.polytechnique.fr/Labo/Dale.Miller/papers/llp.ps},
+  PDF = {http://www.lix.polytechnique.fr/Labo/Dale.Miller/papers/llp.pdf},
+  DVI = {http://www.lix.polytechnique.fr/Labo/Dale.Miller/papers/llp.dvi}
+}
+
+@techreport{Clean,
+  author= "Rinus Plasmeijer and van Eekelen, Marko",
+  title = "Concurrent Clean Language Report, version 2.0",
+  institution = "Department of Software Technology, University of Nijmegen",
+  address = "Nijmegen",
+  year = "2001"
+}
+
+@article{ UOLLNP,
+    author = "Patrick Lincoln and Timothy Winkler",
+    title = "Constant-only multiplicative linear logic is {NP}-complete",
+    journal = "Theoretical Computer Science",
+    volume = "135",
+    number = "1",
+    pages = "155--169",
+    year = "1994"}
