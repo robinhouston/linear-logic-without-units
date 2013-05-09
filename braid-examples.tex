@@ -1,16 +1,34 @@
 \documentclass{article}
 \usepackage{braids}
 
-\newcommand\s{ss}
+% The braids package provides a concise notation for drawing braid diagrams
+% of the sort that appear in Section 4.2 of _Linear Logic without Units_.
+
+% It is pretty flexible and powerful, albeit scarcely documented. There
+% are plenty of examples in some-coherence.tex, on the other hand!
+
+
+% The basics, in case it isn't obvious from this example:
+%  - \c is a straight line
+%  - \s is a crossing
+%  - \f is a circle
+%  - \t is a triangle
+
+
+% This is to verify that, if a command such as \s is defined out here, this definition
+% will not interfere with or be interfered with by the local definition inside
+% the \begin{braid} ... \end{braid} block.
+\newcommand\s{And indeed our \textbackslash s command is still defined afterwards!}
+
 \begin{document}
-	\tikzstyle{every path} = [draw=white,double=black,ultra thick]
-	\begin{braid}[ABCD]
-		\c[2] \s(1,1)	\\
-		\c \s(1,1) \c	\\
-		\s(1,3)			\\
-		\c\c\f\c		\\
+	\begin{braid}{A,=B,C,D}
+		\c \c \s       \\
+		\c \s \c       \\
+		\s(1,3)        \\
+		\c \c \f[x] \c \\
 		\s(3,1)
 	\end{braid}
 	
-	Ballyhoo! \s
+	\vskip 1em
+	\s
 \end{document}
