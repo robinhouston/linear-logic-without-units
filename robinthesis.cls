@@ -12,12 +12,15 @@
 
 \PassOptionsToClass{a4paper}{book}
 \LoadClass{book}
-\RequirePackage{amssymb} % Must be loaded before Minion Pro
+\RequirePackage{amssymb, amsbsy} % Must be loaded before Minion Pro
 \ifrobin@useminion
     \RequirePackage[medfamily,opticals]{MinionPro}
     \RequirePackage{microtype}
+    \RequirePackage{MnSymbol}
 \else\ifrobin@usemyriad
     \RequirePackage[medfamily]{MyriadPro}
+    \RequirePackage{mdsymbol}
+    \renewcommand{\familydefault}{\sfdefault}
 \fi\fi
 \RequirePackage{tikz,prooftree,braids,setspace}
 
@@ -278,11 +281,9 @@ Faculty of Life Sciences, for Faculty of Life Sciences candidates.
 		         {\string\newlabel{#1:##1}{{\@currentlabel}{\thepage}{\string\relax}{}{}}}%
 		  \@esphack}
 		\def\ref##1{\robin@reallyref{#1:##1}}%
-		% \def\pageref##1{\Hy@safe@activestrue\expandafter\@setref\csname r@#1:##1\endcsname
-		% 	\@secondoffive{#1:##1}\Hy@safe@activesfalse}
 		\def\rot@label##1{\@bsphack
-		  \r@protected@write\@auxout{}%
-		         {\string\newlabel{#1:##1}{{\@currentlabel}{\therpage}{\string\relax}{}{}}}%
+		  \rot@protected@write\@auxout{}%
+		         {\string\newlabel{#1:##1}{{\@currentlabel}{\rot@thepage}{\string\relax}{}{}}}%
 		  \@esphack}%
 		\def\equation{\robin@reallyequation
 		  \def\label####1{\@bsphack
